@@ -3,35 +3,52 @@ self.addEventListener('install',  () => self.skipWaiting());
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
 
 let _notifTimer = null;
+let _pendingNotif = false; // true after timer ends, waiting for app to be backgrounded
 
-self.addEventListener('message', e => {
-  const { type, fireAt, title, body } = e.data || {};
+async function showRestNotif() {
+  await self.registration.showNotification('FitPet — Rest Over! 💪', {
+    body:     'Time to hit your next set!',
+    icon:     'pets/rhino_t0.png',
+    badge:    'pets/rhino_t0.png',
+    tag:      'fitpet-rest-timer',
+    renotify: true,
+    vibrate:  [200, 100, 200],
+    silent:   false
+  });
+}
+
+self.addEventListener('message', async e => {
+  const { type, fireAt } = e.data || {};
 
   if (type === 'SCHEDULE_NOTIF') {
-    // Cancel any existing scheduled notification
+    // Schedule for background — fires when timer ends regardless of visibility
+    _pendingNotif = false;
     if (_notifTimer) { clearTimeout(_notifTimer); _notifTimer = null; }
     const delay = Math.max(0, fireAt - Date.now());
     _notifTimer = setTimeout(async () => {
       _notifTimer = null;
-      // Only fire if no client (tab/app) is currently visible
       const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
       const anyVisible = clients.some(c => c.visibilityState === 'visible');
-      // Always show notification — if app is open, it'll handle its own toast;
-      // this ensures it fires even when backgrounded
-      await self.registration.showNotification(title || 'FitPet — Rest Over! 💪', {
-        body:     body  || 'Time to hit your next set!',
-        icon:     'pets/rhino_t0.png',
-        badge:    'pets/rhino_t0.png',
-        tag:      'fitpet-rest-timer',
-        renotify: true,
-        vibrate:  [200, 100, 200],
-        silent:   false
-      });
+      if (anyVisible) {
+        // App is open — mark pending so we fire when they background
+        _pendingNotif = true;
+      } else {
+        await showRestNotif();
+      }
     }, delay);
   }
 
   if (type === 'CANCEL_NOTIF') {
+    _pendingNotif = false;
     if (_notifTimer) { clearTimeout(_notifTimer); _notifTimer = null; }
+  }
+
+  // App just went to background — fire pending notification immediately
+  if (type === 'APP_HIDDEN') {
+    if (_pendingNotif) {
+      _pendingNotif = false;
+      await showRestNotif();
+    }
   }
 });
 

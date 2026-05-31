@@ -1852,6 +1852,11 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   </div>
   <div class="nav-right">
     <button class="dev-btn" id="devBtn" onclick="toggleDevMode()">&#128295; DEV</button>
+    <div id="rtMiniTab" onclick="rtShow()">
+        <div class="rt-mini-dot" id="rtMiniDot"></div>
+        <span class="rt-mini-time" id="rtMiniTime">2:00</span>
+        <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">REST</span>
+      </div>
     <div class="gold-badge">◆ <span id="goldCount">0</span></div>
     <div class="streak-badge"><span class="streak-fire">🔥</span><span id="streakCount">0</span>d</div>
     <div class="profile-dropdown-wrap" id="profileDropdownWrap">
@@ -2029,11 +2034,6 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
       <div>
         <div class="active-workout-title" id="activeWorkoutTitle">Push Day A</div>
         <div class="workout-elapsed" id="workoutElapsed">00:00</div>
-      </div>
-      <div id="rtMiniTab" onclick="rtShow()">
-        <div class="rt-mini-dot" id="rtMiniDot"></div>
-        <span class="rt-mini-time" id="rtMiniTime">2:00</span>
-        <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">REST</span>
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
         <button class="add-exercise-workout-btn" onclick="openAddExerciseModal()" style="margin-top:0;width:auto;padding:10px 14px;font-size:13px;">+ Add</button>
@@ -6747,6 +6747,21 @@ function swPost(msg) {
   const sw = _swReg?.active || navigator.serviceWorker?.controller;
   if (sw) sw.postMessage(msg);
 }
+
+// When app goes to background: re-schedule if timer still running, or fire pending notif
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+    if (rtEndTime) {
+      const remaining = Math.max(0, (rtEndTime - Date.now()) / 1000);
+      if (remaining > 0) {
+        // Re-schedule with accurate remaining time in case SW was killed
+        scheduleSwNotif(remaining);
+      }
+    }
+    // Tell SW app is now backgrounded so it can fire any pending notification
+    swPost({ type: 'APP_HIDDEN' });
+  }
+});
 
 function scheduleSwNotif(delaySec) {
   swPost({
