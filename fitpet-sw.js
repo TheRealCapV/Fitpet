@@ -35,13 +35,20 @@ self.addEventListener('message', e => {
   }
 });
 
-// Tapping the notification brings the app to focus
+// Tapping the notification opens the app and navigates to the workout log
 self.addEventListener('notificationclick', e => {
   e.notification.close();
   e.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clients => {
-      if (clients.length) { clients[0].focus(); return; }
-      self.clients.openWindow('./fitpet.html');
+      if (clients.length) {
+        const client = clients[0];
+        client.focus();
+        // Post message to tell the app to show the log page
+        client.postMessage({ type: 'OPEN_LOG' });
+        return;
+      }
+      // App not open — open it with a hash so it can navigate on load
+      self.clients.openWindow('./index.html#log');
     })
   );
 });
