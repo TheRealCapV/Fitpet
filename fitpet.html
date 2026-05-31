@@ -817,7 +817,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
 /* ── CASES PAGE ── */
 .cases-page-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-.big-case-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.big-case-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .big-case-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;}
 .big-case-card.legendary-bg::before{background:radial-gradient(ellipse at 50% 100%,rgba(251,191,36,.15),transparent 70%);}
 .big-case-card.rare-bg::before{background:radial-gradient(ellipse at 50% 100%,rgba(56,189,248,.15),transparent 70%);}
@@ -940,7 +940,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 /* ── COLLECTION PAGE ── */
 .collection-filters{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
 .skins-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-.skin-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 12px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+.skin-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 12px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .skin-card.locked{opacity:.5;cursor:default;}
 .skin-card:not(.locked):hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.4);}
 .skin-card.equipped{border-color:var(--accent);background:rgba(139,92,246,.07);box-shadow:0 0 0 1px rgba(139,92,246,.2);}
@@ -2034,9 +2034,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
     <span class="badge badge-orange" style="font-size:14px;padding:8px 14px;" id="casesReadyBadge">0 Ready</span>
   </div>
   <div class="cases-page-grid">
-    <div class="big-case-card rare-bg" onclick="openCaseModal('basic')"><span class="big-case-emoji">&#128230;</span><div class="big-case-name">Basic Case</div><div class="big-case-desc">Standard rewards from completing daily workouts.</div><div class="rarity-pills"><span class="rarity-pill pill-common">Common 55%</span><span class="rarity-pill pill-rare">Rare 30%</span><span class="rarity-pill pill-epic">Epic 15%</span></div><div class="case-count-badge" id="basicCaseCount">&#215;0 available</div><button class="open-btn open-btn-rare">Open Case</button></div>
-    <div class="big-case-card epic-bg" onclick="openCaseModal('rare')"><span class="big-case-emoji">&#128142;</span><div class="big-case-name">Rare Case</div><div class="big-case-desc">Earned from weekly challenges and 7-day streaks.</div><div class="rarity-pills"><span class="rarity-pill pill-rare">Rare 50%</span><span class="rarity-pill pill-epic">Epic 35%</span><span class="rarity-pill pill-legendary">Legendary 15%</span></div><div class="case-count-badge" id="rareCaseCount">&#215;0 available</div><button class="open-btn open-btn-epic">Open Case</button></div>
-    <div class="big-case-card legendary-bg" onclick="openCaseModal('legendary')"><span class="big-case-emoji">&#128081;</span><div class="big-case-name">Legendary Case</div><div class="big-case-desc">Reserved for 30-day streaks and major milestones.</div><div class="rarity-pills"><span class="rarity-pill pill-epic">Epic 60%</span><span class="rarity-pill pill-legendary">Legendary 35%</span><span class="rarity-pill pill-divine">🦆 Golden Duck 5%</span></div><div class="case-count-badge" id="legendaryCaseCount">&#215;0 available</div><button class="open-btn open-btn-legendary">Open Case</button></div>
+    <div class="big-case-card rare-bg"><span class="big-case-emoji">&#128230;</span><div class="big-case-name">Basic Case</div><div class="big-case-desc">Standard rewards from completing daily workouts.</div><div class="rarity-pills"><span class="rarity-pill pill-common">Common 55%</span><span class="rarity-pill pill-rare">Rare 30%</span><span class="rarity-pill pill-epic">Epic 15%</span></div><div class="case-count-badge" id="basicCaseCount">&#215;0 available</div><button class="open-btn open-btn-rare" onclick="openCaseModal('basic')">Open Case</button></div>
+    <div class="big-case-card epic-bg"><span class="big-case-emoji">&#128142;</span><div class="big-case-name">Rare Case</div><div class="big-case-desc">Earned from weekly challenges and 7-day streaks.</div><div class="rarity-pills"><span class="rarity-pill pill-rare">Rare 50%</span><span class="rarity-pill pill-epic">Epic 35%</span><span class="rarity-pill pill-legendary">Legendary 15%</span></div><div class="case-count-badge" id="rareCaseCount">&#215;0 available</div><button class="open-btn open-btn-epic" onclick="openCaseModal('rare')">Open Case</button></div>
+    <div class="big-case-card legendary-bg"><span class="big-case-emoji">&#128081;</span><div class="big-case-name">Legendary Case</div><div class="big-case-desc">Reserved for 30-day streaks and major milestones.</div><div class="rarity-pills"><span class="rarity-pill pill-epic">Epic 60%</span><span class="rarity-pill pill-legendary">Legendary 35%</span><span class="rarity-pill pill-divine">🦆 Golden Duck 5%</span></div><div class="case-count-badge" id="legendaryCaseCount">&#215;0 available</div><button class="open-btn open-btn-legendary" onclick="openCaseModal('legendary')">Open Case</button></div>
   </div>
   <!-- SHOP -->
   <div class="card" style="margin-top:20px;">
@@ -5488,7 +5488,7 @@ function renderSkins(filter='all') {
 
     const cardClick = `openPetBio('${s.id}')`;
     return `<div class="skin-card ${isLocked?'locked':''} ${ready?'forgeable':''} ${isEquipped?'equipped':''} ${s.rarity}-skin ${s.rarity==='divine'?'divine-skin':''}"
-         onclick="${cardClick}" >
+         onclick="${cardClick}" ontouchend="event.preventDefault();${cardClick}" >
       ${isEquipped ? '<div class="equipped-tag">ON</div>' : ''}
       ${imgHtml}
       ${tierLabel}
