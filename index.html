@@ -341,17 +341,18 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 @keyframes pet-idle{0%,100%{transform:translateY(0px);}50%{transform:translateY(-10px);}}
 /* ── RARITY GLOW ANIMATIONS ── */
 @keyframes glow-rare{0%,100%{filter:drop-shadow(0 0 12px rgba(56,189,248,.5)) drop-shadow(0 0 28px rgba(56,189,248,.2));}50%{filter:drop-shadow(0 0 24px rgba(56,189,248,.9)) drop-shadow(0 0 50px rgba(56,189,248,.4));}}
-@keyframes glow-epic{0%,100%{filter:drop-shadow(0 0 14px rgba(168,85,247,.6)) drop-shadow(0 0 30px rgba(168,85,247,.25));}50%{filter:drop-shadow(0 0 30px rgba(168,85,247,1)) drop-shadow(0 0 60px rgba(168,85,247,.5)) drop-shadow(0 0 90px rgba(168,85,247,.2));}}
-@keyframes glow-legendary{0%{filter:drop-shadow(0 0 16px rgba(251,191,36,.7)) drop-shadow(0 0 40px rgba(251,191,36,.35));}33%{filter:drop-shadow(0 0 28px rgba(251,191,36,1)) drop-shadow(0 0 70px rgba(251,191,36,.5)) drop-shadow(0 0 100px rgba(255,120,0,.3));}66%{filter:drop-shadow(0 0 20px rgba(255,150,0,.9)) drop-shadow(0 0 55px rgba(251,191,36,.6));}100%{filter:drop-shadow(0 0 16px rgba(251,191,36,.7)) drop-shadow(0 0 40px rgba(251,191,36,.35));}}
-@keyframes shimmer-legendary{0%,100%{opacity:1;}50%{opacity:.85;}}
+@keyframes glow-epic{0%,100%{filter:drop-shadow(0 0 10px rgba(168,85,247,.6));opacity:1;}50%{filter:drop-shadow(0 0 18px rgba(168,85,247,.9));opacity:.92;}}
+@keyframes glow-legendary{0%,100%{filter:drop-shadow(0 0 12px rgba(251,191,36,.7));opacity:1;}50%{filter:drop-shadow(0 0 22px rgba(251,191,36,.95));opacity:.9;}}
+
 /* Rarity classes on the pet emoji container */
 .pet-emoji.rarity-rare img{animation:glow-rare 2s ease-in-out infinite;}
 .pet-emoji.rarity-epic img{animation:glow-epic 2.2s ease-in-out infinite;}
-.pet-emoji.rarity-legendary img{animation:glow-legendary 2.5s ease-in-out infinite, shimmer-legendary 1.2s ease-in-out infinite;}
+.pet-emoji.rarity-legendary img{animation:glow-legendary 2.5s ease-in-out infinite;will-change:filter;}
 /* Rarity glow on collection skin cards */
 .skin-card.rare-skin .skin-emoji img{animation:glow-rare 2.5s ease-in-out infinite;}
-.skin-card.epic-skin .skin-emoji img{animation:glow-epic 2.8s ease-in-out infinite;}
-.skin-card.legendary-skin .skin-emoji img{animation:glow-legendary 3s ease-in-out infinite;}
+/* Grid skins use static glow via drop-shadow only — no animation to avoid GPU overload */
+.skin-card.epic-skin .skin-emoji img{filter:drop-shadow(0 0 8px rgba(168,85,247,.5));}
+.skin-card.legendary-skin .skin-emoji img{filter:drop-shadow(0 0 10px rgba(251,191,36,.6));}
 @keyframes auto-tap-pulse{0%{transform:scale(1);}40%{transform:scale(1.07) translateY(-4px);}100%{transform:scale(1);}}
 .auto-indicator{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-family:'DM Mono',monospace;color:var(--accent);letter-spacing:.5px;font-weight:700;}
 .auto-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:pulse-dot 1s ease-in-out infinite;}
@@ -6374,14 +6375,20 @@ function filterSkins(btn, filter) {
 function equipSkin(id) {
   const p = getP();
   if (!p) return;
-  p.equippedSkin = id;
-  saveP(p);
-  refreshHomeStats();
-  renderSkins();
+  try {
+    p.equippedSkin = id;
+    saveP(p);
+    refreshHomeStats();
+  } catch(e) { console.error('equipSkin refreshHomeStats crash:', e); }
+  try {
+    renderSkins();
+  } catch(e) { console.error('equipSkin renderSkins crash:', e); }
   const skin = ALL_SKINS_MAP[id];
   const petD = PET_DATA[id] || PET_DATA['iron-rhino'];
   showToast('Equipped ' + (skin ? skin.name : id) + ' — ' + petD.element + ' element');
-  if (!ABS) buildBattlePage();
+  try {
+    if (!ABS) buildBattlePage();
+  } catch(e) { console.error('equipSkin buildBattlePage crash:', e); }
 }
 
 // ══════════════════════════════════════════
