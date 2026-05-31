@@ -543,14 +543,14 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .diff-hard{background:rgba(248,113,113,.12);color:#f87171;border:1px solid rgba(248,113,113,.3);}
 .diff-boss{background:rgba(168,85,247,.15);color:#a855f7;border:1px solid rgba(168,85,247,.3);}
 /* ─ Auto-Battle Arena ─ */
-.ab-combatant{padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);}
+.ab-combatant{padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;}
 .ab-enemy{border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:none;}
 .ab-player{border-top-left-radius:0;border-top-right-radius:0;border-top:none;}
-.ab-info-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px;}
-.ab-name{font-size:13px;font-weight:800;}
+.ab-info-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.ab-name{font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px;}
 .bc-status-icons{display:flex;gap:4px;flex-wrap:wrap;align-items:center;min-height:20px;}
 .status-pill{font-size:9px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:.8px;padding:2px 6px;border-radius:4px;}.burn-pill{background:rgba(249,115,22,.2);color:#fb923c;border:1px solid rgba(249,115,22,.4);}.dot-pill{background:rgba(168,85,247,.2);color:#c084fc;border:1px solid rgba(168,85,247,.4);}.stun-pill{background:rgba(99,102,241,.2);color:#818cf8;border:1px solid rgba(99,102,241,.4);}
-.bc-hp-bar-wrap{height:9px;background:var(--bg3);border-radius:999px;overflow:hidden;margin-bottom:3px;}
+.bc-hp-bar-wrap{height:7px;background:var(--bg3);border-radius:999px;overflow:hidden;margin-bottom:2px;}
 .bc-hp-bar{height:100%;border-radius:999px;transition:width .5s cubic-bezier(.4,0,.2,1);background:linear-gradient(90deg,#22c55e,#4ade80);}
 .enemy-hp{background:linear-gradient(90deg,#ef4444,#f97316);}
 .player-hp{background:linear-gradient(90deg,var(--accent),#84ff00);}
@@ -584,7 +584,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .ab-boost-bar-wrap{width:110px;height:4px;background:var(--bg3);border-radius:999px;overflow:hidden;}
 .ab-boost-bar{height:100%;background:var(--accent);border-radius:999px;transition:width .08s linear;}
 /* Battle log */
-.battle-log-v2{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;min-height:60px;max-height:120px;overflow-y:auto;margin-top:10px;display:flex;flex-direction:column;gap:3px;}
+.battle-log-v2{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;min-height:40px;max-height:80px;overflow-y:auto;margin-top:8px;display:flex;flex-direction:column;gap:2px;font-size:11px;}
 .battle-log-line{font-size:12px;font-family:'DM Mono',monospace;color:var(--muted);line-height:1.6;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.03);}
 .battle-log-line.player{color:#a78bfa;font-weight:600;}
 .battle-log-line.enemy{color:#f87171;}
@@ -622,18 +622,18 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .multi-reel-fog-r{position:absolute;top:0;bottom:0;right:0;width:50px;z-index:9;background:linear-gradient(270deg,var(--bg3) 10%,transparent);pointer-events:none;}
 .multi-reel-settled .multi-reel-ind{background:var(--accent);box-shadow:0 0 14px var(--accent),0 0 28px rgba(200,255,0,.4);}
 /* ── WHEEL BATTLE ── */
-.wheel-stage{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:14px 10px;background:linear-gradient(180deg,rgba(17,17,24,.97),rgba(10,10,15,.97));border-left:1px solid var(--border);border-right:1px solid var(--border);position:relative;overflow:hidden;}
-.wheel-fighter{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;}
-.wf-pet{display:flex;align-items:center;justify-content:center;height:72px;min-width:72px;}
-.wf-pet img,.ab-pet-img,.wf-pet-img{width:64px;height:64px;object-fit:contain;border-radius:8px;display:block;}
+.wheel-stage{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:10px 8px;background:linear-gradient(180deg,rgba(17,17,24,.97),rgba(10,10,15,.97));border-left:1px solid var(--border);border-right:1px solid var(--border);position:relative;overflow:hidden;}
+.wheel-fighter{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
+.wf-pet{display:flex;align-items:center;justify-content:center;height:56px;min-width:56px;}
+.wf-pet img,.ab-pet-img,.wf-pet-img{width:52px;height:52px;object-fit:contain;border-radius:8px;display:block;}
 .wheel-wrap{position:relative;display:flex;flex-direction:column;align-items:center;}
-.wheel-ptr{font-size:16px;color:var(--accent);filter:drop-shadow(0 0 6px var(--accent));line-height:1;margin-bottom:1px;z-index:5;}
-.wheel-canvas-wrap{width:128px;height:128px;border-radius:50%;border:2px solid var(--border);overflow:hidden;box-shadow:0 0 20px rgba(0,0,0,.6);}
-.wheel-canvas-wrap.enemy-wrap{width:108px;height:108px;}
+.wheel-ptr{font-size:13px;color:var(--accent);filter:drop-shadow(0 0 6px var(--accent));line-height:1;margin-bottom:1px;z-index:5;}
+.wheel-canvas-wrap{width:130px;height:130px;border-radius:50%;border:2px solid var(--border);overflow:hidden;box-shadow:0 0 16px rgba(0,0,0,.6);}
+.wheel-canvas-wrap.enemy-wrap{width:130px;height:130px;}
 .wheel-svg-el{width:100%;height:100%;display:block;transform-origin:center center;}
-.wheel-result-slot{min-height:54px;margin-top:6px;}
+.wheel-result-slot{min-height:36px;margin-top:4px;}
 .w-result-card{border:1px solid;border-radius:10px;padding:7px 10px;text-align:center;}.w-result-name{font-size:12px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:.5px;line-height:1;margin-bottom:3px;}.w-result-desc{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.3;margin-bottom:3px;}.w-result-badge{font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;font-family:'DM Mono',monospace;letter-spacing:.5px;display:inline-block;}
-.wheel-vs-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding-top:72px;}
+.wheel-vs-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding-top:0;}
 .wheel-vs-text{font-size:9px;font-weight:800;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:2px;opacity:.5;}
 .round-badge{font-size:10px;font-weight:700;font-family:'DM Mono',monospace;color:var(--muted);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:2px 8px;white-space:nowrap;}
 .spin-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;border:none;border-radius:var(--radius);font-family:'Syne',sans-serif;font-weight:800;font-size:17px;cursor:pointer;letter-spacing:.4px;transition:all .2s;box-shadow:0 0 24px rgba(200,255,0,.25);margin-top:10px;}
@@ -645,7 +645,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .battle-speed-btn{padding:0 18px;height:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);color:var(--muted);font-family:'DM Mono',monospace;font-weight:800;font-size:15px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;}
 .battle-speed-btn:hover{border-color:var(--accent);color:var(--accent);}
 .battle-speed-btn.fast{background:rgba(200,255,0,.12);border-color:var(--accent);color:var(--accent);box-shadow:0 0 12px rgba(200,255,0,.25);}
-.move-announce-row{display:flex;align-items:stretch;gap:0;margin:6px 0;background:var(--bg3);border:1px solid var(--border);border-radius:14px;overflow:hidden;}.move-slot{flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:3px;}.move-slot-label{font-size:8px;font-weight:800;letter-spacing:2px;font-family:'DM Mono',monospace;text-transform:uppercase;opacity:.8;}.move-slot-name{font-size:15px;font-weight:800;letter-spacing:-.3px;transition:all .25s;}.move-slot-desc{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.3;}.move-slot-divider{width:1px;background:var(--border);flex-shrink:0;}.move-slot-result{font-size:11px;font-weight:700;font-family:"DM Mono",monospace;margin-top:4px;min-height:14px;letter-spacing:.2px;}/* ── MOVE INDEX SIDE PANEL ── */.move-index-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:11px;font-family:"DM Mono",monospace;font-weight:700;cursor:pointer;letter-spacing:.5px;margin-top:8px;transition:all .2s;}.move-index-btn:hover{border-color:var(--accent);color:var(--accent);}.move-index-drawer{position:fixed;top:0;right:-320px;width:300px;height:100vh;background:var(--bg2);border-left:1px solid var(--border);z-index:500;overflow-y:auto;transition:right .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}.move-index-drawer.open{right:0;}.move-index-drawer-header{padding:16px 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:2;}.move-index-drawer-title{font-size:13px;font-weight:800;letter-spacing:.5px;}.move-index-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1;padding:2px 4px;}.move-index-close:hover{color:var(--text);}.move-index-section-label{padding:10px 14px 6px;font-size:9px;font-weight:800;letter-spacing:2px;font-family:"DM Mono",monospace;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.05);background:var(--bg3);}.move-index-panel{flex:1;overflow-y:auto;}.move-index-row{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.04);}.move-index-row:last-child{border-bottom:none;}.move-index-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0;margin-top:1px;}.move-index-info{flex:1;}.move-index-name{font-size:12px;font-weight:800;margin-bottom:2px;}.move-index-detail{font-size:10px;color:var(--muted);font-family:"DM Mono",monospace;line-height:1.4;}.move-index-badge{font-size:9px;font-weight:800;padding:1px 5px;border-radius:4px;font-family:"DM Mono",monospace;letter-spacing:.3px;white-space:nowrap;}.auto-spin-bar{text-align:center;font-size:11px;font-family:'DM Mono',monospace;color:var(--accent);letter-spacing:1.5px;padding:7px 0 2px;display:none;}
+.move-announce-row{display:flex;align-items:stretch;gap:0;margin:5px 0;background:var(--bg3);border:1px solid var(--border);border-radius:12px;overflow:hidden;}.move-slot{flex:1;padding:7px 10px;display:flex;flex-direction:column;gap:2px;}.move-slot-label{font-size:7px;font-weight:800;letter-spacing:2px;font-family:'DM Mono',monospace;text-transform:uppercase;opacity:.8;}.move-slot-name{font-size:13px;font-weight:800;letter-spacing:-.3px;transition:all .25s;}.move-slot-desc{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.3;}.move-slot-divider{width:1px;background:var(--border);flex-shrink:0;}.move-slot-result{font-size:10px;font-weight:700;font-family:"DM Mono",monospace;margin-top:3px;min-height:12px;letter-spacing:.2px;}/* ── MOVE INDEX SIDE PANEL ── */.move-index-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:11px;font-family:"DM Mono",monospace;font-weight:700;cursor:pointer;letter-spacing:.5px;margin-top:8px;transition:all .2s;}.move-index-btn:hover{border-color:var(--accent);color:var(--accent);}.move-index-drawer{position:fixed;top:0;right:-320px;width:300px;height:100vh;background:var(--bg2);border-left:1px solid var(--border);z-index:500;overflow-y:auto;transition:right .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}.move-index-drawer.open{right:0;}.move-index-drawer-header{padding:16px 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:2;}.move-index-drawer-title{font-size:13px;font-weight:800;letter-spacing:.5px;}.move-index-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1;padding:2px 4px;}.move-index-close:hover{color:var(--text);}.move-index-section-label{padding:10px 14px 6px;font-size:9px;font-weight:800;letter-spacing:2px;font-family:"DM Mono",monospace;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.05);background:var(--bg3);}.move-index-panel{flex:1;overflow-y:auto;}.move-index-row{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.04);}.move-index-row:last-child{border-bottom:none;}.move-index-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0;margin-top:1px;}.move-index-info{flex:1;}.move-index-name{font-size:12px;font-weight:800;margin-bottom:2px;}.move-index-detail{font-size:10px;color:var(--muted);font-family:"DM Mono",monospace;line-height:1.4;}.move-index-badge{font-size:9px;font-weight:800;padding:1px 5px;border-radius:4px;font-family:"DM Mono",monospace;letter-spacing:.3px;white-space:nowrap;}.auto-spin-bar{text-align:center;font-size:11px;font-family:'DM Mono',monospace;color:var(--accent);letter-spacing:1.5px;padding:7px 0 2px;display:none;}
 .auto-spin-bar.visible{display:block;animation:pulse-auto 1.2s ease-in-out infinite;}
 @keyframes pulse-auto{0%,100%{opacity:.5;}50%{opacity:1;}}
 /* ── CUSTOM EXERCISE PICKER ── */
@@ -979,8 +979,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .col-stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-family:'DM Mono',monospace;}
 
 /* ── REST TIMER ── */
-.rest-timer-bar{position:fixed;bottom:-200px;left:50%;transform:translateX(-50%);width:min(300px,calc(100vw - 24px));background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:10px 14px 12px;z-index:300;transition:bottom .45s cubic-bezier(.34,1.3,.64,1);box-shadow:0 8px 40px rgba(0,0,0,.7);touch-action:none;}
+.rest-timer-bar{position:fixed;bottom:-200px;left:50%;transform:translateX(-50%);width:min(300px,calc(100vw - 24px));background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:10px 14px 12px;z-index:300;transition:bottom .45s cubic-bezier(.34,1.3,.64,1);box-shadow:0 8px 40px rgba(0,0,0,.7);pointer-events:none;}
 .rest-timer-bar.visible{bottom:calc(16px + env(safe-area-inset-bottom,0px));}
+.rest-timer-bar .rt-drag-handle,.rest-timer-bar .rt-top,.rest-timer-bar .rt-bottom{pointer-events:auto;touch-action:none;}
 .rest-timer-bar.rt-dragging{transition:none;box-shadow:0 16px 60px rgba(0,0,0,.85);}
 .rest-timer-bar.done-flash{animation:flash-green .6s ease;}
 @keyframes flash-green{0%{box-shadow:0 8px 40px rgba(0,0,0,.7);border-color:var(--border);}40%{box-shadow:0 8px 60px rgba(200,255,0,.5);border-color:var(--accent);}100%{box-shadow:0 8px 40px rgba(0,0,0,.7);border-color:var(--border);}}
@@ -2477,91 +2478,83 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   <!-- AUTO-BATTLE ARENA -->
   <div id="battleArena" style="display:none;">
 
-    <!-- Enemy block -->
-    <div class="ab-combatant ab-enemy">
-      <div class="ab-info-row">
-        <div>
-          <div class="ab-name" id="abEnemyName">Enemy</div>
-          <div id="abEnemyBadge" style="margin-top:3px;"></div>
-        </div>
-        <div class="bc-status-icons" id="abEnemyStatus"></div>
+    <!-- TOP STRIP: round + controls -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 2px;margin-bottom:4px;">
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span class="round-badge" id="abRoundBadge">RND 1</span>
+        <span style="font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;" id="abWaveLabel"></span>
       </div>
-      <div class="bc-hp-bar-wrap" id="abEnemyHpWrap"><div class="bc-hp-bar enemy-hp" id="abEnemyHpBar" style="width:100%"></div></div>
-      <div class="bc-hp-text" id="abEnemyHpText">— / —</div>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <button class="move-index-btn" id="moveIndexBtn" onclick="toggleMoveIndex()" style="margin:0;padding:4px 10px;font-size:10px;">&#9776; Moves</button>
+        <button class="battle-speed-btn" id="battleSpeedBtn" onclick="toggleBattleSpeed()" style="height:26px;padding:0 10px;font-size:11px;">1×</button>
+        <button class="btn btn-secondary" style="padding:4px 10px;font-size:10px;height:26px;" onclick="abFlee()">↩</button>
+      </div>
     </div>
 
-    <!-- Wheel Stage -->
-    <div class="wheel-stage" id="abStage">
-      <!-- Enemy Fighter -->
-      <div class="wheel-fighter">
+    <!-- MAIN: two columns side by side -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
+
+      <!-- ENEMY column -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div class="ab-combatant ab-enemy" style="width:100%;padding:6px 8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+            <span class="ab-name" id="abEnemyName" style="font-size:11px;">Enemy</span>
+            <span class="bc-status-icons" id="abEnemyStatus"></span>
+          </div>
+          <div id="abEnemyBadge" style="margin-bottom:3px;"></div>
+          <div class="bc-hp-bar-wrap" id="abEnemyHpWrap"><div class="bc-hp-bar enemy-hp" id="abEnemyHpBar" style="width:100%"></div></div>
+          <div class="bc-hp-text" id="abEnemyHpText" style="font-size:9px;">— / —</div>
+        </div>
         <div class="wf-pet ab-pet ab-pet-enemy" id="abEnemyPet"></div>
-        <div class="wheel-wrap">
-          <div class="wheel-ptr">▼</div>
-          <div class="wheel-canvas-wrap enemy-wrap" id="enemyWheelWrap"></div>
+        <div class="wheel-ptr" style="font-size:11px;">▼</div>
+        <div class="wheel-canvas-wrap enemy-wrap" id="enemyWheelWrap"></div>
+        <div id="enemyWheelResult" class="wheel-result-slot" style="min-height:28px;text-align:center;"></div>
+      </div>
+
+      <!-- PLAYER column -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div class="ab-combatant ab-player" style="width:100%;padding:6px 8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+            <span class="ab-name" id="abPlayerName" style="font-size:11px;">You</span>
+            <span class="bc-status-icons" id="abPlayerStatus"></span>
+          </div>
+          <div id="abPlayerBadge" style="margin-bottom:3px;"></div>
+          <div class="bc-hp-bar-wrap" id="abPlayerHpWrap"><div class="bc-hp-bar player-hp" id="abPlayerHpBar" style="width:100%"></div></div>
+          <div class="bc-hp-text" id="abPlayerHpText" style="font-size:9px;">— / —</div>
         </div>
-        <div id="enemyWheelResult" class="wheel-result-slot"></div>
-      </div>
-      <!-- VS col -->
-      <div class="wheel-vs-col">
-        <div class="wheel-vs-text">VS</div>
-        <div class="round-badge" id="abRoundBadge">RND 1</div>
-      </div>
-      <!-- Player Fighter -->
-      <div class="wheel-fighter">
         <div class="wf-pet ab-pet ab-pet-player" id="abPlayerPet"></div>
-        <div class="wheel-wrap">
-          <div class="wheel-ptr">▼</div>
-          <div class="wheel-canvas-wrap" id="playerWheelWrap"></div>
-        </div>
-        <div id="playerWheelResult" class="wheel-result-slot"></div>
+        <div class="wheel-ptr" style="font-size:11px;">▼</div>
+        <div class="wheel-canvas-wrap" id="playerWheelWrap"></div>
+        <div id="playerWheelResult" class="wheel-result-slot" style="min-height:28px;text-align:center;"></div>
       </div>
     </div>
-    <!-- Move announcements — two fixed slots -->
-    <div class="move-announce-row">
+
+    <!-- MOVE RESULTS row -->
+    <div class="move-announce-row" style="margin-bottom:6px;">
       <div class="move-slot" id="moveSlotEnemy">
         <div class="move-slot-label" style="color:#f87171;">ENEMY MOVE</div>
         <div class="move-slot-name" id="moveSlotEnemyName">—</div>
-        <div class="move-slot-desc" id="moveSlotEnemyDesc">Waiting...</div>
-        <div class="move-slot-result" id="moveSlotEnemyResult"></div>
+        <div class="move-slot-desc" id="moveSlotEnemyDesc" style="font-size:9px;"></div>
+        <div class="move-slot-result" id="moveSlotEnemyResult" style="font-size:11px;font-weight:800;margin-top:3px;"></div>
       </div>
       <div class="move-slot-divider"></div>
       <div class="move-slot" id="moveSlotPlayer">
         <div class="move-slot-label" style="color:#a78bfa;">YOUR MOVE</div>
         <div class="move-slot-name" id="moveSlotPlayerName">—</div>
-        <div class="move-slot-desc" id="moveSlotPlayerDesc">Spin to attack</div>
-        <div class="move-slot-result" id="moveSlotPlayerResult"></div>
-      </div>
-    </div>
-    <!-- Move index button -->
-    <button class="move-index-btn" id="moveIndexBtn" onclick="toggleMoveIndex()">&#9776; Move Guide</button>
-
-    <!-- Player block -->
-    <div class="ab-combatant ab-player">
-      <div class="bc-hp-bar-wrap" id="abPlayerHpWrap"><div class="bc-hp-bar player-hp" id="abPlayerHpBar" style="width:100%"></div></div>
-      <div class="bc-hp-text" id="abPlayerHpText">— / —</div>
-      <div class="ab-info-row" style="margin-top:6px;">
-        <div>
-          <div class="ab-name" id="abPlayerName">You</div>
-          <div id="abPlayerBadge" style="margin-top:3px;"></div>
-        </div>
-        <div class="bc-status-icons" id="abPlayerStatus"></div>
+        <div class="move-slot-desc" id="moveSlotPlayerDesc" style="font-size:9px;"></div>
+        <div class="move-slot-result" id="moveSlotPlayerResult" style="font-size:11px;font-weight:800;margin-top:3px;"></div>
       </div>
     </div>
 
-    <!-- Spin button -->
-    <div style="display:flex;gap:8px;align-items:stretch;margin-top:10px;">
-      <button class="spin-btn" id="spinBtn" style="flex:1;margin-top:0;"
-        onpointerdown="onSpinBtnDown(event)"
-        onpointerup="onSpinBtnUp()"
-        onpointercancel="onSpinBtnCancel()">SPIN TO ATTACK</button>
-      <button class="battle-speed-btn" id="battleSpeedBtn" onclick="toggleBattleSpeed()" title="Toggle speed">1×</button>
-    </div>
+    <!-- SPIN BUTTON -->
+    <button class="spin-btn" id="spinBtn" style="margin-top:0;padding:16px;"
+      onpointerdown="onSpinBtnDown(event)"
+      onpointerup="onSpinBtnUp()"
+      onpointercancel="onSpinBtnCancel()">SPIN TO ATTACK</button>
     <div class="auto-spin-bar" id="autoSpinBar">⚡ AUTO — TAP TO STOP</div>
 
-    <!-- Log -->
-    <div class="battle-log-v2" id="abLog"></div>
-
-    <button class="btn btn-secondary" style="width:100%;margin-top:10px;" onclick="abFlee()">↩ Flee Battle</button>
+    <!-- Battle log hidden by default, toggle via log btn -->
+    <div class="battle-log-v2" id="abLog" style="max-height:60px;"></div>
   </div>
 </div>
 
@@ -6578,20 +6571,7 @@ function rtDone() {
   setTimeout(() => bar.classList.remove('done-flash'), 700);
   document.getElementById('rtTimeLabel').textContent = 'GO!';
   updateRtTab();
-  // Push notification
-  if (Notification && Notification.permission === 'granted') {
-    try {
-      new Notification('FitPet — Rest Over! 💪', {
-        body: 'Time to hit your next set!',
-        icon: 'pets/rhino_t0.png',
-        badge: 'pets/rhino_t0.png',
-        vibrate: [200, 100, 200],
-        tag: 'fitpet-rest-timer',
-        renotify: true,
-        silent: false
-      });
-    } catch(e) {}
-  }
+  // Service worker handles the notification (single source, navigates to workout on tap)
   setTimeout(rtDismiss, 3000);
 }
 
@@ -7908,7 +7888,7 @@ function startAutoBattle(npcId) {
 
   const pi = TYPE_ICONS[petD.element]||'', ni = TYPE_ICONS[npcD.element]||'';
   document.getElementById('abEnemyName').textContent  = npc.name;
-  document.getElementById('abPlayerName').textContent = p.username;
+  document.getElementById('abPlayerName').textContent = skin ? skin.name : (p.equippedSkin || p.username);
   document.getElementById('abEnemyBadge').innerHTML   = `<span class="type-badge type-${npcD.element}">${ni} ${npcD.element}</span>`;
   document.getElementById('abPlayerBadge').innerHTML  = `<span class="type-badge type-${petD.element}">${pi} ${petD.element}</span>`;
   document.getElementById('abEnemyPet').innerHTML     = petImgHtml(npc.pet, npc.emoji, 'ab-pet-img');
@@ -7950,15 +7930,21 @@ function buildWheelSVG(id, segments, size) {
     // Inner icon symbol
     const ir = r * 0.55;
     const ix = (cx + ir*Math.cos(midA)).toFixed(2), iy = (cy + ir*Math.sin(midA)).toFixed(2);
-    const deg = ((midA + Math.PI/2) * 180/Math.PI).toFixed(1);
+    // Tangential text — always readable, flipped for bottom half
+    let deg = ((midA + Math.PI/2) * 180/Math.PI);
+    deg = ((deg % 360) + 360) % 360;
+    const needsFlip = deg >= 90 && deg < 270;
+    if (needsFlip) deg += 180;
+    deg = ((deg % 360) + 360) % 360;
+    const degS = deg.toFixed(1);
     const iconSize = Math.max(9, size * 0.09);
-    labels += `<text x="${ix}" y="${iy}" text-anchor="middle" dominant-baseline="middle" font-size="${iconSize}" fill="rgba(255,255,255,0.9)" font-weight="bold" transform="rotate(${deg},${ix},${iy})">${seg.icon}</text>`;
+    labels += `<text x="${ix}" y="${iy}" text-anchor="middle" dominant-baseline="middle" font-size="${iconSize}" fill="rgba(255,255,255,0.9)" font-weight="bold" transform="rotate(${degS},${ix},${iy})">${seg.icon}</text>`;
     // Outer move name (first word only)
     const or2 = r * 0.82;
     const ox = (cx + or2*Math.cos(midA)).toFixed(2), oy = (cy + or2*Math.sin(midA)).toFixed(2);
     const nameSize = Math.max(6, size * 0.062);
     const shortName = seg.t.split(' ')[0];
-    labels += `<text x="${ox}" y="${oy}" text-anchor="middle" dominant-baseline="middle" font-size="${nameSize}" fill="rgba(255,255,255,0.82)" font-weight="800" font-family="sans-serif" transform="rotate(${deg},${ox},${oy})">${shortName}</text>`;
+    labels += `<text x="${ox}" y="${oy}" text-anchor="middle" dominant-baseline="middle" font-size="${nameSize}" fill="rgba(255,255,255,0.82)" font-weight="800" font-family="sans-serif" transform="rotate(${degS},${ox},${oy})">${shortName}</text>`;
   }
   const cap = `<circle cx="${cx}" cy="${cy}" r="${size*0.11}" fill="#0d0b14" stroke="#2a2540" stroke-width="2"/>`;
   const capDot = `<circle cx="${cx}" cy="${cy}" r="${size*0.04}" fill="rgba(139,92,246,0.8)"/>`;
@@ -8434,12 +8420,13 @@ function resolveWheelRound(pSegRaw, eSeg, pStunWas, eStunWas) {
       abLog(`${pSeg.t}  →  -${pdmg} dmg${effStr}`, 'player');
       const isCritHit = mult >= 1.5;
       const resultCol = isCritHit ? '#fbbf24' : pTypeMult > 1 ? '#4ade80' : '#a78bfa';
-      let resultTxt = `Dealt ${pdmg} damage to enemy`;
-      if (isCritHit) resultTxt += '  ★ Crit!';
-      else if (pTypeMult > 1) resultTxt += '  Super effective!';
-      if (pSeg.status === 'burn')    resultTxt += '  +Burn';
-      if (pSeg.status === 'stun')    resultTxt += '  +Stun';
-      if (pSeg.status === 'atkdown') resultTxt += '  +ATK↓';
+      let resultTxt = `-${pdmg} dmg dealt`;
+      if (isCritHit) resultTxt += ' ★ CRIT';
+      if (pTypeMult > 1) resultTxt += ' ⚡ SUPER';
+      if (pSeg.status === 'burn')    resultTxt += ' 🔥 Burn';
+      if (pSeg.status === 'stun')    resultTxt += ' ⚡ Stun';
+      if (pSeg.status === 'atkdown') resultTxt += ' ↓ ATK';
+      resultTxt += ` (${ABS.enemy.hp}/${ABS.enemy.maxHp} HP left)`;
       updateMoveResult(true, resultTxt, resultCol);
     }
     if (pSeg.status==='burn'   && !eDodging) { ABS.enemy.status.burn=3; ABS.enemy.burnDmg=10; abLog('Burn applied — enemy takes damage each round','status-effect'); }
@@ -8477,12 +8464,13 @@ function resolveWheelRound(pSegRaw, eSeg, pStunWas, eStunWas) {
       abLog(`${eSeg.t}  →  -${edmg} dmg to you${eEffStr}`, 'enemy');
       const eIsCrit = emult >= 1.5;
       const eResultCol = eIsCrit ? '#fbbf24' : eTypeMult > 1 ? '#f97316' : '#f87171';
-      let eResultTxt = edmg === 0 ? 'Blocked by Force Field!' : `Took ${edmg} damage`;
-      if (eIsCrit) eResultTxt += '  ★ Crit!';
-      else if (eTypeMult > 1) eResultTxt += '  Super effective!';
-      if (eSeg.status === 'burn')    eResultTxt += '  +Burn';
-      if (eSeg.status === 'stun')    eResultTxt += '  +Stun';
-      if (eSeg.status === 'atkdown') eResultTxt += '  +ATK↓';
+      let eResultTxt = edmg === 0 ? '🛡 Force Field blocked!' : `-${edmg} dmg taken`;
+      if (eIsCrit) eResultTxt += ' ★ CRIT';
+      if (eTypeMult > 1) eResultTxt += ' ⚡ SUPER';
+      if (eSeg.status === 'burn')    eResultTxt += ' 🔥 Burn';
+      if (eSeg.status === 'stun')    eResultTxt += ' ⚡ Stun';
+      if (eSeg.status === 'atkdown') eResultTxt += ' ↓ ATK';
+      eResultTxt += ` (${ABS.player.hp}/${ABS.player.maxHp} HP left)`;
       updateMoveResult(false, eResultTxt, eResultCol);
     }
     if (eSeg.status==='burn'   && !pDodging) { ABS.player.status.burn=3; ABS.player.burnDmg=10; abLog('Burn applied — you take damage each round','status-effect'); }
