@@ -1162,22 +1162,22 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .ex-max-btn:not(:disabled):hover{background:rgba(99,102,241,.2)!important;}
 /* ── SHARD EXCHANGE ── */
 .exchange-list{display:flex;flex-direction:column;gap:10px;}
-.exchange-row{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;transition:all .2s;}
+.exchange-row{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;transition:all .2s;overflow:hidden;}
 .exchange-row.can-trade{border-color:rgba(139,92,246,.2);}
 .exchange-row.cant-trade{opacity:.4;}
-.ex-shards{display:flex;flex-direction:column;gap:2px;min-width:80px;}
+.ex-shards{display:flex;flex-direction:column;gap:2px;min-width:80px;flex-shrink:0;}
 .ex-shard-line{display:flex;align-items:center;gap:5px;}
 .ex-amount{font-size:16px;font-weight:800;font-family:'DM Mono',monospace;line-height:1;}
 .ex-rarity-label{font-size:10px;font-weight:700;font-family:'DM Mono',monospace;letter-spacing:.4px;}
 .ex-arrow{font-size:14px;color:var(--muted);flex-shrink:0;padding:0 2px;}
-.ex-mid{flex:1;display:flex;flex-direction:column;gap:6px;align-items:center;}
-.ex-balance{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);text-align:center;white-space:nowrap;}
-.ex-qty-row{display:flex;align-items:center;gap:5px;}
+.ex-mid{flex:1;display:flex;flex-direction:column;gap:6px;align-items:flex-start;min-width:0;}
+.ex-balance{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);white-space:nowrap;}
+.ex-qty-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
 .ex-qty-btn{width:26px;height:26px;border-radius:7px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
 .ex-qty-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
 .ex-qty-btn:disabled{opacity:.3;cursor:not-allowed;}
 .ex-qty-display{min-width:26px;text-align:center;font-size:14px;font-weight:800;font-family:'DM Mono',monospace;}
-.ex-convert-btn{padding:8px 14px;background:linear-gradient(135deg,var(--accent),#84ff00);color:#000;border:none;border-radius:9px;font-family:'Syne',sans-serif;font-weight:800;font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;}
+.ex-convert-btn{padding:8px 16px;background:linear-gradient(135deg,var(--accent),#84ff00);color:#000;border:none;border-radius:9px;font-family:'Syne',sans-serif;font-weight:800;font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0;align-self:center;}
 .ex-convert-btn:hover:not(:disabled){box-shadow:0 0 16px rgba(200,255,0,.35);transform:scale(1.04);}
 .ex-convert-btn:disabled{background:var(--bg2);color:var(--muted);box-shadow:none;transform:none;cursor:not-allowed;}
 .ex-max-btn{font-size:9px;letter-spacing:.5px;padding:4px 7px;border-color:var(--accent);color:var(--accent);background:rgba(99,102,241,.08);}
@@ -2332,7 +2332,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
     <!-- Shard Exchange -->
     <div class="card" id="shardExchangeCard" style="margin-bottom:20px;">
       <div class="card-header" style="margin-bottom:14px;">
-        <span class="card-title">⚗️ Shard Exchange</span>
+        <span class="card-title" style="display:flex;align-items:center;gap:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg> Shard Exchange</span>
         <span class="badge badge-purple" id="exchangeBadge">Trade Up</span>
       </div>
       <p style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin:0 0 14px;line-height:1.6;">Trade duplicate shards up to rarer ones. Earned when you open a pet you already own.</p>
