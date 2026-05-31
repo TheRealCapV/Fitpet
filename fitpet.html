@@ -1451,8 +1451,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   .xp-floater{bottom:calc(60px + env(safe-area-inset-bottom,0px));}
 }
 /* ── ACHIEVEMENT NOTIFICATION ── */
-#achieveNotif{position:fixed;top:-120px;left:50%;transform:translateX(-50%);z-index:1200;pointer-events:none;transition:top .45s cubic-bezier(.34,1.4,.64,1);width:min(340px,calc(100vw - 32px));}
-#achieveNotif.show{top:calc(16px + env(safe-area-inset-top,0px));}
+#achieveNotif{position:fixed;top:-120px;left:50%;transform:translateX(-50%);z-index:1200;pointer-events:none;transition:top .45s cubic-bezier(.34,1.4,.64,1),opacity .3s;width:min(340px,calc(100vw - 32px));touch-action:pan-y;}
+#achieveNotif.show{top:calc(16px + env(safe-area-inset-top,0px));pointer-events:all;}
 .achieve-inner{background:linear-gradient(135deg,#111118,#0e0e18);border:1px solid var(--border);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 40px rgba(0,0,0,.7);}
 .achieve-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
 .achieve-icon-gold{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);}
@@ -6544,11 +6544,7 @@ function rtDone() {
   const bar = document.getElementById('restTimerBar');
   bar.classList.add('done-flash');
   setTimeout(() => bar.classList.remove('done-flash'), 700);
-  const ov = document.getElementById('doneOverlay');
-  ov.classList.add('flash');
-  setTimeout(() => ov.classList.remove('flash'), 900);
   document.getElementById('rtTimeLabel').textContent = 'GO!';
-  showToast('💪 Rest done — time to lift!');
   // Push notification
   if (Notification && Notification.permission === 'granted') {
     try {
@@ -6770,18 +6766,36 @@ function rtSetPreset(s, el) {
 // Lv1→2: 100  Lv2→3: 220  Lv3→4: 484  Lv4→5: 1065  Lv5→6: 2342
 // Lv6→7: 5153  Lv7→8: 11,336  Lv8→9: 24,940  Lv9→10: 54,867 …
 function xpForLevel(level) {
-  // Scales with pet quality — better pets give more XP so later levels stay reachable
-  // Common (10xp/tap) covers early, Legendary (100xp) hits mid, Divine (500xp) reaches GOD
-  if (level <= 5)  return 300;       // Common pet: ~30 taps
-  if (level <= 10) return 1000;      // Common: ~100 taps / Rare: ~40 taps
-  if (level <= 15) return 2500;      // Rare pet comfortable here
-  if (level <= 20) return 5000;      // Epic pet starts to shine
-  if (level <= 30) return 8000;      // Epic/Legendary territory
-  if (level <= 40) return 15000;     // Need Legendary+ to grind efficiently
-  if (level <= 50) return 25000;     // Legendary: ~250 taps per level
-  if (level <= 60) return 40000;     // Divine pet makes this feel good
-  if (level <= 70) return 60000;     // Serious grind — reward for dedication
-  return 100000;                     // GOD tier — Divine pet only real path
+  // Calibrated so epic pet (50 XP/s) running 8h/day = ~43M XP/month
+  // Gym Rat (lv 30) = ~1 month | Shredded (50) = ~2 years | GOD (75) = a decade
+  //
+  // Cumulative totals:
+  // Lv 10  → ~275k    (days of play)
+  // Lv 20  → ~3.3M    (weeks)
+  // Lv 30  → ~48M     (~1 month — Gym Rat)
+  // Lv 40  → ~298M    (~7 months)
+  // Lv 50  → ~1.3B    (~2.5 years)
+  // Lv 60  → ~4.3B    (~8 years)
+  // Lv 75  → ~34B+    (~decades)
+  //
+  if (level === 1)  return 1_000;
+  if (level === 2)  return 2_000;
+  if (level === 3)  return 3_000;
+  if (level === 4)  return 4_000;
+  if (level === 5)  return 5_000;          // New player early wins
+  if (level <= 10)  return 50_000;         // Days of casual play
+  if (level <= 20)  return 300_000;        // Weeks — rare pet comfortable
+  if (level <= 25)  return 2_000_000;      // Months begin
+  if (level <= 30)  return 7_000_000;      // Gym Rat grind (~1 month)
+  if (level <= 35)  return 25_000_000;     // Multi-month commitment
+  if (level <= 40)  return 75_000_000;     // Half-year territory
+  if (level <= 45)  return 200_000_000;    // Year+
+  if (level <= 50)  return 500_000_000;    // 2 years — Shredded
+  if (level <= 55)  return 1_000_000_000;  // Hardcore grinders
+  if (level <= 60)  return 2_000_000_000;  // Years of dedication
+  if (level <= 65)  return 4_000_000_000;  // Warlord — rare to see
+  if (level <= 70)  return 8_000_000_000;  // Demigod — almost mythical
+  return 20_000_000_000;                   // GOD — once in a decade
 }
 
 // Given total accumulated XP, return { level, xpIntoLevel, xpNeeded }
@@ -8808,6 +8822,50 @@ function closeRankSelector() {
 //  ACHIEVEMENT NOTIFICATION
 // ══════════════════════════════════════════
 let _achieveTimer = null;
+
+// Swipe-up-to-dismiss for achieve notif
+(function() {
+  let startY = 0, dragging = false;
+  function onDown(e) {
+    const el = document.getElementById('achieveNotif');
+    if (!el.classList.contains('show')) return;
+    startY = (e.touches ? e.touches[0].clientY : e.clientY);
+    dragging = true;
+    el.style.transition = 'none';
+  }
+  function onMove(e) {
+    if (!dragging) return;
+    const el = document.getElementById('achieveNotif');
+    const dy = (e.touches ? e.touches[0].clientY : e.clientY) - startY;
+    if (dy < 0) {
+      el.style.marginTop = dy + 'px';
+      el.style.opacity = Math.max(0, 1 + dy / 80);
+    }
+  }
+  function onUp(e) {
+    if (!dragging) return;
+    dragging = false;
+    const el = document.getElementById('achieveNotif');
+    const dy = (e.changedTouches ? e.changedTouches[0].clientY : e.clientY) - startY;
+    el.style.transition = '';
+    if (dy < -40) {
+      el.style.marginTop = '';
+      el.style.opacity = '';
+      el.classList.remove('show');
+      clearTimeout(_achieveTimer);
+    } else {
+      el.style.marginTop = '';
+      el.style.opacity = '';
+    }
+  }
+  document.addEventListener('touchstart', e => { if (e.target.closest('#achieveNotif')) onDown(e); }, { passive: true });
+  document.addEventListener('touchmove',  e => { if (dragging) onMove(e); }, { passive: true });
+  document.addEventListener('touchend',   e => { if (dragging) onUp(e); });
+  document.addEventListener('mousedown',  e => { if (e.target.closest('#achieveNotif')) onDown(e); });
+  document.addEventListener('mousemove',  e => { if (dragging) onMove(e); });
+  document.addEventListener('mouseup',    e => { if (dragging) onUp(e); });
+})();
+
 function showAchieve({ type = 'quest', icon, eyebrow, title, sub }) {
   const el = document.getElementById('achieveNotif');
   const iconEl = document.getElementById('achieveIcon');
