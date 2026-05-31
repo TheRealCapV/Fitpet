@@ -2514,8 +2514,11 @@ function loginAs(username) {
   document.getElementById('authScreen').classList.add('hidden');
   const p = getP();
   // One-time starter cases for existing users with none
-  if (p && !p.cases.basic && !p.cases.rare && !p.cases.legendary) {
-    p.cases.basic = 3; saveP(p);
+  if (p) {
+    if (!p.cases) p.cases = { basic: 0, rare: 0, legendary: 0 };
+    if (!p.cases.basic && !p.cases.rare && !p.cases.legendary) {
+      p.cases.basic = 3; saveP(p);
+    }
   }
   applyCatchupXP();
   refreshHomeStats();
@@ -4550,8 +4553,11 @@ let _spinEndX = 0, _spinTimeouts = [];
 let _multiEndXs = [], _multiSettleTimeouts = [], _multiResultTimeout = null;
 
 function openCaseModal(type) {
+  try { _openCaseModalInner(type); } catch(e) { showToast('⚠ Case error: ' + e.message); console.error(e); }
+}
+function _openCaseModalInner(type) {
   const p = getP();
-  if (!p) return;
+  if (!p) { showToast('⚠ Not logged in'); return; }
   if (!devMode && !p.cases[type]) { showToast('— No ' + type + ' cases available!'); return; }
 
   _currentCaseType = type;
@@ -5490,9 +5496,8 @@ function renderSkins(filter='all') {
       ${ready ? `<button class="forge-btn" onclick="event.stopPropagation();forgeSkin('${s.id}')">&#9670; Forge &amp; Unlock</button>` : ''}
     ` : '';
 
-    const cardClick = `openPetBio('${s.id}')`;
-    return `<div class="skin-card ${isLocked?'locked':''} ${ready?'forgeable':''} ${isEquipped?'equipped':''} ${s.rarity}-skin ${s.rarity==='divine'?'divine-skin':''}"
-         onclick="${cardClick}" ontouchend="event.preventDefault();${cardClick}" >
+    return `<button type="button" class="skin-card ${isLocked?'locked':''} ${ready?'forgeable':''} ${isEquipped?'equipped':''} ${s.rarity}-skin ${s.rarity==='divine'?'divine-skin':''}"
+         onclick="openPetBio('${s.id}')" style="text-align:center;width:100%;font-family:inherit;background:var(--bg2);color:var(--text);">
       ${isEquipped ? '<div class="equipped-tag">ON</div>' : ''}
       ${imgHtml}
       ${tierLabel}
@@ -5500,7 +5505,7 @@ function renderSkins(filter='all') {
       <div class="skin-rarity-tag" style="color:${rarityColors[s.rarity]}">${s.rarity.toUpperCase()}</div>
       ${fragProgress}
       ${isLocked && !ready ? '<div class="lock-overlay" style="bottom:auto;top:0;height:60%">🔒</div>' : ''}
-    </div>`;
+    </button>`;
   }).join('');
 
   renderFragmentWorkshop();
