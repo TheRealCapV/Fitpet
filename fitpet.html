@@ -67,15 +67,15 @@ nav::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:500px
 .streak-badge{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;font-family:'DM Mono',monospace;}
 .gold-badge{display:flex;align-items:center;gap:6px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;font-family:'DM Mono',monospace;color:var(--legendary);}
 /* ── DAILY GOLD CLAIM ── */
-.gold-claim-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.gold-claim-info{display:flex;flex-direction:column;gap:2px;}
-.gold-claim-amount{font-size:18px;font-weight:800;color:var(--legendary);}
-.gold-claim-label{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;}
-.gold-claim-btn{padding:9px 20px;background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(251,191,36,.1));border:1px solid rgba(251,191,36,.5);border-radius:10px;color:var(--legendary);font-family:'Syne',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.gold-claim-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.gold-claim-info{display:flex;flex-direction:column;gap:1px;}
+.gold-claim-amount{font-size:14px;font-weight:800;color:var(--legendary);}
+.gold-claim-label{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;}
+.gold-claim-btn{padding:6px 14px;background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(251,191,36,.1));border:1px solid rgba(251,191,36,.5);border-radius:8px;color:var(--legendary);font-family:'Syne',sans-serif;font-weight:800;font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap;}
 .gold-claim-btn:hover:not(:disabled){background:rgba(251,191,36,.35);box-shadow:0 0 20px rgba(251,191,36,.3);}
 .gold-claim-btn:disabled{opacity:.45;cursor:default;filter:grayscale(.5);}
-.gold-claim-btn-sm{font-size:13px;padding:8px 16px;}
-.gold-claim-cd{font-size:12px;font-family:'DM Mono',monospace;color:var(--muted);min-width:60px;text-align:right;}
+.gold-claim-btn-sm{font-size:11px;padding:5px 12px;}
+.gold-claim-cd{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);min-width:50px;text-align:right;}
 /* ── SHOP ── */
 .shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;}
 .shop-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:18px 14px;text-align:center;transition:all .2s;}
@@ -1885,8 +1885,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
         </div>
       </div>
       <!-- DAILY GOLD CLAIM CARD -->
-      <div class="card" id="goldClaimCard" style="padding:16px 18px;">
-        <div class="card-header" style="margin-bottom:12px;"><span class="card-title">Daily Gold</span></div>
+      <div class="card" id="goldClaimCard" style="padding:10px 14px;">
+        <div class="card-header" style="margin-bottom:8px;"><span class="card-title">Daily Gold</span></div>
         <!-- Big daily claim -->
         <div class="gold-claim-row" id="dailyClaimRow">
           <div class="gold-claim-info">
@@ -1896,7 +1896,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
           <button class="gold-claim-btn" id="dailyClaimBtn" onclick="claimDailyGold()">Claim</button>
         </div>
         <!-- Small 2h claim -->
-        <div class="gold-claim-row" id="miniClaimRow" style="margin-top:10px;border-top:1px solid var(--border);padding-top:10px;">
+        <div class="gold-claim-row" id="miniClaimRow" style="margin-top:7px;border-top:1px solid var(--border);padding-top:7px;">
           <div class="gold-claim-info">
             <div class="gold-claim-amount">+150 ◆</div>
             <div class="gold-claim-label">Every 2 Hours</div>
@@ -6249,7 +6249,7 @@ function rtDismiss() {
     const barEl = getBar();
     if (!barEl.classList.contains('visible')) return;
     // Allow drag from anywhere except interactive controls
-    if (e.target.closest('button,.rt-preset')) return;
+    if (e.target.closest('button,.rt-preset,.pet-emoji')) return;
 
     dragging = true;
     const rect = barEl.getBoundingClientRect();
