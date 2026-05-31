@@ -1,2 +1,0 @@
-# Fitpet
-Gym tracker game
