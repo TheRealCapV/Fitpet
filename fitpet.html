@@ -2409,7 +2409,7 @@ function newProfile(username, pin) {
     equippedSkin: 'iron-rhino',
     unlockedSkins: ['iron-rhino'],
     gold: 0,
-    cases: { basic: 0, rare: 0, legendary: 0 },
+    cases: { basic: 3, rare: 0, legendary: 0 },
     fragments: {},    // { skinId: count } — pet-specific fragment collection
     shards: { common:0, rare:0, epic:0, legendary:0, divine:0 }, // rarity shards from duplicate rolls
     autoClickMultiplier: 1, // 1 = normal, 2 = 2× (future upgrade)
@@ -2513,6 +2513,10 @@ function loginAs(username) {
   currentUser = username;
   document.getElementById('authScreen').classList.add('hidden');
   const p = getP();
+  // One-time starter cases for existing users with none
+  if (p && !p.cases.basic && !p.cases.rare && !p.cases.legendary) {
+    p.cases.basic = 3; saveP(p);
+  }
   applyCatchupXP();
   refreshHomeStats();
   buildStreakCalendar();
@@ -5522,6 +5526,9 @@ const ELEMENT_MOVE_ICONS = {
 };
 
 function openPetBio(id) {
+  try { _openPetBioInner(id); } catch(e) { showToast('⚠ Pet profile error: ' + e.message); console.error(e); }
+}
+function _openPetBioInner(id) {
   _petBioId = id;
   const skin = ALL_SKINS_MAP[id];
   if (!skin) return;
