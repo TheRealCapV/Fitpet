@@ -92,7 +92,7 @@ nav::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:500px
 .shop-btn-legendary{background:rgba(251,191,36,.15);color:var(--legendary);}
 .shop-btn-legendary:hover{background:rgba(251,191,36,.3);}
 /* ── LEVELUP BANNER ── */
-.levelup-banner{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(220px);background:linear-gradient(135deg,var(--bg2),rgba(139,92,246,.1));border:1px solid rgba(139,92,246,.5);border-radius:16px;padding:14px 28px;z-index:650;box-shadow:0 8px 40px rgba(0,0,0,.7),0 0 30px rgba(139,92,246,.2);transition:transform .45s cubic-bezier(.34,1.56,.64,1);text-align:center;min-width:260px;pointer-events:none;}
+.levelup-banner{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(220px);background:linear-gradient(135deg,var(--bg2),rgba(139,92,246,.1));border:1px solid rgba(139,92,246,.5);border-radius:12px;padding:8px 18px;z-index:650;box-shadow:0 4px 20px rgba(0,0,0,.6),0 0 16px rgba(139,92,246,.2);transition:transform .45s cubic-bezier(.34,1.56,.64,1);text-align:center;min-width:0;white-space:nowrap;pointer-events:none;}
 .levelup-banner.show{transform:translateX(-50%) translateY(0);}
 /* ── EVOLUTION TIERS ── */
 .evolved-banner{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(300px);background:linear-gradient(135deg,#0a0a0f,rgba(168,85,247,.12));border:1px solid rgba(168,85,247,.5);border-radius:16px;padding:16px 32px;z-index:660;box-shadow:0 8px 60px rgba(0,0,0,.7),0 0 40px rgba(168,85,247,.2);transition:transform .5s cubic-bezier(.34,1.56,.64,1);text-align:center;min-width:280px;pointer-events:none;}
@@ -590,8 +590,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .multi-reel-row{display:flex;align-items:center;gap:8px;}
 .multi-reel-label{font-size:10px;font-weight:800;font-family:'DM Mono',monospace;color:var(--muted);width:20px;text-align:center;flex-shrink:0;}
 .multi-reel-container{position:relative;overflow:hidden;height:76px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;flex:1;}
-.multi-reel-strip{display:flex;align-items:center;gap:5px;padding:0 5px;position:absolute;top:0;left:0;height:100%;will-change:transform;}
-.multi-reel-item{flex-shrink:0;width:66px;height:66px;border-radius:8px;background:var(--bg2);border:2px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+.multi-reel-strip{display:flex;align-items:center;gap:5px;padding:0 5px;position:absolute;top:0;left:0;height:100%;will-change:transform;pointer-events:none;}
+.multi-reel-item{flex-shrink:0;width:66px;height:66px;border-radius:8px;background:var(--bg2);border:2px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;pointer-events:none;}
 .multi-reel-item.common{border-color:rgba(107,114,128,.4);}
 .multi-reel-item.rare{border-color:rgba(56,189,248,.5);background:rgba(56,189,248,.04);}
 .multi-reel-item.epic{border-color:rgba(168,85,247,.5);background:rgba(168,85,247,.05);}
@@ -879,8 +879,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
 /* ── CASE WHEEL ── */
 .wheel-container{position:relative;overflow:hidden;height:112px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;margin:4px 0 14px;}
-.wheel-strip{display:flex;align-items:center;gap:8px;padding:0 8px;position:absolute;top:0;left:0;height:100%;will-change:transform;}
-.wheel-item{flex-shrink:0;width:88px;height:88px;border-radius:10px;background:var(--bg2);border:2px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+.wheel-strip{display:flex;align-items:center;gap:8px;padding:0 8px;position:absolute;top:0;left:0;height:100%;will-change:transform;pointer-events:none;}
+.wheel-item{flex-shrink:0;width:88px;height:88px;border-radius:10px;background:var(--bg2);border:2px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;pointer-events:none;}
 .wheel-item-emoji{font-size:34px;line-height:1;pointer-events:none;display:flex;align-items:center;justify-content:center;}
 .wheel-item-emoji img{width:52px;height:52px;object-fit:contain;border-radius:6px;display:block;}
 .wheel-item-name{font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);text-align:center;max-width:82px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;pointer-events:none;}
@@ -1058,7 +1058,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 @keyframes overlay-flash{0%{opacity:0;}30%{opacity:1;}100%{opacity:0;}}
 
 /* ── TOAST / XP FLOATER ── */
-.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg2);border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:12px 22px;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600;z-index:600;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(139,92,246,.1);transition:transform .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;font-family:'DM Mono',monospace;letter-spacing:.3px;}
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg2);border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:12px 22px;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600;z-index:490;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(139,92,246,.1);transition:transform .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;font-family:'DM Mono',monospace;letter-spacing:.3px;pointer-events:none;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 .toast-icon{font-size:20px;}
 .xp-floater{position:fixed;pointer-events:none;z-index:700;font-size:18px;font-weight:800;color:var(--accent);font-family:'DM Mono',monospace;text-shadow:0 0 20px rgba(200,255,0,.6);animation:xp-rise 2s ease forwards;}
@@ -6604,7 +6604,7 @@ function showXpFloat(el, text) {
   f.style.left = (rect.left + rect.width/2) + 'px';
   f.style.top = (rect.top + window.scrollY - 10) + 'px';
   f.style.transform = 'translateX(-50%)';
-  document.body.appendChild(f);
+  (document.getElementById('xpFloatLayer') || document.body).appendChild(f);
   setTimeout(() => f.remove(), 2000);
 }
 
@@ -8228,6 +8228,7 @@ document.querySelectorAll('.card,.pet-card').forEach((el,i) => {
 </script>
 
 <!-- GOLDEN DUCK OVERLAY -->
+<div id="xpFloatLayer" style="position:fixed;inset:0;pointer-events:none;z-index:700;overflow:hidden;"></div>
 <div id="goldenDuckOverlay">
   <div class="gd-flash"></div>
   <div class="gd-bg"></div>
