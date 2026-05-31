@@ -636,7 +636,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .wheel-vs-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding-top:0;}
 .wheel-vs-text{font-size:9px;font-weight:800;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:2px;opacity:.5;}
 .round-badge{font-size:10px;font-weight:700;font-family:'DM Mono',monospace;color:var(--muted);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:2px 8px;white-space:nowrap;}
-.spin-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;border:none;border-radius:var(--radius);font-family:'Syne',sans-serif;font-weight:800;font-size:17px;cursor:pointer;letter-spacing:.4px;transition:all .2s;box-shadow:0 0 24px rgba(200,255,0,.25);margin-top:10px;}
+.spin-btn{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;width:100%;padding:16px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;border:none;border-radius:var(--radius);font-family:'Syne',sans-serif;font-weight:800;font-size:17px;cursor:pointer;letter-spacing:.4px;transition:all .2s;box-shadow:0 0 24px rgba(200,255,0,.25);margin-top:10px;}
 .spin-btn:hover:not(:disabled){transform:scale(1.02);box-shadow:0 0 40px rgba(200,255,0,.5);}
 .spin-btn:active:not(:disabled){transform:scale(.97);}
 .spin-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none;background:var(--bg3);color:var(--muted);}
@@ -763,6 +763,18 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .template-edit-cancel-btn:hover{color:var(--text);}
 .set-row-done{background:rgba(139,92,246,.04);}
 .set-row-done td{color:var(--muted);}
+.drop-badge{font-size:8px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);border-radius:4px;padding:1px 5px;font-family:'DM Mono',monospace;vertical-align:middle;margin-left:4px;}
+.drop-sub-row td{padding:6px 16px 6px 28px;border-bottom:1px solid rgba(42,42,56,.5);background:rgba(239,68,68,.03);}
+.drop-sub-row .drop-arrow{color:#f87171;font-size:11px;font-family:'DM Mono',monospace;}
+.add-drop-btn{font-size:11px;color:#f87171;background:none;border:none;cursor:pointer;font-family:'DM Mono',monospace;padding:0;opacity:.7;transition:opacity .15s;}
+.add-drop-btn:hover{opacity:1;}
+.add-set-btn-drop{font-size:12px;font-weight:700;color:#f87171;background:none;border:none;cursor:pointer;font-family:'Syne',sans-serif;letter-spacing:.5px;transition:color .2s;margin-left:12px;opacity:.8;}
+.add-set-btn-drop:hover{opacity:1;}
+.set-delete-btn{background:none;border:none;color:rgba(239,68,68,.5);font-size:15px;cursor:pointer;padding:0 2px;line-height:1;transition:color .15s;display:none;}
+.sets-table.edit-mode .set-delete-btn{display:inline-flex;}
+.sets-table.edit-mode .set-done-btn{display:none;}
+.edit-sets-btn{font-size:11px;font-weight:700;color:var(--muted);background:none;border:none;cursor:pointer;font-family:"DM Mono",monospace;margin-left:8px;padding:0;transition:color .15s;opacity:.7;}
+.edit-sets-btn.active{color:#f87171;opacity:1;}
 
 /* ── HISTORY PAGE ── */
 .hist-tabs{display:flex;gap:0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px;margin-bottom:20px;}
@@ -1078,9 +1090,10 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 @keyframes overlay-flash{0%{opacity:0;}30%{opacity:1;}100%{opacity:0;}}
 
 /* ── TOAST / XP FLOATER ── */
-.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg2);border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:12px 22px;display:flex;align-items:center;gap:12px;font-size:13px;font-weight:600;z-index:490;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(139,92,246,.1);transition:transform .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;font-family:'DM Mono',monospace;letter-spacing:.3px;pointer-events:none;}
-.toast.show{transform:translateX(-50%) translateY(0);}
-.toast-icon{font-size:20px;}
+.toast{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:50%;opacity:0;transform:translateX(-50%) translateY(calc(-100% - 16px));background:rgba(18,18,26,.96);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px 16px 10px 12px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;z-index:1300;box-shadow:0 8px 32px rgba(0,0,0,.5);transition:transform .35s cubic-bezier(.34,1.4,.64,1),opacity .25s;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);white-space:nowrap;font-family:'DM Mono',monospace;letter-spacing:.2px;pointer-events:none;max-width:calc(100vw - 32px);}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast-icon{font-size:16px;width:30px;height:30px;border-radius:8px;background:rgba(139,92,246,.18);border:1px solid rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#toast-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px;}
 .xp-floater{position:fixed;pointer-events:none;z-index:700;font-size:18px;font-weight:800;color:var(--accent);font-family:'DM Mono',monospace;text-shadow:0 0 20px rgba(200,255,0,.6);animation:xp-rise 2s ease forwards;}
 @keyframes xp-rise{0%{transform:translateY(0);opacity:1;}100%{transform:translateY(-80px);opacity:0;}}
 
@@ -1426,26 +1439,10 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   /* ── WORKOUT START BUTTON on home ── */
   .workout-today-header .btn{min-height:44px;padding:10px 16px;}
 
-  /* Toast — show below tab row on mobile, not at bottom */
-  .toast{
-    bottom:auto;
-    top:calc(max(env(safe-area-inset-top,0px),47px) + 50px + 48px + 8px);
-    transform:translateX(-50%) translateY(-20px);
-    opacity:0;
-    transition:transform .3s ease, opacity .3s ease;
-    font-size:12px;
-    padding:10px 18px;
-    max-width:calc(100vw - 32px);
-    white-space:normal;
-    text-align:center;
-  }
-  .toast.show{
-    transform:translateX(-50%) translateY(0);
-    opacity:1;
-  }
+  /* Toast — slide down from top on mobile */
+  .toast{top:calc(max(env(safe-area-inset-top,0px),47px) + 8px);bottom:auto;white-space:nowrap;}
 
   /* ── iPhone safe-area / no-bottom-nav fixes ── */
-  .toast{bottom:calc(20px + env(safe-area-inset-bottom,0px));}
   .levelup-banner{bottom:calc(20px + env(safe-area-inset-bottom,0px));}
   .evolved-banner{bottom:calc(80px + env(safe-area-inset-bottom,0px));}
   .case-open-modal{padding-bottom:calc(20px + env(safe-area-inset-bottom,0px))!important;}
@@ -1801,7 +1798,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
 <!-- TOAST -->
 <div class="toast" id="toast">
-  <span class="toast-icon">&#9889;</span>
+  <div class="toast-icon" id="toast-icon">✓</div>
   <span id="toast-text">Workout complete!</span>
 </div>
 
@@ -3601,11 +3598,15 @@ function getPrForExercise(exId) {
   const p = getP();
   if (!p) return null;
   let best = null;
+  const checkSet = s => {
+    const vol = s.lbs * s.reps;
+    if (!best || vol > best.lbs * best.reps) best = s;
+  };
   for (const w of p.workoutLog) {
     const sets = w.exercises?.[exId] || [];
     for (const s of sets) {
-      const vol = s.lbs * s.reps;
-      if (!best || vol > best.lbs * best.reps) best = s;
+      checkSet(s);
+      if (s.drops) s.drops.forEach(checkSet);
     }
   }
   return best;
@@ -3637,7 +3638,12 @@ function buildExerciseCard(ex) {
         const sets = w.exercises[ex.id];
         const chips = sets.map(s => {
           const isPR = pr && s.lbs === pr.lbs && s.reps === pr.reps;
-          return `<span class="inline-hist-set${isPR?' pr':''}">${s.lbs}×${s.reps}</span>`;
+          let chip = `<span class="inline-hist-set${isPR?' pr':''}">${s.lbs}×${s.reps}</span>`;
+          if (s.drops) chip += s.drops.map(d => {
+            const dPR = pr && d.lbs === pr.lbs && d.reps === pr.reps;
+            return `<span class="inline-hist-set${dPR?' pr':''}" style="opacity:.7;border-color:rgba(239,68,68,.3);">↓${d.lbs}×${d.reps}</span>`;
+          }).join('');
+          return chip;
         }).join('');
         return `<div class="inline-hist-row"><span class="inline-hist-date">${date}</span><div class="inline-hist-sets">${chips}</div></div>`;
       }).join('');
@@ -3665,26 +3671,41 @@ function buildExerciseCard(ex) {
         <div class="inline-hist-label">Recent History</div>
         <div class="inline-hist-entries">${histHTML}</div>
       </div>
-      <table class="sets-table">
-        <thead><tr><th>SET</th><th>PREV</th><th>LBS</th><th>REPS</th><th></th></tr></thead>
+      <table class="sets-table" id="table-${ex.id}">
+        <thead><tr><th>SET</th><th>PREV</th><th>LBS</th><th>REPS</th><th><button class="edit-sets-btn" id="editbtn-${ex.id}" onclick="toggleEditSets('${ex.id}')">Edit</button></th></tr></thead>
         <tbody id="tbody-${ex.id}">${setRows}</tbody>
       </table>
       <div class="add-set-row">
         <button class="add-set-btn" onclick="addSet('${ex.id}')">+ Add Set</button>
+        <button class="add-set-btn-drop" onclick="addDropSet('${ex.id}')">+ Drop Set</button>
       </div>
     </div>`;
 }
 
 function buildSetRow(exId, idx, set, prevSet) {
   const prevLabel = prevSet ? `${prevSet.lbs}×${prevSet.reps}` : '—';
-  return `
+  const isDropSet = set.drops && set.drops.length > 0;
+  let html = `
     <tr id="setrow-${exId}-${idx}" class="${set.done?'set-row-done':''}">
-      <td class="set-num">${idx+1}</td>
+      <td class="set-num">${idx+1}${isDropSet ? '<span class="drop-badge">DROP</span>' : ''}</td>
       <td style="color:var(--muted);font-size:12px">${prevLabel}</td>
       <td><input class="set-input" type="number" value="${set.lbs}" min="0" onchange="updateSet('${exId}',${idx},'lbs',this.value)"></td>
       <td><input class="set-input" type="number" value="${set.reps}" min="0" onchange="updateSet('${exId}',${idx},'reps',this.value)"></td>
-      <td><button class="set-done-btn${set.done?' done':''}" onclick="toggleSetDone(this,'${exId}',${idx})">&#10003;</button></td>
+      <td><button class="set-done-btn${set.done?' done':''}" onclick="toggleSetDone(this,'${exId}',${idx})">&#10003;</button><button class="set-delete-btn" onclick="removeSet('${exId}',${idx})">✕</button></td>
     </tr>`;
+  if (isDropSet) {
+    set.drops.forEach((drop, di) => {
+      html += `
+    <tr id="setrow-${exId}-${idx}-drop-${di}" class="drop-sub-row${set.done?' set-row-done':''}">
+      <td class="drop-arrow">↓</td>
+      <td style="color:var(--muted);font-size:12px">—</td>
+      <td><input class="set-input" type="number" value="${drop.lbs}" min="0" onchange="updateDrop('${exId}',${idx},${di},'lbs',this.value)"></td>
+      <td><input class="set-input" type="number" value="${drop.reps}" min="0" onchange="updateDrop('${exId}',${idx},${di},'reps',this.value)"></td>
+      <td>${di === set.drops.length-1 ? `<button class="add-drop-btn" onclick="addDrop('${exId}',${idx})">+drop</button>` : ''}<button class="set-delete-btn" onclick="removeDrop('${exId}',${idx},${di})">✕</button></td>
+    </tr>`;
+    });
+  }
+  return html;
 }
 
 function updateSet(exId, idx, field, val) {
@@ -3702,6 +3723,86 @@ function addSet(exId) {
   const lastSets = getLastSessionForExercise(exId);
   const idx = sets.length - 1;
   tbody.insertAdjacentHTML('beforeend', buildSetRow(exId, idx, newSet, lastSets[idx]));
+}
+
+function addDropSet(exId) {
+  const sets = sessionSets[exId];
+  const last = sets[sets.length - 1];
+  const baseLbs = last ? last.lbs : 45;
+  const baseReps = last ? last.reps : 8;
+  const dropLbs = Math.max(5, Math.round(baseLbs * 0.8 / 5) * 5); // ~80% rounded to nearest 5
+  const newSet = { lbs: baseLbs, reps: baseReps, done: false, drops: [{ lbs: dropLbs, reps: baseReps }] };
+  sets.push(newSet);
+  const tbody = document.getElementById('tbody-'+exId);
+  const lastSets = getLastSessionForExercise(exId);
+  const idx = sets.length - 1;
+  tbody.insertAdjacentHTML('beforeend', buildSetRow(exId, idx, newSet, lastSets[idx]));
+}
+
+function addDrop(exId, setIdx) {
+  const set = sessionSets[exId]?.[setIdx];
+  if (!set || !set.drops) return;
+  const lastDrop = set.drops[set.drops.length - 1];
+  const dropLbs = Math.max(5, Math.round(lastDrop.lbs * 0.8 / 5) * 5);
+  set.drops.push({ lbs: dropLbs, reps: lastDrop.reps });
+  // Rebuild the rows for this set
+  const tbody = document.getElementById('tbody-'+exId);
+  const lastSets = getLastSessionForExercise(exId);
+  // Remove old rows for this set (main + drops)
+  tbody.querySelectorAll(`[id^="setrow-${exId}-${setIdx}"]`).forEach(r => r.remove());
+  // Re-insert after the previous set's rows
+  const allRows = [...tbody.querySelectorAll('tr')];
+  const prevSetLastRow = allRows.filter(r => {
+    const id = r.id;
+    const m = id.match(/setrow-[^-]+-(\d+)/);
+    return m && parseInt(m[1]) === setIdx - 1;
+  }).pop();
+  const html = buildSetRow(exId, setIdx, set, lastSets[setIdx]);
+  if (prevSetLastRow) {
+    prevSetLastRow.insertAdjacentHTML('afterend', html);
+  } else {
+    tbody.insertAdjacentHTML('afterbegin', html);
+  }
+}
+
+function updateDrop(exId, setIdx, dropIdx, field, val) {
+  const set = sessionSets[exId]?.[setIdx];
+  if (set?.drops?.[dropIdx]) {
+    set.drops[dropIdx][field] = parseInt(val) || 0;
+  }
+}
+
+function removeSet(exId, idx) {
+  const sets = sessionSets[exId];
+  if (!sets || sets.length <= 1) return;
+  sets.splice(idx, 1);
+  rebuildSetRows(exId);
+}
+
+function rebuildSetRows(exId) {
+  const sets = sessionSets[exId];
+  const tbody = document.getElementById('tbody-' + exId);
+  const lastSets = getLastSessionForExercise(exId);
+  const inEditMode = document.getElementById('table-' + exId)?.classList.contains('edit-mode');
+  tbody.innerHTML = sets.map((s, i) => buildSetRow(exId, i, s, lastSets[i])).join('');
+}
+
+
+function toggleEditSets(exId) {
+  const table = document.getElementById('table-' + exId);
+  const btn = document.getElementById('editbtn-' + exId);
+  if (!table || !btn) return;
+  const isEdit = table.classList.toggle('edit-mode');
+  btn.textContent = isEdit ? 'Done' : 'Edit';
+  btn.classList.toggle('active', isEdit);
+}
+
+function removeDrop(exId, setIdx, dropIdx) {
+  const set = sessionSets[exId]?.[setIdx];
+  if (!set?.drops) return;
+  if (set.drops.length <= 1) { removeSet(exId, setIdx); return; }
+  set.drops.splice(dropIdx, 1);
+  rebuildSetRows(exId);
 }
 
 // ── Replace Exercise ──
@@ -3835,6 +3936,13 @@ function toggleSetDone(btn, exId, idx) {
   btn.classList.toggle('done', set.done);
   const row = document.getElementById(`setrow-${exId}-${idx}`);
   row.classList.toggle('set-row-done', set.done);
+  // Toggle drop sub-rows too
+  if (set.drops) {
+    set.drops.forEach((_, di) => {
+      const dropRow = document.getElementById(`setrow-${exId}-${idx}-drop-${di}`);
+      if (dropRow) dropRow.classList.toggle('set-row-done', set.done);
+    });
+  }
 
   if (set.done) {
     showXpFloat(btn, '+25 XP');
@@ -3917,7 +4025,7 @@ function finishWorkout() {
   let totalSets = 0;
   for (const exId of Object.keys(sessionSets)) {
     const done = (sessionSets[exId] || []).filter(s => s.done && (s.lbs > 0 || s.reps > 0));
-    if (done.length) { exercises[exId] = done.map(s => ({ lbs: s.lbs, reps: s.reps })); totalSets += done.length; }
+    if (done.length) { exercises[exId] = done.map(s => s.drops ? { lbs: s.lbs, reps: s.reps, drops: s.drops } : { lbs: s.lbs, reps: s.reps }); totalSets += done.length + done.reduce((a,s)=>a+(s.drops?.length||0),0); }
   }
 
   if (!totalSets) { showToast('— Log at least one set first!'); return; }
@@ -4153,16 +4261,25 @@ function renderHistoryList(workouts) {
     const time = new Date(w.date).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
     let wVol = 0;
     for (const sets of Object.values(w.exercises||{}))
-      for (const s of sets) wVol += (s.lbs||0)*(s.reps||0);
+      for (const s of sets) {
+        wVol += (s.lbs||0)*(s.reps||0);
+        if (s.drops) s.drops.forEach(d => { wVol += (d.lbs||0)*(d.reps||0); });
+      }
 
     const exRows = Object.entries(w.exercises||{}).map(([exId, sets]) => {
       const ex = ALL_EXERCISES[exId];
       let exVol = 0;
       const chips = sets.map(s => {
         exVol += (s.lbs||0)*(s.reps||0);
+        if (s.drops) s.drops.forEach(d => { exVol += (d.lbs||0)*(d.reps||0); });
         const pr = allPRs[exId];
         const is1RM = pr && s.lbs === pr.lbs && s.reps === pr.reps;
-        return `<span class="hwc-set-chip${is1RM?' pr':''}">${s.lbs}×${s.reps}</span>`;
+        let chip = `<span class="hwc-set-chip${is1RM?' pr':''}">${s.lbs}×${s.reps}</span>`;
+        if (s.drops) chip += s.drops.map(d => {
+          const dPR = pr && d.lbs === pr.lbs && d.reps === pr.reps;
+          return `<span class="hwc-set-chip${dPR?' pr':''}" style="opacity:.7;border-color:rgba(239,68,68,.3);">↓${d.lbs}×${d.reps}</span>`;
+        }).join('');
+        return chip;
       }).join('');
       return `<div class="hwc-exercise-row">
         <div class="hwc-ex-name">
@@ -4208,10 +4325,12 @@ function buildAllPRs() {
   for (const w of p.workoutLog) {
     for (const [exId, sets] of Object.entries(w.exercises||{})) {
       for (const s of sets) {
-        const e1rm = s.lbs * (1 + s.reps / 30);
-        if (!prs[exId] || e1rm > prs[exId].e1rm) {
-          prs[exId] = { lbs: s.lbs, reps: s.reps, e1rm, date: w.date };
-        }
+        const checkPR = (lbs, reps) => {
+          const e1rm = lbs * (1 + reps / 30);
+          if (!prs[exId] || e1rm > prs[exId].e1rm) prs[exId] = { lbs, reps, e1rm, date: w.date };
+        };
+        checkPR(s.lbs, s.reps);
+        if (s.drops) s.drops.forEach(d => checkPR(d.lbs, d.reps));
       }
     }
   }
@@ -4854,7 +4973,7 @@ function buyCase(type) {
   updateCaseCounts();
   refreshHomeStats();
   const names = { basic:'Basic', rare:'Rare', legendary:'Legendary' };
-  showToast('✓ Bought ' + names[type] + ' Case! ◆ ' + p.gold.toLocaleString() + ' remaining');
+
 }
 
 // ── CASE WHEEL DATA ──
@@ -5491,9 +5610,9 @@ function showReveal() {
   }
   const rarityLabel = { divine:'✨👑 DIVINE', legendary:'🌟 LEGENDARY', epic:'✨ EPIC', rare:'💎 Rare', common:'◆ Common' };
   if (alreadyUnlocked) {
-    showToast(`${rarityLabel[currentReward.rarity] || '◆'} — +${drop} ${currentReward.rarity} Shards`);
+;
   } else {
-    showToast(`${rarityLabel[currentReward.rarity] || '◆'} — +${drop} ${currentReward.name} Fragments`);
+;
   }
 
   // If a pet just unlocked, announce it
@@ -7067,9 +7186,20 @@ function calcBestStreak(days) {
 
 function showToast(msg) {
   const t = document.getElementById('toast');
+  const iconEl = document.getElementById('toast-icon');
   document.getElementById('toast-text').textContent = msg;
+  // Pick icon and accent color based on message content
+  let icon = '✓', bg = 'rgba(139,92,246,.18)', border = 'rgba(139,92,246,.25)';
+  if (msg.includes('◆') || msg.includes('Gold') || msg.includes('gold')) { icon = '◆'; bg = 'rgba(251,191,36,.15)'; border = 'rgba(251,191,36,.3)'; }
+  else if (msg.includes('⚠') || msg.includes('—') || msg.includes('Not enough') || msg.includes('No ')) { icon = '!'; bg = 'rgba(239,68,68,.15)'; border = 'rgba(239,68,68,.3)'; }
+  else if (msg.includes('Unlock') || msg.includes('unlock')) { icon = '🔓'; bg = 'rgba(56,189,248,.15)'; border = 'rgba(56,189,248,.3)'; }
+  else if (msg.includes('XP') || msg.includes('Level') || msg.includes('level')) { icon = '⚡'; bg = 'rgba(200,255,0,.15)'; border = 'rgba(200,255,0,.25)'; }
+  if (iconEl) { iconEl.textContent = icon; iconEl.style.background = bg; iconEl.style.borderColor = border; }
+  t.classList.remove('show');
+  void t.offsetWidth;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
+  clearTimeout(t._hideTimer);
+  t._hideTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
 function showXpFloat(el, text) {
@@ -8759,11 +8889,13 @@ function buildStrengthTab() {
   for (const w of workouts) {
     for (const [exId, sets] of Object.entries(w.exercises || {})) {
       for (const s of sets) {
-        if (!s.lbs || !s.reps) continue;
-        const e = calcE1RM(s.lbs, s.reps);
-        if (!e1rmMap[exId] || e > e1rmMap[exId].e1rm) {
-          e1rmMap[exId] = { e1rm: e, weight: s.lbs, reps: s.reps, date: w.date };
-        }
+        const checkE1RM = (lbs, reps) => {
+          if (!lbs || !reps) return;
+          const e = calcE1RM(lbs, reps);
+          if (!e1rmMap[exId] || e > e1rmMap[exId].e1rm) e1rmMap[exId] = { e1rm: e, weight: lbs, reps, date: w.date };
+        };
+        checkE1RM(s.lbs, s.reps);
+        if (s.drops) s.drops.forEach(d => checkE1RM(d.lbs, d.reps));
       }
     }
   }
@@ -8776,7 +8908,10 @@ function buildStrengthTab() {
     const wk = getWeekKey(w.date);
     let vol = 0;
     for (const sets of Object.values(w.exercises || {}))
-      for (const s of sets) vol += (s.lbs || 0) * (s.reps || 0);
+      for (const s of sets) {
+        vol += (s.lbs || 0) * (s.reps || 0);
+        if (s.drops) s.drops.forEach(d => { vol += (d.lbs || 0) * (d.reps || 0); });
+      }
     weekTons[wk] = (weekTons[wk] || 0) + vol;
   }
   const weekKeys = Object.keys(weekTons).sort().slice(-8);
@@ -8889,7 +9024,10 @@ function renderOverloadScore(workouts) {
     if (!isThis && !isLast) continue;
     for (const [exId, sets] of Object.entries(w.exercises || {})) {
       let v = 0;
-      for (const s of sets) v += (s.lbs || 0) * (s.reps || 0) * sets.length;
+      for (const s of sets) {
+        v += (s.lbs || 0) * (s.reps || 0);
+        if (s.drops) s.drops.forEach(d => { v += (d.lbs || 0) * (d.reps || 0); });
+      }
       if (isThis) thisWeekVol[exId] = (thisWeekVol[exId] || 0) + v;
       if (isLast) lastWeekVol[exId] = (lastWeekVol[exId] || 0) + v;
     }
