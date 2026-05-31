@@ -67,15 +67,15 @@ nav::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:500px
 .streak-badge{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;font-family:'DM Mono',monospace;}
 .gold-badge{display:flex;align-items:center;gap:6px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;font-family:'DM Mono',monospace;color:var(--legendary);}
 /* ── DAILY GOLD CLAIM ── */
-.gold-claim-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.gold-claim-info{display:flex;flex-direction:column;gap:2px;}
-.gold-claim-amount{font-size:18px;font-weight:800;color:var(--legendary);}
-.gold-claim-label{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;}
-.gold-claim-btn{padding:9px 20px;background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(251,191,36,.1));border:1px solid rgba(251,191,36,.5);border-radius:10px;color:var(--legendary);font-family:'Syne',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.gold-claim-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.gold-claim-info{display:flex;flex-direction:column;gap:1px;}
+.gold-claim-amount{font-size:14px;font-weight:800;color:var(--legendary);}
+.gold-claim-label{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;}
+.gold-claim-btn{padding:6px 14px;background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(251,191,36,.1));border:1px solid rgba(251,191,36,.5);border-radius:8px;color:var(--legendary);font-family:'Syne',sans-serif;font-weight:800;font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap;}
 .gold-claim-btn:hover:not(:disabled){background:rgba(251,191,36,.35);box-shadow:0 0 20px rgba(251,191,36,.3);}
 .gold-claim-btn:disabled{opacity:.45;cursor:default;filter:grayscale(.5);}
-.gold-claim-btn-sm{font-size:13px;padding:8px 16px;}
-.gold-claim-cd{font-size:12px;font-family:'DM Mono',monospace;color:var(--muted);min-width:60px;text-align:right;}
+.gold-claim-btn-sm{font-size:11px;padding:5px 12px;}
+.gold-claim-cd{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);min-width:50px;text-align:right;}
 /* ── SHOP ── */
 .shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;}
 .shop-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:18px 14px;text-align:center;transition:all .2s;}
@@ -817,7 +817,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
 /* ── CASES PAGE ── */
 .cases-page-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-.big-case-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.big-case-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .big-case-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;}
 .big-case-card.legendary-bg::before{background:radial-gradient(ellipse at 50% 100%,rgba(251,191,36,.15),transparent 70%);}
 .big-case-card.rare-bg::before{background:radial-gradient(ellipse at 50% 100%,rgba(56,189,248,.15),transparent 70%);}
@@ -940,7 +940,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 /* ── COLLECTION PAGE ── */
 .collection-filters{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
 .skins-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-.skin-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 12px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+.skin-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 12px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .skin-card.locked{opacity:.5;cursor:default;}
 .skin-card:not(.locked):hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.4);}
 .skin-card.equipped{border-color:var(--accent);background:rgba(139,92,246,.07);box-shadow:0 0 0 1px rgba(139,92,246,.2);}
@@ -1885,8 +1885,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
         </div>
       </div>
       <!-- DAILY GOLD CLAIM CARD -->
-      <div class="card" id="goldClaimCard" style="padding:16px 18px;">
-        <div class="card-header" style="margin-bottom:12px;"><span class="card-title">Daily Gold</span></div>
+      <div class="card" id="goldClaimCard" style="padding:10px 14px;">
+        <div class="card-header" style="margin-bottom:8px;"><span class="card-title">Daily Gold</span></div>
         <!-- Big daily claim -->
         <div class="gold-claim-row" id="dailyClaimRow">
           <div class="gold-claim-info">
@@ -1896,7 +1896,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
           <button class="gold-claim-btn" id="dailyClaimBtn" onclick="claimDailyGold()">Claim</button>
         </div>
         <!-- Small 2h claim -->
-        <div class="gold-claim-row" id="miniClaimRow" style="margin-top:10px;border-top:1px solid var(--border);padding-top:10px;">
+        <div class="gold-claim-row" id="miniClaimRow" style="margin-top:7px;border-top:1px solid var(--border);padding-top:7px;">
           <div class="gold-claim-info">
             <div class="gold-claim-amount">+150 ◆</div>
             <div class="gold-claim-label">Every 2 Hours</div>
@@ -2034,9 +2034,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
     <span class="badge badge-orange" style="font-size:14px;padding:8px 14px;" id="casesReadyBadge">0 Ready</span>
   </div>
   <div class="cases-page-grid">
-    <div class="big-case-card rare-bg" onclick="openCaseModal('basic')"><span class="big-case-emoji">&#128230;</span><div class="big-case-name">Basic Case</div><div class="big-case-desc">Standard rewards from completing daily workouts.</div><div class="rarity-pills"><span class="rarity-pill pill-common">Common 55%</span><span class="rarity-pill pill-rare">Rare 30%</span><span class="rarity-pill pill-epic">Epic 15%</span></div><div class="case-count-badge" id="basicCaseCount">&#215;0 available</div><button class="open-btn open-btn-rare">Open Case</button></div>
-    <div class="big-case-card epic-bg" onclick="openCaseModal('rare')"><span class="big-case-emoji">&#128142;</span><div class="big-case-name">Rare Case</div><div class="big-case-desc">Earned from weekly challenges and 7-day streaks.</div><div class="rarity-pills"><span class="rarity-pill pill-rare">Rare 50%</span><span class="rarity-pill pill-epic">Epic 35%</span><span class="rarity-pill pill-legendary">Legendary 15%</span></div><div class="case-count-badge" id="rareCaseCount">&#215;0 available</div><button class="open-btn open-btn-epic">Open Case</button></div>
-    <div class="big-case-card legendary-bg" onclick="openCaseModal('legendary')"><span class="big-case-emoji">&#128081;</span><div class="big-case-name">Legendary Case</div><div class="big-case-desc">Reserved for 30-day streaks and major milestones.</div><div class="rarity-pills"><span class="rarity-pill pill-epic">Epic 60%</span><span class="rarity-pill pill-legendary">Legendary 35%</span><span class="rarity-pill pill-divine">🦆 Golden Duck 5%</span></div><div class="case-count-badge" id="legendaryCaseCount">&#215;0 available</div><button class="open-btn open-btn-legendary">Open Case</button></div>
+    <div class="big-case-card rare-bg"><span class="big-case-emoji">&#128230;</span><div class="big-case-name">Basic Case</div><div class="big-case-desc">Standard rewards from completing daily workouts.</div><div class="rarity-pills"><span class="rarity-pill pill-common">Common 55%</span><span class="rarity-pill pill-rare">Rare 30%</span><span class="rarity-pill pill-epic">Epic 15%</span></div><div class="case-count-badge" id="basicCaseCount">&#215;0 available</div><button class="open-btn open-btn-rare" onclick="openCaseModal('basic')">Open Case</button></div>
+    <div class="big-case-card epic-bg"><span class="big-case-emoji">&#128142;</span><div class="big-case-name">Rare Case</div><div class="big-case-desc">Earned from weekly challenges and 7-day streaks.</div><div class="rarity-pills"><span class="rarity-pill pill-rare">Rare 50%</span><span class="rarity-pill pill-epic">Epic 35%</span><span class="rarity-pill pill-legendary">Legendary 15%</span></div><div class="case-count-badge" id="rareCaseCount">&#215;0 available</div><button class="open-btn open-btn-epic" onclick="openCaseModal('rare')">Open Case</button></div>
+    <div class="big-case-card legendary-bg"><span class="big-case-emoji">&#128081;</span><div class="big-case-name">Legendary Case</div><div class="big-case-desc">Reserved for 30-day streaks and major milestones.</div><div class="rarity-pills"><span class="rarity-pill pill-epic">Epic 60%</span><span class="rarity-pill pill-legendary">Legendary 35%</span><span class="rarity-pill pill-divine">🦆 Golden Duck 5%</span></div><div class="case-count-badge" id="legendaryCaseCount">&#215;0 available</div><button class="open-btn open-btn-legendary" onclick="openCaseModal('legendary')">Open Case</button></div>
   </div>
   <!-- SHOP -->
   <div class="card" style="margin-top:20px;">
@@ -2409,7 +2409,7 @@ function newProfile(username, pin) {
     equippedSkin: 'iron-rhino',
     unlockedSkins: ['iron-rhino'],
     gold: 0,
-    cases: { basic: 0, rare: 0, legendary: 0 },
+    cases: { basic: 3, rare: 0, legendary: 0 },
     fragments: {},    // { skinId: count } — pet-specific fragment collection
     shards: { common:0, rare:0, epic:0, legendary:0, divine:0 }, // rarity shards from duplicate rolls
     autoClickMultiplier: 1, // 1 = normal, 2 = 2× (future upgrade)
@@ -2513,6 +2513,10 @@ function loginAs(username) {
   currentUser = username;
   document.getElementById('authScreen').classList.add('hidden');
   const p = getP();
+  // One-time starter cases for existing users with none
+  if (p && !p.cases.basic && !p.cases.rare && !p.cases.legendary) {
+    p.cases.basic = 3; saveP(p);
+  }
   applyCatchupXP();
   refreshHomeStats();
   buildStreakCalendar();
@@ -5488,7 +5492,7 @@ function renderSkins(filter='all') {
 
     const cardClick = `openPetBio('${s.id}')`;
     return `<div class="skin-card ${isLocked?'locked':''} ${ready?'forgeable':''} ${isEquipped?'equipped':''} ${s.rarity}-skin ${s.rarity==='divine'?'divine-skin':''}"
-         onclick="${cardClick}" >
+         onclick="${cardClick}" ontouchend="event.preventDefault();${cardClick}" >
       ${isEquipped ? '<div class="equipped-tag">ON</div>' : ''}
       ${imgHtml}
       ${tierLabel}
@@ -5522,6 +5526,9 @@ const ELEMENT_MOVE_ICONS = {
 };
 
 function openPetBio(id) {
+  try { _openPetBioInner(id); } catch(e) { showToast('⚠ Pet profile error: ' + e.message); console.error(e); }
+}
+function _openPetBioInner(id) {
   _petBioId = id;
   const skin = ALL_SKINS_MAP[id];
   if (!skin) return;
@@ -5537,6 +5544,7 @@ function openPetBio(id) {
   const cost = FRAGMENT_COSTS[skin.rarity] || 50;
   const pct = Math.min(100, Math.round((have / cost) * 100));
   const ready = isLocked && have >= cost;
+  const isTeased = isLocked && have > 0;
 
   // Locked pets use greyscale palette
   const col = isLocked
@@ -5630,7 +5638,6 @@ function openPetBio(id) {
   const tapXp = RARITY_TAP_XP[skin.rarity] || 10;
   const bonusNote = skin.rarity === 'divine' ? '+ 2.5× Workout XP' : '';
   // "teased": locked but has ≥1 shard → show stats blurred. No shards → hide entirely.
-  const isTeased = isLocked && have > 0;
   const blurCls = isLocked ? (isTeased ? 'bio-locked-blur' : 'bio-locked-blur bio-fully-hidden') : '';
   document.getElementById('petBioXpGrid').innerHTML = `
     <div class="pet-bio-xp-tile ${blurCls}">
@@ -6249,7 +6256,7 @@ function rtDismiss() {
     const barEl = getBar();
     if (!barEl.classList.contains('visible')) return;
     // Allow drag from anywhere except interactive controls
-    if (e.target.closest('button,.rt-preset')) return;
+    if (e.target.closest('button,.rt-preset,.pet-emoji')) return;
 
     dragging = true;
     const rect = barEl.getBoundingClientRect();
