@@ -5537,6 +5537,7 @@ function openPetBio(id) {
   const cost = FRAGMENT_COSTS[skin.rarity] || 50;
   const pct = Math.min(100, Math.round((have / cost) * 100));
   const ready = isLocked && have >= cost;
+  const isTeased = isLocked && have > 0;
 
   // Locked pets use greyscale palette
   const col = isLocked
@@ -5630,7 +5631,6 @@ function openPetBio(id) {
   const tapXp = RARITY_TAP_XP[skin.rarity] || 10;
   const bonusNote = skin.rarity === 'divine' ? '+ 2.5× Workout XP' : '';
   // "teased": locked but has ≥1 shard → show stats blurred. No shards → hide entirely.
-  const isTeased = isLocked && have > 0;
   const blurCls = isLocked ? (isTeased ? 'bio-locked-blur' : 'bio-locked-blur bio-fully-hidden') : '';
   document.getElementById('petBioXpGrid').innerHTML = `
     <div class="pet-bio-xp-tile ${blurCls}">
