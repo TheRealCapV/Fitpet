@@ -78,19 +78,27 @@ nav::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:500px
 .gold-claim-cd{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);min-width:50px;text-align:right;}
 /* ── SHOP ── */
 .shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;}
-.shop-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:18px 14px;text-align:center;transition:all .2s;}
-.shop-item:hover{transform:translateY(-3px);}
-.shop-emoji{font-size:40px;display:block;margin-bottom:8px;}
-.shop-name{font-size:14px;font-weight:800;margin-bottom:4px;}
-.shop-desc{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.4;}
-.shop-price{font-size:15px;font-weight:800;color:var(--legendary);font-family:'DM Mono',monospace;margin-bottom:10px;}
-.shop-btn{width:100%;padding:9px;border-radius:8px;font-weight:800;font-size:13px;cursor:pointer;font-family:'Syne',sans-serif;border:none;transition:all .2s;}
-.shop-btn-basic{background:rgba(107,114,128,.2);color:var(--text);}
-.shop-btn-basic:hover{background:rgba(200,255,0,.2);color:var(--accent);}
-.shop-btn-rare{background:rgba(56,189,248,.15);color:var(--rare);}
-.shop-btn-rare:hover{background:rgba(56,189,248,.3);}
-.shop-btn-legendary{background:rgba(251,191,36,.15);color:var(--legendary);}
-.shop-btn-legendary:hover{background:rgba(251,191,36,.3);}
+.shop-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px 10px;text-align:center;transition:all .25s;position:relative;overflow:hidden;}
+.shop-item::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .25s;border-radius:var(--radius);}
+.shop-item:hover::before{opacity:1;}
+.shop-item:hover{transform:translateY(-4px);}
+.shop-item-basic::before{background:radial-gradient(ellipse at 50% 0%,rgba(56,189,248,.12),transparent 70%);}
+.shop-item-rare::before{background:radial-gradient(ellipse at 50% 0%,rgba(168,85,247,.14),transparent 70%);}
+.shop-item-legendary::before{background:radial-gradient(ellipse at 50% 0%,rgba(251,191,36,.16),transparent 70%);}
+.shop-item-basic{border-color:rgba(56,189,248,.25);}
+.shop-item-rare{border-color:rgba(168,85,247,.3);}
+.shop-item-legendary{border-color:rgba(251,191,36,.35);}
+.shop-chest{display:flex;justify-content:center;margin-bottom:10px;animation:case-float 4s ease-in-out infinite;}
+.shop-name{font-size:13px;font-weight:800;margin-bottom:3px;}
+.shop-desc{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:10px;line-height:1.4;}
+.shop-price{font-size:14px;font-weight:800;color:var(--legendary);font-family:'DM Mono',monospace;margin-bottom:10px;}
+.shop-btn{width:100%;padding:9px;border-radius:8px;font-weight:800;font-size:12px;cursor:pointer;font-family:'Syne',sans-serif;border:none;transition:all .2s;position:relative;z-index:1;}
+.shop-btn-basic{background:linear-gradient(135deg,rgba(56,189,248,.2),rgba(56,189,248,.1));color:#38bdf8;border:1px solid rgba(56,189,248,.3);}
+.shop-btn-basic:hover{background:rgba(56,189,248,.3);}
+.shop-btn-rare{background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(168,85,247,.1));color:#c084fc;border:1px solid rgba(168,85,247,.3);}
+.shop-btn-rare:hover{background:rgba(168,85,247,.3);}
+.shop-btn-legendary{background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(251,191,36,.1));color:#fbbf24;border:1px solid rgba(251,191,36,.4);}
+.shop-btn-legendary:hover{background:rgba(251,191,36,.35);}
 /* ── LEVELUP BANNER ── */
 .levelup-banner{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(220px);background:linear-gradient(135deg,var(--bg2),rgba(139,92,246,.1));border:1px solid rgba(139,92,246,.5);border-radius:12px;padding:8px 18px;z-index:650;box-shadow:0 4px 20px rgba(0,0,0,.6),0 0 16px rgba(139,92,246,.2);transition:transform .45s cubic-bezier(.34,1.56,.64,1);text-align:center;min-width:0;white-space:nowrap;pointer-events:none;}
 .levelup-banner.show{transform:translateX(-50%) translateY(0);}
@@ -404,25 +412,32 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 /* ── WORKOUT SUMMARY CARD ── */
 .summary-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:900;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s;}
 .summary-overlay.open{opacity:1;pointer-events:all;}
-.summary-card{background:linear-gradient(145deg,#111118,#0e0e18);border:1px solid var(--border);border-radius:24px;padding:32px 28px;width:100%;max-width:380px;position:relative;overflow:hidden;}
-.summary-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(200,255,0,.06),transparent 60%);pointer-events:none;}
-.summary-pet-row{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
-.summary-pet-img{width:80px;height:80px;object-fit:contain;border-radius:12px;}
-.summary-pet-emoji{font-size:56px;line-height:1;}
-.summary-username{font-size:20px;font-weight:800;letter-spacing:-.3px;}
-.summary-subtitle{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px;}
-.summary-divider{height:1px;background:var(--border);margin:16px 0;}
-.summary-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
-.summary-stat{background:var(--bg3);border-radius:10px;padding:12px;text-align:center;}
+.summary-card{background:linear-gradient(160deg,#0f0f18,#0d0d15);border:1px solid var(--border);border-radius:24px;padding:0;width:100%;max-width:400px;position:relative;overflow:hidden;}
+.summary-card::before{content:'';position:absolute;top:0;left:0;right:0;height:120px;background:radial-gradient(ellipse at 50% 0%,rgba(200,255,0,.1),transparent 70%);pointer-events:none;}
+.summary-header{padding:22px 22px 14px;text-align:center;position:relative;border-bottom:1px solid var(--border);}
+.summary-eyebrow{font-size:9px;font-weight:800;letter-spacing:3px;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--accent);margin-bottom:6px;}
+.summary-username{font-size:22px;font-weight:800;letter-spacing:-.3px;}
+.summary-subtitle{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:4px;}
+.summary-body{padding:16px 20px 20px;}
+.summary-pet-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;background:rgba(255,255,255,.03);border-radius:12px;padding:12px 14px;border:1px solid var(--border);}
+.summary-pet-img{width:64px;height:64px;object-fit:contain;border-radius:10px;}
+.summary-pet-emoji{font-size:48px;line-height:1;}
+.summary-username-inline{font-size:15px;font-weight:800;}
+.summary-subtitle-inline{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px;}
+.summary-divider{height:1px;background:var(--border);margin:12px 0;}
+.summary-xp-row{background:linear-gradient(135deg,rgba(200,255,0,.08),rgba(200,255,0,.03));border:1px solid rgba(200,255,0,.25);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.summary-xp-label{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:2px;}
+.summary-xp-val{font-size:30px;font-weight:800;color:var(--accent);font-family:'DM Mono',monospace;line-height:1;}
+.summary-mult{font-size:11px;font-family:'DM Mono',monospace;color:var(--legendary);text-align:right;line-height:1.5;}
+.summary-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.summary-stat{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;}
 .summary-stat-val{font-size:22px;font-weight:800;font-family:'DM Mono',monospace;}
-.summary-stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
-.summary-xp-row{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.3);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-.summary-xp-val{font-size:22px;font-weight:800;color:var(--accent);font-family:'DM Mono',monospace;}
-.summary-mult{font-size:11px;font-family:'DM Mono',monospace;color:var(--legendary);}
-.summary-exercises{font-size:12px;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:20px;line-height:1.7;}
-.summary-brand{text-align:center;font-size:11px;font-weight:800;letter-spacing:2px;color:var(--muted);opacity:.5;margin-top:4px;}
-.summary-close-btn{width:100%;padding:13px;background:var(--accent);color:#000;border:none;border-radius:10px;font-weight:800;font-size:15px;cursor:pointer;font-family:'Syne',sans-serif;letter-spacing:.2px;}
-.summary-close-btn:hover{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;}
+.summary-stat-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px;font-family:'DM Mono',monospace;}
+.summary-exercises{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;}
+.summary-ex-pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;}
+.summary-brand{text-align:center;font-size:9px;font-weight:800;letter-spacing:3px;color:var(--muted);opacity:.35;margin-top:8px;}
+.summary-close-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#000;border:none;border-radius:10px;font-weight:800;font-size:15px;cursor:pointer;font-family:'Syne',sans-serif;letter-spacing:.3px;transition:all .2s;}
+.summary-close-btn:hover{opacity:.9;transform:translateY(-1px);}
 .cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
 .case-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 12px;text-align:center;cursor:pointer;transition:all .25s;position:relative;}
 .case-item:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.4);}
@@ -828,6 +843,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .big-case-card.rare-bg{border-color:rgba(56,189,248,.25);}
 .big-case-card.epic-bg{border-color:rgba(168,85,247,.25);}
 .big-case-emoji{font-size:64px;margin-bottom:12px;display:block;animation:case-float 4s ease-in-out infinite;}
+.case-icon-wrap{display:flex;justify-content:center;margin-bottom:14px;animation:case-float 4s ease-in-out infinite;}
+.case-icon-wrap svg{filter:drop-shadow(0 0 12px var(--case-glow,rgba(56,189,248,.5)));}
 @keyframes case-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
 .big-case-name{font-size:18px;font-weight:800;margin-bottom:6px;}
 .big-case-desc{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:16px;line-height:1.5;}
@@ -1197,7 +1214,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .bn-tab{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--muted);cursor:pointer;padding:4px 6px;border-radius:10px;transition:all .2s;min-width:40px;-webkit-tap-highlight-color:transparent;}
 .bn-tab.active{color:var(--accent);}
 .bn-tab.active .bn-icon-wrap{background:rgba(139,92,246,.18);border-color:rgba(139,92,246,.35);} .bn-tab svg{transition:stroke .2s;} .bn-tab.active svg{stroke:var(--accent);}
-.bn-icon-wrap{width:32px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid transparent;transition:all .2s;margin-bottom:2px;}
+.bn-icon-wrap{width:32px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid transparent;transition:all .2s;margin-bottom:2px;position:relative;}
+.bn-badge{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;background:#ef4444;color:#fff;font-size:9px;font-weight:800;font-family:'DM Mono',monospace;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0 3px;border:2px solid var(--bg2);line-height:1;}
 .bn-icon{display:flex;align-items:center;justify-content:center;}
 .bn-label{font-size:9px;font-weight:700;font-family:'DM Mono',monospace;letter-spacing:.3px;line-height:1;}
 
@@ -1432,6 +1450,48 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   #battleArena{padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));}
   .xp-floater{bottom:calc(60px + env(safe-area-inset-bottom,0px));}
 }
+/* ── ACHIEVEMENT NOTIFICATION ── */
+#achieveNotif{position:fixed;top:-120px;left:50%;transform:translateX(-50%);z-index:1200;pointer-events:none;transition:top .45s cubic-bezier(.34,1.4,.64,1);width:min(340px,calc(100vw - 32px));}
+#achieveNotif.show{top:calc(16px + env(safe-area-inset-top,0px));}
+.achieve-inner{background:linear-gradient(135deg,#111118,#0e0e18);border:1px solid var(--border);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 40px rgba(0,0,0,.7);}
+.achieve-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.achieve-icon-gold{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);}
+.achieve-icon-quest{background:rgba(200,255,0,.12);border:1px solid rgba(200,255,0,.3);}
+.achieve-eyebrow{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:3px;}
+.achieve-eyebrow-gold{color:#fbbf24;}
+.achieve-eyebrow-quest{color:var(--accent);}
+.achieve-title{font-size:15px;font-weight:800;line-height:1.2;}
+.achieve-sub{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px;}
+/* ── STRENGTH TAB ── */
+.e1rm-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.e1rm-row:last-child{border-bottom:none;}
+.e1rm-name{flex:1;font-size:13px;font-weight:700;}
+.e1rm-val{font-size:16px;font-weight:800;font-family:'DM Mono',monospace;color:var(--accent);}
+.e1rm-sub{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;}
+.e1rm-pr{font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;background:rgba(200,255,0,.1);color:var(--accent);border:1px solid rgba(200,255,0,.3);font-family:'DM Mono',monospace;white-space:nowrap;}
+.overload-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.overload-row:last-child{border-bottom:none;}
+.overload-name{flex:1;font-size:12px;font-weight:700;}
+.overload-pill{font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px;font-family:'DM Mono',monospace;white-space:nowrap;}
+.overload-up{background:rgba(200,255,0,.12);color:var(--accent);border:1px solid rgba(200,255,0,.3);}
+.overload-down{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.25);}
+.overload-same{background:var(--bg3);color:var(--muted);border:1px solid var(--border);}
+/* ── LEVEL ROAD ── */
+.lr-node{display:flex;align-items:center;gap:0;margin-bottom:0;position:relative;}
+.lr-node:last-child .lr-line{display:none;}
+.lr-line{position:absolute;left:28px;top:56px;width:2px;height:calc(100% - 8px);background:var(--border);z-index:0;}
+.lr-line.done{background:var(--accent);}
+.lr-icon{width:56px;height:56px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;position:relative;z-index:1;background:var(--bg3);transition:all .2s;}
+.lr-icon.done{border-color:var(--accent);background:rgba(200,255,0,.08);box-shadow:0 0 14px rgba(200,255,0,.25);}
+.lr-icon.evo{border-width:3px;}
+.lr-icon.current{border-color:var(--accent);box-shadow:0 0 20px rgba(200,255,0,.4);animation:lr-pulse 2s ease-in-out infinite;}
+@keyframes lr-pulse{0%,100%{box-shadow:0 0 20px rgba(200,255,0,.4);}50%{box-shadow:0 0 32px rgba(200,255,0,.7);}}
+.lr-content{flex:1;padding:0 0 24px 14px;}
+.lr-level{font-size:10px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:1px;color:var(--muted);margin-bottom:3px;}
+.lr-title{font-size:14px;font-weight:800;margin-bottom:4px;}
+.lr-rewards{display:flex;flex-wrap:wrap;gap:5px;}
+.lr-pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid;font-family:'DM Mono',monospace;white-space:nowrap;}
+.lr-icon.unclaimed{border-color:var(--accent);box-shadow:0 0 16px rgba(200,255,0,.5);animation:lr-pulse 2s ease-in-out infinite;}
 </style>
 </head>
 <body>
@@ -1512,7 +1572,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
       <button class="qty-btn active" id="qtyBtn1" onclick="setCaseQty(1,this)">&#215;1</button>
       <button class="qty-btn" id="qtyBtn3" onclick="setCaseQty(3,this)">&#215;3</button>
       <button class="qty-btn" id="qtyBtn5" onclick="setCaseQty(5,this)">&#215;5</button>
-      <button class="qty-btn" id="qtyBtnMax" onclick="setCaseQtyMax(this)">MAX</button>
+      <button class="qty-btn" id="qtyBtnMax" onclick="setCaseQtyMax(this)">Open All</button>
     </div>
 
     <!-- WHEEL PHASE -->
@@ -1549,7 +1609,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
     <!-- MULTI SPIN PHASE (×3 / ×5) -->
     <div id="multiSpinPhase" style="display:none;">
       <div class="multi-spin-wrap" id="multiReelsContainer"></div>
-      <div class="wheel-status" id="multiSpinStatus">Ready to open</div>
+      <div class="wheel-status" id="multiSpinStatus" style="display:none;">Ready to open</div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
         <button class="auth-btn" id="multiSpinBtn" onclick="startMultiSpin()" style="max-width:240px;margin:0 auto;">🎰 Open All</button>
         <button class="skip-spin-btn" id="skipMultiBtn" style="display:none;" onclick="skipMultiSpin()">⏭ Skip</button>
@@ -1584,44 +1644,58 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 <!-- WORKOUT SUMMARY CARD -->
 <div class="summary-overlay" id="summaryOverlay">
   <div class="summary-card" id="summaryCard">
-    <div class="summary-pet-row">
-      <div id="summaryPetImg"></div>
-      <div>
-        <div class="summary-username" id="summaryUsername">Nick</div>
-        <div class="summary-subtitle" id="summaryWorkoutName">Push Day A &nbsp;·&nbsp; 00:00</div>
-        <div style="margin-top:6px;" id="summaryStreakRow"></div>
+    <!-- Header -->
+    <div class="summary-header">
+      <div class="summary-eyebrow">Workout Complete</div>
+      <div class="summary-username" id="summaryUsername">Nick</div>
+      <div class="summary-subtitle" id="summaryWorkoutName">Push Day A · 00:00</div>
+    </div>
+    <!-- Body -->
+    <div class="summary-body">
+      <!-- Pet + streak row -->
+      <div class="summary-pet-row">
+        <div id="summaryPetImg"></div>
+        <div>
+          <div id="summaryStreakRow"></div>
+          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:4px;" id="summaryStreakSub"></div>
+        </div>
       </div>
-    </div>
-    <div class="summary-divider"></div>
-    <div class="summary-xp-row">
-      <div><div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:2px;">XP EARNED</div><div class="summary-xp-val" id="summaryXp">+0 XP</div></div>
-      <div class="summary-mult" id="summaryMult"></div>
-    </div>
-    <div class="summary-stats-grid">
-      <div class="summary-stat"><div class="summary-stat-val" id="summarySets">0</div><div class="summary-stat-lbl">Sets Done</div></div>
-      <div class="summary-stat"><div class="summary-stat-val" id="summaryStreak">0🔥</div><div class="summary-stat-lbl">Day Streak</div></div>
-    </div>
-    <div class="summary-exercises" id="summaryExercises"></div>
-    <div id="summaryTemplatePrompt" style="display:none;margin-bottom:12px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:8px;text-align:center;">Exercises changed — update template?</div>
-      <div style="display:flex;gap:8px;">
-        <button class="summary-close-btn" style="flex:1;font-size:12px;padding:10px;" onclick="closeSummaryKeepTemplate()">Keep Current</button>
-        <button class="summary-close-btn" style="flex:1;font-size:12px;padding:10px;background:var(--accent);color:#000;border-color:var(--accent);" onclick="closeSummarySaveTemplate()">✓ Update Template</button>
+      <!-- XP -->
+      <div class="summary-xp-row">
+        <div>
+          <div class="summary-xp-label">XP Earned</div>
+          <div class="summary-xp-val" id="summaryXp">+0 XP</div>
+        </div>
+        <div class="summary-mult" id="summaryMult"></div>
       </div>
-    </div>
-    <div id="summaryCustomPrompt" style="display:none;margin-bottom:12px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:8px;text-align:center;">Save this workout as a template?</div>
-      <div style="display:flex;gap:8px;margin-bottom:8px;">
-        <input id="summaryCustomTemplateName" class="template-edit-input" type="text" maxlength="32" placeholder="Template name…" style="flex:1;font-size:13px;padding:9px 12px;">
-        <input id="summaryCustomTemplateEmoji" class="template-edit-input template-edit-emoji-input" type="text" maxlength="4" placeholder="💪" style="width:52px;font-size:18px;padding:6px;text-align:center;">
+      <!-- Stats -->
+      <div class="summary-stats-grid">
+        <div class="summary-stat"><div class="summary-stat-val" id="summarySets">0</div><div class="summary-stat-lbl">Sets Done</div></div>
+        <div class="summary-stat"><div class="summary-stat-val" id="summaryStreak">0🔥</div><div class="summary-stat-lbl">Day Streak</div></div>
       </div>
-      <div style="display:flex;gap:8px;">
-        <button class="summary-close-btn" style="flex:1;font-size:12px;padding:10px;" onclick="closeSummary()">Skip</button>
-        <button class="summary-close-btn" style="flex:1;font-size:12px;padding:10px;background:var(--accent);color:#000;border-color:var(--accent);" onclick="closeSummaryAndSaveCustom()">＋ Save Template</button>
+      <!-- Exercise pills -->
+      <div class="summary-exercises" id="summaryExercises"></div>
+      <div id="summaryTemplatePrompt" style="display:none;margin-bottom:12px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:8px;text-align:center;">Exercises changed — update template?</div>
+        <div style="display:flex;gap:8px;">
+          <button class="summary-close-btn" style="flex:1;font-size:12px;padding:10px;background:var(--bg3);color:var(--text);border:1px solid var(--border);" onclick="closeSummaryKeepTemplate()">Keep Current</button>
+          <button class="summary-close-btn" style="flex:1;font-size:12px;padding:10px;" onclick="closeSummarySaveTemplate()">✓ Update</button>
+        </div>
       </div>
-    </div>
-    <button class="summary-close-btn" id="summaryCloseBtn" onclick="closeSummary()">&#9654; Back to Home</button>
-    <div class="summary-brand">FITPET</div>
+      <div id="summaryCustomPrompt" style="display:none;margin-bottom:12px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:8px;text-align:center;">Save as template?</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px;">
+          <input id="summaryCustomTemplateName" class="template-edit-input" type="text" maxlength="32" placeholder="Template name…" style="flex:1;font-size:13px;padding:9px 12px;">
+          <input id="summaryCustomTemplateEmoji" class="template-edit-input template-edit-emoji-input" type="text" maxlength="4" placeholder="💪" style="width:52px;font-size:18px;padding:6px;text-align:center;">
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="summary-close-btn" style="flex:1;font-size:12px;padding:10px;background:var(--bg3);color:var(--text);border:1px solid var(--border);" onclick="closeSummary()">Skip</button>
+          <button class="summary-close-btn" style="flex:1;font-size:12px;padding:10px;" onclick="closeSummaryAndSaveCustom()">＋ Save</button>
+        </div>
+      </div>
+      <button class="summary-close-btn" id="summaryCloseBtn" onclick="closeSummary()">Back to Home</button>
+      <div class="summary-brand">FITPET</div>
+    </div><!-- /summary-body -->
   </div>
 </div>
 
@@ -1765,12 +1839,12 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   <div id="navInner">
   <div class="nav-logo"><div class="logo-dot"></div>FitPet</div>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('home')">Home</button>
+    <button class="nav-tab active" onclick="showPage('home')" style="position:relative;">Home<span id="navHomeBadge" style="display:none;position:absolute;top:2px;right:2px;min-width:14px;height:14px;background:#ef4444;color:#fff;font-size:8px;font-weight:800;border-radius:999px;padding:0 3px;line-height:14px;font-family:'DM Mono',monospace;"></span></button>
     <button class="nav-tab" onclick="showPage('log')">Log</button>
     <button class="nav-tab" onclick="showPage('history')">Stats</button>
     <button class="nav-tab" onclick="showPage('battle')">⚔️</button>
-    <button class="nav-tab" onclick="showPage('cases')">Cases</button>
-    <button class="nav-tab" onclick="showPage('collection')">Pets</button>
+    <button class="nav-tab" onclick="showPage('cases')" style="position:relative;">Cases<span id="navCasesBadge" style="display:none;position:absolute;top:2px;right:2px;min-width:14px;height:14px;background:#ef4444;color:#fff;font-size:8px;font-weight:800;border-radius:999px;padding:0 3px;line-height:14px;font-family:'DM Mono',monospace;"></span></button>
+    <button class="nav-tab" onclick="showPage('collection');clearNewPetsBadge()" style="position:relative;">Pets<span id="navPetsBadge" style="display:none;position:absolute;top:2px;right:2px;min-width:14px;height:14px;background:#ef4444;color:#fff;font-size:8px;font-weight:800;border-radius:999px;padding:0 3px;line-height:14px;font-family:'DM Mono',monospace;"></span></button>
   </div>
   <div class="nav-right">
     <button class="dev-btn" id="devBtn" onclick="toggleDevMode()">&#128295; DEV</button>
@@ -1791,7 +1865,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
             <div class="pd-monogram" id="pdMonogram">N</div>
             <div class="pd-name-block">
               <div class="pd-username" id="pdUsername">—</div>
-              <div class="pd-rank-pill" id="pdRankPill" style="color:var(--muted);border-color:var(--border);">ROOKIE</div>
+              <button class="pd-rank-pill" id="pdRankPill" onclick="openRankSelector()" style="color:var(--muted);border-color:var(--border);background:none;cursor:pointer;font-family:inherit;">ROOKIE ✎</button>
             </div>
             <button class="pd-edit-btn" onclick="closeProfileDropdown();openProfileModal()" title="Customize Profile">✏️</button>
           </div>
@@ -1855,8 +1929,13 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
             <div class="auto-indicator" id="autoIndicator"><div class="auto-dot"></div>AUTO <span id="autoMultLabel">1×</span></div>
           </div>
         </div>
-        <div class="xp-section">
-          <div class="xp-label-row"><span>XP Progress</span><span id="xpLabel">0 / 1000</span></div>
+        <div class="xp-section" onclick="openLevelRoad()" style="cursor:pointer;">
+          <div class="xp-label-row">
+            <span style="display:flex;align-items:center;gap:6px;">XP Progress
+              <span id="lrUnclaimedBadge" style="display:none;background:var(--accent);color:#000;font-size:9px;font-weight:800;padding:2px 6px;border-radius:999px;font-family:'DM Mono',monospace;">0</span>
+            </span>
+            <span id="xpLabel">0 / 1000</span>
+          </div>
           <div class="xp-bar"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
         </div>
         <div class="pet-stats">
@@ -1885,23 +1964,26 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
         </div>
       </div>
       <!-- DAILY GOLD CLAIM CARD -->
-      <div class="card" id="goldClaimCard" style="padding:10px 14px;">
-        <div class="card-header" style="margin-bottom:8px;"><span class="card-title">Daily Gold</span></div>
-        <!-- Big daily claim -->
-        <div class="gold-claim-row" id="dailyClaimRow">
-          <div class="gold-claim-info">
-            <div class="gold-claim-amount">+1,000 ◆</div>
-            <div class="gold-claim-label">Daily Bonus</div>
+      <div class="card" id="goldClaimCard" style="padding:0;overflow:hidden;background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(251,191,36,.02));border-color:rgba(251,191,36,.2);">
+        <!-- Daily claim -->
+        <div id="dailyClaimRow" style="padding:12px 14px;display:flex;align-items:center;gap:12px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">◆</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:800;color:#fbbf24;">+1,000 ◆</div>
+            <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">DAILY BONUS</div>
           </div>
-          <button class="gold-claim-btn" id="dailyClaimBtn" onclick="claimDailyGold()">Claim</button>
+          <button class="gold-claim-btn" id="dailyClaimBtn" onclick="claimDailyGold()" style="padding:7px 16px;font-size:12px;">Claim</button>
         </div>
-        <!-- Small 2h claim -->
-        <div class="gold-claim-row" id="miniClaimRow" style="margin-top:7px;border-top:1px solid var(--border);padding-top:7px;">
-          <div class="gold-claim-info">
-            <div class="gold-claim-amount">+150 ◆</div>
-            <div class="gold-claim-label">Every 2 Hours</div>
+        <!-- Divider -->
+        <div style="height:1px;background:rgba(251,191,36,.12);margin:0 14px;"></div>
+        <!-- 2h claim -->
+        <div id="miniClaimRow" style="padding:10px 14px;display:flex;align-items:center;gap:12px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">⏱</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:800;color:#fbbf24;">+150 ◆</div>
+            <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">EVERY 2 HOURS</div>
           </div>
-          <button class="gold-claim-btn gold-claim-btn-sm" id="miniClaimBtn" onclick="claimMiniGold()">Claim</button>
+          <button class="gold-claim-btn gold-claim-btn-sm" id="miniClaimBtn" onclick="claimMiniGold()" style="padding:5px 12px;font-size:11px;">Claim</button>
         </div>
       </div>
 
@@ -1966,6 +2048,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
     <button class="hist-tab active" onclick="switchHistTab('overview',this)">Overview</button>
     <button class="hist-tab" onclick="switchHistTab('workouts',this)">Workouts</button>
     <button class="hist-tab" onclick="switchHistTab('prs',this)">PRs</button>
+    <button class="hist-tab" onclick="switchHistTab('strength',this)">💪 Strength</button>
   </div>
 
   <!-- ── OVERVIEW PANE ── -->
@@ -2025,6 +2108,43 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
     <input class="pr-search" id="prSearch" type="text" placeholder="Search exercises…" oninput="renderPRs(this.value)">
     <div id="prList"></div>
   </div>
+
+  <!-- ── STRENGTH PANE ── -->
+  <div class="hist-pane" id="histPane-strength">
+
+    <!-- Progressive Overload Score -->
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-header" style="margin-bottom:4px;">
+        <span class="card-title">Progressive Overload</span>
+        <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">THIS WEEK vs LAST</span>
+      </div>
+      <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.5;">Based on total volume load (sets × reps × weight). Research suggests 5–10% weekly increase is optimal.</div>
+      <div id="overloadScore"></div>
+    </div>
+
+    <!-- Weekly Tonnage -->
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-header" style="margin-bottom:4px;">
+        <span class="card-title">Weekly Tonnage</span>
+        <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">LBS LIFTED</span>
+      </div>
+      <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.5;">Total volume load per week. An upward trend = progressive overload is happening.</div>
+      <svg id="tonnageSvg" viewBox="0 0 360 120" style="width:100%;display:block;" preserveAspectRatio="none"></svg>
+      <div id="tonnageLabels" style="display:flex;justify-content:space-between;margin-top:4px;font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;padding:0 2px;"></div>
+    </div>
+
+    <!-- e1RM per exercise -->
+    <div class="card">
+      <div class="card-header" style="margin-bottom:4px;">
+        <span class="card-title">Est. 1 Rep Max</span>
+        <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">EPLEY FORMULA</span>
+      </div>
+      <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.5;">Calculated as: weight × (1 + reps / 30). Shows your best set ever per exercise.</div>
+      <input type="text" id="e1rmSearch" placeholder="Filter exercises…" oninput="renderE1RM(this.value)" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:10px;box-sizing:border-box;">
+      <div id="e1rmList"></div>
+    </div>
+
+  </div>
 </div>
 
 <!-- CASES PAGE -->
@@ -2034,9 +2154,82 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
     <span class="badge badge-orange" style="font-size:14px;padding:8px 14px;" id="casesReadyBadge">0 Ready</span>
   </div>
   <div class="cases-page-grid">
-    <button type="button" class="big-case-card rare-bg" onclick="openCaseModal('basic')" style="font-family:inherit;color:var(--text);width:100%;"><span class="big-case-emoji">&#128230;</span><div class="big-case-name">Basic Case</div><div class="big-case-desc">Standard rewards from completing daily workouts.</div><div class="rarity-pills"><span class="rarity-pill pill-common">Common 55%</span><span class="rarity-pill pill-rare">Rare 30%</span><span class="rarity-pill pill-epic">Epic 15%</span></div><div class="case-count-badge" id="basicCaseCount">&#215;0 available</div><div class="open-btn open-btn-rare" style="margin-top:12px;padding:12px;border-radius:8px;font-weight:800;font-size:14px;">Open Case</div></button>
-    <button type="button" class="big-case-card epic-bg" onclick="openCaseModal('rare')" style="font-family:inherit;color:var(--text);width:100%;"><span class="big-case-emoji">&#128142;</span><div class="big-case-name">Rare Case</div><div class="big-case-desc">Earned from weekly challenges and 7-day streaks.</div><div class="rarity-pills"><span class="rarity-pill pill-rare">Rare 50%</span><span class="rarity-pill pill-epic">Epic 35%</span><span class="rarity-pill pill-legendary">Legendary 15%</span></div><div class="case-count-badge" id="rareCaseCount">&#215;0 available</div><div class="open-btn open-btn-epic" style="margin-top:12px;padding:12px;border-radius:8px;font-weight:800;font-size:14px;">Open Case</div></button>
-    <button type="button" class="big-case-card legendary-bg" onclick="openCaseModal('legendary')" style="font-family:inherit;color:var(--text);width:100%;"><span class="big-case-emoji">&#128081;</span><div class="big-case-name">Legendary Case</div><div class="big-case-desc">Reserved for 30-day streaks and major milestones.</div><div class="rarity-pills"><span class="rarity-pill pill-epic">Epic 60%</span><span class="rarity-pill pill-legendary">Legendary 35%</span><span class="rarity-pill pill-divine">🦆 Golden Duck 5%</span></div><div class="case-count-badge" id="legendaryCaseCount">&#215;0 available</div><div class="open-btn open-btn-legendary" style="margin-top:12px;padding:12px;border-radius:8px;font-weight:800;font-size:14px;">Open Case</div></button>
+    <button type="button" class="big-case-card rare-bg" onclick="openCaseModal('basic')" style="font-family:inherit;color:var(--text);width:100%;--case-glow:rgba(56,189,248,.6);">
+      <div class="case-icon-wrap"><svg width="72" height="64" viewBox="0 0 72 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="22" width="64" height="38" rx="6" fill="#0c1a2e" stroke="#38bdf8" stroke-width="2"/><rect x="4" y="22" width="64" height="14" rx="6" fill="#0e2040" stroke="#38bdf8" stroke-width="2"/><rect x="0" y="18" width="72" height="10" rx="5" fill="#1e3a5f" stroke="#38bdf8" stroke-width="2"/><rect x="28" y="14" width="16" height="8" rx="3" fill="#0c1a2e" stroke="#38bdf8" stroke-width="2"/><rect x="30" y="36" width="12" height="10" rx="3" fill="#38bdf8" opacity=".3"/><circle cx="36" cy="41" r="3" fill="#38bdf8"/><line x1="36" y1="38" x2="36" y2="44" stroke="#38bdf8" stroke-width="1.5"/><rect x="10" y="48" width="18" height="3" rx="1.5" fill="#38bdf8" opacity=".25"/><rect x="44" y="48" width="18" height="3" rx="1.5" fill="#38bdf8" opacity=".25"/></svg></div>
+      <div class="big-case-name">Basic Case</div><div class="big-case-desc">Standard rewards from completing daily workouts.</div><div class="rarity-pills"><span class="rarity-pill pill-common">Common 55%</span><span class="rarity-pill pill-rare">Rare 30%</span><span class="rarity-pill pill-epic">Epic 15%</span></div><div class="case-count-badge" id="basicCaseCount">&#215;0 available</div><div class="open-btn open-btn-rare" style="margin-top:12px;padding:12px;border-radius:8px;font-weight:800;font-size:14px;">Open Case</div>
+    </button>
+    <button type="button" class="big-case-card epic-bg" onclick="openCaseModal('rare')" style="font-family:inherit;color:var(--text);width:100%;--case-glow:rgba(168,85,247,.6);">
+      <div class="case-icon-wrap"><svg width="72" height="68" viewBox="0 0 72 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- glow bg -->
+  <ellipse cx="36" cy="56" rx="28" ry="6" fill="#a855f7" opacity=".15"/>
+  <!-- chest body -->
+  <rect x="5" y="26" width="62" height="36" rx="7" fill="#1a0a3a" stroke="#a855f7" stroke-width="2"/>
+  <!-- chest lid -->
+  <rect x="5" y="14" width="62" height="16" rx="7" fill="#240d50" stroke="#a855f7" stroke-width="2"/>
+  <!-- lid band -->
+  <rect x="1" y="22" width="70" height="8" rx="4" fill="#35107a" stroke="#a855f7" stroke-width="1.5"/>
+  <!-- hasp/clasp -->
+  <rect x="29" y="10" width="14" height="10" rx="3" fill="#1a0a3a" stroke="#c084fc" stroke-width="2"/>
+  <circle cx="36" cy="15" r="2.5" fill="#c084fc" opacity=".8"/>
+  <!-- center lock plate -->
+  <rect x="29" y="38" width="14" height="12" rx="3" fill="#2d0e62" stroke="#c084fc" stroke-width="1.5"/>
+  <circle cx="36" cy="44" r="3" fill="#c084fc"/>
+  <!-- gem top left -->
+  <polygon points="14,20 17,15 20,20 17,25" fill="#e879f9" opacity=".7"/>
+  <!-- gem top right -->
+  <polygon points="52,20 55,15 58,20 55,25" fill="#e879f9" opacity=".7"/>
+  <!-- sparkle tl -->
+  <line x1="10" y1="32" x2="10" y2="38" stroke="#c084fc" stroke-width="1.5" opacity=".5"/>
+  <line x1="7" y1="35" x2="13" y2="35" stroke="#c084fc" stroke-width="1.5" opacity=".5"/>
+  <!-- sparkle tr -->
+  <line x1="62" y1="32" x2="62" y2="38" stroke="#c084fc" stroke-width="1.5" opacity=".5"/>
+  <line x1="59" y1="35" x2="65" y2="35" stroke="#c084fc" stroke-width="1.5" opacity=".5"/>
+  <!-- bottom bands -->
+  <rect x="10" y="52" width="20" height="3" rx="1.5" fill="#a855f7" opacity=".3"/>
+  <rect x="42" y="52" width="20" height="3" rx="1.5" fill="#a855f7" opacity=".3"/>
+  <!-- star above -->
+  <polygon points="36,4 37.2,7.6 41,7.6 38,9.8 39.2,13.4 36,11.2 32.8,13.4 34,9.8 31,7.6 34.8,7.6" fill="#e879f9" opacity=".9"/>
+</svg></div>
+      <div class="big-case-name">Rare Case</div><div class="big-case-desc">Earned from weekly challenges and 7-day streaks.</div><div class="rarity-pills"><span class="rarity-pill pill-rare">Rare 50%</span><span class="rarity-pill pill-epic">Epic 35%</span><span class="rarity-pill pill-legendary">Legendary 15%</span></div><div class="case-count-badge" id="rareCaseCount">&#215;0 available</div><div class="open-btn open-btn-epic" style="margin-top:12px;padding:12px;border-radius:8px;font-weight:800;font-size:14px;">Open Case</div>
+    </button>
+    <button type="button" class="big-case-card legendary-bg" onclick="openCaseModal('legendary')" style="font-family:inherit;color:var(--text);width:100%;--case-glow:rgba(251,191,36,.7);">
+      <div class="case-icon-wrap"><svg width="80" height="78" viewBox="0 0 80 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- outer glow -->
+  <ellipse cx="40" cy="68" rx="30" ry="6" fill="#fbbf24" opacity=".2"/>
+  <!-- chest body -->
+  <rect x="6" y="30" width="68" height="38" rx="8" fill="#1c1100" stroke="#fbbf24" stroke-width="2.5"/>
+  <!-- body inner panel -->
+  <rect x="12" y="36" width="56" height="26" rx="5" fill="#251600" stroke="#f59e0b" stroke-width="1" opacity=".6"/>
+  <!-- lid -->
+  <rect x="6" y="16" width="68" height="18" rx="8" fill="#2a1900" stroke="#fbbf24" stroke-width="2.5"/>
+  <!-- lid band -->
+  <rect x="2" y="26" width="76" height="8" rx="4" fill="#3d2500" stroke="#fbbf24" stroke-width="2"/>
+  <!-- hasp -->
+  <rect x="31" y="10" width="18" height="12" rx="4" fill="#1c1100" stroke="#fcd34d" stroke-width="2"/>
+  <circle cx="40" cy="16" r="3" fill="#fcd34d"/>
+  <line x1="40" y1="13" x2="40" y2="19" stroke="#1c1100" stroke-width="1.5"/>
+  <!-- center lock -->
+  <rect x="33" y="44" width="14" height="14" rx="4" fill="#2a1900" stroke="#fcd34d" stroke-width="2"/>
+  <circle cx="40" cy="51" r="3.5" fill="#fbbf24"/>
+  <!-- crown on lid -->
+  <path d="M26 24 L30 16 L36 22 L40 14 L44 22 L50 16 L54 24 Z" fill="#fbbf24" opacity=".9"/>
+  <!-- corner ornaments -->
+  <circle cx="16" cy="34" r="3" fill="#fbbf24" opacity=".6"/>
+  <circle cx="64" cy="34" r="3" fill="#fbbf24" opacity=".6"/>
+  <circle cx="16" cy="58" r="2" fill="#fbbf24" opacity=".4"/>
+  <circle cx="64" cy="58" r="2" fill="#fbbf24" opacity=".4"/>
+  <!-- side rivets -->
+  <rect x="10" y="46" width="16" height="3" rx="1.5" fill="#fbbf24" opacity=".3"/>
+  <rect x="54" y="46" width="16" height="3" rx="1.5" fill="#fbbf24" opacity=".3"/>
+  <rect x="10" y="54" width="16" height="3" rx="1.5" fill="#fbbf24" opacity=".2"/>
+  <rect x="54" y="54" width="16" height="3" rx="1.5" fill="#fbbf24" opacity=".2"/>
+  <!-- floating stars -->
+  <polygon points="40,2 41.5,6.5 46,6.5 42.5,9 43.8,13.5 40,11 36.2,13.5 37.5,9 34,6.5 38.5,6.5" fill="#fcd34d"/>
+  <polygon points="14,10 15,13 18,13 15.5,14.8 16.5,17.8 14,16 11.5,17.8 12.5,14.8 10,13 13,13" fill="#fbbf24" opacity=".7"/>
+  <polygon points="66,8 67,11 70,11 67.5,12.8 68.5,15.8 66,14 63.5,15.8 64.5,12.8 62,11 65,11" fill="#fbbf24" opacity=".7"/>
+</svg></div>
+      <div class="big-case-name">Legendary Case</div><div class="big-case-desc">Reserved for 30-day streaks and major milestones.</div><div class="rarity-pills"><span class="rarity-pill pill-epic">Epic 60%</span><span class="rarity-pill pill-legendary">Legendary 35%</span><span class="rarity-pill pill-divine">🦆 Golden Duck 5%</span></div><div class="case-count-badge" id="legendaryCaseCount">&#215;0 available</div><div class="open-btn open-btn-legendary" style="margin-top:12px;padding:12px;border-radius:8px;font-weight:800;font-size:14px;">Open Case</div>
+    </button>
   </div>
   <!-- SHOP -->
   <div class="card" style="margin-top:20px;">
@@ -2045,24 +2238,30 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
       <span class="gold-badge" style="font-size:13px;padding:6px 14px;">◆ <span id="shopGoldDisplay">0</span></span>
     </div>
     <div class="shop-grid">
-      <div class="shop-item" style="border-color:rgba(107,114,128,.3);">
-        <span class="shop-emoji">&#128230;</span>
-        <div class="shop-name">Basic Case</div>
-        <div class="shop-desc">Common · Rare · Epic drops</div>
+      <div class="shop-item shop-item-basic">
+        <div class="shop-chest" style="filter:drop-shadow(0 0 8px rgba(56,189,248,.5));">
+          <svg width="44" height="40" viewBox="0 0 72 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="22" width="64" height="38" rx="6" fill="#0c1a2e" stroke="#38bdf8" stroke-width="2"/><rect x="4" y="22" width="64" height="14" rx="6" fill="#0e2040" stroke="#38bdf8" stroke-width="2"/><rect x="0" y="18" width="72" height="10" rx="5" fill="#1e3a5f" stroke="#38bdf8" stroke-width="2"/><rect x="28" y="14" width="16" height="8" rx="3" fill="#0c1a2e" stroke="#38bdf8" stroke-width="2"/><circle cx="36" cy="41" r="3" fill="#38bdf8"/><rect x="10" y="48" width="18" height="3" rx="1.5" fill="#38bdf8" opacity=".25"/><rect x="44" y="48" width="18" height="3" rx="1.5" fill="#38bdf8" opacity=".25"/></svg>
+        </div>
+        <div class="shop-name">Basic</div>
+        <div class="shop-desc">Common · Rare · Epic</div>
         <div class="shop-price">◆ 300</div>
         <button class="shop-btn shop-btn-basic" onclick="buyCase('basic')">Buy</button>
       </div>
-      <div class="shop-item" style="border-color:rgba(56,189,248,.25);">
-        <span class="shop-emoji">&#128142;</span>
-        <div class="shop-name">Rare Case</div>
-        <div class="shop-desc">Rare · Epic · Legendary drops</div>
+      <div class="shop-item shop-item-rare">
+        <div class="shop-chest" style="filter:drop-shadow(0 0 8px rgba(168,85,247,.5));">
+          <svg width="44" height="40" viewBox="0 0 72 68" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="36" cy="56" rx="28" ry="6" fill="#a855f7" opacity=".15"/><rect x="5" y="26" width="62" height="36" rx="7" fill="#1a0a3a" stroke="#a855f7" stroke-width="2"/><rect x="5" y="14" width="62" height="16" rx="7" fill="#240d50" stroke="#a855f7" stroke-width="2"/><rect x="1" y="22" width="70" height="8" rx="4" fill="#35107a" stroke="#a855f7" stroke-width="1.5"/><rect x="29" y="10" width="14" height="10" rx="3" fill="#1a0a3a" stroke="#c084fc" stroke-width="2"/><circle cx="36" cy="44" r="3" fill="#c084fc"/><polygon points="14,20 17,15 20,20 17,25" fill="#e879f9" opacity=".7"/><polygon points="52,20 55,15 58,20 55,25" fill="#e879f9" opacity=".7"/><polygon points="36,4 37.2,7.6 41,7.6 38,9.8 39.2,13.4 36,11.2 32.8,13.4 34,9.8 31,7.6 34.8,7.6" fill="#e879f9" opacity=".9"/></svg>
+        </div>
+        <div class="shop-name">Rare</div>
+        <div class="shop-desc">Rare · Epic · Legendary</div>
         <div class="shop-price">◆ 1,000</div>
         <button class="shop-btn shop-btn-rare" onclick="buyCase('rare')">Buy</button>
       </div>
-      <div class="shop-item" style="border-color:rgba(251,191,36,.3);">
-        <span class="shop-emoji">&#128081;</span>
-        <div class="shop-name">Legendary Case</div>
-        <div class="shop-desc">Epic &amp; Legendary only</div>
+      <div class="shop-item shop-item-legendary">
+        <div class="shop-chest" style="filter:drop-shadow(0 0 8px rgba(251,191,36,.6));">
+          <svg width="44" height="44" viewBox="0 0 80 78" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="40" cy="68" rx="30" ry="6" fill="#fbbf24" opacity=".2"/><rect x="6" y="30" width="68" height="38" rx="8" fill="#1c1100" stroke="#fbbf24" stroke-width="2.5"/><rect x="6" y="16" width="68" height="18" rx="8" fill="#2a1900" stroke="#fbbf24" stroke-width="2.5"/><rect x="2" y="26" width="76" height="8" rx="4" fill="#3d2500" stroke="#fbbf24" stroke-width="2"/><rect x="31" y="10" width="18" height="12" rx="4" fill="#1c1100" stroke="#fcd34d" stroke-width="2"/><circle cx="40" cy="51" r="3.5" fill="#fbbf24"/><path d="M26 24 L30 16 L36 22 L40 14 L44 22 L50 16 L54 24 Z" fill="#fbbf24" opacity=".9"/><polygon points="40,2 41.5,6.5 46,6.5 42.5,9 43.8,13.5 40,11 36.2,13.5 37.5,9 34,6.5 38.5,6.5" fill="#fcd34d"/></svg>
+        </div>
+        <div class="shop-name">Legendary</div>
+        <div class="shop-desc">Epic &amp; Legendary</div>
         <div class="shop-price">◆ 5,000</div>
         <button class="shop-btn shop-btn-legendary" onclick="buyCase('legendary')">Buy</button>
       </div>
@@ -2410,6 +2609,8 @@ function newProfile(username, pin) {
     unlockedSkins: ['iron-rhino'],
     gold: 0,
     cases: { basic: 3, rare: 0, legendary: 0 },
+    claimedLevels: [-1], // level 1 reward ready to claim
+    newPets: [],          // skinIds unlocked but not yet seen in collection
     fragments: {},    // { skinId: count } — pet-specific fragment collection
     shards: { common:0, rare:0, epic:0, legendary:0, divine:0 }, // rarity shards from duplicate rolls
     autoClickMultiplier: 1, // 1 = normal, 2 = 2× (future upgrade)
@@ -2517,11 +2718,23 @@ function loginAs(username) {
   if (p) {
     if (!p.cases) p.cases = { basic: 0, rare: 0, legendary: 0 };
     if (!p.cases.basic && !p.cases.rare && !p.cases.legendary) {
-      p.cases.basic = 3; saveP(p);
+      p.cases.basic = 3;
     }
+    // Mark all already-passed levels as claimed for existing users
+    if (!p.claimedLevels) {
+      p.claimedLevels = [];
+      for (let lv = 1; lv < (p.level || 1); lv++) p.claimedLevels.push(lv);
+      // Leave current level as claimable
+      if ((p.level || 1) >= 1) p.claimedLevels.push(-(p.level || 1));
+    }
+    if (!p.newPets) p.newPets = [];
+    saveP(p);
   }
   applyCatchupXP();
   refreshHomeStats();
+  updateUnclaimedBadge();
+  updateNewPetsBadge();
+  updateCasesBadge();
   buildStreakCalendar();
   buildInlineHistory();
   updateCaseCounts();
@@ -3769,6 +3982,7 @@ function switchHistTab(tab, btn) {
   btn.classList.add('active');
   document.getElementById('histPane-' + tab).classList.add('active');
   if (tab === 'prs') renderPRs('');
+  if (tab === 'strength') buildStrengthTab();
 }
 
 function buildHistoryPage() {
@@ -4046,17 +4260,18 @@ function refreshHomeStats() {
   applyAvatarToTile(setEl('pdMonogram'), 'lg');
 
   if (setEl('navUsername'))   setEl('navUsername').textContent   = displayName;
-  if (setEl('navLvlLabel'))   setEl('navLvlLabel').textContent   = `LVL ${lvlInfoNav.level} · ${evoTierNav.name.toUpperCase()}`;
+  if (setEl('navLvlLabel'))   setEl('navLvlLabel').textContent   = `LVL ${lvlInfoNav.level} · ${(p.selectedTier != null ? (EVOLUTION_TIERS[p.selectedTier]?.name || evoTierNav.name) : evoTierNav.name).toUpperCase()}`;
   if (setEl('pdUsername'))    setEl('pdUsername').textContent    = displayName;
   if (setEl('pdStatLvl'))     setEl('pdStatLvl').textContent     = lvlInfoNav.level;
   if (setEl('pdStatStreak'))  setEl('pdStatStreak').textContent  = streakNav + '🔥';
   if (setEl('pdStatGold'))    setEl('pdStatGold').textContent    = (p.gold || 0).toLocaleString();
   const rankPill = setEl('pdRankPill');
   if (rankPill) {
-    rankPill.textContent  = evoTierNav.name.toUpperCase();
-    rankPill.style.color  = evoTierNav.color;
-    rankPill.style.borderColor = evoTierNav.color + '66';
-    rankPill.style.background  = evoTierNav.color + '18';
+    const displayTier = p.selectedTier != null ? (EVOLUTION_TIERS[p.selectedTier] || evoTierNav) : evoTierNav;
+    rankPill.textContent  = displayTier.name.toUpperCase() + ' ✎';
+    rankPill.style.color  = displayTier.color;
+    rankPill.style.borderColor = displayTier.color + '66';
+    rankPill.style.background  = displayTier.color + '18';
   }
   document.getElementById('petName').textContent = skin ? skin.name : (p.username + "'s Pet");
 
@@ -4093,8 +4308,10 @@ function refreshHomeStats() {
   // Evolution badge + next tier text
   const evoBadge = document.getElementById('evoBadge');
   if (evoBadge) {
-    evoBadge.textContent = evoTier.name.toUpperCase();
-    evoBadge.style.cssText = `background:${evoTier.color}22;color:${evoTier.color};border:1px solid ${evoTier.color}55;font-size:9px;font-weight:800;padding:3px 7px;border-radius:5px;letter-spacing:1px;font-family:'DM Mono',monospace;`;
+    const displayTier = p.selectedTier != null ? (EVOLUTION_TIERS[p.selectedTier] || evoTier) : evoTier;
+    evoBadge.textContent = displayTier.name.toUpperCase() + ' ✎';
+    evoBadge.style.cssText = `background:${displayTier.color}22;color:${displayTier.color};border:1px solid ${displayTier.color}55;font-size:9px;font-weight:800;padding:3px 8px;border-radius:5px;letter-spacing:1px;font-family:'DM Mono',monospace;cursor:pointer;`;
+    evoBadge.onclick = openRankSelector;
   }
   const evoNext = document.getElementById('evoNext');
   if (evoNext) {
@@ -4213,6 +4430,7 @@ function updateCaseCounts() {
     document.getElementById('legendaryCaseCount').textContent = `×${l} available`;
     document.getElementById('casesReadyBadge').textContent = (b+r+l) + ' Ready';
   }
+  updateCasesBadge();
 }
 
 // ══════════════════════════════════════════
@@ -4225,12 +4443,22 @@ const CASE_COSTS = { basic: 300, rare: 1000, legendary: 5000 };
 //  EVOLUTION SYSTEM
 // ══════════════════════════════════════════
 const EVOLUTION_TIERS = [
-  { tier:0, minLevel:1,  name:'Rookie',      color:'#6b7280', glow:'rgba(107,114,128,.4)' },
-  { tier:1, minLevel:5,  name:'Gym Rat',     color:'#fb923c', glow:'rgba(255,107,53,.55)' },
-  { tier:2, minLevel:15, name:'Jacked',      color:'#f97316', glow:'rgba(255,107,53,.75)' },
-  { tier:3, minLevel:30, name:'Shredded',    color:'#a855f7', glow:'rgba(168,85,247,.85)' },
-  { tier:4, minLevel:50, name:'GOAT',        color:'#fbbf24', glow:'rgba(251,191,36,1)'   },
-  { tier:5, minLevel:75, name:'GOLDEN GOD',  color:'#FFD700', glow:'rgba(255,215,0,1)'    },
+  { tier:0,  minLevel:1,   name:'2 Marshmallows', color:'#9ca3af', glow:'rgba(156,163,175,.4)', icon:'🍡' },
+  { tier:1,  minLevel:5,   name:'Pretzel Arms',   color:'#d4a96a', glow:'rgba(212,169,106,.5)', icon:'🥨' },
+  { tier:2,  minLevel:10,  name:'Gym Tourist',    color:'#6ee7b7', glow:'rgba(110,231,183,.5)', icon:'🗺️' },
+  { tier:3,  minLevel:15,  name:'First Week Energy', color:'#84cc16', glow:'rgba(132,204,22,.55)', icon:'📅' },
+  { tier:4,  minLevel:20,  name:'Sweat Rookie',   color:'#4ade80', glow:'rgba(74,222,128,.6)',  icon:'💦' },
+  { tier:5,  minLevel:25,  name:'Getting Cooked', color:'#fb923c', glow:'rgba(251,146,60,.65)', icon:'🔥' },
+  { tier:6,  minLevel:30,  name:'Gym Rat',        color:'#f97316', glow:'rgba(249,115,22,.7)',  icon:'🐀' },
+  { tier:7,  minLevel:35,  name:'Iron Grinder',   color:'#ef4444', glow:'rgba(239,68,68,.75)',  icon:'⚙️' },
+  { tier:8,  minLevel:40,  name:'Jacked',         color:'#f87171', glow:'rgba(248,113,113,.8)', icon:'💪' },
+  { tier:9,  minLevel:45,  name:'Beast Mode',     color:'#a855f7', glow:'rgba(168,85,247,.85)', icon:'🦁' },
+  { tier:10, minLevel:50,  name:'Shredded',       color:'#8b5cf6', glow:'rgba(139,92,246,.9)',  icon:'⚡' },
+  { tier:11, minLevel:55,  name:'Alpha Lifter',   color:'#6366f1', glow:'rgba(99,102,241,.9)',  icon:'🏆' },
+  { tier:12, minLevel:60,  name:'Titan',          color:'#38bdf8', glow:'rgba(56,189,248,.95)', icon:'🛡️' },
+  { tier:13, minLevel:65,  name:'Warlord',        color:'#e879f9', glow:'rgba(232,121,249,1)',  icon:'⚔️' },
+  { tier:14, minLevel:70,  name:'Demigod',        color:'#c084fc', glow:'rgba(192,132,252,1)',  icon:'🌟' },
+  { tier:15, minLevel:75,  name:'GOD',            color:'#FFD700', glow:'rgba(255,215,0,1)',    icon:'✨' },
 ];
 
 function getEvolutionTier(level) {
@@ -4280,25 +4508,12 @@ function showEvolutionBanner(tierData, skinName) {
 }
 
 function awardLevelUp(p, oldLevel, newLevel) {
-  const rewards = [];
+  // Mark new levels as claimable instead of giving rewards immediately
+  if (!p.claimedLevels) p.claimedLevels = [];
   for (let lv = oldLevel + 1; lv <= newLevel; lv++) {
-    const gold = lv * 200;
-    p.gold = (p.gold || 0) + gold;
-    p.cases.basic = (p.cases.basic || 0) + 1;
-
-    // Fragment bonus per level: 8-14 fragments to a random locked pet
-    const lvFrags = 8 + Math.floor(Math.random() * 7);
-    // Higher levels bias toward rarer pets
-    const rarityFilter = lv >= 30 ? ['legendary'] : lv >= 15 ? ['epic','legendary'] : lv >= 5 ? ['rare','epic'] : null;
-    awardFragments(p, lvFrags, rarityFilter);
-
-    rewards.push(`+${gold.toLocaleString()} ◆ · +1 Case · ◆ ${lvFrags} Fragments`);
-    if (lv % 10 === 0) {
-      p.cases.legendary = (p.cases.legendary || 0) + 1;
-      rewards[rewards.length - 1] += ' · 👑 Legendary Case';
-    } else if (lv % 5 === 0) {
-      p.cases.rare = (p.cases.rare || 0) + 1;
-      rewards[rewards.length - 1] += ' · 💎 Rare Case';
+    if (!p.claimedLevels.includes(lv)) {
+      // store as negative to mark "unclaimed"
+      p.claimedLevels.push(-lv);
     }
   }
   // Check for evolution tier change → play cinematic animation
@@ -4306,11 +4521,113 @@ function awardLevelUp(p, oldLevel, newLevel) {
   const newTier = getEvolutionTier(newLevel);
   if (newTier.tier > oldTier.tier) {
     const skin = ALL_SKINS_MAP ? ALL_SKINS_MAP[p.equippedSkin] : null;
-    // Short delay so the finish-workout toast has a moment to show first
     setTimeout(() => playEvoAnimation(newTier, p.equippedSkin, skin ? skin.emoji : '🦏'), 900);
   }
-  // Show the banner for the highest new level
-  showLevelUpBanner(newLevel, rewards[rewards.length - 1]);
+  showLevelUpBanner(newLevel, '— Tap XP bar to claim rewards!');
+  updateUnclaimedBadge();
+}
+
+function getLevelRewards(lv) {
+  const gold = lv * 200;
+  const lvFrags = 8 + Math.floor((lv * 7) % 7); // deterministic
+  const rarityFilter = lv >= 30 ? ['legendary'] : lv >= 15 ? ['epic','legendary'] : lv >= 5 ? ['rare','epic'] : null;
+  const rewards = { gold, basicCase: 1, rareCase: 0, legendaryCase: 0, fragments: lvFrags, rarityFilter };
+  if (lv % 10 === 0) rewards.legendaryCase = 1;
+  else if (lv % 5 === 0) rewards.rareCase = 1;
+  return rewards;
+}
+
+function claimLevelReward(lv) {
+  const p = getP();
+  if (!p) return;
+  if (!p.claimedLevels) p.claimedLevels = [];
+  if (!p.claimedLevels.includes(-lv)) return; // not claimable
+  if (lv > p.level) return; // not reached yet
+
+  const r = getLevelRewards(lv);
+  p.gold = (p.gold || 0) + r.gold;
+  p.cases.basic = (p.cases.basic || 0) + r.basicCase;
+  p.cases.rare = (p.cases.rare || 0) + r.rareCase;
+  p.cases.legendary = (p.cases.legendary || 0) + r.legendaryCase;
+  awardFragments(p, r.fragments, r.rarityFilter);
+
+  // Mark as claimed (replace -lv with lv)
+  p.claimedLevels = p.claimedLevels.map(x => x === -lv ? lv : x);
+  saveP(p);
+  refreshHomeStats();
+  updateCaseCounts();
+  updateUnclaimedBadge();
+
+  const tier = EVOLUTION_TIERS.find(t => t.minLevel === lv);
+  const sub = ['+1 Basic Case', r.rareCase ? '💎 Rare Case' : null, r.legendaryCase ? '👑 Legendary Case' : null].filter(Boolean).join(' · ');
+  showAchieve({
+    type: 'gold',
+    icon: tier ? (tier.icon || '⭐') : '◆',
+    eyebrow: tier ? `Rank Unlocked: ${tier.name}` : `Level ${lv} Claimed`,
+    title: `+${r.gold.toLocaleString()} ◆`,
+    sub
+  });
+
+  // Re-render road
+  openLevelRoad();
+}
+
+function updateUnclaimedBadge() {
+  const p = getP();
+  const count = p ? (p.claimedLevels || []).filter(x => x < 0).length : 0;
+  // XP bar badge
+  const badge = document.getElementById('lrUnclaimedBadge');
+  if (badge) { badge.textContent = count; badge.style.display = count > 0 ? '' : 'none'; }
+  // Nav badges (home)
+  const txt = count > 0 ? String(count) : '';
+  ['bnHomeBadge','navHomeBadge'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = txt;
+    el.style.display = count > 0 ? '' : 'none';
+  });
+}
+
+function updateNewPetsBadge() {
+  const p = getP();
+  const count = p ? (p.newPets || []).length : 0;
+  const txt = count > 0 ? String(count) : '';
+  ['bnPetsBadge','navPetsBadge'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = txt;
+    el.style.display = count > 0 ? '' : 'none';
+  });
+}
+
+function clearNewPetsBadge() {
+  const p = getP();
+  if (!p) return;
+  if ((p.newPets || []).length === 0) return;
+  p.newPets = [];
+  saveP(p);
+  updateNewPetsBadge();
+}
+
+function updateCasesBadge() {
+  const p = getP();
+  const count = p ? ((p.cases?.basic||0) + (p.cases?.rare||0) + (p.cases?.legendary||0)) : 0;
+  const txt = count > 0 ? String(count) : '';
+  ['bnCasesBadge','navCasesBadge'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = txt;
+    el.style.display = count > 0 ? '' : 'none';
+  });
+}
+
+function markNewPets(skinIds) {
+  const p = getP();
+  if (!p || !skinIds.length) return;
+  if (!p.newPets) p.newPets = [];
+  skinIds.forEach(id => { if (!p.newPets.includes(id)) p.newPets.push(id); });
+  saveP(p);
+  updateNewPetsBadge();
 }
 
 // ══════════════════════════════════════════
@@ -4591,7 +4908,7 @@ function _openCaseModalInner(type) {
   const qb1 = document.getElementById('qtyBtn1');
   if (qb1) qb1.classList.add('active');
   const qbMax = document.getElementById('qtyBtnMax');
-  if (qbMax) qbMax.textContent = 'MAX';
+  if (qbMax) qbMax.textContent = 'Open All';
 
   // Reset UI
   document.getElementById('wheelPhase').style.display = '';
@@ -4615,7 +4932,7 @@ function setCaseQtyMax(btn) {
   _maxOpenMode = true;
   document.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  btn.textContent = 'MAX ×' + max;
+  btn.textContent = 'Open All ×' + max;
 }
 
 function setCaseQty(n, btn) {
@@ -4623,6 +4940,17 @@ function setCaseQty(n, btn) {
   _maxOpenMode = false;
   document.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+
+  if (n > 1) {
+    // Show multi reels immediately so user can see what's about to spin
+    if (_currentCaseType) initMultiSpin(_currentCaseType, n);
+  } else {
+    // Back to single wheel
+    document.getElementById('wheelPhase').style.display = '';
+    document.getElementById('multiSpinPhase').style.display = 'none';
+    document.getElementById('revealPhase').style.display = 'none';
+    document.getElementById('multiRevealPhase').style.display = 'none';
+  }
 }
 
 // ── Multi-reel spin state ──
@@ -4803,10 +5131,7 @@ function showMultiResults() {
       </div>
     </div>`).join('');
 
-  const summaryLines = Object.entries(summaryMap).map(([name, info]) =>
-    `${info.emoji} ${name} — ${info.type==='shard' ? '+'+info.count+' '+info.rarity+' shards' : '+'+info.count+' fragments'}`
-  );
-  document.getElementById('multiSummary').innerHTML = summaryLines.join('<br>');
+  document.getElementById('multiSummary').innerHTML = '';
 
   document.getElementById('multiSpinPhase').style.display = 'none';
   document.getElementById('multiRevealPhase').style.display = '';
@@ -5039,6 +5364,7 @@ function showReveal() {
     p.fragments[skinId] = Math.min(cost, before + drop);
     newUnlocks = checkFragmentUnlocks(p);
   }
+  if (newUnlocks.length) markNewPets(newUnlocks.map(s => s.id));
   saveP(p);
   updateCaseCounts();
 
@@ -6371,7 +6697,7 @@ function claimDailyGold() {
   saveP(p);
   refreshHomeStats();
   updateGoldClaimUI();
-  showToast('◆ +1,000 Gold — Daily bonus claimed!');
+  showAchieve({ type:'gold', icon:'◆', eyebrow:'Daily Bonus', title:'+1,000 Gold', sub:'Come back tomorrow for more' });
 }
 
 function claimMiniGold() {
@@ -6383,7 +6709,7 @@ function claimMiniGold() {
   saveP(p);
   refreshHomeStats();
   updateGoldClaimUI();
-  showToast('◆ +150 Gold — Come back in 2 hours!');
+  showAchieve({ type:'gold', icon:'⏱', eyebrow:'2-Hour Bonus', title:'+150 Gold', sub:'Next claim in 2 hours' });
 }
 
 function fmtCooldown(msLeft) {
@@ -6444,7 +6770,18 @@ function rtSetPreset(s, el) {
 // Lv1→2: 100  Lv2→3: 220  Lv3→4: 484  Lv4→5: 1065  Lv5→6: 2342
 // Lv6→7: 5153  Lv7→8: 11,336  Lv8→9: 24,940  Lv9→10: 54,867 …
 function xpForLevel(level) {
-  return Math.floor(100 * Math.pow(2.2, level - 1));
+  // Scales with pet quality — better pets give more XP so later levels stay reachable
+  // Common (10xp/tap) covers early, Legendary (100xp) hits mid, Divine (500xp) reaches GOD
+  if (level <= 5)  return 300;       // Common pet: ~30 taps
+  if (level <= 10) return 1000;      // Common: ~100 taps / Rare: ~40 taps
+  if (level <= 15) return 2500;      // Rare pet comfortable here
+  if (level <= 20) return 5000;      // Epic pet starts to shine
+  if (level <= 30) return 8000;      // Epic/Legendary territory
+  if (level <= 40) return 15000;     // Need Legendary+ to grind efficiently
+  if (level <= 50) return 25000;     // Legendary: ~250 taps per level
+  if (level <= 60) return 40000;     // Divine pet makes this feel good
+  if (level <= 70) return 60000;     // Serious grind — reward for dedication
+  return 100000;                     // GOD tier — Divine pet only real path
 }
 
 // Given total accumulated XP, return { level, xpIntoLevel, xpNeeded }
@@ -6503,7 +6840,7 @@ function applyCatchupXP() {
   const mins = Math.floor(secondsGone / 60);
   const secs = secondsGone % 60;
   const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
-  showToast(`⚡ +${totalXP.toLocaleString()} XP earned while away (${timeStr})`);
+  showAchieve({ type:'quest', icon:'⚡', eyebrow:'Welcome Back', title:`+${totalXP.toLocaleString()} XP`, sub:`Earned while away · ${timeStr}` });
 }
 
 function startAutoClicker() {
@@ -6747,7 +7084,7 @@ function updateQuestProgress(type, amount, extra) {
       if (q.reward.type === 'xp') { p.xp = (p.xp||0) + q.reward.amount; p.level = calcLevel(p.xp).level; }
       else if (q.reward.type === 'gold') { p.gold = (p.gold||0) + q.reward.amount; }
       else if (q.reward.type === 'case') { p.cases[q.reward.kind] = (p.cases[q.reward.kind]||0) + 1; }
-      setTimeout(() => showToast('✓ Quest done! ' + q.reward.label), 400);
+      setTimeout(() => showAchieve({ type:'quest', icon:'✦', eyebrow:'Quest Complete', title:q.reward.label, sub:q.desc }), 400);
     }
   });
   saveP(p);
@@ -6819,8 +7156,8 @@ function showSummaryCard(data) {
     streakRow.innerHTML = `<span class="streak-mult-badge">▲ ${data.streak}-day streak</span>`;
   } else { streakRow.innerHTML = ''; }
 
-  const exNames = Object.keys(data.exercises).map(id => (ALL_EXERCISES[id]?.icon || '•') + ' ' + (ALL_EXERCISES[id]?.name || id));
-  document.getElementById('summaryExercises').innerHTML = exNames.join(' &nbsp;·&nbsp; ');
+  const exNames = Object.keys(data.exercises).map(id => (ALL_EXERCISES[id]?.name || id));
+  document.getElementById('summaryExercises').innerHTML = exNames.map(n => `<span class="summary-ex-pill">${n}</span>`).join('');
 
   // Show or hide template prompts
   const prompt = document.getElementById('summaryTemplatePrompt');
@@ -8225,6 +8562,369 @@ document.querySelectorAll('.card,.pet-card').forEach((el,i) => {
   el.style.transition=`opacity .4s ease ${i*.06}s,transform .4s ease ${i*.06}s`;
   requestAnimationFrame(() => { el.style.opacity='1'; el.style.transform='translateY(0)'; });
 });
+
+// ══════════════════════════════════════════
+//  STRENGTH TAB
+// ══════════════════════════════════════════
+function calcE1RM(weight, reps) {
+  if (reps === 1) return weight;
+  return Math.round(weight * (1 + reps / 30)); // Epley formula
+}
+
+function getWeekKey(dateStr) {
+  const d = new Date(dateStr);
+  const day = d.getDay(); // 0=Sun
+  const monday = new Date(d);
+  monday.setDate(d.getDate() - ((day + 6) % 7));
+  return monday.toISOString().slice(0, 10);
+}
+
+function buildStrengthTab() {
+  const p = getP();
+  if (!p) return;
+  const workouts = p.workoutLog || [];
+
+  // ── e1RM per exercise ──
+  const e1rmMap = {}; // exId → { e1rm, weight, reps, date }
+  for (const w of workouts) {
+    for (const [exId, sets] of Object.entries(w.exercises || {})) {
+      for (const s of sets) {
+        if (!s.lbs || !s.reps) continue;
+        const e = calcE1RM(s.lbs, s.reps);
+        if (!e1rmMap[exId] || e > e1rmMap[exId].e1rm) {
+          e1rmMap[exId] = { e1rm: e, weight: s.lbs, reps: s.reps, date: w.date };
+        }
+      }
+    }
+  }
+  window._e1rmData = e1rmMap;
+  renderE1RM('');
+
+  // ── Weekly tonnage ──
+  const weekTons = {}; // weekKey → total lbs
+  for (const w of workouts) {
+    const wk = getWeekKey(w.date);
+    let vol = 0;
+    for (const sets of Object.values(w.exercises || {}))
+      for (const s of sets) vol += (s.lbs || 0) * (s.reps || 0);
+    weekTons[wk] = (weekTons[wk] || 0) + vol;
+  }
+  const weekKeys = Object.keys(weekTons).sort().slice(-8);
+  renderTonnageChart(weekKeys, weekTons);
+
+  // ── Progressive overload score ──
+  renderOverloadScore(workouts);
+}
+
+function renderE1RM(filter) {
+  const map = window._e1rmData || {};
+  const el = document.getElementById('e1rmList');
+  if (!el) return;
+  const entries = Object.entries(map)
+    .filter(([id]) => {
+      const ex = ALL_EXERCISES[id];
+      if (!ex) return false;
+      if (!filter) return true;
+      return ex.name.toLowerCase().includes(filter.toLowerCase());
+    })
+    .sort((a, b) => b[1].e1rm - a[1].e1rm);
+
+  if (!entries.length) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:12px;font-family:\'DM Mono\',monospace;padding:12px 0;">Log workouts with weight & reps to see your e1RM.</div>';
+    return;
+  }
+  el.innerHTML = entries.map(([id, data], i) => {
+    const ex = ALL_EXERCISES[id];
+    const isPR = i === 0;
+    return `<div class="e1rm-row">
+      <div>
+        <div class="e1rm-name">${ex.name}</div>
+        <div class="e1rm-sub">${data.weight} lbs × ${data.reps} reps · ${data.date}</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="e1rm-val">${data.e1rm} lbs</div>
+        ${isPR ? '<div class="e1rm-pr">🏆 TOP</div>' : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTonnageChart(weekKeys, weekTons) {
+  const svg = document.getElementById('tonnageSvg');
+  const labelsEl = document.getElementById('tonnageLabels');
+  if (!svg || !weekKeys.length) return;
+
+  const W = 360, H = 120, padL = 4, padR = 4, padT = 10, padB = 10;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+  const vals = weekKeys.map(k => weekTons[k] || 0);
+  const maxV = Math.max(...vals) || 1;
+  const n = weekKeys.length;
+  const slotW = chartW / n;
+  const barW = Math.max(10, slotW * 0.6);
+
+  // Line chart + bars
+  const pts = weekKeys.map((k, i) => {
+    const x = padL + slotW * i + slotW / 2;
+    const y = padT + chartH - (vals[i] / maxV) * chartH;
+    return [x, y];
+  });
+
+  const linePath = pts.map((p, i) => (i === 0 ? `M${p[0]},${p[1]}` : `L${p[0]},${p[1]}`)).join(' ');
+  const areaPath = `${linePath} L${pts[pts.length-1][0]},${padT+chartH} L${pts[0][0]},${padT+chartH} Z`;
+
+  const bars = weekKeys.map((k, i) => {
+    const x = padL + slotW * i + slotW / 2;
+    const barH = Math.max(2, (vals[i] / maxV) * chartH);
+    const y = padT + chartH - barH;
+    const isLast = i === weekKeys.length - 1;
+    return `<rect x="${(x-barW/2).toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" rx="3" fill="${isLast ? 'rgba(200,255,0,.5)' : 'rgba(200,255,0,.18)'}"/>`;
+  }).join('');
+
+  const dots = pts.map(([x, y], i) =>
+    `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="${i===pts.length-1?'var(--accent)':'rgba(200,255,0,.6)'}" />`
+  ).join('');
+
+  svg.innerHTML = `
+    <path d="${areaPath}" fill="rgba(200,255,0,.05)"/>
+    ${bars}
+    <path d="${linePath}" fill="none" stroke="rgba(200,255,0,.5)" stroke-width="1.5" stroke-linejoin="round"/>
+    ${dots}
+    <line x1="${padL}" y1="${padT+chartH}" x2="${W-padR}" y2="${padT+chartH}" stroke="#333" stroke-width="1"/>
+  `;
+
+  labelsEl.innerHTML = weekKeys.map(k => {
+    const d = new Date(k);
+    return `<span>W${d.getMonth()+1}/${d.getDate()}</span>`;
+  }).join('');
+}
+
+function renderOverloadScore(workouts) {
+  const el = document.getElementById('overloadScore');
+  if (!el) return;
+
+  // Get current and previous week boundaries
+  const now = new Date();
+  const dayOfWeek = (now.getDay() + 6) % 7; // Mon=0
+  const thisMonday = new Date(now); thisMonday.setDate(now.getDate() - dayOfWeek); thisMonday.setHours(0,0,0,0);
+  const lastMonday = new Date(thisMonday); lastMonday.setDate(thisMonday.getDate() - 7);
+
+  const thisWeekVol = {}; // exId → vol
+  const lastWeekVol = {}; // exId → vol
+
+  for (const w of workouts) {
+    const d = new Date(w.date);
+    const isThis = d >= thisMonday;
+    const isLast = d >= lastMonday && d < thisMonday;
+    if (!isThis && !isLast) continue;
+    for (const [exId, sets] of Object.entries(w.exercises || {})) {
+      let v = 0;
+      for (const s of sets) v += (s.lbs || 0) * (s.reps || 0) * sets.length;
+      if (isThis) thisWeekVol[exId] = (thisWeekVol[exId] || 0) + v;
+      if (isLast) lastWeekVol[exId] = (lastWeekVol[exId] || 0) + v;
+    }
+  }
+
+  const allExIds = [...new Set([...Object.keys(thisWeekVol), ...Object.keys(lastWeekVol)])];
+  if (!allExIds.length) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:12px;font-family:\'DM Mono\',monospace;padding:8px 0;">Log at least 2 weeks of workouts to see overload data.</div>';
+    return;
+  }
+
+  const rows = allExIds
+    .filter(id => ALL_EXERCISES[id])
+    .map(id => {
+      const cur = thisWeekVol[id] || 0;
+      const prev = lastWeekVol[id] || 0;
+      const pct = prev > 0 ? Math.round(((cur - prev) / prev) * 100) : null;
+      return { id, cur, prev, pct };
+    })
+    .sort((a, b) => (b.cur || 0) - (a.cur || 0));
+
+  el.innerHTML = rows.map(r => {
+    const ex = ALL_EXERCISES[r.id];
+    let pillClass, pillText;
+    if (r.pct === null) {
+      pillClass = 'overload-same'; pillText = 'NEW';
+    } else if (r.pct > 0) {
+      pillClass = 'overload-up'; pillText = `▲ +${r.pct}%`;
+    } else if (r.pct < 0) {
+      pillClass = 'overload-down'; pillText = `▼ ${r.pct}%`;
+    } else {
+      pillClass = 'overload-same'; pillText = '= 0%';
+    }
+    const insight = r.pct !== null && r.pct >= 5 && r.pct <= 10
+      ? '<span style="font-size:9px;color:var(--accent);font-family:\'DM Mono\',monospace;margin-left:4px;">✓ optimal</span>' : '';
+    return `<div class="overload-row">
+      <div class="overload-name">${ex.name}<br><span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">${r.cur.toLocaleString()} lbs this wk</span></div>
+      <span class="overload-pill ${pillClass}">${pillText}</span>${insight}
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+//  RANK SELECTOR
+// ══════════════════════════════════════════
+function openRankSelector() {
+  const p = getP(); if (!p) return;
+  const level = p.level || 1;
+  const selectedTier = p.selectedTier ?? getEvolutionTier(level).tier;
+
+  const list = document.getElementById('rankSelectorList');
+  list.innerHTML = EVOLUTION_TIERS.map(t => {
+    const unlocked = level >= t.minLevel;
+    const isSelected = t.tier === selectedTier;
+    return `<button type="button" onclick="${unlocked ? `selectRank(${t.tier})` : ''}"
+      style="width:100%;display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:12px;border:1px solid ${isSelected ? t.color+'88' : 'var(--border)'};background:${isSelected ? t.color+'18' : 'var(--bg3)'};margin-bottom:8px;cursor:${unlocked ? 'pointer' : 'default'};opacity:${unlocked ? 1 : 0.4};font-family:inherit;text-align:left;transition:all .2s;">
+      <div style="width:40px;height:40px;border-radius:10px;background:${t.color}22;border:1px solid ${t.color}55;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">${unlocked ? (t.icon || '⭐') : '🔒'}</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:800;color:${unlocked ? t.color : 'var(--muted)'};">${t.name}</div>
+        <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">Level ${t.minLevel}${!unlocked ? ' — locked' : isSelected ? ' — equipped' : ''}</div>
+      </div>
+      ${isSelected ? `<div style="font-size:11px;font-weight:800;color:${t.color};font-family:'DM Mono',monospace;">✓ ON</div>` : ''}
+    </button>`;
+  }).join('');
+
+  const overlay = document.getElementById('rankSelectorOverlay');
+  overlay.style.display = 'flex';
+}
+
+function selectRank(tier) {
+  const p = getP(); if (!p) return;
+  const t = EVOLUTION_TIERS[tier];
+  if (!t || (p.level || 1) < t.minLevel) return;
+  p.selectedTier = tier;
+  saveP(p);
+  refreshHomeStats();
+  closeRankSelector();
+  showAchieve({ type:'quest', icon: t.name === 'GOLDEN GOD' ? '✨' : '🏅', eyebrow:'Title Changed', title:t.name, sub:`Level ${t.minLevel} rank equipped` });
+}
+
+function closeRankSelector() {
+  document.getElementById('rankSelectorOverlay').style.display = 'none';
+}
+
+// ══════════════════════════════════════════
+//  ACHIEVEMENT NOTIFICATION
+// ══════════════════════════════════════════
+let _achieveTimer = null;
+function showAchieve({ type = 'quest', icon, eyebrow, title, sub }) {
+  const el = document.getElementById('achieveNotif');
+  const iconEl = document.getElementById('achieveIcon');
+  const eyebrowEl = document.getElementById('achieveEyebrow');
+  const titleEl = document.getElementById('achieveTitle');
+  const subEl = document.getElementById('achieveSub');
+  if (!el) return;
+
+  iconEl.textContent = icon;
+  iconEl.className = 'achieve-icon ' + (type === 'gold' ? 'achieve-icon-gold' : 'achieve-icon-quest');
+  eyebrowEl.textContent = eyebrow;
+  eyebrowEl.className = 'achieve-eyebrow ' + (type === 'gold' ? 'achieve-eyebrow-gold' : 'achieve-eyebrow-quest');
+  titleEl.textContent = title;
+  subEl.textContent = sub;
+
+  el.classList.remove('show');
+  void el.offsetWidth;
+  el.classList.add('show');
+
+  clearTimeout(_achieveTimer);
+  _achieveTimer = setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+// ══════════════════════════════════════════
+//  LEVEL ROAD
+// ══════════════════════════════════════════
+function openLevelRoad() {
+  const p = getP();
+  if (!p) return;
+  const { level, xpIntoLevel, xpNeeded } = calcLevel(p.xp || 0);
+  const evo = getEvolutionTier(level);
+
+  // Update header
+  document.getElementById('lrSubtitle').textContent = `${evo.name} · Level ${level}`;
+  document.getElementById('lrXpLabel').textContent = `${xpIntoLevel.toLocaleString()} / ${xpNeeded.toLocaleString()} XP`;
+  document.getElementById('lrLevelLabel').textContent = `LVL ${level} → ${level + 1}`;
+  document.getElementById('lrXpFill').style.width = Math.round((xpIntoLevel / xpNeeded) * 100) + '%';
+
+  // Build road nodes — show all 75 levels
+  const nodes = [];
+  const maxShow = 75;
+  for (let lv = 1; lv <= maxShow; lv++) {
+    const gold = lv * 200;
+    const rewards = [];
+    rewards.push({ label: `+${gold.toLocaleString()} ◆`, color: '#fbbf24', bg: 'rgba(251,191,36,.12)' });
+    rewards.push({ label: '+1 Basic Case', color: '#38bdf8', bg: 'rgba(56,189,248,.1)' });
+
+    let icon = '⭐', iconColor = '#6b7280', isEvo = false, title = `Level ${lv}`;
+    if (lv % 10 === 0) {
+      rewards.push({ label: '+1 Legendary Case', color: '#fbbf24', bg: 'rgba(251,191,36,.15)' });
+      icon = '👑'; iconColor = '#fbbf24'; title = `Level ${lv} Milestone`;
+    } else if (lv % 5 === 0) {
+      rewards.push({ label: '+1 Rare Case', color: '#a78bfa', bg: 'rgba(167,139,250,.12)' });
+      icon = '💎'; iconColor = '#a78bfa'; title = `Level ${lv} Milestone`;
+    }
+
+    // Rank unlock at this level — always overrides
+    const evoAtThis = EVOLUTION_TIERS.find(t => t.minLevel === lv);
+    if (evoAtThis) {
+      isEvo = true;
+      icon = evoAtThis.icon || '⭐';
+      iconColor = evoAtThis.color;
+      title = `🔓 New Rank: ${evoAtThis.name}`;
+    }
+
+    const xpReq = xpForLevel(lv);
+    nodes.push({ lv, title, icon, iconColor, isEvo, rewards, xpReq, done: lv < level, current: lv === level });
+  }
+
+  const claimed = new Set((p.claimedLevels || []).filter(x => x > 0));
+  const unclaimed = new Set((p.claimedLevels || []).filter(x => x < 0).map(x => -x));
+
+  // Render
+  const road = document.getElementById('lrRoad');
+  road.innerHTML = nodes.map(n => {
+    const pillsHtml = n.rewards.map(r =>
+      `<span class="lr-pill" style="color:${r.color};border-color:${r.color};background:${r.bg};">${r.label}</span>`
+    ).join('');
+    const isClaimed = claimed.has(n.lv);
+    const isUnclaimed = unclaimed.has(n.lv);
+    const iconStyle = n.isEvo ? `border-color:${n.iconColor};background:${n.iconColor}22;` : '';
+    const dotClass = `lr-icon${isClaimed?' done':''}${n.current?' current':''}${isUnclaimed?' unclaimed':''}${n.isEvo?' evo':''}`;
+    const lineClass = `lr-line${isClaimed?' done':''}`;
+    const titleStyle = n.isEvo ? `color:${n.iconColor};` : isClaimed ? 'color:var(--muted);' : '';
+    const dotContent = isClaimed ? '✓' : n.icon;
+    const claimBtn = isUnclaimed
+      ? `<button type="button" onclick="claimLevelReward(${n.lv})" style="margin-top:8px;padding:7px 18px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#000;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-weight:800;font-size:12px;cursor:pointer;letter-spacing:.3px;">✦ Claim Rewards</button>`
+      : '';
+    const unclaimedDot = isUnclaimed ? `<div style="position:absolute;top:-3px;right:-3px;width:10px;height:10px;background:var(--accent);border-radius:50%;border:2px solid var(--bg2);"></div>` : '';
+    return `<div class="lr-node">
+      <div class="${lineClass}"></div>
+      <div class="${dotClass}" style="${iconStyle};position:relative;">${dotContent}${unclaimedDot}</div>
+      <div class="lr-content">
+        <div class="lr-level" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>LEVEL ${n.lv}</span>
+          <span style="color:var(--accent);opacity:.7;">${n.xpReq.toLocaleString()} XP</span>
+        </div>
+        <div class="lr-title" style="${titleStyle}">${n.title}</div>
+        <div class="lr-rewards">${pillsHtml}</div>
+        ${claimBtn}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Scroll to current level
+  const overlay = document.getElementById('levelRoadOverlay');
+  overlay.style.display = 'flex';
+  setTimeout(() => {
+    const nodes = road.querySelectorAll('.lr-node');
+    const cur = nodes[level - 1];
+    if (cur) cur.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+}
+
+function closeLevelRoad() {
+  document.getElementById('levelRoadOverlay').style.display = 'none';
+}
 </script>
 
 <!-- GOLDEN DUCK OVERLAY -->
@@ -8247,6 +8947,7 @@ document.querySelectorAll('.card,.pet-card').forEach((el,i) => {
   <button class="bn-tab active" onclick="showPage('home')">
     <div class="bn-icon-wrap">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="bn-badge" id="bnHomeBadge" style="display:none;"></span>
     </div>
     <span class="bn-label">Home</span>
   </button>
@@ -8270,19 +8971,36 @@ document.querySelectorAll('.card,.pet-card').forEach((el,i) => {
   </button>
   <button class="bn-tab" onclick="showPage('cases')">
     <div class="bn-icon-wrap">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      <!-- Chest icon -->
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="10" width="20" height="11" rx="2"/>
+        <rect x="2" y="6" width="20" height="6" rx="2"/>
+        <rect x="1" y="8.5" width="22" height="3" rx="1.5"/>
+        <rect x="9" y="4" width="6" height="4" rx="1.5" fill="currentColor"/>
+        <rect x="10" y="13" width="4" height="4" rx="1" fill="none" stroke="white" stroke-width="1.2" opacity=".5"/>
+      </svg>
+      <span class="bn-badge" id="bnCasesBadge" style="display:none;"></span>
     </div>
     <span class="bn-label">Cases</span>
   </button>
-  <button class="bn-tab" onclick="showPage('collection')">
+  <button class="bn-tab" onclick="showPage('collection');clearNewPetsBadge()">
     <div class="bn-icon-wrap">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <!-- Paw print icon -->
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="7" cy="5" rx="1.8" ry="2.4"/>
+        <ellipse cx="12" cy="3.5" rx="1.8" ry="2.4"/>
+        <ellipse cx="17" cy="5" rx="1.8" ry="2.4"/>
+        <ellipse cx="5" cy="10" rx="1.5" ry="2.1"/>
+        <path d="M12 10.5c-3.5 0-6 2-6 4.5 0 1.5.5 2.8 1.5 3.5.8.6 1.8 1 2.8 1h3.4c1 0 2-.4 2.8-1 1-.7 1.5-2 1.5-3.5 0-2.5-2.5-4.5-6-4.5z"/>
+      </svg>
+      <span class="bn-badge" id="bnPetsBadge" style="display:none;"></span>
     </div>
     <span class="bn-label">Pets</span>
   </button>
   <button class="bn-tab" onclick="showPage('settings')">
     <div class="bn-icon-wrap">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <!-- Profile icon (moved from Pets) -->
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
     </div>
     <span class="bn-label">Settings</span>
   </button>
@@ -8297,5 +9015,57 @@ document.querySelectorAll('.card,.pet-card').forEach((el,i) => {
   <div class="move-index-panel" id="moveIndexPanel"></div>
 </div>
 <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleMoveIndex()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:108;"></div>
+<!-- RANK SELECTOR -->
+<div id="rankSelectorOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:970;flex-direction:column;align-items:stretch;justify-content:flex-end;" onclick="if(event.target===this)closeRankSelector()">
+  <div style="background:var(--bg2);border-radius:20px 20px 0 0;border-top:1px solid var(--border);max-height:75vh;display:flex;flex-direction:column;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--border);flex-shrink:0;">
+      <div>
+        <div style="font-size:15px;font-weight:800;">Choose Title</div>
+        <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px;">Select any rank you've unlocked</div>
+      </div>
+      <button onclick="closeRankSelector()" style="background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:4px 12px;font-size:16px;cursor:pointer;">✕</button>
+    </div>
+    <div style="overflow-y:auto;padding:12px 16px 28px;" id="rankSelectorList"></div>
+  </div>
+</div>
+
+<!-- ACHIEVEMENT NOTIFICATION -->
+<div id="achieveNotif">
+  <div class="achieve-inner">
+    <div class="achieve-icon" id="achieveIcon">⚡</div>
+    <div>
+      <div class="achieve-eyebrow" id="achieveEyebrow">Achievement</div>
+      <div class="achieve-title" id="achieveTitle">+1,000 ◆ Gold</div>
+      <div class="achieve-sub" id="achieveSub">Daily bonus claimed</div>
+    </div>
+  </div>
+</div>
+
+<!-- LEVEL ROAD MODAL -->
+<div id="levelRoadOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:960;flex-direction:column;align-items:stretch;justify-content:flex-end;" onclick="if(event.target===this)closeLevelRoad()">
+  <div style="background:var(--bg2);border-radius:20px 20px 0 0;border-top:1px solid var(--border);max-height:85vh;display:flex;flex-direction:column;overflow:hidden;">
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px 12px;border-bottom:1px solid var(--border);flex-shrink:0;">
+      <div>
+        <div style="font-size:15px;font-weight:800;letter-spacing:.3px;">Level Road</div>
+        <div id="lrSubtitle" style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px;"></div>
+      </div>
+      <button onclick="closeLevelRoad()" style="background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:4px 12px;font-size:16px;cursor:pointer;">✕</button>
+    </div>
+    <!-- XP bar -->
+    <div style="padding:12px 18px 0;flex-shrink:0;">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:5px;">
+        <span id="lrXpLabel"></span><span id="lrLevelLabel"></span>
+      </div>
+      <div style="height:8px;background:var(--bg3);border-radius:999px;overflow:hidden;">
+        <div id="lrXpFill" style="height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:999px;transition:width .4s ease;width:0%;"></div>
+      </div>
+    </div>
+    <!-- Road scroll -->
+    <div style="overflow-y:auto;padding:16px 18px 24px;flex:1;" id="lrScroll">
+      <div id="lrRoad"></div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
