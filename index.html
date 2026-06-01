@@ -667,6 +667,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .log-exercise-list{display:flex;flex-direction:column;gap:14px;}
 .log-exercise-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:box-shadow .15s,opacity .15s;}
 .log-exercise-card.log-dragging{opacity:.45;box-shadow:0 0 0 2px var(--accent);}
+.log-exercise-card{transition:transform .18s ease;will-change:transform;}
+.ex-drag-placeholder{border-radius:16px;background:rgba(124,58,237,.07);border:2px dashed rgba(124,58,237,.35);flex-shrink:0;margin-bottom:0;}
 .log-exercise-card.log-drag-over{border-color:var(--accent);box-shadow:0 0 0 2px rgba(200,255,0,.35);}
 .log-ex-header{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);}
 .log-ex-drag-handle{font-size:18px;color:var(--muted);cursor:grab;padding:2px 4px;flex-shrink:0;touch-action:none;user-select:none;line-height:1;}
@@ -710,6 +712,15 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .set-num{color:var(--muted);font-size:12px;}
 .set-input{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 8px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;width:64px;text-align:center;outline:none;transition:border-color .2s;}
 .set-input:focus{border-color:var(--accent);}
+.reps-stepper{display:flex;align-items:center;gap:3px;}
+.reps-stepper-btn{width:24px;height:30px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;}
+.reps-stepper-btn:active{background:rgba(124,58,237,.2);border-color:var(--accent);color:var(--accent);}
+.reps-stepper-btn:hover{border-color:var(--accent);color:var(--accent);}
+.reps-input{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 2px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;width:36px;text-align:center;outline:none;transition:border-color .2s;}
+.reps-input:focus{border-color:var(--accent);}
+.lbs-stepper{display:flex;align-items:center;gap:3px;}
+.lbs-input{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 2px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;width:54px;text-align:center;outline:none;transition:border-color .2s;}
+.lbs-input:focus{border-color:var(--accent);}
 .set-done-btn{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:none;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--muted);}
 .set-done-btn.done{background:var(--accent);border-color:var(--accent);color:#000;}
 .add-set-row{padding:10px 16px;border-top:1px solid var(--border);}
@@ -990,6 +1001,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .skin-rarity-tag{font-size:10px;font-weight:700;letter-spacing:.5px;font-family:'DM Mono',monospace;}
 .lock-overlay{position:absolute;inset:0;background:rgba(10,10,15,.6);display:flex;align-items:center;justify-content:center;font-size:24px;}
 .equipped-tag{position:absolute;top:8px;right:8px;background:var(--accent);color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;font-family:'DM Mono',monospace;letter-spacing:.5px;}
+.new-pet-dot{position:absolute;top:6px;left:6px;width:10px;height:10px;border-radius:50%;background:#ef4444;box-shadow:0 0 8px rgba(239,68,68,.8);border:2px solid var(--bg2);animation:pulse-dot 1.5s ease-in-out infinite;z-index:2;}
 .collection-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
 .col-stat{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center;}
 .col-stat-val{font-size:28px;font-weight:800;margin-bottom:2px;}
@@ -1943,7 +1955,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
         <div class="xp-section" onclick="openLevelRoad()" style="cursor:pointer;">
           <div class="xp-label-row">
             <span style="display:flex;align-items:center;gap:6px;">XP Progress
-              <span id="lrUnclaimedBadge" style="display:none;background:var(--accent);color:#000;font-size:9px;font-weight:800;padding:2px 6px;border-radius:999px;font-family:'DM Mono',monospace;">0</span>
+              <span id="lrUnclaimedBadge" style="display:none;background:#ef4444;color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:999px;font-family:'DM Mono',monospace;">0</span>
             </span>
             <span id="xpLabel">0 / 1000</span>
           </div>
@@ -2795,6 +2807,13 @@ function loginAs(username) {
   updateCaseCounts();
   updateTemplateCardDescriptions();
   startGoldClaimTicker();
+  // Restore any in-progress workout from before force quit
+  setTimeout(() => {
+    if (restoreWorkoutSession()) {
+      showPage('log');
+      showToast('↩ Workout restored — tap Finish when done');
+    }
+  }, 300);
 }
 
 function authLogout() {
@@ -3435,6 +3454,8 @@ function startWorkout() {
   requestNotifPermission();
   workoutStartTime = Date.now();
   _sessionHadReplacements = false;
+  // Start auto-save every 15s
+  setInterval(() => { if (workoutStartTime) saveWorkoutSession(); }, 15000);
   document.getElementById('logPreWorkout').style.display = 'none';
   document.getElementById('logActiveWorkout').style.display = '';
   document.getElementById('activeWorkoutTitle').textContent = getTemplateName(activeTemplate) || 'Workout';
@@ -3469,10 +3490,83 @@ function endWorkoutSession() {
   workoutTimerInterval = null;
   workoutStartTime = null;
   sessionSets = {};
+  clearWorkoutSession();
   document.getElementById('logActiveWorkout').style.display = 'none';
   document.getElementById('logPreWorkout').style.display = '';
   document.getElementById('workoutElapsed').textContent = '00:00';
   rtDismiss();
+}
+
+// ── Workout session persistence ──
+const WS_KEY = 'fitpet_active_workout';
+
+function saveWorkoutSession() {
+  if (!workoutStartTime) return;
+  try {
+    const data = {
+      startTime: workoutStartTime,
+      template: activeTemplate,
+      exerciseOrder: _sessionExerciseOrder,
+      sets: sessionSets,
+      v: 2
+    };
+    localStorage.setItem(WS_KEY, JSON.stringify(data));
+  } catch(e) {}
+}
+
+function clearWorkoutSession() {
+  try { localStorage.removeItem(WS_KEY); } catch(e) {}
+}
+
+function restoreWorkoutSession() {
+  try {
+    const raw = localStorage.getItem(WS_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    if (!data?.startTime || !data?.exerciseOrder?.length) { clearWorkoutSession(); return false; }
+    // Only restore if within 12 hours
+    if (Date.now() - data.startTime > 12 * 3600000) { clearWorkoutSession(); return false; }
+
+    workoutStartTime = data.startTime;
+    activeTemplate = data.template || 'push';
+    _sessionExerciseOrder = data.exerciseOrder;
+    sessionSets = data.sets || {};
+    _sessionHadReplacements = false;
+
+    // Show active workout UI
+    document.getElementById('logPreWorkout').style.display = 'none';
+    document.getElementById('logActiveWorkout').style.display = '';
+    document.getElementById('activeWorkoutTitle').textContent = getTemplateName(activeTemplate) || 'Workout';
+
+    // Rebuild exercise cards from saved sets
+    const exercises = _sessionExerciseOrder.map(id => ALL_EXERCISES[id]).filter(Boolean);
+    document.getElementById('logExerciseList').innerHTML = exercises.map(ex => {
+      // Restore saved sets for this exercise (already in sessionSets)
+      const saved = sessionSets[ex.id];
+      if (saved) {
+        // buildExerciseCard will use sessionSets we just set
+        return buildExerciseCard(ex);
+      }
+      return buildExerciseCard(ex);
+    }).join('');
+    initLogExDrag();
+
+    // Restart elapsed timer
+    clearInterval(workoutTimerInterval);
+    workoutTimerInterval = setInterval(() => {
+      const el = document.getElementById('workoutElapsed');
+      if (!el || !workoutStartTime) return;
+      const sec = Math.floor((Date.now() - workoutStartTime) / 1000);
+      const m = Math.floor(sec/60).toString().padStart(2,'0');
+      const s = (sec%60).toString().padStart(2,'0');
+      el.textContent = m + ':' + s;
+    }, 1000);
+
+    // Auto-save every 15 seconds while workout is active
+    setInterval(() => { if (workoutStartTime) saveWorkoutSession(); }, 15000);
+
+    return true;
+  } catch(e) { clearWorkoutSession(); return false; }
 }
 
 function buildExerciseList() {
@@ -3497,120 +3591,182 @@ function buildExerciseList() {
 function initLogExDrag() {
   const list = document.getElementById('logExerciseList');
   if (!list) return;
+  if (list._cleanupDrag) list._cleanupDrag();
 
-  let dragSrcId = null;
+  let srcCard = null, placeholder = null, fixedTop = 0, touchOffY = 0;
 
-  function getCards() { return [...list.querySelectorAll('.log-exercise-card')]; }
+  function getCards() {
+    return [...list.querySelectorAll('.log-exercise-card')];
+  }
 
+  function insertPlaceholderBefore(refCard) {
+    if (!placeholder) return;
+    if (refCard) list.insertBefore(placeholder, refCard);
+    else list.appendChild(placeholder);
+  }
+
+  function onTouchStart(e) {
+    if (!e.target.closest('.log-ex-drag-handle')) return;
+    const card = e.target.closest('.log-exercise-card');
+    if (!card) return;
+    e.preventDefault();
+
+    srcCard = card;
+    const rect = card.getBoundingClientRect();
+    const t = e.touches[0];
+    touchOffY = t.clientY - rect.top;
+
+    // Create placeholder with same size
+    placeholder = document.createElement('div');
+    placeholder.className = 'ex-drag-placeholder';
+    placeholder.style.height = rect.height + 'px';
+    list.insertBefore(placeholder, card);
+
+    // Lift card to fixed overlay
+    card.style.position = 'fixed';
+    card.style.left = rect.left + 'px';
+    card.style.top = rect.top + 'px';
+    card.style.width = rect.width + 'px';
+    card.style.zIndex = '9999';
+    card.style.boxShadow = '0 16px 48px rgba(0,0,0,.7), 0 0 0 2px var(--accent)';
+    card.style.borderRadius = '16px';
+    card.style.transform = 'scale(1.03)';
+    card.style.transition = 'box-shadow .15s, transform .15s';
+    card.style.pointerEvents = 'none';
+    fixedTop = rect.top;
+  }
+
+  function onTouchMove(e) {
+    if (!srcCard || !placeholder) return;
+    e.preventDefault();
+    const t = e.touches[0];
+    const newTop = t.clientY - touchOffY;
+    srcCard.style.top = newTop + 'px';
+
+    // Find which card the placeholder should go before
+    const cards = getCards();
+    const midY = t.clientY;
+    let target = null; // insert before this card, or null = append
+
+    for (const c of cards) {
+      if (c === srcCard || c === placeholder) continue;
+      const r = c.getBoundingClientRect();
+      if (midY < r.top + r.height * 0.5) { target = c; break; }
+    }
+
+    // Only move placeholder if it would change position
+    const nextSib = placeholder.nextElementSibling;
+    const wantBefore = target;
+    if (wantBefore !== nextSib) {
+      placeholder.style.transition = 'none';
+      insertPlaceholderBefore(wantBefore);
+    }
+  }
+
+  function onTouchEnd() {
+    if (!srcCard || !placeholder) return;
+
+    // Reset card styles
+    srcCard.style.position = '';
+    srcCard.style.left = '';
+    srcCard.style.top = '';
+    srcCard.style.width = '';
+    srcCard.style.zIndex = '';
+    srcCard.style.boxShadow = '';
+    srcCard.style.borderRadius = '';
+    srcCard.style.transform = '';
+    srcCard.style.transition = '';
+    srcCard.style.pointerEvents = '';
+
+    // Insert card where placeholder is, then remove placeholder
+    list.insertBefore(srcCard, placeholder);
+    placeholder.remove();
+    placeholder = null;
+
+    // Save new order
+    _sessionExerciseOrder = getCards().map(c => c.dataset.exid);
+    if (activeTemplate !== 'custom') {
+      const p = getP();
+      if (p) {
+        if (!p.templateOverrides) p.templateOverrides = {};
+        p.templateOverrides[activeTemplate] = [..._sessionExerciseOrder];
+        saveP(p);
+      }
+    }
+    buildInlineHistory();
+    saveWorkoutSession();
+    srcCard = null;
+  }
+
+  // HTML5 drag for desktop
+  let dSrcIdx = -1, dCurIdx = -1, dCards = [];
   function onDragStart(e) {
-    const card = e.currentTarget;
-    dragSrcId = card.dataset.exid;
-    card.classList.add('log-dragging');
+    dCards = getCards();
+    dSrcIdx = dCards.indexOf(e.currentTarget);
+    dCurIdx = dSrcIdx;
+    e.currentTarget.style.opacity = '0.4';
     e.dataTransfer.effectAllowed = 'move';
   }
   function onDragEnd(e) {
-    e.currentTarget.classList.remove('log-dragging');
-    getCards().forEach(c => c.classList.remove('log-drag-over'));
+    e.currentTarget.style.opacity = '';
+    if (dSrcIdx !== dCurIdx && dSrcIdx >= 0 && dCurIdx >= 0) {
+      const moving = dCards.splice(dSrcIdx, 1)[0];
+      dCards.splice(dCurIdx, 0, moving);
+      dCards.forEach(c => list.appendChild(c));
+      _sessionExerciseOrder = dCards.map(c => c.dataset.exid);
+      if (activeTemplate !== 'custom') {
+        const p = getP(); if (p) { if (!p.templateOverrides) p.templateOverrides = {}; p.templateOverrides[activeTemplate] = [..._sessionExerciseOrder]; saveP(p); }
+      }
+      buildInlineHistory(); saveWorkoutSession();
+    }
+    dSrcIdx = -1; dCurIdx = -1;
   }
   function onDragOver(e) {
     e.preventDefault();
-    getCards().forEach(c => c.classList.remove('log-drag-over'));
-    e.currentTarget.classList.add('log-drag-over');
-  }
-  function onDrop(e) {
-    e.preventDefault();
-    const targetId = e.currentTarget.dataset.exid;
-    if (!dragSrcId || dragSrcId === targetId) return;
-    reorderLogExercise(dragSrcId, targetId);
-    dragSrcId = null;
-  }
-
-  // Touch drag support
-  let touchSrcId = null;
-  let touchGhost = null;
-  let touchOverCard = null;
-
-  function onTouchStart(e) {
-    const handle = e.target.closest('.log-ex-drag-handle');
-    if (!handle) return;
-    const card = e.currentTarget;
-    touchSrcId = card.dataset.exid;
-    card.classList.add('log-dragging');
-    const rect = card.getBoundingClientRect();
-    touchGhost = card.cloneNode(true);
-    Object.assign(touchGhost.style, {
-      position:'fixed', left: rect.left+'px', top: rect.top+'px',
-      width: rect.width+'px', opacity:'0.75', zIndex:'9999',
-      pointerEvents:'none', borderRadius:'var(--radius)',
-      background:'var(--bg2)', border:'1px solid var(--accent)'
-    });
-    document.body.appendChild(touchGhost);
-  }
-  function onTouchMove(e) {
-    if (!touchSrcId) return;
-    e.preventDefault();
-    const t = e.touches[0];
-    if (touchGhost) { touchGhost.style.left=(t.clientX-20)+'px'; touchGhost.style.top=(t.clientY-30)+'px'; }
-    getCards().forEach(c => c.classList.remove('log-drag-over'));
-    const el = document.elementFromPoint(t.clientX, t.clientY);
-    const overCard = el && el.closest('.log-exercise-card');
-    if (overCard && overCard.dataset.exid !== touchSrcId) {
-      overCard.classList.add('log-drag-over');
-      touchOverCard = overCard.dataset.exid;
-    } else { touchOverCard = null; }
-  }
-  function onTouchEnd() {
-    if (!touchSrcId) return;
-    if (touchGhost) { touchGhost.remove(); touchGhost = null; }
-    getCards().forEach(c => { c.classList.remove('log-dragging'); c.classList.remove('log-drag-over'); });
-    if (touchOverCard && touchOverCard !== touchSrcId) reorderLogExercise(touchSrcId, touchOverCard);
-    touchSrcId = null; touchOverCard = null;
+    const i = dCards.indexOf(e.currentTarget);
+    if (i >= 0 && i !== dSrcIdx) dCurIdx = i;
   }
 
   getCards().forEach(card => {
+    card.setAttribute('draggable', 'true');
     card.addEventListener('dragstart', onDragStart);
-    card.addEventListener('dragend', onDragEnd);
-    card.addEventListener('dragover', onDragOver);
-    card.addEventListener('drop', onDrop);
+    card.addEventListener('dragend',   onDragEnd);
+    card.addEventListener('dragover',  onDragOver);
     card.addEventListener('touchstart', onTouchStart, { passive: false });
-    card.addEventListener('touchmove', onTouchMove, { passive: false });
-    card.addEventListener('touchend', onTouchEnd);
   });
-}
+  list.addEventListener('touchmove', onTouchMove, { passive: false });
+  list.addEventListener('touchend',  onTouchEnd);
 
+  list._cleanupDrag = () => {
+    getCards().forEach(card => {
+      card.removeEventListener('dragstart', onDragStart);
+      card.removeEventListener('dragend',   onDragEnd);
+      card.removeEventListener('dragover',  onDragOver);
+      card.removeEventListener('touchstart', onTouchStart);
+    });
+    list.removeEventListener('touchmove', onTouchMove);
+    list.removeEventListener('touchend',  onTouchEnd);
+    list._cleanupDrag = null;
+  };
+}
 function reorderLogExercise(srcId, targetId) {
   const list = document.getElementById('logExerciseList');
   if (!list) return;
   const cards = [...list.querySelectorAll('.log-exercise-card')];
-  const srcCard = cards.find(c => c.dataset.exid === srcId);
-  const targetCard = cards.find(c => c.dataset.exid === targetId);
-  if (!srcCard || !targetCard) return;
-
-  // DOM reorder — swap cards without destroying inputs/state
-  const srcIdx = [...list.children].indexOf(srcCard);
-  const tgtIdx = [...list.children].indexOf(targetCard);
-  if (srcIdx < tgtIdx) list.insertBefore(srcCard, targetCard.nextSibling);
-  else list.insertBefore(srcCard, targetCard);
-
-  // Update _sessionExerciseOrder to match new DOM order
+  const src = cards.find(c => c.dataset.exid === srcId);
+  const tgt = cards.find(c => c.dataset.exid === targetId);
+  if (!src || !tgt) return;
+  const si = [...list.children].indexOf(src);
+  const ti = [...list.children].indexOf(tgt);
+  if (si < ti) list.insertBefore(src, tgt.nextSibling);
+  else list.insertBefore(src, tgt);
   _sessionExerciseOrder = [...list.querySelectorAll('.log-exercise-card')].map(c => c.dataset.exid);
-
-  // Persist the new order to this profile's template override immediately
   if (activeTemplate !== 'custom') {
     const p = getP();
-    if (p) {
-      if (!p.templateOverrides) p.templateOverrides = {};
-      p.templateOverrides[activeTemplate] = [..._sessionExerciseOrder];
-      saveP(p);
-    }
+    if (p) { if (!p.templateOverrides) p.templateOverrides = {}; p.templateOverrides[activeTemplate] = [..._sessionExerciseOrder]; saveP(p); }
   }
-
-  // Re-init drag so event listeners are fresh on the moved cards
-  initLogExDrag();
-  // Refresh the home card order next time it's viewed
   buildInlineHistory();
 }
-
 function getPrForExercise(exId) {
   const p = getP();
   if (!p) return null;
@@ -3706,8 +3862,8 @@ function buildSetRow(exId, idx, set, prevSet) {
     <tr id="setrow-${exId}-${idx}" class="${set.done?'set-row-done':''}">
       <td class="set-num">${idx+1}${isDropSet ? '<span class="drop-badge">DROP</span>' : ''}</td>
       <td style="color:var(--muted);font-size:12px">${prevLabel}</td>
-      <td><input class="set-input" type="number" value="${set.lbs}" min="0" onchange="updateSet('${exId}',${idx},'lbs',this.value)"></td>
-      <td><input class="set-input" type="number" value="${set.reps}" min="0" onchange="updateSet('${exId}',${idx},'reps',this.value)"></td>
+      <td><div class="lbs-stepper"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},-2.5,this)">−</button><input class="lbs-input" type="number" id="lbs-${exId}-${idx}" value="${set.lbs}" min="0" step="2.5" onchange="updateSet('${exId}',${idx},'lbs',this.value)"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},2.5,this)">+</button></div></td>
+      <td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},-1,this)">−</button><input class="reps-input" type="number" id="reps-${exId}-${idx}" value="${set.reps}" min="0" onchange="updateSet('${exId}',${idx},'reps',this.value)"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},1,this)">+</button></div></td>
       <td><button class="set-done-btn${set.done?' done':''}" onclick="toggleSetDone(this,'${exId}',${idx})">&#10003;</button><button class="set-delete-btn" onclick="removeSet('${exId}',${idx})">✕</button></td>
     </tr>`;
   if (isDropSet) {
@@ -3716,8 +3872,8 @@ function buildSetRow(exId, idx, set, prevSet) {
     <tr id="setrow-${exId}-${idx}-drop-${di}" class="drop-sub-row${set.done?' set-row-done':''}">
       <td class="drop-arrow">↓</td>
       <td style="color:var(--muted);font-size:12px">—</td>
-      <td><input class="set-input" type="number" value="${drop.lbs}" min="0" onchange="updateDrop('${exId}',${idx},${di},'lbs',this.value)"></td>
-      <td><input class="set-input" type="number" value="${drop.reps}" min="0" onchange="updateDrop('${exId}',${idx},${di},'reps',this.value)"></td>
+      <td><div class="lbs-stepper"><button class="reps-stepper-btn" onclick="stepDropLbs('${exId}',${idx},${di},-2.5,this)">−</button><input class="lbs-input" type="number" id="lbs-${exId}-${idx}-d${di}" value="${drop.lbs}" min="0" step="2.5" onchange="updateDrop('${exId}',${idx},${di},'lbs',this.value)"><button class="reps-stepper-btn" onclick="stepDropLbs('${exId}',${idx},${di},2.5,this)">+</button></div></td>
+      <td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepDropReps('${exId}',${idx},${di},-1,this)">−</button><input class="reps-input" type="number" id="reps-${exId}-${idx}-d${di}" value="${drop.reps}" min="0" onchange="updateDrop('${exId}',${idx},${di},'reps',this.value)"><button class="reps-stepper-btn" onclick="stepDropReps('${exId}',${idx},${di},1,this)">+</button></div></td>
       <td>${di === set.drops.length-1 ? `<button class="add-drop-btn" onclick="addDrop('${exId}',${idx})">+drop</button>` : ''}<button class="set-delete-btn" onclick="removeDrop('${exId}',${idx},${di})">✕</button></td>
     </tr>`;
     });
@@ -3725,9 +3881,57 @@ function buildSetRow(exId, idx, set, prevSet) {
   return html;
 }
 
+// Move cursor to end of input on focus so user can immediately backspace
+document.addEventListener('focus', e => {
+  const el = e.target;
+  if (el.classList.contains('set-input') || el.classList.contains('reps-input') || el.classList.contains('lbs-input')) {
+    setTimeout(() => {
+      const len = el.value.length;
+      el.setSelectionRange(len, len);
+    }, 0);
+  }
+}, true);
+
+function stepReps(exId, idx, delta, btn) {
+  if (btn && btn.blur) btn.blur();
+  const set = sessionSets[exId]?.[idx];
+  if (!set) return;
+  set.reps = Math.max(0, (set.reps || 0) + delta);
+  const input = document.getElementById('reps-' + exId + '-' + idx);
+  if (input) input.value = set.reps;
+}
+
+function stepDropReps(exId, setIdx, dropIdx, delta, btn) {
+  if (btn && btn.blur) btn.blur();
+  const drop = sessionSets[exId]?.[setIdx]?.drops?.[dropIdx];
+  if (!drop) return;
+  drop.reps = Math.max(0, (drop.reps || 0) + delta);
+  const input = document.getElementById('reps-' + exId + '-' + setIdx + '-d' + dropIdx);
+  if (input) input.value = drop.reps;
+}
+
+function stepLbs(exId, idx, delta, btn) {
+  if (btn && btn.blur) btn.blur();
+  const set = sessionSets[exId]?.[idx];
+  if (!set) return;
+  set.lbs = Math.max(0, Math.round(((set.lbs || 0) + delta) * 10) / 10);
+  const input = document.getElementById('lbs-' + exId + '-' + idx);
+  if (input) input.value = set.lbs;
+}
+
+function stepDropLbs(exId, setIdx, dropIdx, delta, btn) {
+  if (btn && btn.blur) btn.blur();
+  const drop = sessionSets[exId]?.[setIdx]?.drops?.[dropIdx];
+  if (!drop) return;
+  drop.lbs = Math.max(0, Math.round(((drop.lbs || 0) + delta) * 10) / 10);
+  const input = document.getElementById('lbs-' + exId + '-' + setIdx + '-d' + dropIdx);
+  if (input) input.value = drop.lbs;
+}
+
 function updateSet(exId, idx, field, val) {
   if (sessionSets[exId] && sessionSets[exId][idx]) {
-    sessionSets[exId][idx][field] = parseInt(val) || 0;
+    sessionSets[exId][idx][field] = field === 'lbs' ? (parseFloat(val) || 0) : (parseInt(val) || 0);
+    saveWorkoutSession();
   }
 }
 
@@ -3785,7 +3989,7 @@ function addDrop(exId, setIdx) {
 function updateDrop(exId, setIdx, dropIdx, field, val) {
   const set = sessionSets[exId]?.[setIdx];
   if (set?.drops?.[dropIdx]) {
-    set.drops[dropIdx][field] = parseInt(val) || 0;
+    set.drops[dropIdx][field] = field === 'lbs' ? (parseFloat(val) || 0) : (parseInt(val) || 0);
   }
 }
 
@@ -3953,6 +4157,7 @@ function toggleSetDone(btn, exId, idx) {
   btn.classList.toggle('done', set.done);
   const row = document.getElementById(`setrow-${exId}-${idx}`);
   row.classList.toggle('set-row-done', set.done);
+  saveWorkoutSession();
   // Toggle drop sub-rows too
   if (set.drops) {
     set.drops.forEach((_, di) => {
@@ -5992,6 +6197,7 @@ function renderSkins(filter='all') {
 
   document.getElementById('skinsGrid').innerHTML = filtered.map(s => {
     const isLocked   = !unlocked.has(s.id);
+    const isNew      = !isLocked && (p?.newPets || []).includes(s.id);
     const isEquipped = s.id === equipped;
     const have       = frags[s.id] || 0;
     const cost       = FRAGMENT_COSTS[s.rarity];
@@ -6016,6 +6222,7 @@ function renderSkins(filter='all') {
 
     return `<button type="button" class="skin-card ${isLocked?'locked':''} ${ready?'forgeable':''} ${isEquipped?'equipped':''} ${s.rarity}-skin ${s.rarity==='divine'?'divine-skin':''}"
          onclick="openPetBio('${s.id}')" style="text-align:center;width:100%;font-family:inherit;background:var(--bg2);color:var(--text);">
+      ${isNew ? '<div class="new-pet-dot"></div>' : ''}
       ${isEquipped ? '<div class="equipped-tag">ON</div>' : ''}
       ${imgHtml}
       ${tierLabel}
@@ -6393,6 +6600,11 @@ function equipSkin(id) {
   if (!p) return;
   try {
     p.equippedSkin = id;
+    // Clear new-pet badge for this specific pet when equipped
+    if (p.newPets && p.newPets.includes(id)) {
+      p.newPets = p.newPets.filter(pid => pid !== id);
+      updateNewPetsBadge();
+    }
     saveP(p);
     refreshHomeStats();
   } catch(e) { console.error('equipSkin refreshHomeStats crash:', e); }
