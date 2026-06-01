@@ -10,12 +10,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#08071a;--bg2:#0f0d24;--bg3:#171430;--border:rgba(255,255,255,.07);
-  --text:#ede9ff;--muted:#6b6490;--accent:#7c3aed;--accent-glow:rgba(124,58,237,.4);
-  --accent2:#6d28d9;--accent3:#f97316;--accent-lime:#c8ff00;
-  --rare:#38bdf8;--epic:#a855f7;--legendary:#fbbf24;--common:#6b7280;
-  --green:#22c55e;--nav-h:64px;--radius:16px;--radius-sm:10px;
-  --card-bg:rgba(255,255,255,.03);--card-border:rgba(124,58,237,.15);
+  --bg:#000000;--bg2:#0a0a0a;--bg3:#141414;--border:rgba(204,255,0,.1);
+  --text:#ffffff;--muted:#5a6070;--accent:#ccff00;--accent-glow:rgba(204,255,0,.3);
+  --accent2:#dfff00;--accent3:#f97316;--accent-lime:#ccff00;
+  --rare:#38bdf8;--epic:#a855f7;--legendary:#fbbf24;--common:rgba(204,255,0,.35);
+  --green:#ccff00;--nav-h:64px;--radius:16px;--radius-sm:10px;
+  --card-bg:rgba(204,255,0,.02);--card-border:rgba(204,255,0,.12);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{overflow-x:hidden;}
@@ -26,7 +26,7 @@ body{overscroll-behavior:none;-webkit-overflow-scrolling:touch;}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.5;}
 
 /* ── AUTH SCREEN ── */
-.auth-screen{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,#1a0e40 0%,var(--bg) 60%);z-index:800;display:flex;align-items:center;justify-content:center;padding:24px;}
+.auth-screen{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,#141a00 0%,var(--bg) 60%);z-index:800;display:flex;align-items:center;justify-content:center;padding:24px;}
 .auth-screen.hidden{display:none;}
 .auth-box{background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:40px 36px;width:100%;max-width:400px;}
 .auth-logo{font-size:28px;font-weight:800;letter-spacing:-.5px;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:32px;}
@@ -36,27 +36,27 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .auth-sub{font-size:13px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:28px;line-height:1.5;}
 .auth-tabs{display:flex;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:24px;}
 .auth-tab{flex:1;padding:8px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);border:none;background:none;font-family:'Syne',sans-serif;transition:all .2s;}
-.auth-tab.active{background:var(--accent);color:#fff;}
+.auth-tab.active{background:var(--accent);color:#000;}
 .auth-field{margin-bottom:14px;}
 .auth-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:6px;display:block;}
 .auth-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;transition:border-color .2s;}
-.auth-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(139,92,246,.15);}
+.auth-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(204,255,0,.12);}
 .pin-row{display:flex;gap:8px;}
 .pin-input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 8px;color:var(--text);font-family:'DM Mono',monospace;font-size:20px;font-weight:700;text-align:center;outline:none;transition:border-color .2s;width:0;}
 .pin-input:focus{border-color:var(--accent);}
-.auth-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;border:none;border-radius:var(--radius-sm);font-family:'Syne',sans-serif;font-weight:800;font-size:15px;cursor:pointer;margin-top:8px;transition:all .2s;letter-spacing:.2px;}
+.auth-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#000;border:none;border-radius:var(--radius-sm);font-family:'Syne',sans-serif;font-weight:800;font-size:15px;cursor:pointer;margin-top:8px;transition:all .2s;letter-spacing:.2px;}
 .auth-btn:hover{filter:brightness(1.1);box-shadow:0 0 28px var(--accent-glow);}
 .auth-error{font-size:12px;color:#f87171;font-family:'DM Mono',monospace;margin-top:10px;min-height:16px;text-align:center;}
 .profiles-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;max-height:220px;overflow-y:auto;}
 .profile-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;}
-.profile-item:hover{border-color:var(--accent);background:rgba(139,92,246,.04);}
+.profile-item:hover{border-color:var(--accent);background:rgba(204,255,0,.04);}
 .profile-avatar{width:36px;height:36px;border-radius:50%;background:var(--bg2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;}
 .profile-name{font-size:14px;font-weight:700;flex:1;}
 .profile-meta{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
 .no-profiles{text-align:center;padding:20px;color:var(--muted);font-size:13px;font-family:'DM Mono',monospace;}
 
 /* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;background:rgba(10,8,28,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(124,58,237,.12);z-index:110;}
+nav{position:fixed;top:0;left:0;right:0;background:rgba(6,6,6,.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid rgba(204,255,0,.1);z-index:110;}
 nav::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:500px;background:var(--bg2);pointer-events:none;z-index:110;}
 #navSpacer{display:none;background:var(--bg2);}
 #navInner{height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
@@ -64,7 +64,7 @@ nav::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:500px
 .logo-dot{background:var(--accent)!important;box-shadow:0 0 16px var(--accent)!important;}
 .nav-tabs{display:flex;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:4px;}
 .nav-tab{padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .2s;border:none;background:none;font-family:'Syne',sans-serif;letter-spacing:.2px;}
-.nav-tab.active{background:var(--accent);color:#fff;box-shadow:0 0 16px var(--accent-glow);}
+.nav-tab.active{background:var(--accent);color:#000;box-shadow:0 0 16px var(--accent-glow);}
 .nav-tab:hover:not(.active){color:var(--text);}
 .nav-right{display:flex;align-items:center;gap:10px;}
 .streak-badge{display:flex;align-items:center;gap:6px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.25);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:800;color:#fb923c;font-family:'DM Mono',monospace;}
@@ -103,7 +103,7 @@ nav::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:500px
 .shop-btn-legendary{background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(251,191,36,.1));color:#fbbf24;border:1px solid rgba(251,191,36,.4);}
 .shop-btn-legendary:hover{background:rgba(251,191,36,.35);}
 /* ── LEVELUP BANNER ── */
-.levelup-banner{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(220px);background:linear-gradient(135deg,var(--bg2),rgba(139,92,246,.1));border:1px solid rgba(139,92,246,.5);border-radius:12px;padding:8px 18px;z-index:650;box-shadow:0 4px 20px rgba(0,0,0,.6),0 0 16px rgba(139,92,246,.2);transition:transform .45s cubic-bezier(.34,1.56,.64,1);text-align:center;min-width:0;white-space:nowrap;pointer-events:none;}
+.levelup-banner{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(220px);background:linear-gradient(135deg,var(--bg2),rgba(204,255,0,.06));border:1px solid rgba(204,255,0,.28);border-radius:12px;padding:8px 18px;z-index:650;box-shadow:0 4px 20px rgba(0,0,0,.6),0 0 16px rgba(204,255,0,.12);transition:transform .45s cubic-bezier(.34,1.56,.64,1);text-align:center;min-width:0;white-space:nowrap;pointer-events:none;}
 .levelup-banner.show{transform:translateX(-50%) translateY(0);}
 /* ── EVOLUTION TIERS ── */
 .evolved-banner{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(300px);background:linear-gradient(135deg,#0a0a0f,rgba(168,85,247,.12));border:1px solid rgba(168,85,247,.5);border-radius:16px;padding:16px 32px;z-index:660;box-shadow:0 8px 60px rgba(0,0,0,.7),0 0 40px rgba(168,85,247,.2);transition:transform .5s cubic-bezier(.34,1.56,.64,1);text-align:center;min-width:280px;pointer-events:none;}
@@ -113,7 +113,7 @@ nav::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:500px
 .evolved-eyebrow{font-size:9px;letter-spacing:3px;text-transform:uppercase;font-family:'DM Mono',monospace;color:#a855f7;margin-bottom:3px;}
 .evolved-name{font-size:28px;font-weight:800;letter-spacing:-.5px;margin-bottom:2px;}
 .evolved-sub{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);}
-.evo-badge{font-size:9px;font-weight:800;padding:3px 8px;border-radius:5px;letter-spacing:1px;font-family:'DM Mono',monospace;text-transform:uppercase;background:rgba(139,92,246,.15);color:var(--accent);border:1px solid rgba(139,92,246,.3);}
+.evo-badge{font-size:9px;font-weight:800;padding:3px 8px;border-radius:5px;letter-spacing:1px;font-family:'DM Mono',monospace;text-transform:uppercase;background:rgba(204,255,0,.09);color:var(--accent);border:1px solid rgba(204,255,0,.18);}
 .evo-next{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);margin-top:4px;margin-bottom:10px;letter-spacing:.3px;}
 /* Per-tier visual effects on the pet display */
 .pet-emoji.evo-0{filter:drop-shadow(0 0 18px rgba(107,114,128,.4));font-size:80px;}
@@ -238,13 +238,13 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .page.active{display:block;}
 
 /* ── CARDS & SHARED ── */
-.card{background:linear-gradient(160deg,rgba(124,58,237,.06) 0%,var(--bg2) 50%);border:1px solid rgba(124,58,237,.12);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(139,92,246,.3),transparent);pointer-events:none;}
+.card{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(204,255,0,.2),transparent);pointer-events:none;}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
 .card-title{font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;}
 .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;font-family:'DM Mono',monospace;}
 .badge-green{background:rgba(34,197,94,.15);color:var(--green);}
-.badge-purple{background:rgba(139,92,246,.15);color:var(--accent);}
+.badge-purple{background:rgba(204,255,0,.09);color:var(--accent);}
 .badge-orange{background:rgba(249,115,22,.15);color:var(--accent3);}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:var(--radius-sm);font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;border:none;transition:all .2s;letter-spacing:.3px;}
 .btn-primary{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;width:100%;margin-top:12px;box-shadow:0 4px 20px var(--accent-glow);}
@@ -256,11 +256,11 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
 /* ── HOME ── */
 .home-grid{display:grid;grid-template-columns:380px 1fr;gap:20px;align-items:start;}
-.pet-card{background:linear-gradient(180deg,#1a0e40 0%,var(--bg2) 100%);border:1px solid rgba(124,58,237,.25);border-radius:var(--radius);overflow:hidden;position:relative;box-shadow:0 4px 24px rgba(124,58,237,.12);}
-.pet-bg{height:260px;background:radial-gradient(ellipse at 50% 40%,#2d1b69 0%,#1a0e40 40%,#0a071a 75%);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.pet-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(139,92,246,.12) 0%,transparent 60%);}
+.pet-card{background:var(--bg2);border:1px solid var(--card-border);border-radius:var(--radius);overflow:hidden;position:relative;box-shadow:0 4px 24px rgba(204,255,0,.06);}
+.pet-bg{height:260px;background:radial-gradient(ellipse at 50% 40%,#0f1800 0%,#080d00 40%,#000000 75%);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.pet-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(204,255,0,.08) 0%,transparent 60%);}
 .pet-bg-rings{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
-.ring{position:absolute;border:1px solid rgba(139,92,246,.1);border-radius:50%;animation:ring-pulse 4s ease-in-out infinite;}
+.ring{position:absolute;border:1px solid rgba(204,255,0,.06);border-radius:50%;animation:ring-pulse 4s ease-in-out infinite;}
 .ring:nth-child(1){width:120px;height:120px;}
 .ring:nth-child(2){width:180px;height:180px;animation-delay:.5s;}
 .ring:nth-child(3){width:240px;height:240px;animation-delay:1s;}
@@ -326,7 +326,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .ab-combatant.crit-hit{animation:crit-shake .35s ease;}
 
 /* Battle wheel settled glow */
-.wheel-svg-el.settled{filter:drop-shadow(0 0 10px rgba(139,92,246,.6));transition:filter .3s;}
+.wheel-svg-el.settled{filter:drop-shadow(0 0 10px rgba(204,255,0,.32));transition:filter .3s;}
 
 /* Status pills pulse */
 .burn-pill{animation:glow-breathe 1.5s ease-in-out infinite;}
@@ -337,7 +337,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
 /* Move announce slide */
 .move-announce.show .move-announce-inner{animation:scale-in .25s cubic-bezier(.34,1.56,.64,1) both;}
-.pet-emoji{font-size:96px;position:relative;z-index:2;filter:drop-shadow(0 0 30px rgba(139,92,246,.4));animation:pet-idle 3s ease-in-out infinite;cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;display:flex;align-items:center;justify-content:center;min-height:200px;width:100%;text-align:center;}
+.pet-emoji{font-size:96px;position:relative;z-index:2;filter:drop-shadow(0 0 30px rgba(204,255,0,.22));animation:pet-idle 3s ease-in-out infinite;cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;display:flex;align-items:center;justify-content:center;min-height:200px;width:100%;text-align:center;}
 .pet-emoji img{width:200px;height:200px;object-fit:contain;object-position:center;border-radius:16px;display:block;margin:0 auto;transform-origin:center center;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none;pointer-events:none;}
 @keyframes pet-idle{0%,100%{transform:translateY(0px);}50%{transform:translateY(-10px);}}
 /* ── RARITY GLOW ANIMATIONS ── */
@@ -382,12 +382,12 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .workout-today-title{font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;}
 .workout-today-name{font-size:18px;font-weight:800;color:var(--text);line-height:1.1;}
 .exercise-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg3);border-radius:11px;border:1px solid var(--border);cursor:pointer;transition:all .18s;}
-.exercise-row:hover{border-color:rgba(139,92,246,.4);background:rgba(139,92,246,.05);transform:translateX(2px);}
-.exercise-icon{width:34px;height:34px;background:rgba(139,92,246,.12);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;border:1px solid rgba(139,92,246,.25);color:var(--accent);}
+.exercise-row:hover{border-color:rgba(204,255,0,.22);background:rgba(204,255,0,.03);transform:translateX(2px);}
+.exercise-icon{width:34px;height:34px;background:rgba(204,255,0,.07);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;border:1px solid rgba(204,255,0,.14);color:var(--accent);}
 .exercise-details{flex:1;min-width:0;}
 .exercise-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .exercise-sets{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:1px;}
-.exercise-pr{font-size:11px;font-weight:700;color:var(--accent);background:rgba(139,92,246,.1);padding:2px 7px;border-radius:5px;font-family:'DM Mono',monospace;}
+.exercise-pr{font-size:11px;font-weight:700;color:var(--accent);background:rgba(204,255,0,.06);padding:2px 7px;border-radius:5px;font-family:'DM Mono',monospace;}
 .exercise-row-arrow{color:var(--muted);font-size:12px;flex-shrink:0;}
 .exercise-info{flex:1;min-width:0;}
 .exercise-muscle{font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -395,8 +395,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .check-circle.done{background:var(--accent);border-color:var(--accent);color:#fff;}
 .mission-list{display:flex;flex-direction:column;gap:10px;}
 .mission-item{display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--bg3);border-radius:var(--radius-sm);border:1px solid var(--border);transition:border-color .2s;}
-.mission-item:not(.done):hover{border-color:rgba(139,92,246,.35);}
-.mission-icon{font-size:20px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(139,92,246,.1);border-radius:9px;border:1px solid rgba(139,92,246,.2);flex-shrink:0;}
+.mission-item:not(.done):hover{border-color:rgba(204,255,0,.2);}
+.mission-icon{font-size:20px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(204,255,0,.06);border-radius:9px;border:1px solid rgba(204,255,0,.12);flex-shrink:0;}
 .mission-info{flex:1;}
 .mission-name{font-size:13px;font-weight:600;margin-bottom:4px;}
 .mission-bar-wrap{height:4px;background:var(--bg2);border-radius:999px;overflow:hidden;margin-bottom:2px;}
@@ -408,9 +408,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .mission-reward{text-align:right;font-size:11px;font-family:'DM Mono',monospace;}
 .mission-reward-top{color:var(--accent);font-weight:700;}
 .mission-reward-bot{color:var(--muted);}
-.mission-item.done{opacity:.6;border-color:rgba(139,92,246,.3);}
+.mission-item.done{opacity:.6;border-color:rgba(204,255,0,.18);}
 .mission-item.done .mission-name{text-decoration:line-through;color:var(--muted);}
-.mission-done-check{font-size:14px;font-weight:800;min-width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:rgba(139,92,246,.2);border:1px solid rgba(139,92,246,.4);border-radius:50%;color:var(--accent);}
+.mission-done-check{font-size:14px;font-weight:800;min-width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:rgba(204,255,0,.12);border:1px solid rgba(204,255,0,.22);border-radius:50%;color:var(--accent);}
 .streak-mult-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.35);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:800;font-family:'DM Mono',monospace;color:var(--legendary);}
 /* mood dot states */
 .mood-dot.happy{background:#4ade80;box-shadow:0 0 8px #4ade80;}
@@ -456,7 +456,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .case-rarity-dot{position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%;}
 .streak-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px;}
 .streak-day{aspect-ratio:1;border-radius:4px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);}
-.streak-day.done{background:rgba(139,92,246,.3);color:var(--accent);}
+.streak-day.done{background:rgba(204,255,0,.18);color:var(--accent);}
 .streak-day.today{border:1px solid var(--accent);}
 
 /* ── LOG PAGE ── */
@@ -470,9 +470,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .cancel-workout-btn:hover{background:rgba(239,68,68,.18);border-color:#ef4444;}
 .templates-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
 .template-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .2s;}
-.template-card:hover,.template-card.selected{border-color:var(--accent);background:rgba(139,92,246,.06);box-shadow:0 0 0 1px rgba(139,92,246,.2);}
-.template-card.tmpl-dragging{opacity:.4;box-shadow:0 0 0 2px rgba(139,92,246,.6);}
-.template-card.tmpl-drag-over{border-color:var(--accent);box-shadow:0 0 0 2px rgba(139,92,246,.4);transform:scale(1.03);}
+.template-card:hover,.template-card.selected{border-color:var(--accent);background:rgba(204,255,0,.04);box-shadow:0 0 0 1px rgba(204,255,0,.12);}
+.template-card.tmpl-dragging{opacity:.4;box-shadow:0 0 0 2px rgba(204,255,0,.32);}
+.template-card.tmpl-drag-over{border-color:var(--accent);box-shadow:0 0 0 2px rgba(204,255,0,.22);transform:scale(1.03);}
 .tmpl-drag-handle{font-size:16px;color:var(--muted);cursor:grab;touch-action:none;user-select:none;line-height:1;padding:2px 4px;flex-shrink:0;}
 .tmpl-drag-handle:active{cursor:grabbing;color:var(--accent);}
 .template-emoji{font-size:28px;margin-bottom:8px;}
@@ -603,7 +603,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .ab-upgrade-sub{font-size:12px;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:20px;}
 .ab-upgrade-cards{display:flex;flex-direction:column;gap:10px;}
 .ab-upgrade-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;text-align:left;}
-.ab-upgrade-card:hover{border-color:var(--accent);transform:translateX(5px);background:rgba(139,92,246,.04);}
+.ab-upgrade-card:hover{border-color:var(--accent);transform:translateX(5px);background:rgba(204,255,0,.03);}
 .ab-upgrade-icon{font-size:28px;flex-shrink:0;line-height:1;}
 .ab-upgrade-name{font-size:14px;font-weight:800;margin-bottom:2px;}
 .ab-upgrade-desc{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);}
@@ -668,7 +668,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .log-exercise-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:box-shadow .15s,opacity .15s;}
 .log-exercise-card.log-dragging{opacity:.45;box-shadow:0 0 0 2px var(--accent);}
 .log-exercise-card{transition:transform .18s ease;will-change:transform;}
-.ex-drag-placeholder{border-radius:16px;background:rgba(124,58,237,.07);border:2px dashed rgba(124,58,237,.35);flex-shrink:0;margin-bottom:0;}
+.ex-drag-placeholder{border-radius:16px;background:rgba(204,255,0,.04);border:2px dashed rgba(204,255,0,.2);flex-shrink:0;margin-bottom:0;}
 .log-exercise-card.log-drag-over{border-color:var(--accent);box-shadow:0 0 0 2px rgba(200,255,0,.35);}
 .log-ex-header{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);}
 .log-ex-drag-handle{font-size:18px;color:var(--muted);cursor:grab;padding:2px 4px;flex-shrink:0;touch-action:none;user-select:none;line-height:1;}
@@ -703,7 +703,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .inline-hist-date{color:var(--muted);flex-shrink:0;width:80px;}
 .inline-hist-sets{display:flex;gap:5px;flex-wrap:wrap;}
 .inline-hist-set{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:2px 6px;font-size:11px;white-space:nowrap;}
-.inline-hist-set.pr{border-color:rgba(139,92,246,.4);color:var(--accent);}
+.inline-hist-set.pr{border-color:rgba(204,255,0,.22);color:var(--accent);}
 .no-hist{color:var(--muted);font-size:11px;font-family:'DM Mono',monospace;}
 .sets-table{width:100%;border-collapse:collapse;}
 .sets-table th{padding:8px 16px;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;text-align:left;border-bottom:1px solid var(--border);}
@@ -729,7 +729,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .finish-workout-btn{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;width:100%;padding:16px;border-radius:var(--radius-sm);font-size:16px;font-weight:800;border:none;cursor:pointer;font-family:'Syne',sans-serif;margin-top:12px;transition:all .2s;letter-spacing:.3px;}
 .finish-workout-btn:hover{filter:brightness(1.1);box-shadow:0 4px 24px var(--accent-glow);transform:translateY(-2px);}
 .add-exercise-workout-btn{background:var(--bg3);color:var(--text);width:100%;padding:13px;border-radius:var(--radius-sm);font-size:14px;font-weight:700;border:1px dashed var(--border);cursor:pointer;font-family:'Syne',sans-serif;margin-top:16px;transition:all .2s;letter-spacing:.3px;}
-.add-exercise-workout-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(139,92,246,.04);}
+.add-exercise-workout-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(204,255,0,.03);}
 .template-edit-btn{background:none;border:none;cursor:pointer;font-size:14px;opacity:0.5;padding:2px 4px;border-radius:4px;line-height:1;transition:opacity .15s;flex-shrink:0;}
 .template-edit-btn:hover{opacity:1;background:rgba(255,255,255,.08);}
 .template-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2px;position:relative;}
@@ -756,7 +756,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .te-ex-remove{background:none;border:1px solid transparent;color:var(--muted);border-radius:6px;width:24px;height:24px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;}
 .te-ex-remove:hover{border-color:rgba(239,68,68,.4);color:#ef4444;}
 .te-add-ex-btn{width:100%;padding:9px;background:var(--bg3);border:1px dashed var(--border);border-radius:10px;color:var(--accent);font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .18s;}
-.te-add-ex-btn:hover{border-color:var(--accent);background:rgba(139,92,246,.04);}
+.te-add-ex-btn:hover{border-color:var(--accent);background:rgba(204,255,0,.03);}
 /* Exercise picker sits above template edit modal */
 .replace-modal-overlay{z-index:1000;}
 .te-ex-remove{background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;padding:2px 6px;border-radius:4px;transition:color .15s;margin-left:2px;}
@@ -769,7 +769,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .template-edit-emoji-input{width:80px;text-align:center;font-size:24px;}
 .template-edit-footer{display:flex;gap:10px;padding:0 18px 18px;flex-wrap:wrap;}
 .template-edit-saveas-btn{width:100%;padding:11px;background:var(--bg3);color:var(--accent);border:1px solid var(--accent);border-radius:8px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
-.template-edit-saveas-btn:hover{background:rgba(139,92,246,.1);}
+.template-edit-saveas-btn:hover{background:rgba(204,255,0,.06);}
 .template-edit-remove-btn{width:100%;padding:10px;background:transparent;color:rgba(239,68,68,.7);border:1px solid rgba(239,68,68,.3);border-radius:8px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
 .template-edit-remove-btn:hover{background:rgba(239,68,68,.1);color:#ef4444;border-color:#ef4444;}
 .template-edit-remove-btn.hidden{display:none;}
@@ -777,7 +777,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .template-edit-save-btn:hover{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;}
 .template-edit-cancel-btn{padding:12px 18px;background:var(--bg3);color:var(--muted);border:1px solid var(--border);border-radius:8px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .2s;}
 .template-edit-cancel-btn:hover{color:var(--text);}
-.set-row-done{background:rgba(139,92,246,.04);}
+.set-row-done{background:rgba(204,255,0,.03);}
 .set-row-done td{color:var(--muted);}
 .drop-badge{font-size:8px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);border-radius:4px;padding:1px 5px;font-family:'DM Mono',monospace;vertical-align:middle;margin-left:4px;}
 .drop-sub-row td{padding:6px 16px 6px 28px;border-bottom:1px solid rgba(42,42,56,.5);background:rgba(239,68,68,.03);}
@@ -803,7 +803,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .hist-stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 12px;text-align:center;}
 .hist-stat-val{font-size:24px;font-weight:800;line-height:1;}
 .hist-stat-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-family:'DM Mono',monospace;margin-top:4px;}
-.hist-stat-card.accent-card{border-color:rgba(139,92,246,.3);background:rgba(200,255,0,.05);}
+.hist-stat-card.accent-card{border-color:rgba(204,255,0,.18);background:rgba(200,255,0,.05);}
 .hist-stat-card.accent-card .hist-stat-val{color:var(--accent);}
 /* chart */
 .hist-chart-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;}
@@ -843,7 +843,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .hwc-ex-vol{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-left:auto;}
 .hwc-sets{display:flex;flex-wrap:wrap;gap:5px;}
 .hwc-set-chip{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:3px 9px;font-size:11px;font-family:'DM Mono',monospace;}
-.hwc-set-chip.pr{border-color:rgba(139,92,246,.4);color:var(--accent);background:rgba(139,92,246,.07);}
+.hwc-set-chip.pr{border-color:rgba(204,255,0,.22);color:var(--accent);background:rgba(204,255,0,.04);}
 .history-empty{text-align:center;padding:60px 20px;color:var(--muted);font-family:'DM Mono',monospace;font-size:14px;}
 /* PRs tab */
 .pr-search{width:100%;box-sizing:border-box;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:10px 14px;font-size:14px;font-family:'Syne',sans-serif;outline:none;margin-bottom:16px;}
@@ -990,7 +990,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .skin-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 12px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 .skin-card.locked{opacity:.5;cursor:default;}
 .skin-card:not(.locked):hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.4);}
-.skin-card.equipped{border-color:var(--accent);background:rgba(139,92,246,.07);box-shadow:0 0 0 1px rgba(139,92,246,.2);}
+.skin-card.equipped{border-color:var(--accent);background:rgba(204,255,0,.04);box-shadow:0 0 0 1px rgba(204,255,0,.12);}
 .skin-card.legendary-skin{border-color:rgba(251,191,36,.3);}
 .skin-card.epic-skin{border-color:rgba(168,85,247,.25);}
 .skin-card.rare-skin{border-color:rgba(56,189,248,.2);}
@@ -1097,19 +1097,19 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .settings-section-title{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:14px;}
 .sound-preset-row{cursor:pointer;border-radius:10px;padding:10px 8px;transition:background .15s;}
 .sound-preset-row:hover{background:rgba(255,255,255,.04);}
-.sound-preset-row.active{background:rgba(139,92,246,.06);}
+.sound-preset-row.active{background:rgba(204,255,0,.04);}
 .rt-bottom{margin-top:10px;display:flex;align-items:center;gap:6px;}
 .rt-presets{display:flex;gap:6px;flex:1;}
 .rt-preset{flex:1;padding:6px 0;background:var(--bg3);border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;font-family:'DM Mono',monospace;transition:all .18s;text-align:center;}
-.rt-preset:hover,.rt-preset.active{border-color:var(--accent);color:var(--accent);background:rgba(139,92,246,.06);}
-.done-overlay{position:fixed;inset:0;background:rgba(139,92,246,.06);pointer-events:none;z-index:200;opacity:0;}
+.rt-preset:hover,.rt-preset.active{border-color:var(--accent);color:var(--accent);background:rgba(204,255,0,.04);}
+.done-overlay{position:fixed;inset:0;background:rgba(204,255,0,.04);pointer-events:none;z-index:200;opacity:0;}
 .done-overlay.flash{animation:overlay-flash .8s ease forwards;}
 @keyframes overlay-flash{0%{opacity:0;}30%{opacity:1;}100%{opacity:0;}}
 
 /* ── TOAST / XP FLOATER ── */
 .toast{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:50%;opacity:0;transform:translateX(-50%) translateY(calc(-100% - 16px));background:rgba(18,18,26,.96);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px 16px 10px 12px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;z-index:1300;box-shadow:0 8px 32px rgba(0,0,0,.5);transition:transform .35s cubic-bezier(.34,1.4,.64,1),opacity .25s;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);white-space:nowrap;font-family:'DM Mono',monospace;letter-spacing:.2px;pointer-events:none;max-width:calc(100vw - 32px);}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
-.toast-icon{font-size:16px;width:30px;height:30px;border-radius:8px;background:rgba(139,92,246,.18);border:1px solid rgba(139,92,246,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.toast-icon{font-size:16px;width:30px;height:30px;border-radius:8px;background:rgba(139,92,246,.18);border:1px solid rgba(204,255,0,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 #toast-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px;}
 .xp-floater{position:fixed;pointer-events:none;z-index:700;font-size:18px;font-weight:800;color:var(--accent);font-family:'DM Mono',monospace;text-shadow:0 0 20px rgba(200,255,0,.6);animation:xp-rise 2s ease forwards;}
 @keyframes xp-rise{0%{transform:translateY(0);opacity:1;}100%{transform:translateY(-80px);opacity:0;}}
@@ -1179,7 +1179,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 /* ── SHARD EXCHANGE ── */
 .exchange-list{display:flex;flex-direction:column;gap:10px;}
 .exchange-row{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;transition:all .2s;overflow:hidden;}
-.exchange-row.can-trade{border-color:rgba(139,92,246,.2);}
+.exchange-row.can-trade{border-color:rgba(204,255,0,.12);}
 .exchange-row.cant-trade{opacity:.4;}
 .ex-shards{display:flex;flex-direction:column;gap:2px;min-width:80px;flex-shrink:0;}
 .ex-shard-line{display:flex;align-items:center;gap:5px;}
@@ -1243,7 +1243,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .evo-tap:hover{color:#fff;border-color:rgba(255,255,255,.5);}
 /* ── RESPONSIVE ── */
 /* ── BOTTOM NAV (mobile only) ── */
-.bottom-nav{display:none;position:fixed;left:0;right:0;background:rgba(10,8,28,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(124,58,237,.12);padding:6px 2px 4px;z-index:109;justify-content:space-evenly;align-items:center;}
+.bottom-nav{display:none;position:fixed;left:0;right:0;background:rgba(10,8,28,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(204,255,0,.07);padding:6px 2px 4px;z-index:109;justify-content:space-evenly;align-items:center;}
 .bn-tab{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--muted);cursor:pointer;padding:4px 2px;border-radius:12px;transition:all .2s;flex:1;max-width:60px;-webkit-tap-highlight-color:transparent;}
 .bn-tab.active{color:var(--accent);}
 .bn-tab.active .bn-icon-wrap{background:rgba(124,58,237,.15);border-color:rgba(124,58,237,.3);} .bn-tab svg{transition:stroke .2s;} .bn-tab.active svg{stroke:var(--accent);}
@@ -1255,8 +1255,13 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 @media(max-width:768px){
   /* Top nav */
   #navSpacer{display:block;height:max(env(safe-area-inset-top,0px),47px);background:var(--bg2);}
-  #navInner{height:50px;padding:0 14px;}
-  .nav-logo{font-size:17px;}
+  #navInner{height:50px;padding:0 12px;}
+  .nav-logo{font-size:15px;flex-shrink:0;gap:7px;}
+  .nav-logo-icon{width:30px;height:30px;border-radius:8px;}
+  .nav-logo-text{display:inline;}
+  .nav-right{gap:6px;flex-shrink:0;}
+  #rtMiniTab{padding:4px 8px;font-size:11px;gap:5px;}
+  .rt-mini-time{font-size:12px;}
   .nav-tabs{display:none;}
   .dev-btn{display:none;}
   .streak-badge,.gold-badge{font-size:11px;padding:4px 9px;gap:4px;}
@@ -1689,7 +1694,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
       <!-- Stats -->
       <div class="summary-stats-grid">
         <div class="summary-stat"><div class="summary-stat-val" id="summarySets">0</div><div class="summary-stat-lbl">Sets Done</div></div>
-        <div class="summary-stat"><div class="summary-stat-val" id="summaryStreak">0🔥</div><div class="summary-stat-lbl">Day Streak</div></div>
+        <div class="summary-stat"><div class="summary-stat-val" id="summaryStreak">0<svg width="13" height="13" viewBox="0 0 24 24" fill="#fb923c" style="vertical-align:middle;margin-left:3px"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></div><div class="summary-stat-lbl">Day Streak</div></div>
       </div>
       <!-- Exercise pills -->
       <div class="summary-exercises" id="summaryExercises"></div>
@@ -1779,7 +1784,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
       <div class="pet-bio-action-wrap">
         <!-- Unlocked: equip button -->
         <div id="petBioEquipWrap">
-          <button class="pet-bio-equip-btn" id="petBioEquipBtn" onclick="petBioEquip()">⚡ Equip</button>
+          <button class="pet-bio-equip-btn" id="petBioEquipBtn" onclick="petBioEquip()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Equip</button>
         </div>
         <!-- Locked: fragment progress -->
         <div id="petBioFragWrap" style="display:none;">
@@ -1798,16 +1803,16 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
     <!-- RIGHT PANEL -->
     <div class="pet-bio-right">
       <!-- XP STATS -->
-      <div class="pet-bio-section-title">⚡ XP OUTPUT</div>
+      <div class="pet-bio-section-title"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>XP OUTPUT</div>
       <div class="pet-bio-xp-grid" id="petBioXpGrid"></div>
       <!-- BATTLE MOVES -->
-      <div class="pet-bio-section-title" style="margin-top:18px;">⚔️ ATTACKS</div>
+      <div class="pet-bio-section-title" style="margin-top:18px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/></svg>ATTACKS</div>
       <div id="petBioMoves"></div>
       <!-- PASSIVE -->
-      <div class="pet-bio-section-title" style="margin-top:18px;">🛡️ PASSIVE ABILITY</div>
+      <div class="pet-bio-section-title" style="margin-top:18px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>PASSIVE ABILITY</div>
       <div class="pet-bio-passive" id="petBioPassive"></div>
       <!-- BATTLE STATS -->
-      <div class="pet-bio-section-title" style="margin-top:18px;">📊 BATTLE STATS</div>
+      <div class="pet-bio-section-title" style="margin-top:18px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>BATTLE STATS</div>
       <div class="pet-bio-stat-grid" id="petBioStats"></div>
     </div>
   </div>
@@ -1821,7 +1826,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
 <!-- EVOLVED BANNER -->
 <div class="evolved-banner" id="evolvedBanner">
-  <div class="evolved-eyebrow">&#128293; Evolution</div>
+  <div class="evolved-eyebrow"><svg width="10" height="10" viewBox="0 0 24 24" fill="#fb923c" style="vertical-align:middle;margin-right:4px"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg>Evolution</div>
   <div class="evolved-name" id="evolvedTierName">JACKED</div>
   <div class="evolved-sub" id="evolvedSkinName">Your pet has evolved!</div>
 </div>
@@ -1855,12 +1860,12 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 <nav>
   <div id="navSpacer"></div>
   <div id="navInner">
-  <div class="nav-logo"><div class="nav-logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M18 4v16M2 9h4M18 9h4M2 15h4M18 15h4M6 9h12M6 15h12"/></svg></div>FitPet</div>
+  <div class="nav-logo"><div class="nav-logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M18 4v16M2 9h4M18 9h4M2 15h4M18 15h4M6 9h12M6 15h12"/></svg></div><span class="nav-logo-text">FitPet</span></div>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="showPage('home')" style="position:relative;">Home<span id="navHomeBadge" style="display:none;position:absolute;top:2px;right:2px;min-width:14px;height:14px;background:#ef4444;color:#fff;font-size:8px;font-weight:800;border-radius:999px;padding:0 3px;line-height:14px;font-family:'DM Mono',monospace;"></span></button>
     <button class="nav-tab" onclick="showPage('log')">Log</button>
     <button class="nav-tab" onclick="showPage('history')">Stats</button>
-    <button class="nav-tab" onclick="showPage('battle')">⚔️</button>
+    <button class="nav-tab" onclick="showPage('battle')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/></svg></button>
     <button class="nav-tab" onclick="showPage('cases')" style="position:relative;">Cases<span id="navCasesBadge" style="display:none;position:absolute;top:2px;right:2px;min-width:14px;height:14px;background:#ef4444;color:#fff;font-size:8px;font-weight:800;border-radius:999px;padding:0 3px;line-height:14px;font-family:'DM Mono',monospace;"></span></button>
     <button class="nav-tab" onclick="showPage('collection');clearNewPetsBadge()" style="position:relative;">Pets<span id="navPetsBadge" style="display:none;position:absolute;top:2px;right:2px;min-width:14px;height:14px;background:#ef4444;color:#fff;font-size:8px;font-weight:800;border-radius:999px;padding:0 3px;line-height:14px;font-family:'DM Mono',monospace;"></span></button>
   </div>
@@ -1872,7 +1877,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
         <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">REST</span>
       </div>
     <div class="gold-badge">◆ <span id="goldCount">0</span></div>
-    <div class="streak-badge"><span class="streak-fire">🔥</span><span id="streakCount">0</span>d</div>
+    <div class="streak-badge"><span class="streak-fire"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fb923c" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></span><span id="streakCount">0</span>d</div>
     <div class="profile-dropdown-wrap" id="profileDropdownWrap">
       <div class="nav-profile-btn" onclick="toggleProfileDropdown()">
         <div class="nav-profile-initial" id="navInitial">N</div>
@@ -1890,7 +1895,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
               <div class="pd-username" id="pdUsername">—</div>
               <button class="pd-rank-pill" id="pdRankPill" onclick="openRankSelector()" style="color:var(--muted);border-color:var(--border);background:none;cursor:pointer;font-family:inherit;">ROOKIE ✎</button>
             </div>
-            <button class="pd-edit-btn" onclick="closeProfileDropdown();openProfileModal()" title="Customize Profile">✏️</button>
+            <button class="pd-edit-btn" onclick="closeProfileDropdown();openProfileModal()" title="Customize Profile"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
           </div>
           <div class="pd-stats-row">
             <div class="pd-stat">
@@ -1909,15 +1914,15 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
         </div>
         <!-- SOUND -->
         <div class="pd-section">
-          <div class="pd-section-title">🔊 Volume</div>
+          <div class="pd-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>Volume</div>
           <div class="pd-vol-row">
-            <span class="pd-vol-icon">🔈</span>
+            <span class="pd-vol-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
             <input class="pd-vol-slider" id="pdVolSlider" type="range" min="0" max="100" value="80" oninput="onVolumeChange(this.value)">
             <span class="pd-vol-label" id="pdVolLabel">80%</span>
           </div>
         </div>
         <div class="pd-footer">
-          <button class="pd-action-btn" onclick="closeProfileDropdown();showPage('settings')">🔔 Sound Settings</button>
+          <button class="pd-action-btn" onclick="closeProfileDropdown();showPage('settings')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Sound Settings</button>
           <button class="pd-switch-btn" onclick="authLogout()">↩ Switch Profile</button>
         </div>
       </div>
@@ -2013,7 +2018,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
         <div style="height:1px;background:rgba(251,191,36,.12);margin:0 14px;"></div>
         <!-- 2h claim -->
         <div id="miniClaimRow" style="padding:10px 14px;display:flex;align-items:center;gap:12px;">
-          <div style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">⏱</div>
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
           <div style="flex:1;">
             <div style="font-size:13px;font-weight:800;color:#fbbf24;">+150 ◆</div>
             <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">EVERY 2 HOURS</div>
@@ -2023,7 +2028,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
       </div>
 
       <div class="card">
-        <div class="card-header"><span class="card-title">Streak — <span id="calMonthLabel">May 2026</span></span><span class="badge badge-orange">&#128293; <span id="calStreakBadge">0</span> Days</span></div>
+        <div class="card-header"><span class="card-title">Streak — <span id="calMonthLabel">May 2026</span></span><span class="badge badge-orange"><svg width="11" height="11" viewBox="0 0 24 24" fill="#fb923c" style="vertical-align:middle;margin-right:3px"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg><span id="calStreakBadge">0</span> Days</span></div>
         <div class="streak-grid" id="streakGrid"></div>
       </div>
     </div>
@@ -2083,7 +2088,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
     <button class="hist-tab active" onclick="switchHistTab('overview',this)">Overview</button>
     <button class="hist-tab" onclick="switchHistTab('workouts',this)">Workouts</button>
     <button class="hist-tab" onclick="switchHistTab('prs',this)">PRs</button>
-    <button class="hist-tab" onclick="switchHistTab('strength',this)">💪 Strength</button>
+    <button class="hist-tab" onclick="switchHistTab('strength',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M6 4v16M18 4v16M2 9h4M18 9h4M2 15h4M18 15h4M6 9h12M6 15h12"/></svg>Strength</button>
   </div>
 
   <!-- ── OVERVIEW PANE ── -->
@@ -2094,7 +2099,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
         <div class="hist-stat-label">Workouts</div>
       </div>
       <div class="hist-stat-card">
-        <div class="hist-stat-val" id="hst-streak">0🔥</div>
+        <div class="hist-stat-val" id="hst-streak">0<svg width="13" height="13" viewBox="0 0 24 24" fill="#fb923c" style="vertical-align:middle;margin-left:3px"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></div>
         <div class="hist-stat-label">Streak</div>
       </div>
       <div class="hist-stat-card">
@@ -2225,7 +2230,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   <!-- star above -->
   <polygon points="36,4 37.2,7.6 41,7.6 38,9.8 39.2,13.4 36,11.2 32.8,13.4 34,9.8 31,7.6 34.8,7.6" fill="#e879f9" opacity=".9"/>
 </svg></div>
-      <div class="big-case-name">Rare Case</div><div class="big-case-desc">Earned from weekly challenges and 7-day streaks.</div><div class="rarity-pills"><span class="rarity-pill pill-rare">Rare 50%</span><span class="rarity-pill pill-epic">Epic 35%</span><span class="rarity-pill pill-legendary">Legendary 15%</span></div><div class="case-count-badge" id="rareCaseCount">&#215;0 available</div><div class="open-btn open-btn-epic" style="margin-top:12px;padding:12px;border-radius:8px;font-weight:800;font-size:14px;">Open Case</div>
+      <div class="big-case-name">Rare Case</div><div class="big-case-desc">Earned from streak milestones (7, 14, 30 days) and every 3rd level.</div><div class="rarity-pills"><span class="rarity-pill pill-rare">Rare 50%</span><span class="rarity-pill pill-epic">Epic 35%</span><span class="rarity-pill pill-legendary">Legendary 15%</span></div><div class="case-count-badge" id="rareCaseCount">&#215;0 available</div><div class="open-btn open-btn-epic" style="margin-top:12px;padding:12px;border-radius:8px;font-weight:800;font-size:14px;">Open Case</div>
     </button>
     <button type="button" class="big-case-card legendary-bg" onclick="openCaseModal('legendary')" style="font-family:inherit;color:var(--text);width:100%;--case-glow:rgba(251,191,36,.7);">
       <div class="case-icon-wrap"><svg width="80" height="78" viewBox="0 0 80 78" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2263,7 +2268,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   <polygon points="14,10 15,13 18,13 15.5,14.8 16.5,17.8 14,16 11.5,17.8 12.5,14.8 10,13 13,13" fill="#fbbf24" opacity=".7"/>
   <polygon points="66,8 67,11 70,11 67.5,12.8 68.5,15.8 66,14 63.5,15.8 64.5,12.8 62,11 65,11" fill="#fbbf24" opacity=".7"/>
 </svg></div>
-      <div class="big-case-name">Legendary Case</div><div class="big-case-desc">Reserved for 30-day streaks and major milestones.</div><div class="rarity-pills"><span class="rarity-pill pill-epic">Epic 60%</span><span class="rarity-pill pill-legendary">Legendary 35%</span><span class="rarity-pill pill-divine">🦆 Golden Duck 5%</span></div><div class="case-count-badge" id="legendaryCaseCount">&#215;0 available</div><div class="open-btn open-btn-legendary" style="margin-top:12px;padding:12px;border-radius:8px;font-weight:800;font-size:14px;">Open Case</div>
+      <div class="big-case-name">Legendary Case</div><div class="big-case-desc">Earned at every level 5 milestone (Lv 5, 10, 15…).</div><div class="rarity-pills"><span class="rarity-pill pill-epic">Epic 60%</span><span class="rarity-pill pill-legendary">Legendary 35%</span><span class="rarity-pill pill-divine">🦆 Golden Duck 5%</span></div><div class="case-count-badge" id="legendaryCaseCount">&#215;0 available</div><div class="open-btn open-btn-legendary" style="margin-top:12px;padding:12px;border-radius:8px;font-weight:800;font-size:14px;">Open Case</div>
     </button>
   </div>
   <!-- SHOP -->
@@ -2306,11 +2311,14 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   <div class="card" style="margin-top:20px;">
     <div class="card-header"><span class="card-title">How to Earn Cases</span></div>
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
-      <div class="mission-item"><div class="mission-icon">&#127947;</div><div class="mission-info"><div class="mission-name">Complete a workout</div><div class="mission-label">+1 Basic Case</div></div></div>
-      <div class="mission-item"><div class="mission-icon">&#128293;</div><div class="mission-info"><div class="mission-name">7-day streak</div><div class="mission-label">+1 Rare Case</div></div></div>
-      <div class="mission-item"><div class="mission-icon">&#127942;</div><div class="mission-info"><div class="mission-name">Weekly challenge</div><div class="mission-label">+1 Rare Case</div></div></div>
-      <div class="mission-item"><div class="mission-icon">&#128081;</div><div class="mission-info"><div class="mission-name">30-day streak</div><div class="mission-label">+1 Legendary Case</div></div></div>
-      <div class="mission-item"><div class="mission-icon">&#9889;</div><div class="mission-info"><div class="mission-name">Level up</div><div class="mission-label">Gold &amp; cases every level</div></div></div>
+      <div class="mission-item"><div class="mission-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M18 4v16M2 9h4M18 9h4M2 15h4M18 15h4M6 9h12M6 15h12"/></svg></div><div class="mission-info"><div class="mission-name">Complete a workout</div><div class="mission-label">+1 Basic Case</div></div></div>
+      <div class="mission-item"><div class="mission-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div class="mission-info"><div class="mission-name">Complete all daily quests</div><div class="mission-label">+1 Basic Case</div></div></div>
+      <div class="mission-item"><div class="mission-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fb923c"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></div><div class="mission-info"><div class="mission-name">3-day streak</div><div class="mission-label">+1 Basic Case</div></div></div>
+      <div class="mission-item"><div class="mission-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fb923c"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></div><div class="mission-info"><div class="mission-name">7-day streak</div><div class="mission-label">+1 Rare Case</div></div></div>
+      <div class="mission-item"><div class="mission-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fb923c"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></div><div class="mission-info"><div class="mission-name">14-day streak</div><div class="mission-label">+1 Rare Case</div></div></div>
+      <div class="mission-item"><div class="mission-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fb923c"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></div><div class="mission-info"><div class="mission-name">30-day streak</div><div class="mission-label">+1 Rare Case + Gold</div></div></div>
+      <div class="mission-item"><div class="mission-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><div class="mission-info"><div class="mission-name">Level milestone (5, 10, 20…)</div><div class="mission-label">+1 Legendary Case</div></div></div>
+      <div class="mission-item"><div class="mission-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ccff00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="mission-info"><div class="mission-name">Every level up</div><div class="mission-label">Gold + Basic Case</div></div></div>
     </div>
   </div>
 </div>
@@ -2378,14 +2386,14 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
   <!-- Profile -->
   <div class="settings-section">
-    <div class="settings-section-title">👤 Profile</div>
+    <div class="settings-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</div>
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
       <div class="pd-monogram" id="settingsMonogram" style="width:52px;height:52px;border-radius:14px;font-size:22px;flex-shrink:0;"></div>
       <div style="flex:1;min-width:0;">
         <div style="font-size:16px;font-weight:800;color:var(--text);margin-bottom:2px;" id="settingsUsername">—</div>
         <button class="pd-rank-pill" id="settingsRankPill" onclick="openRankSelector()" style="color:var(--muted);border-color:var(--border);background:none;cursor:pointer;font-family:inherit;">ROOKIE ✎</button>
       </div>
-      <button class="pd-edit-btn" onclick="openProfileModal()" title="Customize Profile">✏️</button>
+      <button class="pd-edit-btn" onclick="openProfileModal()" title="Customize Profile"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
     </div>
     <div style="display:flex;gap:10px;margin-bottom:16px;">
       <div class="pd-stat" style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;">
@@ -2406,7 +2414,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
   <!-- Dev Mode -->
   <div class="settings-section">
-    <div class="settings-section-title">🛠 Developer</div>
+    <div class="settings-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Developer</div>
     <div style="display:flex;align-items:center;justify-content:space-between;">
       <div>
         <div style="font-size:14px;font-weight:700;color:var(--text);">Dev Mode</div>
@@ -2418,7 +2426,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
   <!-- Rest Timer Sound -->
   <div class="settings-section">
-    <div class="settings-section-title">🔔 Rest Timer Sound</div>
+    <div class="settings-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Rest Timer Sound</div>
     <div id="soundPresetList">
       <div class="pd-sound-row sound-preset-row" id="soundRow_default" onclick="selectSoundPreset('default')">
         <span class="pd-sound-icon">🎵</span>
@@ -2471,9 +2479,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
   <!-- Volume -->
   <div class="settings-section">
-    <div class="settings-section-title">🔊 Master Volume</div>
+    <div class="settings-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>Master Volume</div>
     <div class="pd-vol-row">
-      <span class="pd-vol-icon">🔈</span>
+      <span class="pd-vol-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
       <input class="pd-vol-slider" id="settingsVolSlider" type="range" min="0" max="100" value="80" oninput="onVolumeChange(this.value);document.getElementById('settingsVolLabel').textContent=this.value+'%'">
       <span class="pd-vol-label" id="settingsVolLabel">80%</span>
     </div>
@@ -2484,7 +2492,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 <div class="profile-modal-overlay hidden" id="profileModalOverlay" onclick="closeProfileModal(event)">
   <div class="profile-modal-sheet" onclick="event.stopPropagation()">
     <div class="profile-modal-handle"></div>
-    <div class="profile-modal-title">✏️ Customize Profile</div>
+    <div class="profile-modal-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Customize Profile</div>
 
     <!-- Profile picture preview + upload -->
     <label class="pm-label">Profile Picture</label>
@@ -2512,7 +2520,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
 <!-- BATTLE PAGE -->
 <div class="page" id="page-battle">
-  <div class="page-header"><div class="page-title">⚔️ Battle Arena</div></div>
+  <div class="page-header"><div class="page-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:8px"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/></svg>Battle Arena</div></div>
 
   <!-- OPPONENT SELECT -->
   <div id="battleSelect">
@@ -4270,14 +4278,18 @@ function finishWorkout() {
 
   // cases
   p.cases.basic = (p.cases.basic || 0) + 1;
-  if (streakNow >= 7) p.cases.rare = (p.cases.rare || 0) + 1;
+  // Streak milestone cases (one-time on exact day)
+  if (streakNow === 3)  p.cases.basic = (p.cases.basic || 0) + 1;
+  if (streakNow === 7)  p.cases.rare  = (p.cases.rare  || 0) + 1;
+  if (streakNow === 14) p.cases.rare  = (p.cases.rare  || 0) + 1;
+  if (streakNow === 30) { p.cases.rare = (p.cases.rare || 0) + 1; p.gold = (p.gold || 0) + 2000; }
 
   // ── fragment drops ──
   // Base workout drop: 5-8 fragments spread across 1-2 locked pets
   const workoutFragTotal = 5 + Math.floor(Math.random() * 4);
   const workoutDrops = awardFragments(p, workoutFragTotal);
 
-  // Streak milestone bonuses
+  // Streak milestone fragment bonuses
   if (streakNow === 7)  awardFragments(p, 18, ['rare','epic','legendary']);
   if (streakNow === 14) awardFragments(p, 25, ['epic','legendary']);
   if (streakNow === 30) awardFragments(p, 40, ['legendary']);
@@ -4374,7 +4386,7 @@ function buildHistoryPage() {
   const bestStreak = calcBestStreak(p.streakDays);
 
   document.getElementById('hst-workouts').textContent   = workouts.length;
-  document.getElementById('hst-streak').textContent     = streak + '🔥';
+  document.getElementById('hst-streak').innerHTML       = streak + '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fb923c" style="vertical-align:middle;margin-left:3px"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg>';
   document.getElementById('hst-best-streak').textContent= bestStreak;
   document.getElementById('hst-sets').textContent       = totalSets.toLocaleString();
   document.getElementById('hst-vol').textContent        = (totalVol / 1000).toFixed(1) + 'k';
@@ -4645,13 +4657,13 @@ function refreshHomeStats() {
   if (setEl('navLvlLabel'))   setEl('navLvlLabel').textContent   = `LVL ${lvlInfoNav.level} · ${(p.selectedTier != null ? (EVOLUTION_TIERS[p.selectedTier]?.name || evoTierNav.name) : evoTierNav.name).toUpperCase()}`;
   if (setEl('pdUsername'))    setEl('pdUsername').textContent    = displayName;
   if (setEl('pdStatLvl'))     setEl('pdStatLvl').textContent     = lvlInfoNav.level;
-  if (setEl('pdStatStreak'))  setEl('pdStatStreak').textContent  = streakNav + '🔥';
+  if (setEl('pdStatStreak'))  setEl('pdStatStreak').innerHTML    = streakNav + '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fb923c" style="vertical-align:middle;margin-left:3px"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg>';
   if (setEl('pdStatGold'))    setEl('pdStatGold').textContent    = (p.gold || 0).toLocaleString();
   // Settings page profile
   applyAvatarToTile(setEl('settingsMonogram'), 'lg');
   if (setEl('settingsUsername'))   setEl('settingsUsername').textContent   = displayName;
   if (setEl('settingsStatLvl'))    setEl('settingsStatLvl').textContent    = lvlInfoNav.level;
-  if (setEl('settingsStatStreak')) setEl('settingsStatStreak').textContent = streakNav + '🔥';
+  if (setEl('settingsStatStreak')) setEl('settingsStatStreak').innerHTML   = streakNav + '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fb923c" style="vertical-align:middle;margin-left:3px"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg>';
   if (setEl('settingsStatGold'))   setEl('settingsStatGold').textContent   = (p.gold || 0).toLocaleString();
   const settingsRankPill = setEl('settingsRankPill');
   if (settingsRankPill) {
@@ -4928,8 +4940,8 @@ function getLevelRewards(lv) {
   const lvFrags = 8 + Math.floor((lv * 7) % 7); // deterministic
   const rarityFilter = lv >= 30 ? ['legendary'] : lv >= 15 ? ['epic','legendary'] : lv >= 5 ? ['rare','epic'] : null;
   const rewards = { gold, basicCase: 1, rareCase: 0, legendaryCase: 0, fragments: lvFrags, rarityFilter };
-  if (lv % 10 === 0) rewards.legendaryCase = 1;
-  else if (lv % 5 === 0) rewards.rareCase = 1;
+  if (lv % 5 === 0) rewards.legendaryCase = 1;
+  else if (lv % 3 === 0) rewards.rareCase = 1;
   return rewards;
 }
 
@@ -5644,7 +5656,7 @@ function doBulkOpen(type, qty) {
       .join('');
     const fragTotal = entries.filter(g => !g.isShards).reduce((s,g) => s+g.rolls, 0);
     const fragChip = fragTotal
-      ? `<span class="bulk-total-chip" style="color:var(--accent);border-color:rgba(139,92,246,.3);">◆ +${fragTotal} fragments</span>`
+      ? `<span class="bulk-total-chip" style="color:var(--accent);border-color:rgba(204,255,0,.18);">◆ +${fragTotal} fragments</span>`
       : '';
     document.getElementById('bulkTotals').innerHTML = shardChips + fragChip
       || '<span style="color:var(--muted);font-size:11px;font-family:\'DM Mono\',monospace;">No totals to show</span>';
@@ -6289,7 +6301,7 @@ function _openPetBioInner(id) {
   artEl.innerHTML = petImgHtml(id, skin.emoji, '');
   artEl.style.filter = isLocked
     ? (isTeased
-        ? 'grayscale(0.7) brightness(0.65) drop-shadow(0 0 16px rgba(139,92,246,.3))'
+        ? 'grayscale(0.7) brightness(0.65) drop-shadow(0 0 16px rgba(204,255,0,.18))'
         : 'grayscale(1) brightness(0.35) drop-shadow(0 0 12px rgba(0,0,0,.8))')
     : `drop-shadow(0 0 30px ${col.fg})`;
 
@@ -7438,7 +7450,7 @@ function showToast(msg) {
   const iconEl = document.getElementById('toast-icon');
   document.getElementById('toast-text').textContent = msg;
   // Pick icon and accent color based on message content
-  let icon = '✓', bg = 'rgba(139,92,246,.18)', border = 'rgba(139,92,246,.25)';
+  let icon = '✓', bg = 'rgba(139,92,246,.18)', border = 'rgba(204,255,0,.14)';
   if (msg.includes('◆') || msg.includes('Gold') || msg.includes('gold')) { icon = '◆'; bg = 'rgba(251,191,36,.15)'; border = 'rgba(251,191,36,.3)'; }
   else if (msg.includes('⚠') || msg.includes('—') || msg.includes('Not enough') || msg.includes('No ')) { icon = '!'; bg = 'rgba(239,68,68,.15)'; border = 'rgba(239,68,68,.3)'; }
   else if (msg.includes('Unlock') || msg.includes('unlock')) { icon = '🔓'; bg = 'rgba(56,189,248,.15)'; border = 'rgba(56,189,248,.3)'; }
@@ -7616,6 +7628,11 @@ function updateQuestProgress(type, amount, extra) {
       setTimeout(() => showAchieve({ type:'quest', icon:'✦', eyebrow:'Quest Complete', title:q.reward.label, sub:q.desc }), 400);
     }
   });
+  // Bonus: completing ALL quests in a day awards +1 Basic Case
+  if (anyCompleted && quests.every(q => q.done)) {
+    p.cases.basic = (p.cases.basic || 0) + 1;
+    setTimeout(() => showAchieve({ type:'case', icon:'◆', eyebrow:'All Quests Done!', title:'+1 Basic Case', sub:'Complete all daily quests bonus' }), 1200);
+  }
   saveP(p);
   renderDailyQuests(p);
   if (anyCompleted) { refreshHomeStats(); updateCaseCounts(); }
@@ -7669,7 +7686,7 @@ function showSummaryCard(data) {
   document.getElementById('summaryWorkoutName').textContent = data.workoutName + ' · ' + data.duration;
   document.getElementById('summaryXp').textContent = '+' + data.xpGained + ' XP';
   document.getElementById('summarySets').textContent = data.totalSets;
-  document.getElementById('summaryStreak').textContent = data.streak + '🔥';
+  document.getElementById('summaryStreak').innerHTML   = data.streak + '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fb923c" style="vertical-align:middle;margin-left:3px"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg>';
 
   const mult = getStreakMultiplier(p.streakDays);
   const multEl = document.getElementById('summaryMult');
@@ -8740,7 +8757,7 @@ function buildMoveIndex() {
     if (mult === 0)  return ['MISS',    '#6b7280', 'rgba(107,114,128,.15)'];
     if (mult >= 2.0) return ['MASSIVE', '#fbbf24', 'rgba(251,191,36,.2)'];
     if (mult >= 1.5) return ['CRIT',    '#fbbf24', 'rgba(251,191,36,.15)'];
-    if (mult >= 1.2) return ['STRONG',  '#a78bfa', 'rgba(139,92,246,.15)'];
+    if (mult >= 1.2) return ['STRONG',  '#a78bfa', 'rgba(204,255,0,.09)'];
     if (mult >= 1.0) return ['NORMAL',  '#6b7280', 'rgba(107,114,128,.1)'];
     return                  ['WEAK',    '#6b7280', 'rgba(107,114,128,.08)'];
   }
@@ -9457,10 +9474,10 @@ function openLevelRoad() {
     rewards.push({ label: '+1 Basic Case', color: '#38bdf8', bg: 'rgba(56,189,248,.1)' });
 
     let icon = '⭐', iconColor = '#6b7280', isEvo = false, title = `Level ${lv}`;
-    if (lv % 10 === 0) {
+    if (lv % 5 === 0) {
       rewards.push({ label: '+1 Legendary Case', color: '#fbbf24', bg: 'rgba(251,191,36,.15)' });
       icon = '👑'; iconColor = '#fbbf24'; title = `Level ${lv} Milestone`;
-    } else if (lv % 5 === 0) {
+    } else if (lv % 3 === 0) {
       rewards.push({ label: '+1 Rare Case', color: '#a78bfa', bg: 'rgba(167,139,250,.12)' });
       icon = '💎'; iconColor = '#a78bfa'; title = `Level ${lv} Milestone`;
     }
