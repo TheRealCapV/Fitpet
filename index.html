@@ -1866,6 +1866,50 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   </div>
 </div>
 
+<!-- GOLD BONUS MODAL (opened from the gold chip) -->
+<div class="pc-overlay hidden" id="goldModal" onclick="closeSheet(event,'goldModal')">
+  <div class="pc-sheet" onclick="event.stopPropagation()">
+    <div class="exinfo-handle"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <div class="pc-title">Gold Bonuses</div>
+      <button class="exinfo-close" style="margin-left:auto;" onclick="closeSheet(null,'goldModal')">✕</button>
+    </div>
+    <div class="card" id="goldClaimCard" style="padding:0;overflow:hidden;background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(251,191,36,.02));border-color:rgba(251,191,36,.2);">
+      <div id="dailyClaimRow" style="padding:12px 14px;display:flex;align-items:center;gap:12px;">
+        <div style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">◆</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:800;color:#fbbf24;">+1,000 ◆</div>
+          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">DAILY BONUS</div>
+        </div>
+        <button class="gold-claim-btn" id="dailyClaimBtn" onclick="claimDailyGold()" style="padding:7px 16px;font-size:12px;">Claim</button>
+      </div>
+      <div style="height:1px;background:rgba(251,191,36,.12);margin:0 14px;"></div>
+      <div id="miniClaimRow" style="padding:10px 14px;display:flex;align-items:center;gap:12px;">
+        <div style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:800;color:#fbbf24;">+150 ◆</div>
+          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">EVERY 2 HOURS</div>
+        </div>
+        <button class="gold-claim-btn gold-claim-btn-sm" id="miniClaimBtn" onclick="claimMiniGold()" style="padding:5px 12px;font-size:11px;">Claim</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKOUT HISTORY MODAL (opened from the streak chip) -->
+<div class="pc-overlay hidden" id="historyModal" onclick="closeSheet(event,'historyModal')">
+  <div class="pc-sheet" onclick="event.stopPropagation()">
+    <div class="exinfo-handle"></div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+      <div class="pc-title">Workout History</div>
+      <span class="badge" style="background:rgba(204,255,0,.1);color:var(--accent);border:1px solid rgba(204,255,0,.2);font-family:'DM Mono',monospace;"><span id="calWorkoutBadge">0</span> Total</span>
+      <span class="badge badge-orange"><svg width="11" height="11" viewBox="0 0 24 24" fill="#fb923c" style="vertical-align:middle;margin-right:3px"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg><span id="calStreakBadge">0</span> Days</span>
+      <button class="exinfo-close" style="margin-left:auto;" onclick="closeSheet(null,'historyModal')">✕</button>
+    </div>
+    <div id="streakAllMonths" style="display:flex;flex-direction:column;gap:18px;"></div>
+  </div>
+</div>
+
 <!-- TEMPLATE EDIT MODAL -->
 <div class="template-edit-modal-overlay hidden" id="templateEditOverlay" onclick="closeTemplateEdit(event)">
   <div class="template-edit-modal" onclick="event.stopPropagation()">
@@ -2008,8 +2052,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
         <span class="rt-mini-time" id="rtMiniTime">2:00</span>
         <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">REST</span>
       </div>
-    <div class="gold-badge">◆ <span id="goldCount">0</span></div>
-    <div class="streak-badge"><span class="streak-fire"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fb923c" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></span><span id="streakCount">0</span>d</div>
+    <div class="gold-badge" onclick="openSheet('goldModal')" style="cursor:pointer;" title="Gold bonuses">◆ <span id="goldCount">0</span></div>
+    <div class="streak-badge" onclick="openSheet('historyModal')" style="cursor:pointer;" title="Workout history"><span class="streak-fire"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fb923c" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></span><span id="streakCount">0</span>d</div>
     <div class="profile-dropdown-wrap" id="profileDropdownWrap">
       <div class="nav-profile-btn" onclick="toggleProfileDropdown()">
         <div class="nav-profile-initial" id="navInitial">N</div>
@@ -2124,34 +2168,6 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
         <div class="mission-list" id="missionList">
           <div style="color:var(--muted);font-size:13px;font-family:'DM Mono',monospace;text-align:center;padding:12px;">Loading quests…</div>
         </div>
-      </div>
-      <!-- DAILY GOLD CLAIM CARD -->
-      <div class="card" id="goldClaimCard" style="padding:0;overflow:hidden;background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(251,191,36,.02));border-color:rgba(251,191,36,.2);">
-        <!-- Daily claim -->
-        <div id="dailyClaimRow" style="padding:12px 14px;display:flex;align-items:center;gap:12px;">
-          <div style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">◆</div>
-          <div style="flex:1;">
-            <div style="font-size:14px;font-weight:800;color:#fbbf24;">+1,000 ◆</div>
-            <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">DAILY BONUS</div>
-          </div>
-          <button class="gold-claim-btn" id="dailyClaimBtn" onclick="claimDailyGold()" style="padding:7px 16px;font-size:12px;">Claim</button>
-        </div>
-        <!-- Divider -->
-        <div style="height:1px;background:rgba(251,191,36,.12);margin:0 14px;"></div>
-        <!-- 2h claim -->
-        <div id="miniClaimRow" style="padding:10px 14px;display:flex;align-items:center;gap:12px;">
-          <div style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <div style="flex:1;">
-            <div style="font-size:13px;font-weight:800;color:#fbbf24;">+150 ◆</div>
-            <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">EVERY 2 HOURS</div>
-          </div>
-          <button class="gold-claim-btn gold-claim-btn-sm" id="miniClaimBtn" onclick="claimMiniGold()" style="padding:5px 12px;font-size:11px;">Claim</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header"><span class="card-title">Workout History</span><div style="display:flex;gap:6px;align-items:center;"><span class="badge" style="background:rgba(204,255,0,.1);color:var(--accent);border:1px solid rgba(204,255,0,.2);font-family:'DM Mono',monospace;"><span id="calWorkoutBadge">0</span> Total</span><span class="badge badge-orange"><svg width="11" height="11" viewBox="0 0 24 24" fill="#fb923c" style="vertical-align:middle;margin-right:3px"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg><span id="calStreakBadge">0</span> Days</span></div></div>
-        <div id="streakAllMonths" style="display:flex;flex-direction:column;gap:18px;max-height:420px;overflow-y:auto;padding-right:2px;"></div>
       </div>
     </div>
   </div>
@@ -2551,7 +2567,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 <!-- SETTINGS PAGE -->
 <div class="page" id="page-settings">
   <div class="log-header">
-    <div class="page-title">⚙️ Settings</div>
+    <div class="page-title">Settings</div>
   </div>
 
   <!-- Profile -->
@@ -4197,6 +4213,19 @@ function closeExerciseInfo(e) {
   // when triggered by backdrop click, only close if the backdrop itself was clicked
   if (e && e.target && e.target.id && e.target.id !== 'exInfoOverlay') return;
   document.getElementById('exInfoOverlay').classList.add('hidden');
+}
+
+// ── Generic bottom-sheet open/close (gold & history modals) ──
+function openSheet(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (id === 'historyModal' && typeof buildStreakCalendar === 'function') buildStreakCalendar();
+  if (id === 'goldModal' && typeof updateGoldClaimUI === 'function') updateGoldClaimUI();
+  el.classList.remove('hidden');
+}
+function closeSheet(e, id) {
+  if (e && e.target && e.target.id && e.target.id !== id) return;
+  document.getElementById(id)?.classList.add('hidden');
 }
 
 // ── PLATE CALCULATOR ──
