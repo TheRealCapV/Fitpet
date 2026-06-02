@@ -763,6 +763,36 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .te-add-ex-btn:hover{border-color:var(--accent);background:rgba(204,255,0,.03);}
 /* Exercise picker sits above template edit modal */
 .replace-modal-overlay{z-index:1000;}
+/* Exercise info modal */
+.exinfo-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1100;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px);}
+.exinfo-overlay.hidden{display:none;}
+.exinfo-sheet{background:var(--bg2);border:1px solid var(--border);border-top-left-radius:20px;border-top-right-radius:20px;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;padding:18px 18px calc(24px + env(safe-area-inset-bottom,0px));-webkit-overflow-scrolling:touch;animation:exinfoUp .25s ease;}
+@keyframes exinfoUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.exinfo-handle{width:40px;height:4px;border-radius:2px;background:var(--border);margin:0 auto 14px;}
+.exinfo-head{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
+.exinfo-icon{width:46px;height:46px;border-radius:12px;background:rgba(204,255,0,.08);border:1px solid rgba(204,255,0,.18);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.exinfo-name{font-size:18px;font-weight:800;font-family:'Syne',sans-serif;line-height:1.1;}
+.exinfo-muscle{display:inline-block;margin-top:4px;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);background:rgba(204,255,0,.08);border:1px solid rgba(204,255,0,.18);padding:2px 8px;border-radius:999px;}
+.exinfo-close{margin-left:auto;background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:14px;flex-shrink:0;}
+.exinfo-sec{margin-top:18px;}
+.exinfo-sec-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:8px;}
+.exinfo-desc{font-size:13px;line-height:1.6;color:var(--text);}
+.exinfo-steps{list-style:none;padding:0;margin:0;counter-reset:step;}
+.exinfo-steps li{position:relative;padding:8px 8px 8px 36px;font-size:12.5px;line-height:1.5;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:9px;margin-bottom:6px;counter-increment:step;}
+.exinfo-steps li::before{content:counter(step);position:absolute;left:8px;top:8px;width:20px;height:20px;background:var(--accent);color:#000;border-radius:6px;font-size:11px;font-weight:800;font-family:'DM Mono',monospace;display:flex;align-items:center;justify-content:center;}
+.exinfo-tips{margin:0;padding-left:18px;}
+.exinfo-tips li{font-size:12.5px;line-height:1.6;color:var(--muted);margin-bottom:4px;}
+.exinfo-stats{display:flex;gap:8px;margin-bottom:12px;}
+.exinfo-stat{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;}
+.exinfo-stat-val{font-size:17px;font-weight:800;color:var(--accent);font-family:'Syne',sans-serif;}
+.exinfo-stat-lbl{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;text-transform:uppercase;margin-top:2px;}
+.exinfo-hist-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(42,42,56,.5);}
+.exinfo-hist-row:last-child{border-bottom:none;}
+.exinfo-hist-date{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);min-width:52px;flex-shrink:0;}
+.exinfo-hist-sets{display:flex;flex-wrap:wrap;gap:4px;}
+.exinfo-hist-set{font-size:11px;font-family:'DM Mono',monospace;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:2px 6px;color:var(--text);}
+.exinfo-hist-set.pr{border-color:var(--accent);color:var(--accent);}
+.exinfo-empty{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;text-align:center;padding:16px 0;}
 .te-ex-remove{background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;padding:2px 6px;border-radius:4px;transition:color .15s;margin-left:2px;}
 .te-ex-remove:hover{color:#f87171;}
 .te-add-ex-btn{width:100%;padding:10px;background:var(--bg3);border:1px dashed var(--border);border-radius:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
@@ -826,7 +856,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   opacity:0;
   filter:brightness(.82) sepia(1) saturate(15) hue-rotate(-38deg) contrast(1.18) drop-shadow(0 0 4px rgba(255,35,35,.6));
   transition:opacity .2s ease;}
-.muscle-hotspot:hover{opacity:.8;}
+@media(hover:hover){.muscle-hotspot:hover{opacity:.8;}}
 .muscle-hotspot.sel{opacity:1;}
 .body-diagram-right{flex:1;min-width:0;}
 .muscle-panel{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;min-height:160px;}
@@ -835,7 +865,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .muscle-panel-ex:last-child{margin-bottom:0;}
 .muscle-panel-placeholder{color:var(--muted);font-size:11px;text-align:center;padding:28px 0;line-height:2;font-family:'DM Mono',monospace;}
 .muscle-chip{font-size:9px;font-family:'DM Mono',monospace;font-weight:700;letter-spacing:.5px;color:var(--muted);background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:3px 6px;cursor:pointer;transition:all .15s;text-transform:uppercase;}
-.muscle-chip:hover,.muscle-chip.sel{color:#000;background:var(--accent);border-color:var(--accent);}
+.muscle-chip.sel{color:#000;background:var(--accent);border-color:var(--accent);}
+@media(hover:hover){.muscle-chip:hover{color:#000;background:var(--accent);border-color:var(--accent);}}
 @media(max-width:520px){.body-diagram-container{flex-direction:column;align-items:center;}.body-diagram-right{width:100%;}}
 /* stat grid */
 .hist-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
@@ -1427,6 +1458,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   /* Buttons — bigger touch targets */
   .btn,.auth-btn,.spin-btn,.open-again-btn,.modal-close{min-height:48px;}
   .filter-btn,.hist-tab{min-height:36px;}
+  .hist-tabs{gap:1px;padding:3px;}
+  .hist-tab{flex:1;font-size:10.5px;padding:8px 2px;white-space:nowrap;letter-spacing:-.3px;}
+  .hist-tab svg{display:none;}
   .bn-tab{min-height:40px;}
 
   /* ── TODAY'S WORKOUT CARD ── */
@@ -1773,6 +1807,22 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   </div>
 </div>
 
+<!-- EXERCISE INFO MODAL -->
+<div class="exinfo-overlay hidden" id="exInfoOverlay" onclick="closeExerciseInfo(event)">
+  <div class="exinfo-sheet" onclick="event.stopPropagation()">
+    <div class="exinfo-handle"></div>
+    <div class="exinfo-head">
+      <div class="exinfo-icon" id="exInfoIcon">◈</div>
+      <div style="min-width:0;">
+        <div class="exinfo-name" id="exInfoName">Exercise</div>
+        <span class="exinfo-muscle" id="exInfoMuscle">Muscle</span>
+      </div>
+      <button class="exinfo-close" onclick="closeExerciseInfo()">✕</button>
+    </div>
+    <div id="exInfoBody"></div>
+  </div>
+</div>
+
 <!-- TEMPLATE EDIT MODAL -->
 <div class="template-edit-modal-overlay hidden" id="templateEditOverlay" onclick="closeTemplateEdit(event)">
   <div class="template-edit-modal" onclick="event.stopPropagation()">
@@ -2026,16 +2076,6 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
       </div>
     </div>
     <div class="right-col">
-      <div class="card" style="padding-bottom:14px;">
-        <div class="workout-today-header">
-          <div>
-            <div class="workout-today-title">Today's Workout</div>
-            <div class="workout-today-name" id="homeWorkoutBadge">Bench Day</div>
-          </div>
-          <button class="btn btn-primary" onclick="startWorkoutFromHome()" style="padding:10px 18px;font-size:13px;white-space:nowrap;">▶ Start</button>
-        </div>
-        <div class="workout-today" id="homeExerciseList"></div>
-      </div>
       <div class="card">
         <div class="card-header"><span class="card-title">Daily Quests</span><span class="badge badge-green" id="questBadge">0 / 3 Done</span></div>
         <div class="mission-list" id="missionList">
@@ -2396,7 +2436,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
     <div class="card-header"><span class="card-title">How to Earn Cases</span></div>
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
       <div class="mission-item"><div class="mission-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M18 4v16M2 9h4M18 9h4M2 15h4M18 15h4M6 9h12M6 15h12"/></svg></div><div class="mission-info"><div class="mission-name">Complete a workout</div><div class="mission-label">+1 Basic Case</div></div></div>
-      <div class="mission-item"><div class="mission-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div class="mission-info"><div class="mission-name">Complete all daily quests</div><div class="mission-label">+1 Basic Case</div></div></div>
+      <div class="mission-item"><div class="mission-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div class="mission-info"><div class="mission-name">Complete all daily quests</div><div class="mission-label">+1 Random Case</div></div></div>
       <div class="mission-item"><div class="mission-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fb923c"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></div><div class="mission-info"><div class="mission-name">3-day streak</div><div class="mission-label">+1 Basic Case</div></div></div>
       <div class="mission-item"><div class="mission-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fb923c"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></div><div class="mission-info"><div class="mission-name">7-day streak</div><div class="mission-label">+1 Rare Case</div></div></div>
       <div class="mission-item"><div class="mission-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fb923c"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></div><div class="mission-info"><div class="mission-name">14-day streak</div><div class="mission-label">+1 Rare Case</div></div></div>
@@ -2496,15 +2536,6 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
     <button class="pd-switch-btn" style="width:100%;padding:12px;border-radius:10px;font-size:13px;" onclick="authLogout()">↩ Switch Profile</button>
   </div>
 
-  <!-- Backup & Restore -->
-  <div class="settings-section">
-    <div class="settings-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Backup &amp; Restore</div>
-    <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.6;margin-bottom:12px;">Save your progress before re-adding the app to your home screen or switching devices. Back up first, then paste the code into the new app to restore everything.</div>
-    <button class="pd-switch-btn" style="width:100%;padding:12px;border-radius:10px;font-size:13px;margin-bottom:8px;background:var(--accent);color:#000;border-color:var(--accent);font-weight:800;" onclick="backupData()">⬇ Back up my progress</button>
-    <textarea id="backupBox" placeholder="Your backup code appears here — copy &amp; keep it safe. To restore, paste a code here and tap Restore." spellcheck="false" style="width:100%;height:90px;background:#000;color:var(--accent);border:1px solid var(--border);border-radius:8px;font-family:'DM Mono',monospace;font-size:10px;padding:10px;box-sizing:border-box;resize:vertical;margin-bottom:8px;"></textarea>
-    <button class="pd-switch-btn" style="width:100%;padding:12px;border-radius:10px;font-size:13px;" onclick="restoreData()">⬆ Restore from code</button>
-  </div>
-
   <!-- Dev Mode -->
   <div class="settings-section">
     <div class="settings-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Developer</div>
@@ -2577,6 +2608,20 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
       <span class="pd-vol-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
       <input class="pd-vol-slider" id="settingsVolSlider" type="range" min="0" max="100" value="80" oninput="onVolumeChange(this.value);document.getElementById('settingsVolLabel').textContent=this.value+'%'">
       <span class="pd-vol-label" id="settingsVolLabel">80%</span>
+    </div>
+  </div>
+
+  <!-- Backup & Restore (collapsible) -->
+  <div class="settings-section" style="padding-top:0;padding-bottom:0;">
+    <button onclick="toggleBackupPanel()" style="width:100%;background:none;border:none;padding:16px 0;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:var(--text);font-family:inherit;">
+      <span class="settings-section-title" style="margin:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Backup &amp; Restore</span>
+      <span id="backupChevron" style="color:var(--muted);font-size:13px;transition:transform .2s;font-family:'DM Mono',monospace;">▾</span>
+    </button>
+    <div id="backupPanel" style="display:none;padding-bottom:16px;">
+      <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.6;margin-bottom:12px;">Save your progress before re-adding the app to your home screen or switching devices. Back up first, then paste the code into the new app to restore everything.</div>
+      <button class="pd-switch-btn" style="width:100%;padding:12px;border-radius:10px;font-size:13px;margin-bottom:8px;background:var(--accent);color:#000;border-color:var(--accent);font-weight:800;" onclick="backupData()">⬇ Back up my progress</button>
+      <textarea id="backupBox" placeholder="Your backup code appears here — copy &amp; keep it safe. To restore, paste a code here and tap Restore." spellcheck="false" style="width:100%;height:90px;background:#000;color:var(--accent);border:1px solid var(--border);border-radius:8px;font-family:'DM Mono',monospace;font-size:10px;padding:10px;box-sizing:border-box;resize:vertical;margin-bottom:8px;"></textarea>
+      <button class="pd-switch-btn" style="width:100%;padding:12px;border-radius:10px;font-size:13px;" onclick="restoreData()">⬆ Restore from code</button>
     </div>
   </div>
 </div>
@@ -2753,6 +2798,13 @@ function saveStore(store) {
 }
 
 // ── Backup & Restore ──
+function toggleBackupPanel() {
+  const p = document.getElementById('backupPanel');
+  const ch = document.getElementById('backupChevron');
+  const open = p.style.display === 'none';
+  p.style.display = open ? 'block' : 'none';
+  if (ch) ch.style.transform = open ? 'rotate(180deg)' : '';
+}
 const BACKUP_KEYS = ['fitpet_v2', 'fitpet_active_workout', 'fitpet_auto_bg_ts'];
 function backupData() {
   const data = { _app: 'fitpet', _ts: Date.now() };
@@ -3422,6 +3474,7 @@ function renderTemplateEditExercises() {
         <div class="te-ex-name">${name}</div>
         ${muscle ? `<div class="te-ex-muscle">${muscle}</div>` : ''}
       </div>
+      ${ex ? `<button class="te-ex-replace" onclick="openExerciseInfo('${id}')" title="Details">ⓘ</button>` : ''}
       <button class="te-ex-replace" onclick="openReplaceExToTemplate(${idx})" title="Replace">⇄</button>
       <button class="te-ex-remove" onclick="removeTemplateEditExercise(${idx})" title="Remove">✕</button>
     </div>`;
@@ -3989,6 +4042,117 @@ function getLastSessionForExercise(exId) {
   return [];
 }
 
+// ── Exercise info (description / instructions) ──
+const MUSCLE_INFO = {
+  Chest: { steps:['Set up with your shoulder blades retracted and chest up.','Lower the weight under control to the mid-chest, elbows ~45°.','Press back up powerfully without flaring the elbows.','Squeeze the chest hard at the top, then repeat.'],
+    tips:['Keep your wrists stacked over your elbows.','Don’t bounce the weight off your chest.','Drive through your feet for a stable base.'] },
+  Back: { steps:['Brace your core and set your shoulder blades down and back.','Initiate the pull with your back, not your arms.','Pull until your elbows pass your torso, squeezing the lats.','Lower under control to a full stretch.'],
+    tips:['Lead with the elbows to target the back.','Avoid using momentum or jerking the weight.','Get a full stretch at the bottom of each rep.'] },
+  Shoulders: { steps:['Start with the weight at shoulder height, core braced.','Press or raise smoothly without shrugging.','Stop just short of locking out to keep tension.','Lower slowly back to the start.'],
+    tips:['Keep your ribs down — don’t arch the lower back.','Control the negative; no swinging.','Use a weight that lets you keep strict form.'] },
+  Arms: { steps:['Keep your elbows pinned to your sides.','Curl or extend through the full range of motion.','Squeeze the working muscle at peak contraction.','Lower under control — resist the negative.'],
+    tips:['Avoid swinging or using the shoulders/back.','Slow, controlled reps beat heavy ego lifting here.','Full range = better growth.'] },
+  Legs: { steps:['Set your stance and brace your core hard.','Descend under control to at least parallel.','Drive through mid-foot to stand back up.','Lock out and repeat with steady tempo.'],
+    tips:['Keep your knees tracking over your toes.','Maintain a neutral spine throughout.','Depth and control over heavy partials.'] },
+  Glutes: { steps:['Set up with hips ready to hinge or drive.','Push through your heels and squeeze the glutes.','Fully extend the hips at the top.','Lower under control to a deep stretch.'],
+    tips:['Think “glutes”, not lower back, at lockout.','Pause and squeeze at the top.','Keep the movement smooth, not jerky.'] },
+  Calves: { steps:['Position the balls of your feet on the platform.','Lower your heels for a deep stretch.','Drive up onto your toes as high as possible.','Pause at the top, then lower slowly.'],
+    tips:['Use a full range — deep stretch to high contraction.','Pause at the top for a second.','Don’t bounce; control every rep.'] },
+  Core: { steps:['Brace your abs and keep your spine neutral.','Move slowly, focusing on the contraction.','Avoid pulling with your neck or hips.','Exhale as you crunch/engage, inhale on the way back.'],
+    tips:['Quality contractions beat high reps.','Keep tension on the abs the whole set.','Breathe — don’t hold your breath.'] },
+  Cardio: { steps:['Warm up for a few minutes at an easy pace.','Settle into your target intensity.','Maintain steady breathing and good posture.','Cool down gradually at the end.'],
+    tips:['Stay consistent with pace or intervals.','Hydrate before and after.','Track time or distance to measure progress.'] },
+  _default: { steps:['Set up with good posture and a braced core.','Move through a full range of motion under control.','Squeeze the target muscle on each rep.','Lower slowly and repeat with steady tempo.'],
+    tips:['Control the weight — no swinging.','Full range of motion for best results.','Pick a weight you can perform with strict form.'] },
+};
+const EXERCISE_INFO = {
+  bench:    { desc:'The barbell bench press is the king of upper-body pressing — a compound lift that builds the chest, front delts and triceps.',
+    steps:['Lie back, eyes under the bar, feet planted, shoulder blades pinched.','Unrack and lower the bar to your mid-chest with elbows ~45°.','Press the bar up and slightly back over your shoulders.','Lock out, then repeat under control.'],
+    tips:['Keep a slight arch and tight upper back.','Wrists stacked over elbows.','Always use a spotter or safeties when going heavy.'] },
+  squat:    { desc:'The barbell back squat is the foundational lower-body lift, training the quads, glutes and entire posterior chain.',
+    steps:['Set the bar on your upper traps, brace hard, unrack.','Take a shoulder-width stance, toes slightly out.','Sit down and back until hips reach parallel or below.','Drive through mid-foot to stand tall and lock out.'],
+    tips:['Keep your chest up and knees tracking your toes.','Brace your core like you’re about to be punched.','Hit consistent depth every rep.'] },
+  deadlift: { desc:'The deadlift is a full-body pulling lift that builds the posterior chain — hamstrings, glutes, back and grip.',
+    steps:['Stand mid-foot under the bar, shins close.','Hinge down and grip just outside your knees.','Brace, take the slack out, then drive the floor away.','Stand tall, locking hips and knees together; lower with control.'],
+    tips:['Keep the bar dragging close to your body.','Neutral spine — don’t round your lower back.','Push the floor away rather than yanking the bar.'] },
+  ohp:      { desc:'The overhead press builds strong, capable shoulders and triceps while demanding full-body tension and core stability.',
+    steps:['Start with the bar at your front delts, grip just outside shoulders.','Brace your core and squeeze your glutes.','Press the bar straight up, moving your head slightly back then through.','Lock out overhead, then lower under control.'],
+    tips:['Don’t over-arch your lower back.','Keep the bar path vertical and close to your face.','Finish with the bar stacked over your mid-foot.'] },
+  pullup:   { desc:'Pull-ups are a top-tier back and biceps builder, training the lats, upper back and grip with your bodyweight.',
+    steps:['Hang from the bar with an overhand, shoulder-width grip.','Set your shoulders down and brace your core.','Pull your chest toward the bar, leading with the elbows.','Lower under control to a full hang and repeat.'],
+    tips:['Avoid kipping or swinging.','Get your chin over the bar with control.','Full dead-hang at the bottom each rep.'] },
+};
+function getExerciseInfo(ex) {
+  const s = EXERCISE_INFO[ex.id];
+  const base = MUSCLE_INFO[ex.muscle] || MUSCLE_INFO._default;
+  return {
+    desc: (s && s.desc) || `${ex.name} is a ${ex.muscle.toLowerCase()} exercise. Focus on controlled reps through a full range of motion to get the most out of it.`,
+    steps: (s && s.steps) || base.steps,
+    tips: (s && s.tips) || base.tips,
+  };
+}
+function openExerciseInfo(exId) {
+  const ex = ALL_EXERCISES[exId];
+  if (!ex) return;
+  const info = getExerciseInfo(ex);
+  document.getElementById('exInfoIcon').textContent = ex.icon;
+  document.getElementById('exInfoName').textContent = ex.name;
+  document.getElementById('exInfoMuscle').textContent = ex.muscle;
+
+  // history
+  const p = getP();
+  const pr = getPrForExercise(exId);
+  let times = 0, best1rm = 0, histRows = '';
+  if (p) {
+    const sessions = p.workoutLog.filter(w => w.exercises?.[exId]?.length);
+    times = sessions.length;
+    sessions.forEach(w => w.exercises[exId].forEach(set => {
+      const e = (set.lbs || 0) * (1 + (set.reps || 0) / 30);
+      if (e > best1rm) best1rm = e;
+    }));
+    histRows = sessions.slice(-10).reverse().map(w => {
+      const date = new Date(w.date).toLocaleDateString('en-US', { month:'short', day:'numeric' });
+      const chips = w.exercises[exId].map(s => {
+        const isPR = pr && s.lbs === pr.lbs && s.reps === pr.reps;
+        return `<span class="exinfo-hist-set${isPR?' pr':''}">${s.lbs}×${s.reps}</span>`;
+      }).join('');
+      return `<div class="exinfo-hist-row"><span class="exinfo-hist-date">${date}</span><div class="exinfo-hist-sets">${chips}</div></div>`;
+    }).join('');
+  }
+  const bestLabel = pr ? `${pr.lbs}×${pr.reps}` : '—';
+
+  document.getElementById('exInfoBody').innerHTML = `
+    <div class="exinfo-sec">
+      <div class="exinfo-stats">
+        <div class="exinfo-stat"><div class="exinfo-stat-val">${times}</div><div class="exinfo-stat-lbl">Sessions</div></div>
+        <div class="exinfo-stat"><div class="exinfo-stat-val">${bestLabel}</div><div class="exinfo-stat-lbl">Best Set</div></div>
+        <div class="exinfo-stat"><div class="exinfo-stat-val">${best1rm ? Math.round(best1rm) : '—'}</div><div class="exinfo-stat-lbl">Est. 1RM</div></div>
+      </div>
+    </div>
+    <div class="exinfo-sec">
+      <div class="exinfo-sec-title">About</div>
+      <div class="exinfo-desc">${info.desc}</div>
+    </div>
+    <div class="exinfo-sec">
+      <div class="exinfo-sec-title">How to perform</div>
+      <ol class="exinfo-steps">${info.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+    </div>
+    <div class="exinfo-sec">
+      <div class="exinfo-sec-title">Form tips</div>
+      <ul class="exinfo-tips">${info.tips.map(t => `<li>${t}</li>`).join('')}</ul>
+    </div>
+    <div class="exinfo-sec">
+      <div class="exinfo-sec-title">Your history</div>
+      ${histRows || '<div class="exinfo-empty">No logged sessions yet — do this exercise to start tracking.</div>'}
+    </div>`;
+  document.getElementById('exInfoOverlay').classList.remove('hidden');
+}
+function closeExerciseInfo(e) {
+  // when triggered by backdrop click, only close if the backdrop itself was clicked
+  if (e && e.target && e.target.id && e.target.id !== 'exInfoOverlay') return;
+  document.getElementById('exInfoOverlay').classList.add('hidden');
+}
+
 function buildExerciseCard(ex) {
   const pr = getPrForExercise(ex.id);
   const lastSets = getLastSessionForExercise(ex.id);
@@ -4030,7 +4194,7 @@ function buildExerciseCard(ex) {
       <div class="log-ex-header">
         <div class="log-ex-drag-handle" title="Drag to reorder">⠿</div>
         <div class="log-ex-icon">${ex.icon}</div>
-        <div class="log-ex-name">${ex.name}</div>
+        <div class="log-ex-name" onclick="openExerciseInfo('${ex.id}')" style="cursor:pointer;">${ex.name} <span style="color:var(--muted);font-size:12px;font-weight:400;">ⓘ</span></div>
         <div class="log-ex-best">${prLabel}</div>
         <button class="replace-ex-btn" onclick="openReplaceModal('${ex.id}')">⇄ Replace</button>
       </div>
@@ -4284,6 +4448,7 @@ function renderReplaceList(query) {
         <div class="replace-ex-row-icon">${ex.icon}</div>
         <div class="replace-ex-row-name">${ex.name}</div>
         <div class="replace-ex-row-muscle">${ex.muscle}</div>
+        <button onclick="event.stopPropagation();openExerciseInfo('${ex.id}')" title="Details" style="background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:14px;flex-shrink:0;">ⓘ</button>
       </div>`).join('')}
   `).join('');
 
@@ -4632,7 +4797,7 @@ function selectMuscle(muscle) {
   content.style.display = '';
   document.getElementById('musclePanelName').textContent = muscle + ' — ' + exercises.length + ' exercises';
   document.getElementById('musclePanelExList').innerHTML = exercises.map(e =>
-    `<div class="muscle-panel-ex"><span style="font-size:14px;">${e.icon}</span><span>${e.name}</span></div>`
+    `<div class="muscle-panel-ex" onclick="openExerciseInfo('${e.id}')" style="cursor:pointer;"><span style="font-size:14px;">${e.icon}</span><span>${e.name}</span><span style="margin-left:auto;color:var(--muted);">ⓘ</span></div>`
   ).join('');
 }
 
@@ -7905,21 +8070,36 @@ function toggleDevModeSettings() {
 // ══════════════════════════════════════════
 //  DAILY QUESTS
 // ══════════════════════════════════════════
+// All quests are completable within a single day. Each uses an action that's actually
+// tracked: workout, sets, sets_muscle, case, tap.
 const QUEST_POOL = [
-  { type:'workout',     icon:'◈', desc:'Complete a workout',          target:1,   barColor:'mission-bar-green',  reward:{ type:'case', kind:'basic', label:'+1 Basic Case' } },
-  { type:'sets',        icon:'◎', desc:'Log 10 sets',                 target:10,  barColor:'mission-bar-purple', reward:{ type:'xp',   amount:250,   label:'+250 XP' } },
-  { type:'sets',        icon:'◎', desc:'Log 20 sets',                 target:20,  barColor:'mission-bar-purple', reward:{ type:'xp',   amount:400,   label:'+400 XP' } },
-  { type:'case',        icon:'◻', desc:'Open a case',                 target:1,   barColor:'mission-bar-green',  reward:{ type:'xp',   amount:150,   label:'+150 XP' } },
-  { type:'case',        icon:'◻', desc:'Open 3 cases',                target:3,   barColor:'mission-bar-green',  reward:{ type:'gold', amount:300,   label:'+300 Gold' } },
-  { type:'tap',         icon:'◆', desc:'Tap your pet 50 times',       target:50,  barColor:'mission-bar-orange', reward:{ type:'xp',   amount:100,   label:'+100 XP' } },
-  { type:'tap',         icon:'◆', desc:'Tap your pet 100 times',      target:100, barColor:'mission-bar-orange', reward:{ type:'gold', amount:200,   label:'+200 Gold' } },
-  { type:'streak',      icon:'▲', desc:'Hold a 3-day streak',         target:3,   barColor:'mission-bar-orange', reward:{ type:'case', kind:'rare',  label:'+1 Rare Case' } },
-  { type:'streak',      icon:'▲', desc:'Hold a 5-day streak',         target:5,   barColor:'mission-bar-orange', reward:{ type:'case', kind:'rare',  label:'+1 Rare Case' } },
-  { type:'workout',     icon:'◈', desc:'Finish a Push or Upper workout', target:1, barColor:'mission-bar-green', reward:{ type:'gold', amount:250,   label:'+250 Gold' } },
-  { type:'sets_muscle', icon:'◈', desc:'Log 5 leg sets',              target:5,   barColor:'mission-bar-purple', muscle:'Legs',  reward:{ type:'xp', amount:200, label:'+200 XP' } },
-  { type:'sets_muscle', icon:'◈', desc:'Log 5 chest sets',            target:5,   barColor:'mission-bar-purple', muscle:'Chest', reward:{ type:'xp', amount:200, label:'+200 XP' } },
-  { type:'sets_muscle', icon:'◈', desc:'Log 5 back sets',             target:5,   barColor:'mission-bar-purple', muscle:'Back',  reward:{ type:'xp', amount:200, label:'+200 XP' } },
-  { type:'gold',        icon:'◆', desc:'Earn 500 gold today',         target:500, barColor:'mission-bar-orange', reward:{ type:'case', kind:'basic', label:'+1 Basic Case' } },
+  // ── Complete a workout ──
+  { type:'workout',     icon:'◈', desc:'Complete a workout',        target:1,   barColor:'mission-bar-green',  reward:{ type:'case', kind:'basic', label:'+1 Basic Case' } },
+  { type:'workout',     icon:'◈', desc:'Crush a full workout',      target:1,   barColor:'mission-bar-green',  reward:{ type:'gold', amount:300,  label:'+300 Gold' } },
+  { type:'workout',     icon:'◈', desc:'Get a workout in today',    target:1,   barColor:'mission-bar-green',  reward:{ type:'xp',   amount:350,  label:'+350 XP' } },
+  // ── Total sets logged ──
+  { type:'sets',        icon:'◎', desc:'Log 8 sets',                target:8,   barColor:'mission-bar-purple', reward:{ type:'xp',   amount:200,  label:'+200 XP' } },
+  { type:'sets',        icon:'◎', desc:'Log 12 sets',               target:12,  barColor:'mission-bar-purple', reward:{ type:'xp',   amount:300,  label:'+300 XP' } },
+  { type:'sets',        icon:'◎', desc:'Log 16 sets',               target:16,  barColor:'mission-bar-purple', reward:{ type:'gold', amount:350,  label:'+350 Gold' } },
+  { type:'sets',        icon:'◎', desc:'Log 20 sets',               target:20,  barColor:'mission-bar-purple', reward:{ type:'xp',   amount:450,  label:'+450 XP' } },
+  { type:'sets',        icon:'◎', desc:'Log 25 sets',               target:25,  barColor:'mission-bar-purple', reward:{ type:'case', kind:'basic', label:'+1 Basic Case' } },
+  // ── Sets for a specific muscle ──
+  { type:'sets_muscle', icon:'◈', desc:'Log 6 chest sets',          target:6,   barColor:'mission-bar-purple', muscle:'Chest',     reward:{ type:'xp',   amount:250,  label:'+250 XP' } },
+  { type:'sets_muscle', icon:'◈', desc:'Log 6 back sets',           target:6,   barColor:'mission-bar-purple', muscle:'Back',      reward:{ type:'xp',   amount:250,  label:'+250 XP' } },
+  { type:'sets_muscle', icon:'◈', desc:'Log 6 leg sets',            target:6,   barColor:'mission-bar-purple', muscle:'Legs',      reward:{ type:'xp',   amount:250,  label:'+250 XP' } },
+  { type:'sets_muscle', icon:'◈', desc:'Log 5 shoulder sets',       target:5,   barColor:'mission-bar-purple', muscle:'Shoulders', reward:{ type:'xp',   amount:220,  label:'+220 XP' } },
+  { type:'sets_muscle', icon:'◈', desc:'Log 5 arm sets',            target:5,   barColor:'mission-bar-purple', muscle:'Arms',      reward:{ type:'xp',   amount:220,  label:'+220 XP' } },
+  { type:'sets_muscle', icon:'◈', desc:'Log 4 core sets',           target:4,   barColor:'mission-bar-purple', muscle:'Core',      reward:{ type:'gold', amount:200,  label:'+200 Gold' } },
+  { type:'sets_muscle', icon:'◈', desc:'Log 4 glute sets',          target:4,   barColor:'mission-bar-purple', muscle:'Glutes',    reward:{ type:'gold', amount:200,  label:'+200 Gold' } },
+  // ── Open cases ──
+  { type:'case',        icon:'◻', desc:'Open a case',               target:1,   barColor:'mission-bar-green',  reward:{ type:'xp',   amount:150,  label:'+150 XP' } },
+  { type:'case',        icon:'◻', desc:'Open 2 cases',              target:2,   barColor:'mission-bar-green',  reward:{ type:'gold', amount:250,  label:'+250 Gold' } },
+  { type:'case',        icon:'◻', desc:'Open 3 cases',              target:3,   barColor:'mission-bar-green',  reward:{ type:'gold', amount:400,  label:'+400 Gold' } },
+  // ── Tap your pet ──
+  { type:'tap',         icon:'◆', desc:'Tap your pet 25 times',     target:25,  barColor:'mission-bar-orange', reward:{ type:'xp',   amount:80,   label:'+80 XP' } },
+  { type:'tap',         icon:'◆', desc:'Tap your pet 50 times',     target:50,  barColor:'mission-bar-orange', reward:{ type:'xp',   amount:120,  label:'+120 XP' } },
+  { type:'tap',         icon:'◆', desc:'Tap your pet 75 times',     target:75,  barColor:'mission-bar-orange', reward:{ type:'gold', amount:180,  label:'+180 Gold' } },
+  { type:'tap',         icon:'◆', desc:'Tap your pet 100 times',    target:100, barColor:'mission-bar-orange', reward:{ type:'gold', amount:250,  label:'+250 Gold' } },
 ];
 
 // Seeded pseudo-random using date string + username
@@ -7932,18 +8112,30 @@ function _seededRand(seed) {
 function generateDailyQuests(username, dateStr) {
   const rand = _seededRand(dateStr + username);
   const pool = [...QUEST_POOL];
+  // deterministic Fisher–Yates shuffle
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  // pick 3 quests of distinct categories so each day feels varied
   const chosen = [];
-  while (chosen.length < 3 && pool.length) {
-    const idx = Math.floor(rand() * pool.length);
-    chosen.push({ ...pool.splice(idx, 1)[0], progress: 0, done: false, claimed: false });
+  const usedTypes = new Set();
+  for (const q of pool) {
+    if (chosen.length >= 3) break;
+    if (usedTypes.has(q.type)) continue;
+    usedTypes.add(q.type);
+    // every daily quest pays a flat 500 gold
+    chosen.push({ ...q, reward: { type: 'gold', amount: 500, label: '+500 Gold' }, progress: 0, done: false, claimed: false });
   }
   return chosen;
 }
 
+const QUEST_VERSION = 3; // bump when QUEST_POOL changes to refresh existing players
 function loadDailyQuests(p) {
   const today = todayStr();
-  if (!p.dailyQuests || p.dailyQuests.date !== today) {
-    p.dailyQuests = { date: today, quests: generateDailyQuests(p.username, today) };
+  if (!p.dailyQuests || p.dailyQuests.date !== today || p.dailyQuests.v !== QUEST_VERSION) {
+    p.dailyQuests = { date: today, v: QUEST_VERSION, quests: generateDailyQuests(p.username, today) };
+    saveP(p);
   }
   return p.dailyQuests.quests;
 }
@@ -7995,10 +8187,13 @@ function updateQuestProgress(type, amount, extra) {
       setTimeout(() => showAchieve({ type:'quest', icon:'✦', eyebrow:'Quest Complete', title:q.reward.label, sub:q.desc }), 400);
     }
   });
-  // Bonus: completing ALL quests in a day awards +1 Basic Case
+  // Bonus: completing ALL quests in a day awards a random case
   if (anyCompleted && quests.every(q => q.done)) {
-    p.cases.basic = (p.cases.basic || 0) + 1;
-    setTimeout(() => showAchieve({ type:'case', icon:'◆', eyebrow:'All Quests Done!', title:'+1 Basic Case', sub:'Complete all daily quests bonus' }), 1200);
+    const roll = Math.random();
+    const kind = roll < 0.6 ? 'basic' : (roll < 0.9 ? 'rare' : 'legendary');
+    const kindLabel = kind.charAt(0).toUpperCase() + kind.slice(1);
+    p.cases[kind] = (p.cases[kind] || 0) + 1;
+    setTimeout(() => showAchieve({ type:'case', icon:'◆', eyebrow:'All Quests Done!', title:`+1 ${kindLabel} Case`, sub:'Random case for completing all daily quests' }), 1200);
   }
   saveP(p);
   renderDailyQuests(p);
