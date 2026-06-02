@@ -814,6 +814,26 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .pc-result{font-family:'DM Mono',monospace;font-size:13px;color:var(--text);text-align:center;line-height:1.8;}
 .pc-result .pc-chip{display:inline-block;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:3px 9px;margin:3px;font-weight:700;}
 .pc-warn{color:#fbbf24;font-size:12px;font-family:'DM Mono',monospace;text-align:center;padding:6px;}
+/* Daily spin button (home) */
+.daily-spin-btn{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;cursor:pointer;font-family:'DM Mono',monospace;font-size:11px;font-weight:800;white-space:nowrap;border:1px solid rgba(251,191,36,.45);background:rgba(251,191,36,.12);color:#fbbf24;transition:all .2s;box-shadow:0 0 10px rgba(251,191,36,.2);}
+.daily-spin-btn:hover{border-color:#fbbf24;filter:brightness(1.08);}
+.daily-spin-btn.cooldown{border-color:var(--border);background:var(--bg3);color:var(--muted);box-shadow:none;}
+/* Daily wheel modal */
+.dw-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:1150;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.dw-overlay.hidden{display:none;}
+.dw-sheet{background:var(--bg2);border:1px solid var(--border);border-radius:22px;padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px));width:min(94vw,420px);text-align:center;position:relative;}
+.dw-close{position:absolute;top:14px;right:14px;background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:14px;}
+.dw-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;margin-bottom:4px;}
+.dw-sub{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:18px;}
+.dw-wheel-wrap{position:relative;width:min(76vw,300px);height:min(76vw,300px);margin:0 auto 16px;}
+.dw-pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:26px solid #fff;z-index:6;filter:drop-shadow(0 2px 5px rgba(0,0,0,.7));}
+.dw-wheel{width:100%;height:100%;border-radius:50%;position:relative;border:7px solid #14141c;box-shadow:0 0 0 4px rgba(251,191,36,.3),0 12px 44px rgba(0,0,0,.65);overflow:hidden;transition:transform 4.7s cubic-bezier(.16,1,.3,1);}
+.dw-label{position:absolute;inset:0;pointer-events:none;}
+.dw-label>span{position:absolute;top:13px;left:0;right:0;text-align:center;font-family:'DM Mono',monospace;font-weight:800;font-size:12px;color:#0a0a0f;text-shadow:0 1px 1px rgba(255,255,255,.25);}
+.dw-hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:#0a0a0f;border:3px solid #fbbf24;z-index:5;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 14px rgba(251,191,36,.5);}
+.dw-result{min-height:26px;font-family:'DM Mono',monospace;font-weight:800;font-size:17px;color:#fbbf24;margin-bottom:14px;}
+.dw-spin-btn{width:100%;padding:15px;border-radius:12px;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:.5px;background:linear-gradient(135deg,#fde047,#f59e0b);color:#0a0a0f;box-shadow:0 4px 20px rgba(251,191,36,.35);transition:all .2s;}
+.dw-spin-btn:disabled{background:var(--bg3);color:var(--muted);box-shadow:none;cursor:default;}
 .te-ex-remove{background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;padding:2px 6px;border-radius:4px;transition:color .15s;margin-left:2px;}
 .te-ex-remove:hover{color:#f87171;}
 .te-add-ex-btn{width:100%;padding:10px;background:var(--bg3);border:1px dashed var(--border);border-radius:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
@@ -1201,7 +1221,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .toast{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:50%;opacity:0;transform:translateX(-50%) translateY(calc(-100% - 16px));background:rgba(18,18,26,.96);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px 16px 10px 12px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;z-index:1300;box-shadow:0 8px 32px rgba(0,0,0,.5);transition:transform .35s cubic-bezier(.34,1.4,.64,1),opacity .25s;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);white-space:nowrap;font-family:'DM Mono',monospace;letter-spacing:.2px;pointer-events:none;max-width:calc(100vw - 32px);}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 .toast-icon{font-size:16px;width:30px;height:30px;border-radius:8px;background:rgba(139,92,246,.18);border:1px solid rgba(204,255,0,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-#toast-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px;}
+#toast-text{white-space:normal;max-width:260px;line-height:1.45;}
 .xp-floater{position:fixed;pointer-events:none;z-index:700;font-size:18px;font-weight:800;color:var(--accent);font-family:'DM Mono',monospace;text-shadow:0 0 20px rgba(200,255,0,.6);animation:xp-rise 2s ease forwards;}
 @keyframes xp-rise{0%{transform:translateY(0);opacity:1;}100%{transform:translateY(-80px);opacity:0;}}
 
@@ -1896,6 +1916,48 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   </div>
 </div>
 
+<!-- DAILY SPIN WHEEL MODAL -->
+<div class="dw-overlay hidden" id="dailyWheelOverlay" onclick="closeDailyWheel(event)">
+  <div class="dw-sheet" onclick="event.stopPropagation()">
+    <button class="dw-close" onclick="closeDailyWheel()">✕</button>
+    <div class="dw-title">🎡 Daily Spin</div>
+    <div class="dw-sub">Spin once every 24 hours · win up to 10,000 ◆</div>
+    <div class="dw-wheel-wrap">
+      <div class="dw-pointer"></div>
+      <div class="dw-wheel" id="dwWheel"></div>
+      <div class="dw-hub">◆</div>
+    </div>
+    <div class="dw-result" id="dwResult"></div>
+    <button class="dw-spin-btn" id="dwSpinBtn" onclick="spinDailyWheel()">SPIN</button>
+  </div>
+</div>
+
+<!-- XP POWER-UP MODAL (opened from the AUTO badge) -->
+<div class="pc-overlay hidden" id="boostModal" onclick="closeSheet(event,'boostModal')">
+  <div class="pc-sheet" onclick="event.stopPropagation()">
+    <div class="exinfo-handle"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+      <div class="pc-title">⚡ XP Power-Ups</div>
+      <button class="exinfo-close" style="margin-left:auto;" onclick="closeSheet(null,'boostModal')">✕</button>
+    </div>
+    <div id="boostStatus" style="font-size:12px;font-family:'DM Mono',monospace;margin-bottom:10px;"></div>
+    <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.6;margin-bottom:14px;">Multiply ALL the XP you earn — workouts and passive/idle XP — for a limited time. Buying again extends your active boost.</div>
+    <div class="shop-grid" id="boostGrid"></div>
+  </div>
+</div>
+
+<!-- STREAK XP BONUS MODAL (opened from the ▲ badge) -->
+<div class="pc-overlay hidden" id="streakModal" onclick="closeSheet(event,'streakModal')">
+  <div class="pc-sheet" onclick="event.stopPropagation()">
+    <div class="exinfo-handle"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <div class="pc-title">Streak XP Bonus</div>
+      <button class="exinfo-close" style="margin-left:auto;" onclick="closeSheet(null,'streakModal')">✕</button>
+    </div>
+    <div id="streakInfoBody"></div>
+  </div>
+</div>
+
 <!-- WORKOUT HISTORY MODAL (opened from the streak chip) -->
 <div class="pc-overlay hidden" id="historyModal" onclick="closeSheet(event,'historyModal')">
   <div class="pc-sheet" onclick="event.stopPropagation()">
@@ -2019,7 +2081,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   <canvas id="evoCanvas"></canvas>
   <div id="evoBgPulse" class="evo-bg-pulse"></div>
   <div class="evo-content">
-    <div class="evo-eyebrow">&#9889; Evolution</div>
+    <div class="evo-eyebrow">&#9889; Rank Up</div>
     <div class="evo-pet-wrap">
       <div class="evo-ring evo-r1"></div>
       <div class="evo-ring evo-r2"></div>
@@ -2125,12 +2187,11 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
             <div class="pet-level" id="petLevel">LVL 1</div>
           </div>
         </div>
-        <div class="evo-next" id="evoNext">Evolves at Lv 5 &rarr; Gym Rat</div>
-        <div class="pet-mood" style="justify-content:space-between;">
-          <div style="display:flex;align-items:center;gap:8px;"><div class="mood-dot" id="moodDot"></div><span id="petMood">Resting...</span></div>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <div class="streak-mult-badge" id="streakMultBadge" style="display:none;">▲ <span id="streakMultVal">1.0×</span> XP</div>
-            <div class="auto-indicator" id="autoIndicator"><div class="auto-dot"></div>AUTO <span id="autoMultLabel">1×</span></div>
+        <div class="pet-mood" style="justify-content:flex-end;">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+            <button class="daily-spin-btn ready" id="dailySpinBtn" onclick="openDailyWheel()" title="Daily gold spin">🎡 <span id="dailySpinLabel">Spin</span></button>
+            <div class="streak-mult-badge" id="streakMultBadge" onclick="openStreakInfo()" title="Streak XP bonus" style="display:none;cursor:pointer;">▲ <span id="streakMultVal">1.0×</span> XP</div>
+            <div class="auto-indicator" id="autoIndicator" onclick="openBoostModal()" title="Passive XP rate — tap for power-ups" style="cursor:pointer;"><div class="auto-dot"></div>AUTO <span id="autoMultLabel">1×</span><span id="autoBoostTime" style="display:none;"></span></div>
           </div>
         </div>
         <div class="xp-section" onclick="openLevelRoad()" style="cursor:pointer;">
@@ -4764,7 +4825,8 @@ function finishWorkout() {
   const baseXp = totalSets * 25 + 100;
   // Golden Duck gives +150% workout XP on top of streak multiplier
   const duckBonus = (p.equippedSkin === 'golden-duck') ? 2.5 : 1;
-  const xpGained = Math.round(baseXp * streakMult * duckBonus);
+  const boostMult = getActiveBoost(p);   // purchased XP power-up
+  const xpGained = Math.round(baseXp * streakMult * duckBonus * boostMult);
   const oldLevelW = p.level || 1;
   p.xp = (p.xp || 0) + xpGained;
   p.level = calcLevel(p.xp).level;
@@ -5495,9 +5557,24 @@ function buildStreakCalendar() {
 // ══════════════════════════════════════════
 //  CASES
 // ══════════════════════════════════════════
+function renderBoostShop() {
+  const grid = document.getElementById('boostGrid');
+  if (!grid) return;
+  grid.innerHTML = Object.entries(BOOSTS).map(([id, b]) => `
+    <div class="shop-item shop-item-rare">
+      <div style="font-size:34px;line-height:1;margin-bottom:6px;">${b.icon}</div>
+      <div class="shop-name">${b.name}</div>
+      <div class="shop-desc">${b.sub}</div>
+      <div class="shop-price">◆ ${b.cost.toLocaleString()}</div>
+      <button class="shop-btn shop-btn-rare" onclick="buyBoost('${id}')">Buy</button>
+    </div>`).join('');
+}
+
 function updateCaseCounts() {
   const p = getP();
   if (!p) return;
+  renderBoostShop();
+  renderBoostStatus();
   const b = p.cases.basic||0, r = p.cases.rare||0, l = p.cases.legendary||0;
   const shopGold = document.getElementById('shopGoldDisplay');
   if (shopGold) shopGold.textContent = (p.gold || 0).toLocaleString();
@@ -5578,7 +5655,7 @@ let evolvedTimer = null;
 function showEvolutionBanner(tierData, skinName) {
   const banner = document.getElementById('evolvedBanner');
   document.getElementById('evolvedTierName').textContent = tierData.name.toUpperCase();
-  document.getElementById('evolvedSkinName').textContent = (skinName || 'Your pet') + ' evolved!';
+  document.getElementById('evolvedSkinName').textContent = 'You ranked up!';
   banner.classList.toggle('goat',       tierData.tier === 4);
   banner.classList.toggle('golden-god', tierData.tier === 5);
   banner.style.borderColor = tierData.color + '88';
@@ -5739,10 +5816,10 @@ function playEvoAnimation(tierData, skinId, fallbackEmoji) {
   nameEl.style.color = tierData.color;
   nameEl.style.textShadow = `0 0 40px ${tierData.glow}, 0 0 80px ${tierData.glow}`;
 
-  // Subtitle
-  const skinData = ALL_SKINS_MAP?.[skinId];
+  // Subtitle — account-based framing
+  const _p = getP();
   document.getElementById('evoAnimPetName').textContent =
-    (skinData?.name || 'Your pet') + ' has evolved!';
+    _p ? `You've reached Level ${_p.level}!` : 'You ranked up!';
 
   // Canvas size
   canvas.width  = window.innerWidth;
@@ -5865,6 +5942,173 @@ function showLevelUpBanner(level, rewardText) {
   banner.classList.add('show');
   clearTimeout(bannerTimer);
   bannerTimer = setTimeout(() => banner.classList.remove('show'), 3000);
+}
+
+function openBoostModal() {
+  renderBoostShop();
+  renderBoostStatus();
+  document.getElementById('boostModal').classList.remove('hidden');
+}
+
+// ── DAILY SPIN WHEEL ──
+const DAILY_SPIN_CD = 24 * 60 * 60 * 1000;
+const DAILY_WHEEL = [
+  { gold: 50,    color: '#38bdf8', w: 18  },
+  { gold: 250,   color: '#a855f7', w: 9   },
+  { gold: 10,    color: '#fb923c', w: 20  },
+  { gold: 1000,  color: '#22c55e', w: 5   },
+  { gold: 100,   color: '#38bdf8', w: 14  },
+  { gold: 2500,  color: '#ec4899', w: 2.5 },
+  { gold: 25,    color: '#fb923c', w: 18  },
+  { gold: 500,   color: '#a855f7', w: 7   },
+  { gold: 5,     color: '#64748b', w: 20  },
+  { gold: 5000,  color: '#fbbf24', w: 1   },
+  { gold: 75,    color: '#38bdf8', w: 12  },
+  { gold: 10000, color: '#fde047', w: 0.5 },
+];
+let _dwRotation = 0;
+let _dwSpinning = false;
+
+function fmtGold(g) { return g >= 1000 ? (g % 1000 === 0 ? g / 1000 + 'k' : (g / 1000).toFixed(1) + 'k') : '' + g; }
+
+function buildDailyWheel() {
+  const wheel = document.getElementById('dwWheel');
+  if (!wheel || wheel.dataset.built) return;
+  const n = DAILY_WHEEL.length, seg = 360 / n;
+  const stops = DAILY_WHEEL.map((s, i) => `${s.color} ${i * seg}deg ${(i + 1) * seg}deg`).join(',');
+  wheel.style.background = `conic-gradient(${stops})`;
+  wheel.innerHTML = DAILY_WHEEL.map((s, i) =>
+    `<div class="dw-label" style="transform:rotate(${i * seg + seg / 2}deg);"><span>◆${fmtGold(s.gold)}</span></div>`).join('');
+  wheel.dataset.built = '1';
+}
+
+function dailySpinLeft() {
+  const p = getP();
+  if (!p || !p.lastDailySpin) return 0;
+  return Math.max(0, DAILY_SPIN_CD - (Date.now() - p.lastDailySpin));
+}
+
+function updateDailySpinBtn() {
+  const btn = document.getElementById('dailySpinBtn');
+  if (!btn) return;
+  const left = dailySpinLeft();
+  const label = document.getElementById('dailySpinLabel');
+  if (left > 0) {
+    btn.classList.remove('ready'); btn.classList.add('cooldown');
+    const h = Math.floor(left / 3600000), m = Math.floor((left % 3600000) / 60000);
+    if (label) label.textContent = h > 0 ? h + 'h' : (m > 0 ? m + 'm' : '<1m');
+  } else {
+    btn.classList.add('ready'); btn.classList.remove('cooldown');
+    if (label) label.textContent = 'Spin';
+  }
+}
+
+function openDailyWheel() {
+  buildDailyWheel();
+  const left = dailySpinLeft();
+  const spinBtn = document.getElementById('dwSpinBtn');
+  const result = document.getElementById('dwResult');
+  if (left > 0) {
+    spinBtn.disabled = true;
+    spinBtn.textContent = 'Next spin in ' + fmtBoostLeft(left);
+    result.textContent = 'Come back tomorrow!';
+  } else {
+    spinBtn.disabled = false;
+    spinBtn.textContent = 'SPIN';
+    result.textContent = '';
+  }
+  document.getElementById('dailyWheelOverlay').classList.remove('hidden');
+}
+function closeDailyWheel(e) {
+  if (e && e.target && e.target.id && e.target.id !== 'dailyWheelOverlay') return;
+  if (_dwSpinning) return;
+  document.getElementById('dailyWheelOverlay').classList.add('hidden');
+}
+
+function spinDailyWheel() {
+  if (_dwSpinning || dailySpinLeft() > 0) return;
+  const p = getP(); if (!p) return;
+  _dwSpinning = true;
+  const spinBtn = document.getElementById('dwSpinBtn');
+  spinBtn.disabled = true; spinBtn.textContent = 'Spinning…';
+  document.getElementById('dwResult').textContent = '';
+
+  // weighted pick
+  const total = DAILY_WHEEL.reduce((a, s) => a + s.w, 0);
+  let r = Math.random() * total, idx = 0;
+  for (let i = 0; i < DAILY_WHEEL.length; i++) { r -= DAILY_WHEEL[i].w; if (r <= 0) { idx = i; break; } }
+
+  const seg = 360 / DAILY_WHEEL.length;
+  const mid = idx * seg + seg / 2;
+  const targetMod = (360 - mid) % 360;
+  const current = ((_dwRotation % 360) + 360) % 360;
+  let delta = (targetMod - current + 360) % 360;
+  delta += (Math.random() * seg * 0.6 - seg * 0.3); // land within the segment, not dead center
+  _dwRotation += 360 * 5 + delta;
+  document.getElementById('dwWheel').style.transform = `rotate(${_dwRotation}deg)`;
+
+  setTimeout(() => {
+    const reward = DAILY_WHEEL[idx].gold;
+    p.gold = (p.gold || 0) + reward;
+    p.lastDailySpin = Date.now();
+    saveP(p);
+    document.getElementById('dwResult').textContent = `🎉 You won ◆ ${reward.toLocaleString()}!`;
+    spinBtn.textContent = 'Come back in 24h';
+    _dwSpinning = false;
+    refreshHomeStats(); updateCaseCounts(); updateDailySpinBtn();
+    if (typeof showAchieve === 'function') showAchieve({ type: 'gold', icon: '🎡', eyebrow: 'Daily Spin', title: `+${reward.toLocaleString()} Gold`, sub: 'Come back in 24 hours' });
+  }, 4900);
+}
+
+// ── XP POWER-UPS ──
+// id: { mult, hours, cost, label }
+const BOOSTS = {
+  b2x4:  { mult: 2, hours: 4,  cost: 750,   icon: '⚡', name: '2× XP',  sub: '4 hours'  },
+  b3x2:  { mult: 3, hours: 2,  cost: 1500,  icon: '🔥', name: '3× XP',  sub: '2 hours'  },
+  b2x12: { mult: 2, hours: 12, cost: 2000,  icon: '🌟', name: '2× XP',  sub: '12 hours' },
+};
+
+// Returns the active XP multiplier (1 if none), auto-clearing expired boosts
+function getActiveBoost(p) {
+  p = p || getP();
+  if (!p || !p.boost) return 1;
+  if (p.boost.expires > Date.now()) return p.boost.mult;
+  p.boost = null;            // expired
+  return 1;
+}
+function fmtBoostLeft(ms) {
+  const s = Math.max(0, Math.floor(ms / 1000));
+  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+  return h > 0 ? `${h}h ${m}m` : (m > 0 ? `${m}m ${sec}s` : `${sec}s`);
+}
+function buyBoost(id) {
+  const p = getP(); if (!p) return;
+  const b = BOOSTS[id]; if (!b) return;
+  if ((p.gold || 0) < b.cost) { showToast('— Need ◆ ' + b.cost.toLocaleString() + ' for that boost'); return; }
+  p.gold -= b.cost;
+  const now = Date.now();
+  const cur = (p.boost && p.boost.expires > now) ? p.boost : null;
+  const base = cur ? cur.expires : now;                 // extend if one is active
+  p.boost = { mult: cur ? Math.max(cur.mult, b.mult) : b.mult, expires: base + b.hours * 3600000 };
+  saveP(p);
+  updateCaseCounts();
+  refreshHomeStats();
+  renderBoostStatus();
+  showToast(`${b.icon} ${b.name} active — train to earn bonus XP!`);
+}
+function renderBoostStatus() {
+  const p = getP();
+  const active = p && p.boost && p.boost.expires > Date.now();
+  const left = active ? fmtBoostLeft(p.boost.expires - Date.now()) : '';
+  // Shop status line
+  const el = document.getElementById('boostStatus');
+  if (el) {
+    el.innerHTML = active
+      ? `<span style="color:var(--accent);font-weight:800;">${p.boost.mult}× XP ACTIVE</span> · ${left} left`
+      : `<span style="color:var(--muted);">No boost active</span>`;
+  }
+  // the combined AUTO badge on the home pet card reflects the boost
+  if (typeof updateAutoMultLabel === 'function') updateAutoMultLabel();
 }
 
 function buyCase(type) {
@@ -7882,6 +8126,8 @@ function fmtCooldown(msLeft) {
 function updateGoldClaimUI() {
   const p = getP();
   const now = Date.now();
+  renderBoostStatus();   // live boost countdown
+  updateDailySpinBtn();  // live daily-spin cooldown
 
   // ── Daily ──
   const dailyBtn = document.getElementById('dailyClaimBtn');
@@ -8008,7 +8254,8 @@ function _xpPerTick(p) {
   const skin   = ALL_SKINS_MAP?.[p?.equippedSkin];
   const rarity = skin?.rarity || 'common';
   const mult   = p?.autoClickMultiplier || 1;
-  return (RARITY_TAP_XP[rarity] || 10) * mult;
+  // active XP power-up boosts passive XP too
+  return (RARITY_TAP_XP[rarity] || 10) * mult * getActiveBoost(p);
 }
 
 // Called when app comes back to foreground — catches up missed ticks
@@ -8067,19 +8314,36 @@ function _autoClick() {
     petEl.style.animation = 'auto-tap-pulse .45s ease';
     setTimeout(() => { petEl.style.animation = ''; }, 500);
 
-    // XP floater every 10 ticks showing accumulated total
+    // Every 10 ticks: show the accumulated +XP AND advance the bar in sync
     if (_autoTick % 10 === 0) {
       showXpFloat(petEl, '+' + _autoXpAccum + ' XP');
       _autoXpAccum = 0;
+      refreshHomeStats();
     }
   }
 
-  // Refresh UI every 5 ticks
-  if (_autoTick % 5 === 0) {
-    refreshHomeStats();
-    const multLabel = document.getElementById('autoMultLabel');
-    if (multLabel) multLabel.textContent = mult + '×';
+  // keep the AUTO multiplier label fresh
+  if (_autoTick % 5 === 0) updateAutoMultLabel();
+}
+
+// Single combined badge: effective passive-XP multiplier (auto × active power-up) + countdown
+function updateAutoMultLabel() {
+  const label = document.getElementById('autoMultLabel');
+  if (!label) return;
+  const p = getP();
+  const boost = getActiveBoost(p);
+  const eff = (p?.autoClickMultiplier || 1) * boost;
+  const active = !!(p && p.boost && p.boost.expires > Date.now());
+  label.textContent = eff + '×';
+  const timeEl = document.getElementById('autoBoostTime');
+  if (timeEl) {
+    if (active) { timeEl.textContent = ' · ' + fmtBoostLeft(p.boost.expires - Date.now()); timeEl.style.display = ''; }
+    else timeEl.style.display = 'none';
   }
+  const ind = document.getElementById('autoIndicator');
+  if (ind) ind.style.cssText = active
+    ? 'cursor:pointer;border-color:var(--accent);color:var(--accent);box-shadow:0 0 10px rgba(204,255,0,.25);'
+    : 'cursor:pointer;';
 }
 
 // Track when page is hidden / shown to calculate missed XP
@@ -8353,6 +8617,27 @@ function updateQuestProgress(type, amount, extra) {
 // ══════════════════════════════════════════
 //  STREAK XP MULTIPLIER
 // ══════════════════════════════════════════
+function openStreakInfo() {
+  const p = getP();
+  const streak = p ? calcStreak(p.streakDays) : 0;
+  const cur = p ? getStreakMultiplier(p.streakDays) : 1;
+  let rows = '';
+  for (let d = 1; d <= 11; d++) {
+    const m = d <= 1 ? 1.0 : Math.min(2.0, 1 + (d - 1) * 0.1);
+    const isCur = streak >= 11 ? d === 11 : d === Math.max(1, streak);
+    rows += `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:9px;margin-bottom:5px;font-family:'DM Mono',monospace;font-size:13px;${isCur ? 'background:rgba(204,255,0,.12);border:1px solid var(--accent);' : 'background:var(--bg3);border:1px solid var(--border);'}">
+      <span style="${isCur ? 'color:var(--accent);font-weight:800;' : ''}">Day ${d}${d === 11 ? '+' : ''}${isCur ? '  ← you' : ''}</span>
+      <span style="${isCur ? 'color:var(--accent);font-weight:800;' : 'color:var(--text);'}">${m.toFixed(1)}× XP${d === 11 ? '  ·  MAX' : ''}</span>
+    </div>`;
+  }
+  document.getElementById('streakInfoBody').innerHTML = `
+    <div style="font-size:13px;line-height:1.6;color:var(--text);margin-bottom:8px;">Work out on consecutive days to earn bonus XP. Every streak day adds <b style="color:var(--accent);">+10%</b>, maxing out at <b style="color:var(--accent);">2×</b> on an 11-day streak.</div>
+    <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:14px;line-height:1.5;">One rest day is fine — your streak only breaks after you skip 2+ days in a row.</div>
+    <div style="font-size:12px;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:12px;">You're on a <b style="color:var(--accent);">${streak}-day</b> streak → <b style="color:var(--accent);">${cur.toFixed(1)}×</b> XP</div>
+    ${rows}`;
+  document.getElementById('streakModal').classList.remove('hidden');
+}
+
 function getStreakMultiplier(streakDays) {
   const streak = calcStreak(streakDays);
   if (streak <= 1) return 1.0;
