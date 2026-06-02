@@ -2114,7 +2114,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
         <span class="rt-mini-time" id="rtMiniTime">2:00</span>
         <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">REST</span>
       </div>
-    <div class="gold-badge" onclick="openSheet('goldModal')" style="cursor:pointer;" title="Gold bonuses">◆ <span id="goldCount">0</span></div>
+    <div class="gold-badge" onclick="openSheet('goldModal')" style="cursor:pointer;position:relative;" title="Gold bonuses">◆ <span id="goldCount">0</span><span id="goldClaimDot" style="display:none;position:absolute;top:-4px;right:-4px;width:11px;height:11px;background:#ef4444;border:2px solid #0a0a0f;border-radius:50%;box-shadow:0 0 7px rgba(239,68,68,.8);"></span></div>
     <div class="streak-badge" onclick="openSheet('historyModal')" style="cursor:pointer;" title="Workout history"><span class="streak-fire"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fb923c" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></span><span id="streakCount">0</span>d</div>
     <div class="profile-dropdown-wrap" id="profileDropdownWrap">
       <div class="nav-profile-btn" onclick="toggleProfileDropdown()">
@@ -6063,9 +6063,9 @@ function spinDailyWheel() {
 // ── XP POWER-UPS ──
 // id: { mult, hours, cost, label }
 const BOOSTS = {
-  b2x4:  { mult: 2, hours: 4,  cost: 750,   icon: '⚡', name: '2× XP',  sub: '4 hours'  },
-  b3x2:  { mult: 3, hours: 2,  cost: 1500,  icon: '🔥', name: '3× XP',  sub: '2 hours'  },
-  b2x12: { mult: 2, hours: 12, cost: 2000,  icon: '🌟', name: '2× XP',  sub: '12 hours' },
+  b2x4:  { mult: 2, hours: 1,  cost: 1000,  icon: '⚡', name: '2× XP',  sub: '1 hour'   },
+  b3x2:  { mult: 3, hours: 2,  cost: 2500,  icon: '🔥', name: '3× XP',  sub: '2 hours'  },
+  b2x12: { mult: 2, hours: 12, cost: 10000, icon: '🌟', name: '2× XP',  sub: '12 hours' },
 };
 
 // Returns the active XP multiplier (1 if none), auto-clearing expired boosts
@@ -8147,6 +8147,13 @@ function updateGoldClaimUI() {
     const miniReady = miniLeft === 0;
     miniBtn.disabled = !miniReady;
     miniBtn.textContent = miniReady ? 'Claim' : fmtCooldown(miniLeft);
+  }
+  // Red dot on the gold chip when any claim is ready
+  const goldDot = document.getElementById('goldClaimDot');
+  if (goldDot) {
+    const dReady = !p?.lastDailyClaim || (now - p.lastDailyClaim) >= DAILY_CD_MS;
+    const mReady = !p?.lastMiniClaim || (now - p.lastMiniClaim) >= MINI_CD_MS;
+    goldDot.style.display = (p && (dReady || mReady)) ? 'block' : 'none';
   }
 }
 
