@@ -7776,8 +7776,30 @@ function getAudioCtx() {
   if (_sharedACtx.state === 'suspended') _sharedACtx.resume();
   return _sharedACtx;
 }
-// Resume audio context on any tap so iOS doesn't suspend it
-document.addEventListener('touchstart', () => { if (_sharedACtx && _sharedACtx.state === 'suspended') _sharedACtx.resume(); }, { passive: true });
+// ── iOS / mobile audio unlock ──
+// iOS keeps the AudioContext suspended until it's resumed AND a buffer is played
+// from inside a real user gesture. Do this on the first interaction of any kind.
+let _audioUnlocked = false;
+function unlockAudio() {
+  try {
+    const ctx = getAudioCtx(); // creates the context if needed + resumes
+    // Play a 1-sample silent buffer — this is what actually unlocks iOS audio
+    const buf = ctx.createBuffer(1, 1, 22050);
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.connect(ctx.destination);
+    src.start(0);
+    if (ctx.state === 'suspended') ctx.resume();
+    if (ctx.state === 'running') {
+      _audioUnlocked = true;
+      // Once truly unlocked we can drop the listeners
+      ['touchend', 'touchstart', 'pointerdown', 'mousedown', 'click', 'keydown'].forEach(ev =>
+        document.removeEventListener(ev, unlockAudio));
+    }
+  } catch (e) {}
+}
+['touchend', 'touchstart', 'pointerdown', 'mousedown', 'click', 'keydown'].forEach(ev =>
+  document.addEventListener(ev, unlockAudio, { passive: true }));
 
 function playDefaultChime() {
   try {
