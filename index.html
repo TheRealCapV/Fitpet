@@ -1617,7 +1617,32 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .e1rm-val{font-size:16px;font-weight:800;font-family:'DM Mono',monospace;color:var(--accent);}
 .e1rm-sub{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;}
 .e1rm-pr{font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;background:rgba(200,255,0,.1);color:var(--accent);border:1px solid rgba(200,255,0,.3);font-family:'DM Mono',monospace;white-space:nowrap;}
+/* ── Progressive Overload portfolio (stock-style) ── */
+.po-card{overflow:hidden;}
+.po-ticker{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;}
+.po-ticker-sub{opacity:.6;font-weight:400;}
+.po-value{font-size:30px;font-weight:800;letter-spacing:-1px;line-height:1.05;margin-top:4px;font-family:'Syne',sans-serif;}
+.po-change{font-size:13px;font-weight:800;font-family:'DM Mono',monospace;margin-top:3px;display:inline-block;}
+.po-change.up{color:var(--accent);}
+.po-change.down{color:#f87171;}
+.po-change.flat{color:var(--muted);}
+.po-change-sub{font-weight:400;color:var(--muted);font-size:11px;margin-left:4px;}
+.po-range-label{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;padding-top:4px;}
+.po-period-tabs{display:flex;gap:4px;margin-top:12px;background:var(--bg3);border-radius:10px;padding:4px;}
+.po-period-tab{flex:1;padding:7px 4px;border:none;background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-weight:700;font-size:12px;border-radius:7px;cursor:pointer;transition:all .18s;letter-spacing:.5px;}
+.po-period-tab.active{background:var(--bg);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.4);}
+@media(hover:hover){.po-period-tab:hover:not(.active){color:var(--text);}}
 .overload-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.overload-row-clickable{cursor:pointer;transition:background .15s;border-radius:8px;margin:0 -8px;padding-left:8px;padding-right:8px;}
+@media(hover:hover){.overload-row-clickable:hover{background:rgba(255,255,255,.03);}}
+.overload-row-clickable:active{background:rgba(255,255,255,.05);}
+.overload-chevron{color:var(--muted);font-size:18px;font-weight:700;flex-shrink:0;margin-left:-2px;}
+/* exercise stock detail */
+.exs-stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.exs-stat{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:11px 12px;}
+.exs-stat-val{font-size:18px;font-weight:800;font-family:'Syne',sans-serif;line-height:1.05;}
+.exs-stat-lbl{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;text-transform:uppercase;margin-top:3px;}
+.exs-hist-vol{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-left:auto;flex-shrink:0;}
 .overload-row:last-child{border-bottom:none;}
 .overload-name{flex:1;font-size:12px;font-weight:700;}
 .overload-pill{font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px;font-family:'DM Mono',monospace;white-space:nowrap;}
@@ -1863,6 +1888,22 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
       <button class="exinfo-close" onclick="closeExerciseInfo()">✕</button>
     </div>
     <div id="exInfoBody"></div>
+  </div>
+</div>
+
+<!-- EXERCISE STOCK DETAIL MODAL -->
+<div class="exinfo-overlay hidden" id="exStockOverlay" onclick="closeExerciseStock(event)">
+  <div class="exinfo-sheet" onclick="event.stopPropagation()">
+    <div class="exinfo-handle"></div>
+    <div class="exinfo-head">
+      <div class="exinfo-icon" id="exStockIcon">◈</div>
+      <div style="min-width:0;">
+        <div class="exinfo-name" id="exStockName">Exercise</div>
+        <span class="exinfo-muscle" id="exStockMuscle">Muscle</span>
+      </div>
+      <button class="exinfo-close" onclick="closeExerciseStock()">✕</button>
+    </div>
+    <div id="exStockBody"></div>
   </div>
 </div>
 
@@ -2386,25 +2427,35 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   <!-- ── STRENGTH PANE ── -->
   <div class="hist-pane" id="histPane-strength">
 
-    <!-- Progressive Overload Score -->
-    <div class="card" style="margin-bottom:14px;">
-      <div class="card-header" style="margin-bottom:4px;">
-        <span class="card-title">Progressive Overload</span>
-        <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">THIS WEEK vs LAST</span>
+    <!-- Progressive Overload — Portfolio (stock-market style) -->
+    <div class="card po-card" style="margin-bottom:14px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:2px;">
+        <div>
+          <div class="po-ticker">VOLUME LOAD <span class="po-ticker-sub">· LBS LIFTED</span></div>
+          <div class="po-value" id="poValue">—</div>
+          <div class="po-change" id="poChange"></div>
+        </div>
+        <div class="po-range-label" id="poRangeLabel"></div>
       </div>
-      <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.5;">Based on total volume load (sets × reps × weight). Research suggests 5–10% weekly increase is optimal.</div>
-      <div id="overloadScore"></div>
+      <svg id="poChart" viewBox="0 0 360 150" style="width:100%;display:block;margin-top:4px;" preserveAspectRatio="none"></svg>
+      <div id="poLabels" style="display:flex;justify-content:space-between;margin-top:2px;font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;padding:0 2px;"></div>
+      <div class="po-period-tabs">
+        <button class="po-period-tab" onclick="setOverloadPeriod('1W',this)">1W</button>
+        <button class="po-period-tab active" onclick="setOverloadPeriod('1M',this)">1M</button>
+        <button class="po-period-tab" onclick="setOverloadPeriod('3M',this)">3M</button>
+        <button class="po-period-tab" onclick="setOverloadPeriod('1Y',this)">1Y</button>
+        <button class="po-period-tab" onclick="setOverloadPeriod('ALL',this)">ALL</button>
+      </div>
     </div>
 
-    <!-- Weekly Tonnage -->
+    <!-- Breakdown by exercise -->
     <div class="card" style="margin-bottom:14px;">
       <div class="card-header" style="margin-bottom:4px;">
-        <span class="card-title">Weekly Tonnage</span>
-        <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">LBS LIFTED</span>
+        <span class="card-title">Breakdown by Exercise</span>
+        <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">THIS WEEK vs LAST</span>
       </div>
-      <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.5;">Total volume load per week. An upward trend = progressive overload is happening.</div>
-      <svg id="tonnageSvg" viewBox="0 0 360 120" style="width:100%;display:block;" preserveAspectRatio="none"></svg>
-      <div id="tonnageLabels" style="display:flex;justify-content:space-between;margin-top:4px;font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;padding:0 2px;"></div>
+      <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.5;">Per-lift volume load (sets × reps × weight). 5–10% weekly increase is the sweet spot.</div>
+      <div id="overloadScore"></div>
     </div>
 
     <!-- e1RM per exercise -->
@@ -10350,23 +10401,178 @@ function buildStrengthTab() {
   window._e1rmData = e1rmMap;
   renderE1RM('');
 
-  // ── Weekly tonnage ──
-  const weekTons = {}; // weekKey → total lbs
-  for (const w of workouts) {
-    const wk = getWeekKey(w.date);
-    let vol = 0;
-    for (const sets of Object.values(w.exercises || {}))
-      for (const s of sets) {
-        vol += (s.lbs || 0) * (s.reps || 0);
-        if (s.drops) s.drops.forEach(d => { vol += (d.lbs || 0) * (d.reps || 0); });
-      }
-    weekTons[wk] = (weekTons[wk] || 0) + vol;
-  }
-  const weekKeys = Object.keys(weekTons).sort().slice(-8);
-  renderTonnageChart(weekKeys, weekTons);
+  // ── Progressive overload portfolio (stock-style) ──
+  renderOverloadPortfolio();
 
-  // ── Progressive overload score ──
+  // ── Progressive overload score (per-exercise breakdown) ──
   renderOverloadScore(workouts);
+}
+
+// Total volume load (sets × reps × weight) for a single workout
+function _volOfWorkout(w) {
+  let v = 0;
+  for (const sets of Object.values(w.exercises || {}))
+    for (const s of sets) {
+      v += (s.lbs || 0) * (s.reps || 0);
+      if (s.drops) s.drops.forEach(d => { v += (d.lbs || 0) * (d.reps || 0); });
+    }
+  return v;
+}
+
+let _overloadPeriod = '1M';
+
+function setOverloadPeriod(period, btn) {
+  _overloadPeriod = period;
+  document.querySelectorAll('.po-period-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderOverloadPortfolio();
+}
+
+function renderOverloadPortfolio() {
+  const p = getP();
+  const valueEl  = document.getElementById('poValue');
+  const changeEl = document.getElementById('poChange');
+  const rangeEl  = document.getElementById('poRangeLabel');
+  const svg      = document.getElementById('poChart');
+  const labelsEl = document.getElementById('poLabels');
+  if (!p || !valueEl || !svg) return;
+
+  const workouts = p.workoutLog || [];
+  const period = _overloadPeriod;
+  const now = new Date(); now.setHours(0, 0, 0, 0);
+
+  // Build time buckets for the selected window
+  const buckets = [];
+  const monShort = d => d.toLocaleString('en-US', { month: 'short' });
+  function pushRange(count, gran) {
+    for (let i = count - 1; i >= 0; i--) {
+      let start, end, label;
+      if (gran === 'day') {
+        start = new Date(now); start.setDate(now.getDate() - i);
+        end = new Date(start); end.setDate(start.getDate() + 1);
+        label = `${start.getMonth() + 1}/${start.getDate()}`;
+      } else if (gran === 'week') {
+        const thisMon = new Date(now); thisMon.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+        start = new Date(thisMon); start.setDate(thisMon.getDate() - i * 7);
+        end = new Date(start); end.setDate(start.getDate() + 7);
+        label = `${start.getMonth() + 1}/${start.getDate()}`;
+      } else {
+        start = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        end = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
+        label = monShort(start);
+      }
+      buckets.push({ start, end, label, value: 0 });
+    }
+  }
+
+  let rangeText;
+  if (period === '1W')      { pushRange(7, 'day');   rangeText = 'PAST 7 DAYS'; }
+  else if (period === '1M') { pushRange(5, 'week');  rangeText = 'PAST 5 WEEKS'; }
+  else if (period === '3M') { pushRange(13, 'week'); rangeText = 'PAST 13 WEEKS'; }
+  else if (period === '1Y') { pushRange(12, 'month'); rangeText = 'PAST 12 MONTHS'; }
+  else {
+    if (workouts.length) {
+      const firstDate = new Date(workouts.reduce((m, w) => w.date < m ? w.date : m, workouts[0].date));
+      const months = (now.getFullYear() - firstDate.getFullYear()) * 12 + (now.getMonth() - firstDate.getMonth()) + 1;
+      pushRange(Math.max(2, Math.min(months, 24)), 'month');
+    } else pushRange(6, 'month');
+    rangeText = 'ALL TIME';
+  }
+  if (rangeEl) rangeEl.textContent = rangeText;
+
+  // Fill buckets with volume
+  for (const w of workouts) {
+    const d = new Date(w.date);
+    for (const b of buckets) {
+      if (d >= b.start && d < b.end) { b.value += _volOfWorkout(w); break; }
+    }
+  }
+
+  const vals = buckets.map(b => b.value);
+  const windowTotal = vals.reduce((a, b) => a + b, 0);
+
+  // Previous equal-length window total (for % change, like a stock timeframe return)
+  const winStart = buckets[0].start;
+  const winEnd = buckets[buckets.length - 1].end;
+  const winLen = winEnd - winStart;
+  const prevStart = new Date(winStart.getTime() - winLen);
+  let prevTotal = 0;
+  for (const w of workouts) {
+    const d = new Date(w.date);
+    if (d >= prevStart && d < winStart) prevTotal += _volOfWorkout(w);
+  }
+
+  // Headline value
+  valueEl.textContent = windowTotal.toLocaleString() + ' lbs';
+
+  // % change
+  let pct = null, dir = 'flat';
+  if (prevTotal > 0) {
+    pct = ((windowTotal - prevTotal) / prevTotal) * 100;
+    dir = pct > 0.5 ? 'up' : pct < -0.5 ? 'down' : 'flat';
+  } else if (windowTotal > 0) {
+    dir = 'up';
+  }
+  changeEl.className = 'po-change ' + dir;
+  if (pct === null) {
+    changeEl.innerHTML = windowTotal > 0
+      ? `▲ NEW <span class="po-change-sub">no prior data</span>`
+      : `<span class="po-change-sub" style="color:var(--muted)">No workouts in range</span>`;
+  } else {
+    const arrow = dir === 'up' ? '▲' : dir === 'down' ? '▼' : '▬';
+    const sign = pct > 0 ? '+' : '';
+    changeEl.innerHTML = `${arrow} ${sign}${pct.toFixed(1)}% <span class="po-change-sub">vs prev ${period}</span>`;
+  }
+
+  // ── Stock-style chart ──
+  renderPortfolioChart(svg, labelsEl, buckets, dir);
+}
+
+function renderPortfolioChart(svg, labelsEl, buckets, dir) {
+  const W = 360, H = 150, padL = 4, padR = 4, padT = 14, padB = 6;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+  const vals = buckets.map(b => b.value);
+  const maxV = Math.max(...vals, 1);
+  const minV = 0;
+  const n = buckets.length;
+  const color = dir === 'down' ? '#f87171' : dir === 'flat' ? '#9ca3af' : 'var(--accent)';
+  const colorRaw = dir === 'down' ? '248,113,113' : dir === 'flat' ? '156,163,175' : '200,255,0';
+
+  const xAt = i => padL + (n <= 1 ? chartW / 2 : (chartW * i) / (n - 1));
+  const yAt = v => padT + chartH - ((v - minV) / (maxV - minV || 1)) * chartH;
+  const pts = vals.map((v, i) => [xAt(i), yAt(v)]);
+
+  // Smooth-ish line (straight segments — clean stock look)
+  const linePath = pts.map((pt, i) => (i === 0 ? `M${pt[0].toFixed(1)},${pt[1].toFixed(1)}` : `L${pt[0].toFixed(1)},${pt[1].toFixed(1)}`)).join(' ');
+  const areaPath = `${linePath} L${pts[pts.length - 1][0].toFixed(1)},${padT + chartH} L${pts[0][0].toFixed(1)},${padT + chartH} Z`;
+
+  // baseline (first value) — dashed "cost basis" line like trading apps
+  const baseY = yAt(vals[0]);
+  const lastPt = pts[pts.length - 1];
+
+  const gradId = 'poGrad';
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="rgba(${colorRaw},.28)"/>
+        <stop offset="100%" stop-color="rgba(${colorRaw},0)"/>
+      </linearGradient>
+    </defs>
+    <line x1="${padL}" y1="${baseY.toFixed(1)}" x2="${W - padR}" y2="${baseY.toFixed(1)}" stroke="rgba(255,255,255,.12)" stroke-width="1" stroke-dasharray="3 4"/>
+    <path d="${areaPath}" fill="url(#${gradId})"/>
+    <path d="${linePath}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${lastPt[0].toFixed(1)}" cy="${lastPt[1].toFixed(1)}" r="4" fill="${color}"/>
+    <circle cx="${lastPt[0].toFixed(1)}" cy="${lastPt[1].toFixed(1)}" r="7" fill="${color}" opacity="0.2"/>
+  `;
+
+  // Sparse labels (show ~5 max to avoid crowding)
+  if (labelsEl) {
+    const step = Math.max(1, Math.ceil(n / 5));
+    labelsEl.innerHTML = buckets.map((b, i) =>
+      (i % step === 0 || i === n - 1) ? `<span>${b.label}</span>` : `<span style="opacity:0"></span>`
+    ).join('');
+  }
 }
 
 function renderE1RM(filter) {
@@ -10389,66 +10595,19 @@ function renderE1RM(filter) {
   el.innerHTML = entries.map(([id, data], i) => {
     const ex = ALL_EXERCISES[id];
     const isPR = i === 0;
-    return `<div class="e1rm-row">
+    return `<div class="e1rm-row overload-row-clickable" style="border-radius:8px;" onclick="openExerciseStock('${id}')">
       <div>
         <div class="e1rm-name">${ex.name}</div>
         <div class="e1rm-sub">${data.weight} lbs × ${data.reps} reps · ${data.date}</div>
       </div>
-      <div style="text-align:right;">
-        <div class="e1rm-val">${data.e1rm} lbs</div>
-        ${isPR ? '<div class="e1rm-pr">🏆 TOP</div>' : ''}
+      <div style="text-align:right;display:flex;align-items:center;gap:8px;">
+        <div>
+          <div class="e1rm-val">${data.e1rm} lbs</div>
+          ${isPR ? '<div class="e1rm-pr">🏆 TOP</div>' : ''}
+        </div>
+        <span class="overload-chevron">›</span>
       </div>
     </div>`;
-  }).join('');
-}
-
-function renderTonnageChart(weekKeys, weekTons) {
-  const svg = document.getElementById('tonnageSvg');
-  const labelsEl = document.getElementById('tonnageLabels');
-  if (!svg || !weekKeys.length) return;
-
-  const W = 360, H = 120, padL = 4, padR = 4, padT = 10, padB = 10;
-  const chartW = W - padL - padR;
-  const chartH = H - padT - padB;
-  const vals = weekKeys.map(k => weekTons[k] || 0);
-  const maxV = Math.max(...vals) || 1;
-  const n = weekKeys.length;
-  const slotW = chartW / n;
-  const barW = Math.max(10, slotW * 0.6);
-
-  // Line chart + bars
-  const pts = weekKeys.map((k, i) => {
-    const x = padL + slotW * i + slotW / 2;
-    const y = padT + chartH - (vals[i] / maxV) * chartH;
-    return [x, y];
-  });
-
-  const linePath = pts.map((p, i) => (i === 0 ? `M${p[0]},${p[1]}` : `L${p[0]},${p[1]}`)).join(' ');
-  const areaPath = `${linePath} L${pts[pts.length-1][0]},${padT+chartH} L${pts[0][0]},${padT+chartH} Z`;
-
-  const bars = weekKeys.map((k, i) => {
-    const x = padL + slotW * i + slotW / 2;
-    const barH = Math.max(2, (vals[i] / maxV) * chartH);
-    const y = padT + chartH - barH;
-    const isLast = i === weekKeys.length - 1;
-    return `<rect x="${(x-barW/2).toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" rx="3" fill="${isLast ? 'rgba(200,255,0,.5)' : 'rgba(200,255,0,.18)'}"/>`;
-  }).join('');
-
-  const dots = pts.map(([x, y], i) =>
-    `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="${i===pts.length-1?'var(--accent)':'rgba(200,255,0,.6)'}" />`
-  ).join('');
-
-  svg.innerHTML = `
-    <path d="${areaPath}" fill="rgba(200,255,0,.05)"/>
-    ${bars}
-    <path d="${linePath}" fill="none" stroke="rgba(200,255,0,.5)" stroke-width="1.5" stroke-linejoin="round"/>
-    ${dots}
-    <line x1="${padL}" y1="${padT+chartH}" x2="${W-padR}" y2="${padT+chartH}" stroke="#333" stroke-width="1"/>
-  `;
-
-  labelsEl.innerHTML = weekKeys.map(k => {
-    const d = new Date(k);
-    return `<span>W${d.getMonth()+1}/${d.getDate()}</span>`;
   }).join('');
 }
 
@@ -10511,11 +10670,181 @@ function renderOverloadScore(workouts) {
     }
     const insight = r.pct !== null && r.pct >= 5 && r.pct <= 10
       ? '<span style="font-size:9px;color:var(--accent);font-family:\'DM Mono\',monospace;margin-left:4px;">✓ optimal</span>' : '';
-    return `<div class="overload-row">
+    return `<div class="overload-row overload-row-clickable" onclick="openExerciseStock('${r.id}')">
       <div class="overload-name">${ex.name}<br><span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">${r.cur.toLocaleString()} lbs this wk</span></div>
       <span class="overload-pill ${pillClass}">${pillText}</span>${insight}
+      <span class="overload-chevron">›</span>
     </div>`;
   }).join('');
+}
+
+// ══════════════════════════════════════════
+//  EXERCISE STOCK DETAIL
+// ══════════════════════════════════════════
+let _exStockId = null;
+let _exStockPeriod = 'ALL';
+
+function openExerciseStock(exId) {
+  const ex = ALL_EXERCISES[exId];
+  if (!ex) return;
+  _exStockId = exId;
+  _exStockPeriod = 'ALL';
+  document.getElementById('exStockIcon').textContent = ex.icon;
+  document.getElementById('exStockName').textContent = ex.name;
+  document.getElementById('exStockMuscle').textContent = ex.muscle;
+  renderExStock();
+  document.getElementById('exStockOverlay').classList.remove('hidden');
+}
+
+function closeExerciseStock(e) {
+  if (e && e.target && e.target.id && e.target.id !== 'exStockOverlay') return;
+  document.getElementById('exStockOverlay').classList.add('hidden');
+}
+
+function setExStockPeriod(period, btn) {
+  _exStockPeriod = period;
+  document.querySelectorAll('#exStockBody .po-period-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderExStock(true);
+}
+
+// Best e1RM, total volume and best set for one session's sets of an exercise
+function _sessionExStats(sets) {
+  let e1rm = 0, vol = 0, bestSet = null;
+  const consider = (lbs, reps) => {
+    if (!lbs && !reps) return;
+    vol += (lbs || 0) * (reps || 0);
+    const e = calcE1RM(lbs || 0, reps || 0);
+    if (e > e1rm) e1rm = e;
+    if (!bestSet || (lbs || 0) > bestSet.lbs || ((lbs || 0) === bestSet.lbs && (reps || 0) > bestSet.reps))
+      bestSet = { lbs: lbs || 0, reps: reps || 0 };
+  };
+  for (const s of sets) {
+    consider(s.lbs, s.reps);
+    if (s.drops) s.drops.forEach(d => consider(d.lbs, d.reps));
+  }
+  return { e1rm, vol, bestSet };
+}
+
+function renderExStock(chartOnly) {
+  const p = getP();
+  const exId = _exStockId;
+  const body = document.getElementById('exStockBody');
+  if (!p || !exId || !body) return;
+  const ex = ALL_EXERCISES[exId];
+  const cardio = isCardio(exId);
+
+  // All sessions containing this exercise, ascending by date
+  const allSessions = (p.workoutLog || [])
+    .filter(w => w.exercises?.[exId]?.length)
+    .map(w => {
+      const st = _sessionExStats(w.exercises[exId]);
+      return { date: w.date, sets: w.exercises[exId], ...st };
+    })
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  // Filter by period
+  const now = new Date(); now.setHours(0, 0, 0, 0);
+  const cutoffDays = { '1M': 30, '3M': 90, '1Y': 365 }[_exStockPeriod];
+  const sessions = cutoffDays
+    ? allSessions.filter(s => (now - new Date(s.date)) / 86400000 <= cutoffDays)
+    : allSessions;
+
+  // Chart series = e1RM per session (or volume for cardio there's no e1RM, use vol)
+  const series = sessions.map(s => ({
+    label: new Date(s.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    value: cardio ? s.vol : s.e1rm
+  }));
+
+  const firstV = series.length ? series[0].value : 0;
+  const lastV  = series.length ? series[series.length - 1].value : 0;
+  let pct = null, dir = 'flat';
+  if (series.length >= 2 && firstV > 0) {
+    pct = ((lastV - firstV) / firstV) * 100;
+    dir = pct > 0.5 ? 'up' : pct < -0.5 ? 'down' : 'flat';
+  } else if (lastV > 0) { dir = 'up'; }
+
+  // ── All-time stats ──
+  const totalSessions = allSessions.length;
+  const allTimeBest1rm = allSessions.reduce((m, s) => Math.max(m, s.e1rm), 0);
+  const totalVol = allSessions.reduce((a, s) => a + s.vol, 0);
+  const totalSets = allSessions.reduce((a, s) => a + s.sets.length, 0);
+  const pr = getPrForExercise(exId);
+
+  const unit = cardio ? 'lbs' : 'lbs';
+  const headlineVal = cardio
+    ? (lastV ? lastV.toLocaleString() + ' lbs' : '—')
+    : (lastV ? lastV.toLocaleString() + ' lbs' : '—');
+  const headlineLbl = cardio ? 'LATEST VOLUME' : 'EST. 1 REP MAX';
+
+  // % change row
+  let changeHTML;
+  if (pct === null) {
+    changeHTML = `<span class="po-change-sub" style="color:var(--muted)">${series.length === 1 ? 'Only one session in range' : 'No data in range'}</span>`;
+  } else {
+    const arrow = dir === 'up' ? '▲' : dir === 'down' ? '▼' : '▬';
+    const sign = pct > 0 ? '+' : '';
+    changeHTML = `${arrow} ${sign}${pct.toFixed(1)}% <span class="po-change-sub">over ${_exStockPeriod}</span>`;
+  }
+
+  // History rows (most recent first)
+  const histRows = [...sessions].reverse().map(s => {
+    const date = new Date(s.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const chips = s.sets.map(set => {
+      const isPR = !cardio && pr && set.lbs === pr.lbs && set.reps === pr.reps;
+      if (cardio) return `<span class="exinfo-hist-set">${set.mins || 0}m ${String(set.secs || 0).padStart(2,'0')}s</span>`;
+      return `<span class="exinfo-hist-set${isPR ? ' pr' : ''}">${set.lbs}×${set.reps}</span>`;
+    }).join('');
+    return `<div class="exinfo-hist-row">
+      <span class="exinfo-hist-date">${date}</span>
+      <div class="exinfo-hist-sets">${chips}</div>
+      <span class="exs-hist-vol">${s.vol.toLocaleString()} lbs</span>
+    </div>`;
+  }).join('');
+
+  if (chartOnly && document.getElementById('exsChart')) {
+    // Only update the chart + headline (period switch)
+    document.getElementById('exsValue').textContent = headlineVal;
+    const chEl = document.getElementById('exsChange');
+    chEl.className = 'po-change ' + dir;
+    chEl.innerHTML = changeHTML;
+    renderPortfolioChart(document.getElementById('exsChart'), document.getElementById('exsLabels'), series.length ? series : [{label:'',value:0}], dir);
+    document.getElementById('exsHist').innerHTML = histRows || '<div class="exinfo-empty">No sessions in this range.</div>';
+    return;
+  }
+
+  body.innerHTML = `
+    <div class="exinfo-sec po-card" style="margin-top:14px;border:1px solid var(--border);border-radius:14px;padding:14px;">
+      <div class="po-ticker">${headlineLbl}</div>
+      <div class="po-value" id="exsValue">${headlineVal}</div>
+      <div class="po-change ${dir}" id="exsChange">${changeHTML}</div>
+      <svg id="exsChart" viewBox="0 0 360 130" style="width:100%;display:block;margin-top:6px;" preserveAspectRatio="none"></svg>
+      <div id="exsLabels" style="display:flex;justify-content:space-between;margin-top:2px;font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;padding:0 2px;"></div>
+      <div class="po-period-tabs">
+        <button class="po-period-tab${_exStockPeriod==='1M'?' active':''}" onclick="setExStockPeriod('1M',this)">1M</button>
+        <button class="po-period-tab${_exStockPeriod==='3M'?' active':''}" onclick="setExStockPeriod('3M',this)">3M</button>
+        <button class="po-period-tab${_exStockPeriod==='1Y'?' active':''}" onclick="setExStockPeriod('1Y',this)">1Y</button>
+        <button class="po-period-tab${_exStockPeriod==='ALL'?' active':''}" onclick="setExStockPeriod('ALL',this)">ALL</button>
+      </div>
+    </div>
+
+    <div class="exinfo-sec">
+      <div class="exinfo-sec-title">Career Stats</div>
+      <div class="exs-stat-grid">
+        <div class="exs-stat"><div class="exs-stat-val" style="color:var(--accent)">${allTimeBest1rm ? allTimeBest1rm.toLocaleString() : '—'}${allTimeBest1rm ? ' lbs' : ''}</div><div class="exs-stat-lbl">All-Time Best 1RM</div></div>
+        <div class="exs-stat"><div class="exs-stat-val">${pr ? pr.lbs + '×' + pr.reps : '—'}</div><div class="exs-stat-lbl">Best Set</div></div>
+        <div class="exs-stat"><div class="exs-stat-val">${totalVol.toLocaleString()}<span style="font-size:11px;color:var(--muted)"> lbs</span></div><div class="exs-stat-lbl">Total Volume</div></div>
+        <div class="exs-stat"><div class="exs-stat-val">${totalSessions}<span style="font-size:11px;color:var(--muted)"> · ${totalSets} sets</span></div><div class="exs-stat-lbl">Sessions Logged</div></div>
+      </div>
+    </div>
+
+    <div class="exinfo-sec">
+      <div class="exinfo-sec-title">Session History</div>
+      <div id="exsHist">${histRows || '<div class="exinfo-empty">No logged sessions yet — do this exercise to start tracking.</div>'}</div>
+    </div>`;
+
+  // Draw chart after DOM insert
+  renderPortfolioChart(document.getElementById('exsChart'), document.getElementById('exsLabels'), series.length ? series : [{label:'',value:0}], dir);
 }
 
 // ══════════════════════════════════════════
