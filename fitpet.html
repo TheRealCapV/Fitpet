@@ -1637,6 +1637,11 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 @media(hover:hover){.overload-row-clickable:hover{background:rgba(255,255,255,.03);}}
 .overload-row-clickable:active{background:rgba(255,255,255,.05);}
 .overload-chevron{color:var(--muted);font-size:18px;font-weight:700;flex-shrink:0;margin-left:-2px;}
+/* chart scrubber tooltip */
+.chart-tip{position:absolute;transform:translateX(-50%);pointer-events:none;z-index:5;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:5px 9px;box-shadow:0 4px 16px rgba(0,0,0,.6);white-space:nowrap;text-align:center;}
+.chart-tip-val{font-size:14px;font-weight:800;font-family:'Syne',sans-serif;color:var(--text);line-height:1.1;}
+.chart-tip-val span{font-size:9px;color:var(--muted);font-weight:400;font-family:'DM Mono',monospace;}
+.chart-tip-date{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;margin-top:1px;}
 /* exercise stock detail */
 .exs-stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
 .exs-stat{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:11px 12px;}
@@ -3178,8 +3183,12 @@ function loginAs(username) {
   // One-time starter cases for existing users with none
   if (p) {
     if (!p.cases) p.cases = { basic: 0, rare: 0, legendary: 0 };
-    if (!p.cases.basic && !p.cases.rare && !p.cases.legendary) {
-      p.cases.basic = 3;
+    // One-time starter cases — granted exactly once per profile, never again
+    if (!p.starterCasesGiven) {
+      p.starterCasesGiven = true;
+      if (!p.cases.basic && !p.cases.rare && !p.cases.legendary) {
+        p.cases.basic = 3;
+      }
     }
     // Mark all already-passed levels as claimed for existing users
     if (!p.claimedLevels) {
@@ -6493,6 +6502,7 @@ function startMultiSpin() {
   _multiSettleTimeouts = [];
   _multiResultTimeout = null;
   let settledCount = 0;
+  let maxDur = 0;
 
   // Show skip button
   const skipMBtn = document.getElementById('skipMultiBtn');
@@ -6505,6 +6515,7 @@ function startMultiSpin() {
     const jitter = (Math.random() - 0.5) * 24;
     const endX = cw/2 - (MULTI_WIN_IDX * MULTI_SLOT + 33) + jitter;
     const dur = (4.2 + Math.random() * 1.6).toFixed(2);
+    maxDur = Math.max(maxDur, parseFloat(dur));
     _multiEndXs[i] = endX;
 
     strip.getBoundingClientRect();
@@ -6525,6 +6536,9 @@ function startMultiSpin() {
     }, parseFloat(dur) * 1000 + 80);
     _multiSettleTimeouts.push(t);
   }
+
+  // Ticking spin sound across the longest reel (cancels on skip)
+  if (maxDur > 0) playCaseSpinSound(maxDur, _multiSettleTimeouts);
 }
 
 function skipMultiSpin() {
@@ -6602,6 +6616,9 @@ function showMultiResults() {
   _multiSpinning = false;
   const skipMBtnEl = document.getElementById('skipMultiBtn');
   if (skipMBtnEl) skipMBtnEl.style.display = 'none';
+
+  // Reveal sound for the best pull
+  playBestRevealSound(_multiWinners.map(r => r.rarity));
 
   // Golden Duck animation if any winner was divine
   if (_multiWinners.some(w => w.rarity === 'divine')) {
@@ -6724,6 +6741,9 @@ function doBulkOpen(type, qty) {
     document.getElementById('multiRevealPhase').style.display = 'none';
     document.getElementById('bulkRevealPhase').style.display  = '';
 
+    // Reveal sound for the best pull
+    playBestRevealSound(winners.map(w => w.rarity));
+
     // Open Again button
     const remaining = devMode ? 99 : (getP()?.cases?.[type] || 0);
     const btn = document.getElementById('openAgainBulkBtn');
@@ -6771,6 +6791,9 @@ function startSpin() {
   strip.getBoundingClientRect(); // force reflow
   strip.style.transition = 'transform 5.5s cubic-bezier(0.02, 0, 0.08, 1)';
   strip.style.transform = `translateX(${endX}px)`;
+
+  // Ticking spin sound effect (slows down with the wheel)
+  playCaseSpinSound(5.5);
 
   // Show skip button
   const skipBtn = document.getElementById('skipSpinBtn');
@@ -6839,6 +6862,9 @@ function showReveal() {
   // Switch to reveal panel
   document.getElementById('wheelPhase').style.display = 'none';
   document.getElementById('revealPhase').style.display = '';
+
+  // Reveal sound — scales with rarity
+  playRevealSound(currentReward.rarity);
 
   const emojiEl = document.getElementById('revealEmoji');
   emojiEl.innerHTML = petImgHtml(skinId, currentReward.emoji, 'reveal-pet-img');
@@ -7781,6 +7807,128 @@ function playDefaultChime() {
 function getVolume() {
   const p = getP();
   return (p?.soundVolume ?? 0.8);
+}
+
+// Single "tick" click for the case-spin wheel
+function playSpinTick(volMult) {
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.connect(g); g.connect(ctx.destination);
+    osc.type = 'square';
+    osc.frequency.value = 1050 + Math.random() * 250;
+    const t = ctx.currentTime;
+    const vol = 0.10 * getVolume() * (volMult ?? 1);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vol, t + 0.004);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
+    osc.start(t);
+    osc.stop(t + 0.06);
+  } catch (e) {}
+}
+
+// Play a sequence of tones. notes: [{freq, start, dur, type, vol}]
+function playToneSequence(notes, masterVol) {
+  try {
+    const ctx = getAudioCtx();
+    const mv = (masterVol ?? 1) * getVolume();
+    if (mv <= 0) return;
+    notes.forEach(({ freq, start, dur, type = 'sine', vol = 1 }) => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.connect(g); g.connect(ctx.destination);
+      osc.type = type;
+      osc.frequency.value = freq;
+      const t0 = ctx.currentTime + start;
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.linearRampToValueAtTime(0.32 * mv * vol, t0 + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      osc.start(t0);
+      osc.stop(t0 + dur + 0.05);
+    });
+  } catch (e) {}
+}
+
+// Reveal "you got it!" sound — escalates with rarity
+function playRevealSound(rarity) {
+  if (getVolume() <= 0) return;
+  const C=523.25,E=659.25,G=783.99,C2=1046.5,E2=1318.5,G2=1568,B=987.77;
+  if (rarity === 'divine' || rarity === 'legendary') {
+    // Triumphant fanfare: rising arpeggio → big sustained chord + sparkle
+    playToneSequence([
+      { freq:C,  start:0,    dur:0.16, type:'triangle' },
+      { freq:E,  start:0.10, dur:0.16, type:'triangle' },
+      { freq:G,  start:0.20, dur:0.18, type:'triangle' },
+      { freq:C2, start:0.32, dur:0.55, type:'triangle', vol:1.1 },
+      // sustained chord underneath
+      { freq:C,  start:0.32, dur:0.7,  type:'sine', vol:0.7 },
+      { freq:E,  start:0.32, dur:0.7,  type:'sine', vol:0.6 },
+      { freq:G,  start:0.32, dur:0.7,  type:'sine', vol:0.6 },
+      // sparkle on top
+      { freq:E2, start:0.5,  dur:0.3,  type:'sine', vol:0.5 },
+      { freq:G2, start:0.62, dur:0.35, type:'sine', vol:0.5 },
+    ], rarity === 'divine' ? 1.15 : 1.0);
+  } else if (rarity === 'epic') {
+    playToneSequence([
+      { freq:E,  start:0,    dur:0.14, type:'triangle' },
+      { freq:G,  start:0.10, dur:0.14, type:'triangle' },
+      { freq:C2, start:0.20, dur:0.16, type:'triangle' },
+      { freq:E2, start:0.30, dur:0.32, type:'triangle', vol:0.9 },
+      { freq:C,  start:0.30, dur:0.4,  type:'sine', vol:0.5 },
+    ], 0.95);
+  } else if (rarity === 'rare') {
+    playToneSequence([
+      { freq:G,  start:0,    dur:0.14, type:'triangle' },
+      { freq:C2, start:0.11, dur:0.14, type:'triangle' },
+      { freq:E2, start:0.22, dur:0.26, type:'triangle', vol:0.9 },
+    ], 0.9);
+  } else {
+    // common — pleasant little two-note ding
+    playToneSequence([
+      { freq:G,  start:0,    dur:0.13, type:'sine' },
+      { freq:C2, start:0.10, dur:0.22, type:'sine' },
+    ], 0.85);
+  }
+}
+
+// Play the reveal sound for the BEST rarity in a list (used for multi/bulk opens)
+function playBestRevealSound(rarities) {
+  const ORDER = ['common', 'rare', 'epic', 'legendary', 'divine'];
+  let best = -1;
+  for (const r of rarities) {
+    const idx = ORDER.indexOf(r);
+    if (idx > best) best = idx;
+  }
+  if (best >= 0) playRevealSound(ORDER[best]);
+}
+
+// Schedule ticks across the spin, dense at the start and sparse at the end,
+// following the same cubic-bezier(0.02,0,0.08,1) easing as the wheel transition.
+// Pushes timeouts into `_spinTimeouts` so a skip cancels remaining ticks.
+function playCaseSpinSound(durationSec, timeoutBucket) {
+  if (getVolume() <= 0) return;
+  const bucket = timeoutBucket || _spinTimeouts;
+  const x1 = 0.02, y1 = 0, x2 = 0.08, y2 = 1;
+  const N = 34; // total ticks
+  // Sample the parametric bezier to map progress (y) → time fraction (x)
+  const samples = [];
+  for (let i = 0; i <= 300; i++) {
+    const s = i / 300, mt = 1 - s;
+    const x = 3 * mt * mt * s * x1 + 3 * mt * s * s * x2 + s * s * s;
+    const y = 3 * mt * mt * s * y1 + 3 * mt * s * s * y2 + s * s * s;
+    samples.push([x, y]);
+  }
+  let k = 1;
+  for (let i = 1; i < samples.length && k <= N; i++) {
+    const target = k / N;
+    if (samples[i][1] >= target) {
+      const delayMs = samples[i][0] * durationSec * 1000;
+      const fade = 1 - 0.5 * target; // later ticks a touch quieter
+      bucket.push(setTimeout(() => playSpinTick(fade), delayMs));
+      k++;
+    }
+  }
 }
 
 // ── Preset audio (base64 embedded) ──
@@ -10529,7 +10677,11 @@ function renderOverloadPortfolio() {
 }
 
 function renderPortfolioChart(svg, labelsEl, buckets, dir) {
-  const W = 360, H = 150, padL = 4, padR = 4, padT = 14, padB = 6;
+  // Derive dimensions from the svg's own viewBox (poChart=150 tall, exsChart=130 tall)
+  const vb = svg.viewBox.baseVal;
+  const W = vb && vb.width ? vb.width : 360;
+  const H = vb && vb.height ? vb.height : 150;
+  const padL = 4, padR = 4, padT = 14, padB = 6;
   const chartW = W - padL - padR;
   const chartH = H - padT - padB;
   const vals = buckets.map(b => b.value);
@@ -10551,8 +10703,8 @@ function renderPortfolioChart(svg, labelsEl, buckets, dir) {
   const baseY = yAt(vals[0]);
   const lastPt = pts[pts.length - 1];
 
-  const gradId = 'poGrad';
-  svg.innerHTML = `
+  const gradId = (svg.id || 'po') + 'Grad';
+  const baseHTML = `
     <defs>
       <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="rgba(${colorRaw},.28)"/>
@@ -10565,6 +10717,11 @@ function renderPortfolioChart(svg, labelsEl, buckets, dir) {
     <circle cx="${lastPt[0].toFixed(1)}" cy="${lastPt[1].toFixed(1)}" r="4" fill="${color}"/>
     <circle cx="${lastPt[0].toFixed(1)}" cy="${lastPt[1].toFixed(1)}" r="7" fill="${color}" opacity="0.2"/>
   `;
+  svg.innerHTML = baseHTML;
+
+  // Stash everything the scrubber needs
+  svg._chart = { baseHTML, pts, series: buckets, color, W, H, padT, padB, unit: 'lbs' };
+  attachChartScrubber(svg);
 
   // Sparse labels (show ~5 max to avoid crowding)
   if (labelsEl) {
@@ -10572,6 +10729,57 @@ function renderPortfolioChart(svg, labelsEl, buckets, dir) {
     labelsEl.innerHTML = buckets.map((b, i) =>
       (i % step === 0 || i === n - 1) ? `<span>${b.label}</span>` : `<span style="opacity:0"></span>`
     ).join('');
+  }
+}
+
+// ── Stock-app-style scrubber: drag/tap across a chart to read exact values ──
+function attachChartScrubber(svg) {
+  // Wire pointer handlers only once per svg element
+  if (!svg._scrubInit) {
+    svg._scrubInit = true;
+    svg.style.touchAction = 'none';
+    svg.style.cursor = 'crosshair';
+    const parent = svg.parentNode;
+    if (parent && getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
+    const tip = document.createElement('div');
+    tip.className = 'chart-tip';
+    tip.style.display = 'none';
+    parent.appendChild(tip);
+    svg._tip = tip;
+
+    let active = false;
+    const scrub = clientX => {
+      const c = svg._chart;
+      if (!c || !c.pts.length) return;
+      const rect = svg.getBoundingClientRect();
+      let f = (clientX - rect.left) / rect.width;
+      f = Math.max(0, Math.min(1, f));
+      const n = c.pts.length;
+      const idx = n <= 1 ? 0 : Math.round(f * (n - 1));
+      const pt = c.pts[idx];
+      const item = c.series[idx];
+      // Crosshair overlay
+      const cross = `
+        <line x1="${pt[0].toFixed(1)}" y1="6" x2="${pt[0].toFixed(1)}" y2="${(c.H - c.padB).toFixed(1)}" stroke="${c.color}" stroke-width="1" stroke-dasharray="2 3" opacity="0.6"/>
+        <circle cx="${pt[0].toFixed(1)}" cy="${pt[1].toFixed(1)}" r="9" fill="${c.color}" opacity="0.2"/>
+        <circle cx="${pt[0].toFixed(1)}" cy="${pt[1].toFixed(1)}" r="4.5" fill="${c.color}" stroke="#0b0b11" stroke-width="1.5"/>`;
+      svg.innerHTML = c.baseHTML + cross;
+      // Tooltip (positioned in screen px relative to parent)
+      const sx = (pt[0] / c.W) * rect.width;
+      const sy = (pt[1] / c.H) * rect.height;
+      tip.innerHTML = `<div class="chart-tip-val">${(item.value || 0).toLocaleString()} <span>${c.unit}</span></div><div class="chart-tip-date">${item.label || ''}</div>`;
+      tip.style.display = 'block';
+      const tw = tip.offsetWidth;
+      let left = Math.max(tw / 2 + 2, Math.min(rect.width - tw / 2 - 2, sx));
+      tip.style.left = left + 'px';
+      tip.style.top = Math.max(0, sy - 52) + 'px';
+    };
+    const end = () => { active = false; svg._tip.style.display = 'none'; if (svg._chart) svg.innerHTML = svg._chart.baseHTML; };
+
+    svg.addEventListener('pointerdown', e => { active = true; scrub(e.clientX); try { svg.setPointerCapture(e.pointerId); } catch (_) {} e.preventDefault(); });
+    svg.addEventListener('pointermove', e => { if (active) { scrub(e.clientX); e.preventDefault(); } });
+    svg.addEventListener('pointerup', end);
+    svg.addEventListener('pointercancel', end);
   }
 }
 
@@ -11280,7 +11488,7 @@ function closeDayDetail() {
 </div>
 
 <!-- DAY DETAIL MODAL -->
-<div id="dayDetailOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:970;align-items:flex-end;justify-content:center;" onclick="if(event.target===this)closeDayDetail()">
+<div id="dayDetailOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1200;align-items:flex-end;justify-content:center;" onclick="if(event.target===this)closeDayDetail()">
   <div id="dayDetailSheet" style="background:var(--bg2);border:1px solid var(--card-border);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;">
     <div style="padding:12px 20px 0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
       <div style="width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto;"></div>
