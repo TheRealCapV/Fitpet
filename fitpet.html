@@ -680,7 +680,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .log-ex-icon{font-size:22px;}
 .log-ex-name{font-size:15px;font-weight:700;flex:1;}
 .log-ex-best{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
-.replace-ex-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:'DM Mono',monospace;white-space:nowrap;transition:all .15s;}
+.log-ex-actions{display:flex;flex-direction:column;gap:5px;flex-shrink:0;align-items:stretch;}
+.replace-ex-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:'DM Mono',monospace;white-space:nowrap;transition:all .15s;text-align:center;}
 .replace-ex-btn:hover{border-color:var(--accent);color:var(--accent);}
 /* Replace exercise modal */
 .replace-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:900;display:flex;align-items:flex-end;justify-content:center;}
@@ -852,7 +853,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .template-edit-save-btn:hover{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#000;}
 .template-edit-cancel-btn{padding:12px 18px;background:var(--bg3);color:var(--muted);border:1px solid var(--border);border-radius:8px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .2s;}
 .template-edit-cancel-btn:hover{color:var(--text);}
-.set-row-done{background:rgba(204,255,0,.03);}
+.set-row-done{background:rgba(204,255,0,.07);box-shadow:inset 3px 0 0 var(--accent);}
 .set-row-done td{color:var(--muted);}
 .drop-badge{font-size:8px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);border-radius:4px;padding:1px 5px;font-family:'DM Mono',monospace;vertical-align:middle;margin-left:4px;}
 .drop-sub-row td{padding:6px 16px 6px 28px;border-bottom:1px solid rgba(42,42,56,.5);background:rgba(239,68,68,.03);}
@@ -866,6 +867,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .sets-table.edit-mode .set-done-btn{display:none;}
 .edit-sets-btn{font-size:11px;font-weight:700;color:var(--muted);background:none;border:none;cursor:pointer;font-family:"DM Mono",monospace;margin-left:8px;padding:0;transition:color .15s;opacity:.7;}
 .edit-sets-btn.active{color:#f87171;opacity:1;}
+.remove-exercise-btn{display:none;background:none;border:1px solid rgba(239,68,68,.35);color:rgba(239,68,68,.7);border-radius:6px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;padding:4px 8px;cursor:pointer;transition:all .15s;white-space:nowrap;text-align:center;}
+.remove-exercise-btn:hover{background:rgba(239,68,68,.12);color:#ef4444;border-color:#ef4444;}
+.log-exercise-card.edit-active .remove-exercise-btn{display:block;}
 
 /* ── HISTORY PAGE ── */
 .hist-tabs{display:flex;gap:0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px;margin-bottom:20px;}
@@ -908,7 +912,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .muscle-chip{font-size:9px;font-family:'DM Mono',monospace;font-weight:700;letter-spacing:.5px;color:var(--muted);background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:3px 6px;cursor:pointer;transition:all .15s;text-transform:uppercase;}
 .muscle-chip.sel{color:#000;background:var(--accent);border-color:var(--accent);}
 @media(hover:hover){.muscle-chip:hover{color:#000;background:var(--accent);border-color:var(--accent);}}
-@media(max-width:520px){.body-diagram-container{flex-direction:column;align-items:center;}.body-diagram-right{width:100%;}}
+@media(max-width:520px){.body-diagram-container{flex-direction:column;align-items:center;}.body-diagram-right{width:100%;}.body-map-wrap{width:min(320px,80vw);max-width:80vw;}}
 /* stat grid */
 .hist-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
 .hist-stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 12px;text-align:center;}
@@ -1121,11 +1125,10 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 /* ── REST TIMER ── */
 .rest-timer-bar{position:fixed;bottom:-200px;left:50%;transform:translateX(-50%);width:min(300px,calc(100vw - 24px));background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:10px 14px 12px;z-index:300;transition:bottom .45s cubic-bezier(.34,1.3,.64,1);box-shadow:0 8px 40px rgba(0,0,0,.7);pointer-events:none;}
 .rest-timer-bar.visible{bottom:calc(16px + env(safe-area-inset-bottom,0px));}
-.rest-timer-bar .rt-drag-handle,.rest-timer-bar .rt-top,.rest-timer-bar .rt-bottom{pointer-events:auto;touch-action:none;}
-.rest-timer-bar.rt-dragging{transition:none;box-shadow:0 16px 60px rgba(0,0,0,.85);}
+.rest-timer-bar .rt-bottom{pointer-events:auto;touch-action:none;}
+.rest-timer-bar .rt-top{pointer-events:auto;}
 .rest-timer-bar.done-flash{animation:flash-green .6s ease;}
 @keyframes flash-green{0%{box-shadow:0 8px 40px rgba(0,0,0,.7);border-color:var(--border);}40%{box-shadow:0 8px 60px rgba(200,255,0,.5);border-color:var(--accent);}100%{box-shadow:0 8px 40px rgba(0,0,0,.7);border-color:var(--border);}}
-.rt-drag-handle{width:28px;height:3px;background:var(--border);border-radius:2px;margin:0 auto 8px;cursor:grab;}
 .rt-top{display:flex;align-items:center;gap:12px;}
 .rt-ring-wrap{position:relative;width:52px;height:52px;flex-shrink:0;}
 .rt-ring-svg{width:52px;height:52px;transform:rotate(-90deg);}
@@ -1674,8 +1677,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
 <!-- REST TIMER BAR -->
 <div class="rest-timer-bar" id="restTimerBar">
-  <div class="rt-drag-handle"></div>
-  <div class="rt-top">
+  <div class="rt-top" onclick="showPage('log');if(rtActiveExId){setTimeout(()=>{const c=document.getElementById('excard-'+rtActiveExId);if(c)c.scrollIntoView({behavior:'smooth',block:'center'});},150);}" style="cursor:pointer;" title="Go to workout">
     <div class="rt-ring-wrap">
       <svg class="rt-ring-svg" viewBox="0 0 52 52">
         <circle class="rt-ring-bg" cx="26" cy="26" r="22"/>
@@ -1688,7 +1690,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
       <div class="rt-next-set" id="rtNextSet">—</div>
       <div class="rt-set-info" id="rtSetInfo"></div>
     </div>
-    <div class="rt-controls">
+    <div class="rt-controls" onclick="event.stopPropagation()">
       <div style="display:flex;flex-direction:column;gap:3px;">
         <button class="rt-btn rt-btn-add" style="height:24px;font-size:10px;" onclick="rtAddTime(10)">+10</button>
         <button class="rt-btn rt-btn-add" style="height:24px;font-size:10px;" onclick="rtAddTime(-10)">-10</button>
@@ -1895,22 +1897,51 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
       <button class="exinfo-close" style="margin-left:auto;" onclick="closeSheet(null,'goldModal')">✕</button>
     </div>
     <div class="card" id="goldClaimCard" style="padding:0;overflow:hidden;background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(251,191,36,.02));border-color:rgba(251,191,36,.2);">
-      <div id="dailyClaimRow" style="padding:12px 14px;display:flex;align-items:center;gap:12px;">
-        <div style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">◆</div>
+      <div id="goldBonusRow" style="padding:12px 14px;display:flex;align-items:center;gap:12px;">
+        <div id="goldBonusIcon" style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">◆</div>
         <div style="flex:1;">
-          <div style="font-size:14px;font-weight:800;color:#fbbf24;">+1,000 ◆</div>
-          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">DAILY BONUS</div>
+          <div id="goldBonusAmount" style="font-size:14px;font-weight:800;color:#fbbf24;">+1,000 ◆</div>
+          <div id="goldBonusLabel" style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">DAILY BONUS</div>
         </div>
-        <button class="gold-claim-btn" id="dailyClaimBtn" onclick="claimDailyGold()" style="padding:7px 16px;font-size:12px;">Claim</button>
+        <button class="gold-claim-btn" id="goldBonusBtn" onclick="claimGoldBonus()" style="padding:7px 16px;font-size:12px;">Claim</button>
       </div>
       <div style="height:1px;background:rgba(251,191,36,.12);margin:0 14px;"></div>
-      <div id="miniClaimRow" style="padding:10px 14px;display:flex;align-items:center;gap:12px;">
-        <div style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div id="adRewardRow" style="padding:10px 14px;display:flex;align-items:center;gap:12px;">
+        <div style="width:36px;height:36px;border-radius:10px;background:rgba(204,255,0,.08);border:1px solid rgba(204,255,0,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">▶</div>
         <div style="flex:1;">
-          <div style="font-size:13px;font-weight:800;color:#fbbf24;">+150 ◆</div>
-          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">EVERY 2 HOURS</div>
+          <div style="font-size:13px;font-weight:800;color:var(--accent);">Watch Ad</div>
+          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;" id="adRewardSub">+200 ◆ OR 1× CASE</div>
         </div>
-        <button class="gold-claim-btn gold-claim-btn-sm" id="miniClaimBtn" onclick="claimMiniGold()" style="padding:5px 12px;font-size:11px;">Claim</button>
+        <button class="gold-claim-btn gold-claim-btn-sm" id="adRewardBtn" onclick="openAdReward()" style="border-color:rgba(204,255,0,.4);color:var(--accent);background:rgba(204,255,0,.08);padding:5px 12px;font-size:11px;">Watch</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AD REWARD MODAL -->
+<div class="dw-overlay hidden" id="adRewardOverlay" onclick="closeAdReward(event)">
+  <div class="dw-sheet" onclick="event.stopPropagation()" style="max-width:340px;">
+    <button class="dw-close" id="adRewardClose" onclick="closeAdReward()" style="display:none;">✕</button>
+    <div id="adRewardScreen">
+      <div style="text-align:center;padding:8px 0 20px;">
+        <div style="font-size:13px;font-weight:800;letter-spacing:2px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:16px;">ADVERTISEMENT</div>
+        <!-- Ad slot — swap this div's content for a real ad SDK call when ready -->
+        <div id="adSlot" style="width:100%;height:200px;background:linear-gradient(135deg,rgba(204,255,0,.06),rgba(0,0,0,.3));border:1px solid var(--border);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:20px;position:relative;overflow:hidden;">
+          <div style="font-size:48px;margin-bottom:8px;">▶</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);">Simulated Ad</div>
+          <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:4px;">Swap for real ad SDK here</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:8px;">
+          <div style="width:32px;height:32px;position:relative;">
+            <svg viewBox="0 0 36 36" style="width:32px;height:32px;transform:rotate(-90deg);">
+              <circle cx="18" cy="18" r="15" fill="none" stroke="var(--bg3)" stroke-width="3"/>
+              <circle id="adTimerRing" cx="18" cy="18" r="15" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="94.2" stroke-dashoffset="0" style="transition:stroke-dashoffset 1s linear;"/>
+            </svg>
+            <div id="adTimerNum" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;font-family:'DM Mono',monospace;color:var(--accent);">30</div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;">Watch to earn your reward</div>
+        </div>
+        <button id="adSkipBtn" onclick="collectAdReward()" disabled style="width:100%;padding:13px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--muted);font-family:'Syne',sans-serif;font-weight:800;font-size:14px;cursor:default;transition:all .3s;">Skip in <span id="adSkipCount">30</span>s</button>
       </div>
     </div>
   </div>
@@ -4357,10 +4388,21 @@ function pcRender() {
   }
 }
 
+function isCardio(exId) {
+  return ALL_EXERCISES[exId]?.muscle === 'Cardio';
+}
+
+function fmtDuration(mins, secs) {
+  return `${mins}m ${String(secs).padStart(2,'0')}s`;
+}
+
 function buildExerciseCard(ex) {
+  const cardio = isCardio(ex.id);
   const pr = getPrForExercise(ex.id);
   const lastSets = getLastSessionForExercise(ex.id);
-  const prLabel = pr ? `Best: ${pr.lbs} lbs × ${pr.reps}` : 'No history yet';
+  const prLabel = cardio
+    ? (lastSets.length ? `Best: ${fmtDuration(lastSets[0].mins||0, lastSets[0].secs||0)}` : 'No history yet')
+    : (pr ? `Best: ${pr.lbs} lbs × ${pr.reps}` : 'No history yet');
 
   // history rows
   const p = getP();
@@ -4386,12 +4428,19 @@ function buildExerciseCard(ex) {
   }
 
   // default sets (copy from last or blank)
-  const defaultSets = lastSets.length
-    ? lastSets.map(s => ({ lbs: s.lbs, reps: s.reps, done: false }))
-    : [{ lbs: 45, reps: 8, done: false }, { lbs: 45, reps: 8, done: false }, { lbs: 45, reps: 8, done: false }];
+  const defaultSets = cardio
+    ? (lastSets.length
+        ? lastSets.map(s => ({ mins: s.mins||0, secs: s.secs||0, done: false }))
+        : [{ mins: 10, secs: 0, done: false }])
+    : (lastSets.length
+        ? lastSets.map(s => ({ lbs: s.lbs, reps: s.reps, done: false }))
+        : [{ lbs: 45, reps: 8, done: false }, { lbs: 45, reps: 8, done: false }, { lbs: 45, reps: 8, done: false }]);
   sessionSets[ex.id] = defaultSets;
 
   const setRows = defaultSets.map((s, i) => buildSetRow(ex.id, i, s, lastSets[i])).join('');
+  const thead = cardio
+    ? `<tr><th>SET</th><th>PREV</th><th>MIN</th><th>SEC</th><th><button class="edit-sets-btn" id="editbtn-${ex.id}" onclick="toggleEditSets('${ex.id}')">Edit</button></th></tr>`
+    : `<tr><th>SET</th><th>PREV</th><th>LBS</th><th>REPS</th><th><button class="edit-sets-btn" id="editbtn-${ex.id}" onclick="toggleEditSets('${ex.id}')">Edit</button></th></tr>`;
 
   return `
     <div class="log-exercise-card" id="excard-${ex.id}" draggable="true" data-exid="${ex.id}">
@@ -4400,32 +4449,43 @@ function buildExerciseCard(ex) {
         <div class="log-ex-icon">${ex.icon}</div>
         <div class="log-ex-name" onclick="openExerciseInfo('${ex.id}')" style="cursor:pointer;">${ex.name} <span style="color:var(--muted);font-size:12px;font-weight:400;">ⓘ</span></div>
         <div class="log-ex-best">${prLabel}</div>
-        <button class="replace-ex-btn" onclick="openReplaceModal('${ex.id}')">⇄ Replace</button>
+        <div class="log-ex-actions">
+          <button class="remove-exercise-btn" onclick="removeExercise('${ex.id}')">✕ Remove</button>
+          <button class="replace-ex-btn" onclick="openReplaceModal('${ex.id}')">⇄ Replace</button>
+        </div>
       </div>
       <div class="inline-history">
         <div class="inline-hist-label">Recent History</div>
         <div class="inline-hist-entries">${histHTML}</div>
       </div>
       <table class="sets-table" id="table-${ex.id}">
-        <thead><tr><th>SET</th><th>PREV</th><th>LBS</th><th>REPS</th><th><button class="edit-sets-btn" id="editbtn-${ex.id}" onclick="toggleEditSets('${ex.id}')">Edit</button></th></tr></thead>
+        <thead>${thead}</thead>
         <tbody id="tbody-${ex.id}">${setRows}</tbody>
       </table>
       <div class="add-set-row">
         <button class="add-set-btn" onclick="addSet('${ex.id}')">+ Add Set</button>
-        <button class="add-set-btn-drop" onclick="addDropSet('${ex.id}')">+ Drop Set</button>
+        ${cardio ? '' : `<button class="add-set-btn-drop" onclick="addDropSet('${ex.id}')">+ Drop Set</button>`}
       </div>
     </div>`;
 }
 
 function buildSetRow(exId, idx, set, prevSet) {
-  const prevLabel = prevSet ? `${prevSet.lbs}×${prevSet.reps}` : '—';
+  const cardio = isCardio(exId);
+  const prevLabel = cardio
+    ? (prevSet ? fmtDuration(prevSet.mins||0, prevSet.secs||0) : '—')
+    : (prevSet ? `${prevSet.lbs}×${prevSet.reps}` : '—');
   const isDropSet = set.drops && set.drops.length > 0;
+  const col3 = cardio
+    ? `<td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepField('${exId}',${idx},'mins',-1,this)">−</button><input class="reps-input" type="number" id="mins-${exId}-${idx}" value="${set.mins||0}" min="0" onchange="updateSet('${exId}',${idx},'mins',this.value)"><button class="reps-stepper-btn" onclick="stepField('${exId}',${idx},'mins',1,this)">+</button></div></td>`
+    : `<td><div class="lbs-stepper"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},-2.5,this)">−</button><input class="lbs-input" type="number" id="lbs-${exId}-${idx}" value="${set.lbs}" min="0" step="2.5" onchange="updateSet('${exId}',${idx},'lbs',this.value)"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},2.5,this)">+</button></div></td>`;
+  const col4 = cardio
+    ? `<td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepField('${exId}',${idx},'secs',-5,this)">−</button><input class="reps-input" type="number" id="secs-${exId}-${idx}" value="${set.secs||0}" min="0" max="59" onchange="updateSet('${exId}',${idx},'secs',this.value)"><button class="reps-stepper-btn" onclick="stepField('${exId}',${idx},'secs',5,this)">+</button></div></td>`
+    : `<td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},-1,this)">−</button><input class="reps-input" type="number" id="reps-${exId}-${idx}" value="${set.reps}" min="0" onchange="updateSet('${exId}',${idx},'reps',this.value)"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},1,this)">+</button></div></td>`;
   let html = `
     <tr id="setrow-${exId}-${idx}" class="${set.done?'set-row-done':''}">
       <td class="set-num">${idx+1}${isDropSet ? '<span class="drop-badge">DROP</span>' : ''}</td>
       <td style="color:var(--muted);font-size:12px">${prevLabel}</td>
-      <td><div class="lbs-stepper"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},-2.5,this)">−</button><input class="lbs-input" type="number" id="lbs-${exId}-${idx}" value="${set.lbs}" min="0" step="2.5" onchange="updateSet('${exId}',${idx},'lbs',this.value)"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},2.5,this)">+</button></div></td>
-      <td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},-1,this)">−</button><input class="reps-input" type="number" id="reps-${exId}-${idx}" value="${set.reps}" min="0" onchange="updateSet('${exId}',${idx},'reps',this.value)"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},1,this)">+</button></div></td>
+      ${col3}${col4}
       <td><button class="set-done-btn${set.done?' done':''}" onclick="toggleSetDone(this,'${exId}',${idx})">&#10003;</button><button class="set-delete-btn" onclick="removeSet('${exId}',${idx})">✕</button></td>
     </tr>`;
   if (isDropSet) {
@@ -4497,10 +4557,27 @@ function updateSet(exId, idx, field, val) {
   }
 }
 
+function stepField(exId, idx, field, delta, btn) {
+  if (btn && btn.blur) btn.blur();
+  const set = sessionSets[exId]?.[idx];
+  if (!set) return;
+  if (field === 'secs') {
+    set.secs = Math.min(59, Math.max(0, (set.secs || 0) + delta));
+    const input = document.getElementById('secs-' + exId + '-' + idx);
+    if (input) input.value = set.secs;
+  } else {
+    set[field] = Math.max(0, (set[field] || 0) + delta);
+    const input = document.getElementById(field + '-' + exId + '-' + idx);
+    if (input) input.value = set[field];
+  }
+}
+
 function addSet(exId) {
   const sets = sessionSets[exId];
   const last = sets[sets.length - 1];
-  const newSet = { lbs: last ? last.lbs : 45, reps: last ? last.reps : 8, done: false };
+  const newSet = isCardio(exId)
+    ? { mins: last ? last.mins : 10, secs: last ? last.secs : 0, done: false }
+    : { lbs: last ? last.lbs : 45, reps: last ? last.reps : 8, done: false };
   sets.push(newSet);
   const tbody = document.getElementById('tbody-'+exId);
   const lastSets = getLastSessionForExercise(exId);
@@ -4574,10 +4651,20 @@ function rebuildSetRows(exId) {
 function toggleEditSets(exId) {
   const table = document.getElementById('table-' + exId);
   const btn = document.getElementById('editbtn-' + exId);
+  const card = document.getElementById('excard-' + exId);
   if (!table || !btn) return;
   const isEdit = table.classList.toggle('edit-mode');
   btn.textContent = isEdit ? 'Done' : 'Edit';
   btn.classList.toggle('active', isEdit);
+  if (card) card.classList.toggle('edit-active', isEdit);
+}
+
+function removeExercise(exId) {
+  const card = document.getElementById('excard-' + exId);
+  if (!card) return;
+  if (!confirm('Remove this exercise from your workout?')) return;
+  delete sessionSets[exId];
+  card.remove();
 }
 
 function removeDrop(exId, setIdx, dropIdx) {
@@ -4737,7 +4824,7 @@ function toggleSetDone(btn, exId, idx) {
     const nextSet = sets[nextIdx];
     rtStart(ex ? ex.name : exId, nextIdx + 1,
       nextSet ? nextSet.lbs : set.lbs,
-      nextSet ? nextSet.reps : set.reps);
+      nextSet ? nextSet.reps : set.reps, exId);
   } else {
     rtDismiss();
   }
@@ -7552,7 +7639,7 @@ function equipSkin(id) {
 // ══════════════════════════════════════════
 //  REST TIMER
 // ══════════════════════════════════════════
-let rtInterval = null, rtTotal = 120, rtRemaining = 120, rtEndTime = null;
+let rtInterval = null, rtTotal = 120, rtRemaining = 120, rtEndTime = null, rtActiveExId = null;
 const CIRC = 2 * Math.PI * 22; // matches r=22 in SVG
 
 function rtFmt(s) { const m=Math.floor(s/60),sec=s%60; return m>0?`${m}:${String(sec).padStart(2,'0')}`:`${sec}s`; }
@@ -7583,7 +7670,8 @@ function rtUpdateRing() {
   fg.classList.toggle('urgent', rtRemaining <= 10);
 }
 
-function rtStart(exName, setNum, lbs, reps) {
+function rtStart(exName, setNum, lbs, reps, exId) {
+  rtActiveExId = exId || null;
   rtEndTime = Date.now() + rtTotal * 1000;
   rtRemaining = rtTotal;
   document.getElementById('rtNextSet').textContent = exName + ' — Set ' + setNum;
@@ -7964,63 +8052,6 @@ function rtDismiss() {
   cancelSwNotif();
 }
 
-// ── REST TIMER DRAG ──
-(function initRtDrag() {
-  let dragging = false, startX = 0, startY = 0, origLeft = 0, origTop = 0;
-
-  function getBar() { return document.getElementById('restTimerBar'); }
-
-  function onDown(e) {
-    // Only drag when touching the handle
-    if (!e.target.closest('.rt-drag-handle')) return;
-    const barEl = getBar();
-    if (!barEl.classList.contains('visible')) return;
-
-    dragging = true;
-    const rect = barEl.getBoundingClientRect();
-    const touch = e.touches ? e.touches[0] : e;
-    startX = touch.clientX - rect.left;
-    startY = touch.clientY - rect.top;
-
-    // Switch from bottom-anchored to absolute top/left positioning
-    barEl.style.transition = 'none';
-    barEl.style.bottom = 'auto';
-    barEl.style.transform = 'none';
-    barEl.style.left = rect.left + 'px';
-    barEl.style.top  = rect.top  + 'px';
-    barEl.classList.add('rt-dragging');
-
-    e.preventDefault();
-  }
-
-  function onMove(e) {
-    if (!dragging) return;
-    const touch = e.touches ? e.touches[0] : e;
-    const barEl = getBar();
-    const vw = window.innerWidth, vh = window.innerHeight;
-    let newLeft = touch.clientX - startX;
-    let newTop  = touch.clientY - startY;
-    // Clamp within viewport
-    newLeft = Math.max(0, Math.min(newLeft, vw - barEl.offsetWidth));
-    newTop  = Math.max(0, Math.min(newTop,  vh - barEl.offsetHeight));
-    barEl.style.left = newLeft + 'px';
-    barEl.style.top  = newTop  + 'px';
-    e.preventDefault();
-  }
-
-  function onUp() {
-    if (!dragging) return;
-    dragging = false;
-    getBar().classList.remove('rt-dragging');
-  }
-
-  document.addEventListener('mousedown',  onDown, { passive: false });
-  document.addEventListener('mousemove',  onMove, { passive: false });
-  document.addEventListener('mouseup',    onUp);
-  document.addEventListener('touchstart', onDown, { passive: false });
-  document.addEventListener('touchmove',  onMove, { passive: false });
-  document.addEventListener('touchend',   onUp);
-})();
 
 // ── SERVICE WORKER + NOTIFICATIONS ──
 let _swReg = null;
@@ -8089,29 +8120,28 @@ function goldClaimKey(suffix) {
   return suffix; // we store directly on profile: p.lastDailyClaim / p.lastMiniClaim
 }
 
-function claimDailyGold() {
+function claimGoldBonus() {
   const p = getP(); if (!p) return;
   const now = Date.now();
-  if (p.lastDailyClaim && now - p.lastDailyClaim < DAILY_CD_MS) return;
-  p.gold = (p.gold || 0) + DAILY_GOLD_AMOUNT;
-  p.lastDailyClaim = now;
-  saveP(p);
-  refreshHomeStats();
-  updateGoldClaimUI();
-  showAchieve({ type:'gold', icon:'◆', eyebrow:'Daily Bonus', title:'+1,000 Gold', sub:'Come back tomorrow for more' });
+  const dailyReady = !p.lastDailyClaim || now - p.lastDailyClaim >= DAILY_CD_MS;
+  const miniReady  = !p.lastMiniClaim  || now - p.lastMiniClaim  >= MINI_CD_MS;
+  if (dailyReady) {
+    p.gold = (p.gold || 0) + DAILY_GOLD_AMOUNT;
+    p.lastDailyClaim = now;
+    p.lastMiniClaim  = now; // reset mini too so 2h starts from now
+    saveP(p); refreshHomeStats(); updateGoldClaimUI();
+    showAchieve({ type:'gold', icon:'◆', eyebrow:'Daily Bonus', title:'+1,000 Gold', sub:'Next big bonus in 24 hours' });
+  } else if (miniReady) {
+    p.gold = (p.gold || 0) + MINI_GOLD_AMOUNT;
+    p.lastMiniClaim = now;
+    saveP(p); refreshHomeStats(); updateGoldClaimUI();
+    showAchieve({ type:'gold', icon:'⏱', eyebrow:'2-Hour Bonus', title:'+150 Gold', sub:'Next claim in 2 hours' });
+  }
 }
 
-function claimMiniGold() {
-  const p = getP(); if (!p) return;
-  const now = Date.now();
-  if (p.lastMiniClaim && now - p.lastMiniClaim < MINI_CD_MS) return;
-  p.gold = (p.gold || 0) + MINI_GOLD_AMOUNT;
-  p.lastMiniClaim = now;
-  saveP(p);
-  refreshHomeStats();
-  updateGoldClaimUI();
-  showAchieve({ type:'gold', icon:'⏱', eyebrow:'2-Hour Bonus', title:'+150 Gold', sub:'Next claim in 2 hours' });
-}
+// Keep old names as aliases so any other callers still work
+function claimDailyGold() { claimGoldBonus(); }
+function claimMiniGold()  { claimGoldBonus(); }
 
 function fmtCooldown(msLeft) {
   if (msLeft <= 0) return 'Ready!';
@@ -8128,31 +8158,58 @@ function updateGoldClaimUI() {
   const now = Date.now();
   renderBoostStatus();   // live boost countdown
   updateDailySpinBtn();  // live daily-spin cooldown
+  updateAdRewardUI();
 
-  // ── Daily ──
-  const dailyBtn = document.getElementById('dailyClaimBtn');
-  const dailyRow = document.getElementById('dailyClaimRow');
-  if (dailyBtn && dailyRow) {
-    const dailyLeft = p?.lastDailyClaim ? Math.max(0, DAILY_CD_MS - (now - p.lastDailyClaim)) : 0;
+  // ── Unified gold bonus row ──
+  const bonusBtn    = document.getElementById('goldBonusBtn');
+  const bonusAmount = document.getElementById('goldBonusAmount');
+  const bonusLabel  = document.getElementById('goldBonusLabel');
+  const bonusIcon   = document.getElementById('goldBonusIcon');
+  if (bonusBtn && p) {
+    const dailyLeft = p.lastDailyClaim ? Math.max(0, DAILY_CD_MS - (now - p.lastDailyClaim)) : 0;
+    const miniLeft  = p.lastMiniClaim  ? Math.max(0, MINI_CD_MS  - (now - p.lastMiniClaim))  : 0;
     const dailyReady = dailyLeft === 0;
-    dailyBtn.disabled = !dailyReady;
-    // show countdown inside button when on cooldown
-    dailyBtn.textContent = dailyReady ? 'Claim' : fmtCooldown(dailyLeft);
-  }
-
-  // ── Mini ──
-  const miniBtn = document.getElementById('miniClaimBtn');
-  if (miniBtn) {
-    const miniLeft = p?.lastMiniClaim ? Math.max(0, MINI_CD_MS - (now - p.lastMiniClaim)) : 0;
-    const miniReady = miniLeft === 0;
-    miniBtn.disabled = !miniReady;
-    miniBtn.textContent = miniReady ? 'Claim' : fmtCooldown(miniLeft);
+    const miniReady  = miniLeft  === 0;
+    if (dailyReady) {
+      bonusAmount.textContent = '+1,000 ◆';
+      bonusAmount.style.fontSize = '14px';
+      bonusLabel.textContent = 'DAILY BONUS';
+      bonusIcon.textContent = '◆';
+      bonusIcon.style.background = 'rgba(251,191,36,.15)';
+      bonusIcon.style.borderColor = 'rgba(251,191,36,.3)';
+      bonusBtn.disabled = false;
+      bonusBtn.textContent = 'Claim';
+      bonusBtn.style.padding = '7px 16px';
+      bonusBtn.style.fontSize = '12px';
+    } else if (miniReady) {
+      bonusAmount.textContent = '+150 ◆';
+      bonusAmount.style.fontSize = '13px';
+      bonusLabel.textContent = 'EVERY 2 HOURS';
+      bonusIcon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+      bonusIcon.style.background = 'rgba(251,191,36,.08)';
+      bonusIcon.style.borderColor = 'rgba(251,191,36,.2)';
+      bonusBtn.disabled = false;
+      bonusBtn.textContent = 'Claim';
+      bonusBtn.style.padding = '5px 12px';
+      bonusBtn.style.fontSize = '11px';
+    } else {
+      // Both on cooldown — show whichever unlocks sooner
+      const nextUp = dailyLeft < miniLeft ? 'Daily' : '2h Bonus';
+      const nextLeft = Math.min(dailyLeft, miniLeft);
+      bonusAmount.textContent = nextUp === 'Daily' ? '+1,000 ◆' : '+150 ◆';
+      bonusAmount.style.fontSize = nextUp === 'Daily' ? '14px' : '13px';
+      bonusLabel.textContent = nextUp === 'Daily' ? 'DAILY BONUS' : 'EVERY 2 HOURS';
+      bonusBtn.disabled = true;
+      bonusBtn.textContent = fmtCooldown(nextLeft);
+      bonusBtn.style.padding = '5px 10px';
+      bonusBtn.style.fontSize = '11px';
+    }
   }
   // Red dot on the gold chip when any claim is ready
   const goldDot = document.getElementById('goldClaimDot');
   if (goldDot) {
     const dReady = !p?.lastDailyClaim || (now - p.lastDailyClaim) >= DAILY_CD_MS;
-    const mReady = !p?.lastMiniClaim || (now - p.lastMiniClaim) >= MINI_CD_MS;
+    const mReady = !p?.lastMiniClaim  || (now - p.lastMiniClaim)  >= MINI_CD_MS;
     goldDot.style.display = (p && (dReady || mReady)) ? 'block' : 'none';
   }
 }
@@ -8161,6 +8218,127 @@ function startGoldClaimTicker() {
   if (_goldClaimTimer) clearInterval(_goldClaimTimer);
   _goldClaimTimer = setInterval(updateGoldClaimUI, 1000);
   updateGoldClaimUI();
+}
+
+// ── AD REWARD ──
+const AD_MAX_DAILY  = 5;
+const AD_GOLD       = 200;
+const AD_DURATION   = 30; // seconds
+let _adTimer = null;
+let _adSecondsLeft = AD_DURATION;
+
+function openAdReward() {
+  const p = getP(); if (!p) return;
+  const now = Date.now();
+  const lastAd = p.lastAdClaim || 0;
+  const adCount = p.adCountToday || 0;
+  const lastAdDay = p.lastAdDay || '';
+  const today = new Date().toISOString().slice(0,10);
+
+  // Reset daily count if new day
+  if (lastAdDay !== today) {
+    p.adCountToday = 0;
+    p.lastAdDay = today;
+    saveP(p);
+  }
+
+  if ((p.adCountToday || 0) >= AD_MAX_DAILY) {
+    showToast('— Max 5 ads per day reached. Come back tomorrow!');
+    return;
+  }
+
+  // Open modal and start timer
+  document.getElementById('adRewardOverlay').classList.remove('hidden');
+  document.getElementById('adRewardClose').style.display = 'none';
+  _adSecondsLeft = AD_DURATION;
+  _adRunTimer();
+}
+
+function _adRunTimer() {
+  clearInterval(_adTimer);
+  const numEl   = document.getElementById('adTimerNum');
+  const ringEl  = document.getElementById('adTimerRing');
+  const skipBtn = document.getElementById('adSkipBtn');
+  const skipCnt = document.getElementById('adSkipCount');
+  const circumference = 94.2;
+
+  function tick() {
+    if (numEl)  numEl.textContent  = _adSecondsLeft;
+    if (skipCnt) skipCnt.textContent = _adSecondsLeft;
+    if (ringEl) ringEl.style.strokeDashoffset = circumference * (1 - _adSecondsLeft / AD_DURATION);
+    if (_adSecondsLeft <= 0) {
+      clearInterval(_adTimer);
+      if (skipBtn) {
+        skipBtn.disabled = false;
+        skipBtn.textContent = '🎁 Collect Reward';
+        skipBtn.style.background = 'var(--accent)';
+        skipBtn.style.color = '#000';
+        skipBtn.style.cursor = 'pointer';
+        skipBtn.style.borderColor = 'var(--accent)';
+      }
+      document.getElementById('adRewardClose').style.display = 'flex';
+      return;
+    }
+    _adSecondsLeft--;
+  }
+
+  tick();
+  _adTimer = setInterval(tick, 1000);
+}
+
+function collectAdReward() {
+  if (_adSecondsLeft > 0) return;
+  clearInterval(_adTimer);
+
+  const p = getP(); if (!p) return;
+  const today = new Date().toISOString().slice(0,10);
+
+  // Pick reward: alternate gold and case, weighted toward gold
+  const giveCase = Math.random() < 0.35;
+  if (giveCase) {
+    p.cases = p.cases || {};
+    p.cases.basic = (p.cases.basic || 0) + 1;
+    showAchieve({ type:'quest', icon:'📦', eyebrow:'Ad Reward', title:'1× Basic Case', sub:'Open it in the Cases tab!' });
+  } else {
+    p.gold = (p.gold || 0) + AD_GOLD;
+    showAchieve({ type:'gold', icon:'▶', eyebrow:'Ad Reward', title:`+${AD_GOLD} ◆ Gold`, sub:'Watch another ad in 30 minutes' });
+  }
+
+  p.lastAdClaim  = Date.now();
+  p.adCountToday = (p.adCountToday || 0) + 1;
+  p.lastAdDay    = today;
+  saveP(p);
+  refreshHomeStats();
+  updateAdRewardUI();
+  closeAdReward();
+}
+
+function closeAdReward(e) {
+  if (e && e.target !== document.getElementById('adRewardOverlay')) return;
+  if (_adSecondsLeft > 0) return; // can't close mid-ad
+  clearInterval(_adTimer);
+  document.getElementById('adRewardOverlay').classList.add('hidden');
+}
+
+function updateAdRewardUI() {
+  const p = getP();
+  const now = Date.now();
+  const btn = document.getElementById('adRewardBtn');
+  const sub = document.getElementById('adRewardSub');
+  if (!btn || !p) return;
+  const today = new Date().toISOString().slice(0,10);
+  const sameDay = p.lastAdDay === today;
+  const count = sameDay ? (p.adCountToday || 0) : 0;
+  const maxed = count >= AD_MAX_DAILY;
+
+  btn.disabled = maxed;
+  if (maxed) {
+    btn.textContent = 'Done';
+    if (sub) sub.textContent = `MAX ${AD_MAX_DAILY}/DAY REACHED`;
+  } else {
+    btn.textContent = 'Watch';
+    if (sub) sub.textContent = `${count}/${AD_MAX_DAILY} TODAY · +200 ◆ OR 1× CASE`;
+  }
 }
 
 function rtAddTime(s) {
@@ -10386,6 +10564,39 @@ function closeRankSelector() {
 //  ACHIEVEMENT NOTIFICATION
 // ══════════════════════════════════════════
 let _achieveTimer = null;
+const _achieveQueue = [];
+let _achieveShowing = false;
+
+function _achieveNext() {
+  if (_achieveShowing || !_achieveQueue.length) return;
+  const { type, icon, eyebrow, title, sub } = _achieveQueue.shift();
+  _achieveShowing = true;
+
+  const el = document.getElementById('achieveNotif');
+  if (!el) { _achieveShowing = false; _achieveNext(); return; }
+
+  document.getElementById('achieveIcon').textContent = icon;
+  document.getElementById('achieveIcon').className = 'achieve-icon ' + (type === 'gold' ? 'achieve-icon-gold' : 'achieve-icon-quest');
+  document.getElementById('achieveEyebrow').textContent = eyebrow;
+  document.getElementById('achieveEyebrow').className = 'achieve-eyebrow ' + (type === 'gold' ? 'achieve-eyebrow-gold' : 'achieve-eyebrow-quest');
+  document.getElementById('achieveTitle').textContent = title;
+  document.getElementById('achieveSub').textContent = sub;
+
+  el.classList.remove('show');
+  void el.offsetWidth;
+  el.classList.add('show');
+
+  clearTimeout(_achieveTimer);
+  _achieveTimer = setTimeout(_achieveDismiss, 3500);
+}
+
+function _achieveDismiss() {
+  clearTimeout(_achieveTimer);
+  const el = document.getElementById('achieveNotif');
+  if (el) el.classList.remove('show');
+  _achieveShowing = false;
+  setTimeout(_achieveNext, 400);
+}
 
 // Swipe-up-to-dismiss for achieve notif
 (function() {
@@ -10412,15 +10623,9 @@ let _achieveTimer = null;
     const el = document.getElementById('achieveNotif');
     const dy = (e.changedTouches ? e.changedTouches[0].clientY : e.clientY) - startY;
     el.style.transition = '';
-    if (dy < -40) {
-      el.style.marginTop = '';
-      el.style.opacity = '';
-      el.classList.remove('show');
-      clearTimeout(_achieveTimer);
-    } else {
-      el.style.marginTop = '';
-      el.style.opacity = '';
-    }
+    el.style.marginTop = '';
+    el.style.opacity = '';
+    if (dy < -40) _achieveDismiss();
   }
   document.addEventListener('touchstart', e => { if (e.target.closest('#achieveNotif')) onDown(e); }, { passive: true });
   document.addEventListener('touchmove',  e => { if (dragging) onMove(e); }, { passive: true });
@@ -10431,26 +10636,8 @@ let _achieveTimer = null;
 })();
 
 function showAchieve({ type = 'quest', icon, eyebrow, title, sub }) {
-  const el = document.getElementById('achieveNotif');
-  const iconEl = document.getElementById('achieveIcon');
-  const eyebrowEl = document.getElementById('achieveEyebrow');
-  const titleEl = document.getElementById('achieveTitle');
-  const subEl = document.getElementById('achieveSub');
-  if (!el) return;
-
-  iconEl.textContent = icon;
-  iconEl.className = 'achieve-icon ' + (type === 'gold' ? 'achieve-icon-gold' : 'achieve-icon-quest');
-  eyebrowEl.textContent = eyebrow;
-  eyebrowEl.className = 'achieve-eyebrow ' + (type === 'gold' ? 'achieve-eyebrow-gold' : 'achieve-eyebrow-quest');
-  titleEl.textContent = title;
-  subEl.textContent = sub;
-
-  el.classList.remove('show');
-  void el.offsetWidth;
-  el.classList.add('show');
-
-  clearTimeout(_achieveTimer);
-  _achieveTimer = setTimeout(() => el.classList.remove('show'), 3500);
+  _achieveQueue.push({ type, icon, eyebrow, title, sub });
+  _achieveNext();
 }
 
 // ══════════════════════════════════════════
