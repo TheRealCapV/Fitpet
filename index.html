@@ -1727,7 +1727,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .overload-row-clickable:active{background:rgba(255,255,255,.05);}
 .overload-chevron{color:var(--muted);font-size:18px;font-weight:700;flex-shrink:0;margin-left:-2px;}
 /* chart scrubber tooltip */
-.chart-tip{position:absolute;transform:translateX(-50%);pointer-events:none;z-index:5;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:5px 9px;box-shadow:0 4px 16px rgba(0,0,0,.6);white-space:nowrap;text-align:center;}
+.chart-tip{position:absolute;transform:translateX(-50%);pointer-events:none;z-index:5;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:5px 9px;box-shadow:0 4px 16px rgba(0,0,0,.6);white-space:nowrap;text-align:center;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
+/* Prevent text selection/copy when scrubbing the stock charts on touch devices */
+#poChart,#exsChart,#poLabels,#exsLabels,.po-card,.po-period-tabs{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
 .chart-tip-val{font-size:14px;font-weight:800;font-family:'Syne',sans-serif;color:var(--text);line-height:1.1;}
 .chart-tip-val span{font-size:9px;color:var(--muted);font-weight:400;font-family:'DM Mono',monospace;}
 .chart-tip-date{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;margin-top:1px;}
@@ -2375,7 +2377,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
         <div class="pet-stats">
           <div class="stat-chip">
             <div class="stat-chip-icon" style="background:linear-gradient(135deg,rgba(99,102,241,.3),rgba(79,70,229,.15));"><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="db1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#a5b4fc"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs><rect x="1" y="10.5" width="4" height="5" rx="1.5" fill="url(#db1)"/><rect x="19" y="10.5" width="4" height="5" rx="1.5" fill="url(#db1)"/><rect x="5.5" y="8.5" width="3" height="9" rx="1.2" fill="url(#db1)"/><rect x="15.5" y="8.5" width="3" height="9" rx="1.2" fill="url(#db1)"/><rect x="8.5" y="11.2" width="7" height="3.6" rx="1.8" fill="url(#db1)"/></svg></div>
-            <div class="stat-chip-body"><div class="stat-chip-val" id="statWorkouts">0</div><div class="stat-chip-label">Workouts</div><div class="stat-chip-sub">This month</div></div>
+            <div class="stat-chip-body"><div class="stat-chip-val" id="statWorkouts">0</div><div class="stat-chip-label">Total Workouts</div><div class="stat-chip-sub">All time</div></div>
           </div>
           <div class="stat-chip">
             <div class="stat-chip-icon" style="background:linear-gradient(135deg,rgba(239,68,68,.3),rgba(249,115,22,.15));"><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="fl1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fde68a"/><stop offset="50%" stop-color="#f97316"/><stop offset="100%" stop-color="#ef4444"/></linearGradient><linearGradient id="fl2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="100%" stop-color="#fde68a"/></linearGradient></defs><path d="M12 0C12 5.5 6 9 6 15a6 6 0 0 0 12 0C18 9 12 5.5 12 0z" fill="url(#fl1)"/><path d="M10 16c1-2.5 2-4 2-6.5 0 2 2.5 4.5 2.5 6.5a2.5 2.5 0 0 1-5 0z" fill="url(#fl2)"/></svg></div>
@@ -5866,8 +5868,18 @@ function buildStreakCalendar() {
   const calWorkoutBadge = document.getElementById('calWorkoutBadge');
   if (calWorkoutBadge) calWorkoutBadge.textContent = totalWorkouts;
 
-  // Build from May 2026 up to current month
-  const startYear = 2026, startMonth = 4; // 0-indexed: May = 4
+  // Build from the app launch (May 2026) up to current month — but if there's
+  // older history (e.g. imported workouts), start from the earliest logged month.
+  let startYear = 2026, startMonth = 4; // 0-indexed: May = 4
+  const allDays = (p && p.streakDays) ? p.streakDays : [];
+  if (allDays.length) {
+    const earliest = allDays.reduce((min, d) => (d < min ? d : min), allDays[0]);
+    const parts = String(earliest).split('-');
+    const ey = parseInt(parts[0]), em = parseInt(parts[1]) - 1;
+    if (!isNaN(ey) && !isNaN(em) && (ey * 12 + em) < (startYear * 12 + startMonth)) {
+      startYear = ey; startMonth = em;
+    }
+  }
   const endYear = today.getFullYear(), endMonth = today.getMonth();
 
   const DOW_LABELS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
@@ -5951,14 +5963,23 @@ function buildStreakCalendar() {
 function renderBoostShop() {
   const grid = document.getElementById('boostGrid');
   if (!grid) return;
-  grid.innerHTML = Object.entries(BOOSTS).map(([id, b]) => `
-    <div class="shop-item shop-item-rare">
+  const p = getP();
+  const cur = (p && p.boost && p.boost.expires > Date.now()) ? p.boost : null;
+  grid.innerHTML = Object.entries(BOOSTS).map(([id, b]) => {
+    const blocked = cur && cur.mult !== b.mult;      // a different mult is active
+    const isActive = cur && cur.mult === b.mult;     // this same mult is active
+    const btn = blocked
+      ? `<button class="shop-btn shop-btn-rare" disabled style="opacity:.4;cursor:not-allowed;">${cur.mult}× active</button>`
+      : `<button class="shop-btn shop-btn-rare" onclick="buyBoost('${id}')">${isActive ? 'Extend' : 'Buy'}</button>`;
+    return `
+    <div class="shop-item shop-item-rare"${blocked ? ' style="opacity:.55;"' : ''}>
       <div style="font-size:34px;line-height:1;margin-bottom:6px;">${b.icon}</div>
       <div class="shop-name">${b.name}</div>
       <div class="shop-desc">${b.sub}</div>
       <div class="shop-price">◆ ${b.cost.toLocaleString()}</div>
-      <button class="shop-btn shop-btn-rare" onclick="buyBoost('${id}')">Buy</button>
-    </div>`).join('');
+      ${btn}
+    </div>`;
+  }).join('');
 }
 
 function updateCaseCounts() {
@@ -6477,16 +6498,22 @@ function fmtBoostLeft(ms) {
 function buyBoost(id) {
   const p = getP(); if (!p) return;
   const b = BOOSTS[id]; if (!b) return;
-  if ((p.gold || 0) < b.cost) { showToast('— Need ◆ ' + b.cost.toLocaleString() + ' for that boost'); return; }
-  p.gold -= b.cost;
   const now = Date.now();
   const cur = (p.boost && p.boost.expires > now) ? p.boost : null;
-  const base = cur ? cur.expires : now;                 // extend if one is active
-  p.boost = { mult: cur ? Math.max(cur.mult, b.mult) : b.mult, expires: base + b.hours * 3600000 };
+  // Can't activate a DIFFERENT multiplier while one is active — only the same one stacks.
+  if (cur && cur.mult !== b.mult) {
+    showToast(`— ${cur.mult}× boost active. Wait for it to finish before using a ${b.mult}× boost.`);
+    return;
+  }
+  if ((p.gold || 0) < b.cost) { showToast('— Need ◆ ' + b.cost.toLocaleString() + ' for that boost'); return; }
+  p.gold -= b.cost;
+  const base = cur ? cur.expires : now;   // same multiplier → extend its time
+  p.boost = { mult: b.mult, expires: base + b.hours * 3600000 };
   saveP(p);
   updateCaseCounts();
   refreshHomeStats();
   renderBoostStatus();
+  renderBoostShop();   // refresh buttons (disable other multipliers)
   showToast(`${b.icon} ${b.name} active — train to earn bonus XP!`);
 }
 function renderBoostStatus() {
@@ -11127,6 +11154,10 @@ function attachChartScrubber(svg) {
     svg._scrubInit = true;
     svg.style.touchAction = 'none';
     svg.style.cursor = 'crosshair';
+    // Stop iOS from selecting/copying text while dragging across the chart
+    svg.style.userSelect = 'none';
+    svg.style.webkitUserSelect = 'none';
+    svg.style.webkitTouchCallout = 'none';
     const parent = svg.parentNode;
     if (parent && getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
     const tip = document.createElement('div');
@@ -11728,9 +11759,12 @@ function openDayDetail(dateStr) {
       let exVol = 0;
       sets.forEach(s => { exVol += (s.lbs||0)*(s.reps||0); if(s.drops) s.drops.forEach(d => exVol += (d.lbs||0)*(d.reps||0)); });
       return `<div style="margin-bottom:14px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;">
           <span style="font-size:13px;font-weight:700;color:var(--text);">${ex?.name||exId}</span>
-          <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">${exVol.toLocaleString()} lbs</span>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">${exVol.toLocaleString()} lbs</span>
+            <button onclick="removeWorkoutExercise(${session.date}, '${exId}', '${dateStr}')" title="Remove exercise" style="background:none;border:1px solid rgba(239,68,68,.35);color:rgba(239,68,68,.75);border-radius:6px;width:24px;height:24px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;" onmouseover="this.style.background='rgba(239,68,68,.12)';this.style.color='#ef4444';" onmouseout="this.style.background='none';this.style.color='rgba(239,68,68,.75)';">✕</button>
+          </div>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:5px;">${chips}</div>
       </div>`;
@@ -11740,6 +11774,42 @@ function openDayDetail(dateStr) {
 
   const overlay = document.getElementById('dayDetailOverlay');
   overlay.style.display = 'flex';
+}
+
+function removeWorkoutExercise(sessionDate, exId, dateStr) {
+  const p = getP();
+  if (!p) return;
+  const ex = ALL_EXERCISES[exId];
+  if (!confirm(`Remove ${ex?.name || 'this exercise'} from this workout?`)) return;
+  const w = (p.workoutLog || []).find(x => x.date === sessionDate);
+  if (!w || !w.exercises || !w.exercises[exId]) return;
+  delete w.exercises[exId];
+  // Recompute the session's set total
+  w.totalSets = Object.values(w.exercises).reduce((n, arr) => n + arr.length, 0);
+  // If the workout has no exercises left, drop the whole session
+  if (Object.keys(w.exercises).length === 0) {
+    p.workoutLog = p.workoutLog.filter(x => x !== w);
+  }
+  // Does any workout still exist on this day?
+  const stillHasSessions = (p.workoutLog || []).some(x => {
+    const d = new Date(x.date);
+    const s = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    return s === dateStr;
+  });
+  // No workouts left that day → clear it from the streak calendar
+  if (!stillHasSessions && Array.isArray(p.streakDays)) {
+    p.streakDays = p.streakDays.filter(d => d !== dateStr);
+  }
+  saveP(p);
+  refreshHomeStats();
+  // Re-render the day view, or close it and refresh the calendar if the day is now empty
+  if (stillHasSessions) {
+    openDayDetail(dateStr);
+  } else {
+    closeDayDetail();
+    if (typeof buildStreakCalendar === 'function') buildStreakCalendar();
+  }
+  showToast(`Removed ${ex?.name || 'exercise'}`);
 }
 
 function closeDayDetail() {
