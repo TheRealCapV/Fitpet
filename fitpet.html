@@ -551,12 +551,108 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .diff-medium{background:rgba(250,204,21,.12);color:#facc15;border:1px solid rgba(250,204,21,.3);}
 .diff-hard{background:rgba(248,113,113,.12);color:#f87171;border:1px solid rgba(248,113,113,.3);}
 .diff-boss{background:rgba(168,85,247,.15);color:#a855f7;border:1px solid rgba(168,85,247,.3);}
+.diff-elite{background:rgba(244,114,182,.15);color:#f472b6;border:1px solid rgba(244,114,182,.35);}
+.diff-mythic{background:linear-gradient(135deg,rgba(251,191,36,.22),rgba(168,85,247,.2));color:#fbbf24;border:1px solid rgba(251,191,36,.45);text-shadow:0 0 8px rgba(251,191,36,.4);}
+/* ── Fighter roster grid ── */
+.fighter-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fighter-card{position:relative;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:30px 12px 13px;cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s;overflow:hidden;display:flex;flex-direction:column;align-items:center;text-align:center;animation:fade-up .25s ease both;}
+.fighter-card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 10px 28px rgba(0,0,0,.45);}
+.fighter-card.locked{opacity:.5;cursor:not-allowed;}
+.fighter-card.locked:hover{transform:none;border-color:var(--border);box-shadow:none;}
+.fc-glow{position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:140%;height:120px;border-radius:50%;filter:blur(28px);opacity:.5;pointer-events:none;z-index:0;}
+.fc-diff-badge{position:absolute;top:10px;left:10px;z-index:2;font-size:9px;font-weight:800;padding:3px 8px;border-radius:6px;font-family:'DM Mono',monospace;letter-spacing:.5px;}
+.fc-num{position:absolute;top:10px;right:11px;z-index:2;font-size:10px;font-weight:800;font-family:'DM Mono',monospace;color:var(--muted);opacity:.6;}
+.fc-beaten{position:absolute;top:9px;right:9px;z-index:2;font-size:8px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:.5px;color:var(--accent);background:rgba(204,255,0,.12);border:1px solid rgba(204,255,0,.35);border-radius:5px;padding:2px 6px;}
+.fc-portrait{width:88px;height:88px;position:relative;z-index:1;display:flex;align-items:center;justify-content:center;font-size:54px;line-height:1;margin-bottom:8px;}
+.fc-portrait img{width:88px;height:88px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(0,0,0,.5));}
+.fc-name{font-size:14px;font-weight:800;font-family:'Syne',sans-serif;line-height:1.1;z-index:1;margin-bottom:5px;}
+.fc-element{margin-bottom:10px;z-index:1;}
+.fc-win{width:100%;z-index:1;}
+.fc-win-row{display:flex;justify-content:space-between;align-items:baseline;font-size:9px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:.5px;color:var(--muted);margin-bottom:3px;}
+.fc-win-pct{font-size:12px;}
+.fc-win-bar{height:6px;background:var(--bg3);border-radius:999px;overflow:hidden;}
+.fc-win-fill{height:100%;border-radius:999px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.fc-reward{margin-top:9px;font-size:10px;font-family:'DM Mono',monospace;color:var(--legendary);z-index:1;display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:center;}
+.fc-lock{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:rgba(8,8,14,.78);backdrop-filter:blur(2px);}
+.fc-lock-icon{font-size:26px;}
+.fc-lock-req{font-size:10px;font-weight:800;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:.5px;}
 /* ─ Auto-Battle Arena ─ */
 .ab-combatant{padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;}
 .ab-enemy{border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:none;}
 .ab-player{border-top-left-radius:0;border-top-right-radius:0;border-top:none;}
 .ab-info-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
-.ab-name{font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px;}
+.ab-name{font-size:12px;font-weight:800;line-height:1.12;}
+/* ═══════════════ BATTLE ARENA THEME ═══════════════ */
+/* Header bar */
+.ab-header{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:12px;padding:8px 10px;margin-bottom:12px;}
+.ab-header-left{display:flex;align-items:center;gap:8px;min-width:0;}
+.ab-round{font-size:11px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:1px;color:#000;background:linear-gradient(135deg,var(--accent2),var(--accent));border-radius:7px;padding:4px 10px;white-space:nowrap;box-shadow:0 0 14px rgba(200,255,0,.35);}
+.ab-wave{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ab-header-right{display:flex;gap:6px;align-items:center;flex-shrink:0;}
+.ab-ctrl-btn{height:30px;padding:0 11px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--muted);font-family:'DM Mono',monospace;font-weight:700;font-size:11px;cursor:pointer;transition:all .18s;display:flex;align-items:center;}
+.ab-ctrl-btn:hover{border-color:var(--accent);color:var(--accent);}
+.ab-ctrl-btn.fast{background:rgba(200,255,0,.14);border-color:var(--accent);color:var(--accent);}
+.ab-flee{color:#f87171;}
+.ab-flee:hover{border-color:#f87171;color:#f87171;background:rgba(239,68,68,.1);}
+/* Battlefield face-off */
+.ab-field{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:8px;padding:18px 12px 16px;margin-bottom:12px;border-radius:16px;overflow:hidden;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 35%,rgba(239,68,68,.10),transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 35%,rgba(200,255,0,.10),transparent 70%),
+    linear-gradient(180deg,rgba(18,18,26,.96),rgba(10,10,15,.98));
+  border:1px solid var(--border);}
+.ab-field::after{content:'';position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(180deg,transparent,rgba(0,0,0,.35)),repeating-linear-gradient(115deg,rgba(255,255,255,.025) 0 2px,transparent 2px 26px);pointer-events:none;}
+.ab-side{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;z-index:1;}
+.ab-portrait{position:relative;width:100px;height:92px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:6px;}
+.ab-portrait::before{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:74px;height:18px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.55),transparent 70%);filter:blur(2px);}
+.ab-side-enemy .ab-portrait::after,.ab-side-player .ab-portrait::after{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:80px;height:80px;border-radius:50%;filter:blur(16px);opacity:.5;z-index:-1;}
+.ab-side-enemy .ab-portrait::after{background:radial-gradient(circle,#ef4444,transparent 70%);}
+.ab-side-player .ab-portrait::after{background:radial-gradient(circle,#c8ff00,transparent 70%);}
+.ab-status{justify-content:center;min-height:0;margin-bottom:6px;}
+.ab-status:empty{display:none;}
+.ab-side-name{font-size:13px;font-weight:800;font-family:'Syne',sans-serif;line-height:1.1;margin-bottom:4px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ab-side-badge{margin-bottom:7px;}
+.ab-side .bc-hp-bar-wrap{width:100%;height:9px;margin-bottom:3px;box-shadow:inset 0 1px 2px rgba(0,0,0,.5);}
+.ab-side .bc-hp-text{font-size:10px;font-weight:700;}
+/* VS emblem */
+.ab-vs{align-self:center;position:relative;width:46px;height:46px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:24px;}
+.ab-vs span{position:relative;z-index:2;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;font-style:italic;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.8);letter-spacing:-.5px;}
+.ab-vs::before{content:'';position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,#f87171,#a78bfa);box-shadow:0 0 0 3px var(--bg),0 4px 16px rgba(0,0,0,.6);}
+.ab-vs::after{content:'';position:absolute;inset:-6px;border-radius:50%;background:radial-gradient(circle,rgba(248,113,113,.4),rgba(167,139,250,.25),transparent 70%);animation:vs-pulse 1.8s ease-in-out infinite;}
+@keyframes vs-pulse{0%,100%{opacity:.5;transform:scale(1);}50%{opacity:.9;transform:scale(1.12);}}
+/* Wheels row */
+.ab-wheels{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px;justify-items:center;}
+.ab-wheel-col{display:flex;flex-direction:column;align-items:center;gap:3px;}
+/* Bigger arena pets */
+.ab-portrait .wf-pet{height:auto;min-width:0;}
+#abEnemyPet img,#abPlayerPet img,#abEnemyPet .ab-pet-img,#abPlayerPet .ab-pet-img{width:82px;height:82px;border-radius:0;filter:drop-shadow(0 4px 8px rgba(0,0,0,.6));}
+/* Themed wheel rings */
+.ab-wheel-col .wheel-canvas-wrap{border-width:2px;}
+.ab-wheel-col .enemy-wrap{border-color:rgba(239,68,68,.45);box-shadow:0 0 18px rgba(239,68,68,.22),inset 0 0 14px rgba(0,0,0,.6);}
+.ab-wheel-col .wheel-canvas-wrap:not(.enemy-wrap){border-color:rgba(200,255,0,.4);box-shadow:0 0 18px rgba(200,255,0,.22),inset 0 0 14px rgba(0,0,0,.6);}
+/* HP bar gloss */
+.ab-side .bc-hp-bar{position:relative;}
+.ab-side .bc-hp-bar::after{content:'';position:absolute;top:1px;left:3px;right:3px;height:2px;border-radius:999px;background:rgba(255,255,255,.35);}
+/* Move-results row theming */
+.move-announce-row{background:linear-gradient(180deg,var(--bg2),var(--bg3));border-color:var(--border);}
+#moveSlotEnemy{background:linear-gradient(180deg,rgba(239,68,68,.06),transparent);}
+#moveSlotPlayer{background:linear-gradient(180deg,rgba(167,139,250,.06),transparent);}
+.move-slot-label{font-size:8px !important;}
+.wheel-result-slot{min-height:30px;text-align:center;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-weight:800;}
+/* ── YOUR FIGHTER hero card ── */
+/* ── YOUR FIGHTER hero card ── */
+.yf-hero{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.yf-portrait{width:60px;height:60px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--bg3);position:relative;overflow:hidden;}
+.yf-portrait img{width:54px;height:54px;object-fit:contain;}
+.yf-name{font-size:18px;font-weight:800;font-family:'Syne',sans-serif;line-height:1.05;margin-bottom:5px;}
+.yf-chips{display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
+.yf-rarity-chip{font-size:9px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:.5px;text-transform:uppercase;padding:2px 7px;border-radius:5px;}
+.yf-level{margin-left:auto;text-align:center;flex-shrink:0;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:6px 12px;}
+.yf-lvl-num{font-size:22px;font-weight:800;font-family:'Syne',sans-serif;color:var(--accent);line-height:1;}
+.yf-lvl-lbl{font-size:8px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:1.5px;color:var(--muted);margin-top:2px;}
+.yf-power{display:flex;align-items:center;justify-content:space-between;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px 12px;margin-bottom:12px;}
+.yf-power-lbl{font-size:9px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:1.5px;color:var(--muted);}
+.yf-power-val{font-size:18px;font-weight:800;font-family:'Syne',sans-serif;color:var(--accent);}
 .bc-status-icons{display:flex;gap:4px;flex-wrap:wrap;align-items:center;min-height:20px;}
 .status-pill{font-size:9px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:.8px;padding:2px 6px;border-radius:4px;}.burn-pill{background:rgba(249,115,22,.2);color:#fb923c;border:1px solid rgba(249,115,22,.4);}.dot-pill{background:rgba(168,85,247,.2);color:#c084fc;border:1px solid rgba(168,85,247,.4);}.stun-pill{background:rgba(99,102,241,.2);color:#818cf8;border:1px solid rgba(99,102,241,.4);}
 .bc-hp-bar-wrap{height:7px;background:var(--bg3);border-radius:999px;overflow:hidden;margin-bottom:2px;}
@@ -1952,6 +2048,15 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
         <button class="gold-claim-btn" id="goldBonusBtn" onclick="claimGoldBonus()" style="padding:7px 16px;font-size:12px;">Claim</button>
       </div>
       <div style="height:1px;background:rgba(251,191,36,.12);margin:0 14px;"></div>
+      <div id="dailySpinRow" style="padding:10px 14px;display:flex;align-items:center;gap:12px;">
+        <div style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🎡</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:800;color:#fbbf24;">Daily Spin</div>
+          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">WIN UP TO 10,000 ◆ · EVERY 24H</div>
+        </div>
+        <button class="daily-spin-btn ready" id="dailySpinBtn" onclick="openDailyWheel()" style="padding:5px 12px;font-size:11px;" title="Daily gold spin">🎡 <span id="dailySpinLabel">Spin</span></button>
+      </div>
+      <div style="height:1px;background:rgba(251,191,36,.12);margin:0 14px;"></div>
       <div id="adRewardRow" style="padding:10px 14px;display:flex;align-items:center;gap:12px;">
         <div style="width:36px;height:36px;border-radius:10px;background:rgba(204,255,0,.08);border:1px solid rgba(204,255,0,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">▶</div>
         <div style="flex:1;">
@@ -2266,7 +2371,6 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
         </div>
         <div class="pet-mood" style="justify-content:flex-end;">
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
-            <button class="daily-spin-btn ready" id="dailySpinBtn" onclick="openDailyWheel()" title="Daily gold spin">🎡 <span id="dailySpinLabel">Spin</span></button>
             <div class="streak-mult-badge" id="streakMultBadge" onclick="openStreakInfo()" title="Streak XP bonus" style="display:none;cursor:pointer;">▲ <span id="streakMultVal">1.0×</span> XP</div>
             <div class="auto-indicator" id="autoIndicator" onclick="openBoostModal()" title="Passive XP rate — tap for power-ups" style="cursor:pointer;"><div class="auto-dot"></div>AUTO <span id="autoMultLabel">1×</span><span id="autoBoostTime" style="display:none;"></span></div>
           </div>
@@ -2364,73 +2468,12 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
   <!-- Tab nav -->
   <div class="hist-tabs">
-    <button class="hist-tab active" onclick="switchHistTab('overview',this)">Overview</button>
-    <button class="hist-tab" onclick="switchHistTab('workouts',this)">Workouts</button>
-    <button class="hist-tab" onclick="switchHistTab('prs',this)">PRs</button>
-    <button class="hist-tab" onclick="switchHistTab('strength',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M6 4v16M18 4v16M2 9h4M18 9h4M2 15h4M18 15h4M6 9h12M6 15h12"/></svg>Strength</button>
+    <button class="hist-tab active" onclick="switchHistTab('strength',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M6 4v16M18 4v16M2 9h4M18 9h4M2 15h4M18 15h4M6 9h12M6 15h12"/></svg>Strength</button>
     <button class="hist-tab" onclick="switchHistTab('exercises',this)">Exercises</button>
   </div>
 
-  <!-- ── OVERVIEW PANE ── -->
-  <div class="hist-pane active" id="histPane-overview">
-    <div class="hist-stat-grid">
-      <div class="hist-stat-card accent-card">
-        <div class="hist-stat-val" id="hst-workouts">0</div>
-        <div class="hist-stat-label">Workouts</div>
-      </div>
-      <div class="hist-stat-card">
-        <div class="hist-stat-val" id="hst-streak">0<svg width="13" height="13" viewBox="0 0 24 24" fill="#fb923c" style="vertical-align:middle;margin-left:3px"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></div>
-        <div class="hist-stat-label">Streak</div>
-      </div>
-      <div class="hist-stat-card">
-        <div class="hist-stat-val" id="hst-best-streak">0</div>
-        <div class="hist-stat-label">Best Streak</div>
-      </div>
-      <div class="hist-stat-card">
-        <div class="hist-stat-val" id="hst-sets">0</div>
-        <div class="hist-stat-label">Total Sets</div>
-      </div>
-      <div class="hist-stat-card">
-        <div class="hist-stat-val" id="hst-vol">0</div>
-        <div class="hist-stat-label">Total Vol (k lbs)</div>
-      </div>
-      <div class="hist-stat-card">
-        <div class="hist-stat-val" id="hst-xp">0</div>
-        <div class="hist-stat-label">XP Earned</div>
-      </div>
-    </div>
-
-    <!-- Volume bar chart -->
-    <div class="hist-chart-wrap">
-      <div class="hist-chart-title">Volume — Last 12 Workouts</div>
-      <svg class="hist-chart-svg" id="volumeChartSvg" viewBox="0 0 380 110" preserveAspectRatio="none"></svg>
-    </div>
-
-    <!-- Muscle split -->
-    <div class="hist-muscle-wrap">
-      <div class="hist-chart-title">Muscle Split (sets)</div>
-      <div id="muscleSplitBars"></div>
-    </div>
-  </div>
-
-  <!-- ── WORKOUTS PANE ── -->
-  <div class="hist-pane" id="histPane-workouts">
-    <div class="history-filters">
-      <button class="filter-btn active" onclick="filterHistory(this,'all')">All</button>
-      <button class="filter-btn" onclick="filterHistory(this,'week')">This Week</button>
-      <button class="filter-btn" onclick="filterHistory(this,'month')">This Month</button>
-    </div>
-    <div class="history-list" id="historyList"></div>
-  </div>
-
-  <!-- ── PRs PANE ── -->
-  <div class="hist-pane" id="histPane-prs">
-    <input class="pr-search" id="prSearch" type="text" placeholder="Search exercises…" oninput="renderPRs(this.value)">
-    <div id="prList"></div>
-  </div>
-
   <!-- ── STRENGTH PANE ── -->
-  <div class="hist-pane" id="histPane-strength">
+  <div class="hist-pane active" id="histPane-strength">
 
     <!-- Progressive Overload — Portfolio (stock-market style) -->
     <div class="card po-card" style="margin-bottom:14px;">
@@ -2868,7 +2911,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
 <!-- BATTLE PAGE -->
 <div class="page" id="page-battle">
-  <div class="page-header"><div class="page-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:8px"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/></svg>Battle Arena</div></div>
+  <div class="page-header" id="battlePageHeader"><div class="page-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:8px"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/></svg>Battle Arena</div></div>
 
   <!-- OPPONENT SELECT -->
   <div id="battleSelect">
@@ -2900,54 +2943,60 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   <!-- AUTO-BATTLE ARENA -->
   <div id="battleArena" style="display:none;">
 
-    <!-- TOP STRIP: round + controls -->
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 2px;margin-bottom:4px;">
-      <div style="display:flex;align-items:center;gap:6px;">
-        <span class="round-badge" id="abRoundBadge">RND 1</span>
-        <span style="font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;" id="abWaveLabel"></span>
+    <!-- BATTLE HEADER BAR -->
+    <div class="ab-header">
+      <div class="ab-header-left">
+        <span class="ab-round" id="abRoundBadge">RND 1</span>
+        <span class="ab-wave" id="abWaveLabel"></span>
       </div>
-      <div style="display:flex;gap:6px;align-items:center;">
-        <button class="move-index-btn" id="moveIndexBtn" onclick="toggleMoveIndex()" style="margin:0;padding:4px 10px;font-size:10px;">&#9776; Moves</button>
-        <button class="battle-speed-btn" id="battleSpeedBtn" onclick="toggleBattleSpeed()" style="height:26px;padding:0 10px;font-size:11px;">1×</button>
-        <button class="btn btn-secondary" style="padding:4px 10px;font-size:10px;height:26px;" onclick="abFlee()">↩</button>
+      <div class="ab-header-right">
+        <button class="ab-ctrl-btn" id="moveIndexBtn" onclick="toggleMoveIndex()">&#9776; Moves</button>
+        <button class="ab-ctrl-btn" id="battleSpeedBtn" onclick="toggleBattleSpeed()">1×</button>
+        <button class="ab-ctrl-btn ab-flee" onclick="abFlee()" title="Flee">↩</button>
       </div>
     </div>
 
-    <!-- MAIN: two columns side by side -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
-
-      <!-- ENEMY column -->
-      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-        <div class="ab-combatant ab-enemy" style="width:100%;padding:6px 8px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
-            <span class="ab-name" id="abEnemyName" style="font-size:11px;">Enemy</span>
-            <span class="bc-status-icons" id="abEnemyStatus"></span>
-          </div>
-          <div id="abEnemyBadge" style="margin-bottom:3px;"></div>
-          <div class="bc-hp-bar-wrap" id="abEnemyHpWrap"><div class="bc-hp-bar enemy-hp" id="abEnemyHpBar" style="width:100%"></div></div>
-          <div class="bc-hp-text" id="abEnemyHpText" style="font-size:9px;">— / —</div>
+    <!-- BATTLEFIELD: enemy vs player face-off -->
+    <div class="ab-field">
+      <!-- ENEMY side -->
+      <div class="ab-side ab-side-enemy">
+        <div class="ab-portrait">
+          <div class="wf-pet ab-pet ab-pet-enemy" id="abEnemyPet"></div>
         </div>
-        <div class="wf-pet ab-pet ab-pet-enemy" id="abEnemyPet"></div>
-        <div class="wheel-ptr" style="font-size:11px;">▼</div>
-        <div class="wheel-canvas-wrap enemy-wrap" id="enemyWheelWrap"></div>
-        <div id="enemyWheelResult" class="wheel-result-slot" style="min-height:28px;text-align:center;"></div>
+        <div class="ab-side-name" id="abEnemyName">Enemy</div>
+        <div class="ab-side-badge" id="abEnemyBadge"></div>
+        <span class="bc-status-icons ab-status" id="abEnemyStatus"></span>
+        <div class="bc-hp-bar-wrap" id="abEnemyHpWrap"><div class="bc-hp-bar enemy-hp" id="abEnemyHpBar" style="width:100%"></div></div>
+        <div class="bc-hp-text" id="abEnemyHpText">— / —</div>
       </div>
 
-      <!-- PLAYER column -->
-      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-        <div class="ab-combatant ab-player" style="width:100%;padding:6px 8px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
-            <span class="ab-name" id="abPlayerName" style="font-size:11px;">You</span>
-            <span class="bc-status-icons" id="abPlayerStatus"></span>
-          </div>
-          <div id="abPlayerBadge" style="margin-bottom:3px;"></div>
-          <div class="bc-hp-bar-wrap" id="abPlayerHpWrap"><div class="bc-hp-bar player-hp" id="abPlayerHpBar" style="width:100%"></div></div>
-          <div class="bc-hp-text" id="abPlayerHpText" style="font-size:9px;">— / —</div>
+      <!-- VS emblem -->
+      <div class="ab-vs"><span>VS</span></div>
+
+      <!-- PLAYER side -->
+      <div class="ab-side ab-side-player">
+        <div class="ab-portrait">
+          <div class="wf-pet ab-pet ab-pet-player" id="abPlayerPet"></div>
         </div>
-        <div class="wf-pet ab-pet ab-pet-player" id="abPlayerPet"></div>
-        <div class="wheel-ptr" style="font-size:11px;">▼</div>
+        <div class="ab-side-name" id="abPlayerName">You</div>
+        <div class="ab-side-badge" id="abPlayerBadge"></div>
+        <span class="bc-status-icons ab-status" id="abPlayerStatus"></span>
+        <div class="bc-hp-bar-wrap" id="abPlayerHpWrap"><div class="bc-hp-bar player-hp" id="abPlayerHpBar" style="width:100%"></div></div>
+        <div class="bc-hp-text" id="abPlayerHpText">— / —</div>
+      </div>
+    </div>
+
+    <!-- WHEELS -->
+    <div class="ab-wheels">
+      <div class="ab-wheel-col">
+        <div class="wheel-ptr">▼</div>
+        <div class="wheel-canvas-wrap enemy-wrap" id="enemyWheelWrap"></div>
+        <div id="enemyWheelResult" class="wheel-result-slot"></div>
+      </div>
+      <div class="ab-wheel-col">
+        <div class="wheel-ptr">▼</div>
         <div class="wheel-canvas-wrap" id="playerWheelWrap"></div>
-        <div id="playerWheelResult" class="wheel-result-slot" style="min-height:28px;text-align:center;"></div>
+        <div id="playerWheelResult" class="wheel-result-slot"></div>
       </div>
     </div>
 
@@ -3405,6 +3454,8 @@ const WORKOUT_TEMPLATES = {
 // Persistent custom selection (survives template switching)
 let customSelection = ['bench','squat','deadlift','ohp','curl'];
 let activeTemplate = 'push';
+// Whether the user has actually tapped a template — until then, none is highlighted
+let _templatePicked = false;
 // Template rotation order — cycles after each completed workout (mutated by drag reorder)
 const TEMPLATE_ROTATION = ['push','pull','legs','upper','power'];
 
@@ -3487,7 +3538,7 @@ function buildTemplateCardHTML(key) {
     ? `<button class="template-edit-btn" onclick="event.stopPropagation();openTemplateEdit('${key}')" title="Edit">✏️</button>`
     : '';
   const dragHandle = `<span class="tmpl-drag-handle" title="Drag to reorder">⠿</span>`;
-  return `<div class="template-card${activeTemplate===key?' selected':''}" onclick="selectTemplate(this,'${key}')" data-key="${key}" draggable="true">
+  return `<div class="template-card${(_templatePicked && activeTemplate===key)?' selected':''}" onclick="selectTemplate(this,'${key}')" data-key="${key}" draggable="true">
     <div class="template-card-top">
       <div class="template-emoji" id="tmpl-emoji-${key}">${emoji}</div>
       <div style="display:flex;align-items:center;gap:2px;">${dragHandle}${editBtn}</div>
@@ -3610,13 +3661,6 @@ function initTemplateGridDrag() {
     touchSrcKey = null; touchOverKey = null;
   };
 
-  // dummy listeners kept for compat — delegation handles everything above
-  const noop = () => {};
-  grid.querySelectorAll('.template-card').forEach(card => {
-    card.addEventListener('touchstart', noop, { passive: false });
-    card.addEventListener('touchmove', noop, { passive: false });
-    card.addEventListener('touchend', onTouchEnd);
-  });
 }
 
 function reorderTemplateGrid(srcKey, targetKey) {
@@ -4645,36 +4689,37 @@ function addSet(exId) {
   tbody.insertAdjacentHTML('beforeend', buildSetRow(exId, idx, newSet, lastSets[idx]));
 }
 
+// "+ Drop Set" — turns the LAST existing set into a drop set (adds a drop
+// underneath it) rather than creating a whole new set first.
 function addDropSet(exId) {
   const sets = sessionSets[exId];
-  const last = sets[sets.length - 1];
-  const baseLbs = last ? last.lbs : 45;
-  const baseReps = last ? last.reps : 8;
-  const dropLbs = Math.max(5, Math.round(baseLbs * 0.8 / 5) * 5); // ~80% rounded to nearest 5
-  const newSet = { lbs: baseLbs, reps: baseReps, done: false, drops: [{ lbs: dropLbs, reps: baseReps }] };
-  sets.push(newSet);
-  const tbody = document.getElementById('tbody-'+exId);
-  const lastSets = getLastSessionForExercise(exId);
-  const idx = sets.length - 1;
-  tbody.insertAdjacentHTML('beforeend', buildSetRow(exId, idx, newSet, lastSets[idx]));
+  if (!sets || !sets.length) return;
+  addDrop(exId, sets.length - 1);
 }
 
 function addDrop(exId, setIdx) {
   const set = sessionSets[exId]?.[setIdx];
-  if (!set || !set.drops) return;
-  const lastDrop = set.drops[set.drops.length - 1];
-  const dropLbs = Math.max(5, Math.round(lastDrop.lbs * 0.8 / 5) * 5);
-  set.drops.push({ lbs: dropLbs, reps: lastDrop.reps });
-  // Rebuild the rows for this set
-  const tbody = document.getElementById('tbody-'+exId);
+  if (!set) return;
+  if (!set.drops) set.drops = [];
+  // Base the new drop on the last drop (if any) else on the set itself
+  const ref = set.drops.length ? set.drops[set.drops.length - 1] : set;
+  const dropLbs = Math.max(5, Math.round((ref.lbs || 45) * 0.8 / 5) * 5); // ~80% rounded to 5
+  set.drops.push({ lbs: dropLbs, reps: ref.reps || 8 });
+  rebuildSetInPlace(exId, setIdx);
+}
+
+// Re-render a single set's rows (main + drops) in place without rebuilding the table
+function rebuildSetInPlace(exId, setIdx) {
+  const set = sessionSets[exId]?.[setIdx];
+  if (!set) return;
+  const tbody = document.getElementById('tbody-' + exId);
   const lastSets = getLastSessionForExercise(exId);
-  // Remove old rows for this set (main + drops)
+  // Remove old rows for this set (main + its drops)
   tbody.querySelectorAll(`[id^="setrow-${exId}-${setIdx}"]`).forEach(r => r.remove());
-  // Re-insert after the previous set's rows
+  // Find the previous set's last row to insert after
   const allRows = [...tbody.querySelectorAll('tr')];
   const prevSetLastRow = allRows.filter(r => {
-    const id = r.id;
-    const m = id.match(/setrow-[^-]+-(\d+)/);
+    const m = r.id.match(/setrow-[^-]+-(\d+)/);
     return m && parseInt(m[1]) === setIdx - 1;
   }).pop();
   const html = buildSetRow(exId, setIdx, set, lastSets[setIdx]);
@@ -4891,6 +4936,7 @@ function toggleSetDone(btn, exId, idx) {
 }
 
 function selectTemplate(card, key) {
+  _templatePicked = true;
   document.querySelectorAll('.template-card').forEach(c=>c.classList.remove('selected'));
   card.classList.add('selected');
   activeTemplate = key;
@@ -5067,7 +5113,6 @@ function switchHistTab(tab, btn) {
   document.querySelectorAll('.hist-pane').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('histPane-' + tab).classList.add('active');
-  if (tab === 'prs') renderPRs('');
   if (tab === 'strength') buildStrengthTab();
   if (tab === 'exercises') { renderMuscleMap(); if(!document.querySelector('.muscle-hotspot.sel')) selectMuscle('Chest'); }
 }
@@ -5184,30 +5229,8 @@ function renderExerciseLibrary(query) {
 function buildHistoryPage() {
   const p = getP();
   if (!p) return;
-  const workouts = [...p.workoutLog].reverse();
-
-  // ── Aggregate stats ──
-  let totalSets = 0, totalVol = 0, totalXp = 0;
-  for (const w of workouts) {
-    totalSets += w.totalSets || 0;
-    totalXp   += w.xp || 0;
-    for (const sets of Object.values(w.exercises || {})) {
-      for (const s of sets) totalVol += (s.lbs || 0) * (s.reps || 0);
-    }
-  }
-  const streak     = calcStreak(p.streakDays);
-  const bestStreak = calcBestStreak(p.streakDays);
-
-  document.getElementById('hst-workouts').textContent   = workouts.length;
-  document.getElementById('hst-streak').innerHTML       = streak + '<svg width="13" height="13" viewBox="0 0 24 24" fill="#fb923c" style="vertical-align:middle;margin-left:3px"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg>';
-  document.getElementById('hst-best-streak').textContent= bestStreak;
-  document.getElementById('hst-sets').textContent       = totalSets.toLocaleString();
-  document.getElementById('hst-vol').textContent        = (totalVol / 1000).toFixed(1) + 'k';
-  document.getElementById('hst-xp').textContent         = totalXp.toLocaleString();
-
-  renderVolumeChart(workouts);
-  renderMuscleSplit(workouts);
-  renderHistoryList(workouts);
+  // Stats page now defaults to the Strength tab (Overview/Workouts/PRs moved elsewhere)
+  buildStrengthTab();
 }
 
 function calcBestStreak(days) {
@@ -9138,6 +9161,7 @@ function advanceTemplate() {
   if (!rotation.length) return;
   const currentIdx = rotation.indexOf(activeTemplate);
   const nextKey = rotation[(currentIdx + 1) % rotation.length];
+  _templatePicked = true; // "next up" suggestion after finishing a workout
   // Update the selected card in the log page
   document.querySelectorAll('.template-card').forEach(c => {
     const onclick = c.getAttribute('onclick') || '';
@@ -9423,9 +9447,24 @@ const NPC_RIVALS = [
   { id:'circuit_queen', name:'Circuit Queen',   pet:'circuit-panther', emoji:'🐆', diff:'hard',   diffLabel:'Hard',
     stats:{ hp:290, atk:42, spd:35, def:25, focus:.22 }, desc:'HIIT royalty. Relentless.',
     reward:{ gold:420, xp:280, case:'rare' } },
+  { id:'mech_marauder', name:'Mech Marauder',   pet:'mech-bear',       emoji:'🐻', diff:'boss',   diffLabel:'Boss',
+    stats:{ hp:540, atk:66, spd:30, def:46, focus:.26 }, desc:'Hydraulic arms. No off switch.',
+    reward:{ gold:950, xp:640, case:'legendary' } },
+  { id:'void_reaper',   name:'Void Reaper',     pet:'void-serpent',    emoji:'🐍', diff:'elite',  diffLabel:'Elite',
+    stats:{ hp:680, atk:82, spd:44, def:42, focus:.32 }, desc:'Devours your gains whole.',
+    reward:{ gold:1300, xp:880, case:'legendary' } },
+  { id:'ash_phoenix',   name:'Ashen Phoenix',   pet:'obsidian-phoenix',emoji:'🔥', diff:'elite',  diffLabel:'Elite',
+    stats:{ hp:820, atk:98, spd:50, def:52, focus:.36 }, desc:'Rises from every set you skip.',
+    reward:{ gold:1750, xp:1200, case:'legendary' } },
   { id:'iron_legend',   name:'Iron Legend',     pet:'solar-lioness',   emoji:'🦁', diff:'boss',   diffLabel:'Boss',
-    stats:{ hp:420, atk:55, spd:30, def:35, focus:.28 }, desc:'15 years in the iron game.',
-    reward:{ gold:700, xp:450, case:'legendary' } },
+    stats:{ hp:940, atk:108, spd:46, def:60, focus:.36 }, desc:'15 years in the iron game. Unbroken.',
+    reward:{ gold:2050, xp:1400, case:'legendary' } },
+  { id:'gravity_titan', name:'Gravity Titan',   pet:'gravity-bull',    emoji:'🐂', diff:'mythic', diffLabel:'Mythic',
+    stats:{ hp:1050, atk:114, spd:40, def:72, focus:.34 }, desc:'Bends the iron — and reality.',
+    reward:{ gold:2400, xp:1700, case:'legendary' } },
+  { id:'cosmic_overlord',name:'Cosmic Overlord', pet:'golden-duck',     emoji:'👑', diff:'mythic', diffLabel:'Mythic',
+    stats:{ hp:1350, atk:138, spd:64, def:78, focus:.42 }, desc:'The final boss of fitness itself.',
+    reward:{ gold:4000, xp:2800, case:'legendary' } },
 ];
 
 // ── Player 5-stat derivation ──
@@ -9586,29 +9625,42 @@ function buildStatBreakdown(p, st, skin, petD) {
   const rc       = RARITY_COLORS[rarity] || '#6b7280';
   const base     = calcBaseStats(p, lvl);
   const xpInfo   = calcLevel(p.xp || 0);
-  const xpNeeded = xpInfo.nextLevelXp - xpInfo.currentLevelXp;
-  const xpHave   = (p.xp || 0) - xpInfo.currentLevelXp;
-  const xpPct    = Math.round((xpHave / xpNeeded) * 100);
+  const xpNeeded = xpInfo.xpNeeded || 1;
+  const xpHave   = xpInfo.xpIntoLevel || 0;
+  const xpPct    = Math.max(0, Math.min(100, Math.round((xpHave / xpNeeded) * 100)));
 
+  const tierImg = `pets/${p.equippedSkin}_t${Math.min(4,getEvolutionTier(p.level||1).tier)}.png`;
+  const elem = petD.element || 'Earth';
+  const ti = TYPE_ICONS[elem] || '';
+  const power = (st.hp||0) + (st.atk||0)*4 + (st.spd||0)*2 + (st.def||0)*3;
   el.innerHTML = `
-    <!-- Pet banner -->
-    <div class="pet-rarity-banner">
-      <div style="width:32px;height:32px;flex-shrink:0;">
-        <img src="pets/${p.equippedSkin}_t${Math.min(4,getEvolutionTier(p.level||1).tier)}.png"
-          onerror="this.src='pets/${p.equippedSkin}.png';this.onerror=null;"
-          style="width:32px;height:32px;object-fit:contain;border-radius:6px;display:block;">
+    <!-- Hero header -->
+    <div class="yf-hero">
+      <div class="yf-portrait" style="box-shadow:0 0 0 2px ${rc}66, 0 0 18px ${rc}44;">
+        <img src="${tierImg}" onerror="this.src='pets/${p.equippedSkin}.png';this.onerror=null;">
       </div>
-      <div style="flex:1;">
-        <div style="font-size:12px;font-weight:800;">${skin?.name || 'Iron Rhino'}</div>
-        <div style="font-size:10px;color:${rc};font-family:'DM Mono',monospace;font-weight:700;letter-spacing:.5px;text-transform:uppercase;">${rarity} · ${rm}× multiplier · ${petD.element}</div>
+      <div style="min-width:0;flex:1;">
+        <div class="yf-name">${skin?.name || 'Iron Rhino'}</div>
+        <div class="yf-chips">
+          <span class="type-badge type-${elem}">${ti} ${elem}</span>
+          <span class="yf-rarity-chip" style="color:${rc};background:${rc}1a;border:1px solid ${rc}55;">${rarity} · ${rm}×</span>
+        </div>
       </div>
-      <div style="text-align:right;">
-        <div style="font-size:14px;font-weight:800;color:var(--accent);">Lv ${lvl}</div>
-        <div style="font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;">${xpHave.toLocaleString()} / ${xpNeeded.toLocaleString()} XP</div>
+      <div class="yf-level">
+        <div class="yf-lvl-num">${lvl}</div>
+        <div class="yf-lvl-lbl">LEVEL</div>
       </div>
     </div>
+    <!-- Power rating -->
+    <div class="yf-power">
+      <span class="yf-power-lbl">⚔ BATTLE POWER</span>
+      <span class="yf-power-val">${power.toLocaleString()}</span>
+    </div>
     <!-- XP bar -->
-    <div style="height:5px;background:var(--bg3);border-radius:999px;overflow:hidden;margin-bottom:14px;">
+    <div style="display:flex;justify-content:space-between;font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:4px;letter-spacing:.5px;">
+      <span>XP TO NEXT LEVEL</span><span>${xpHave.toLocaleString()} / ${xpNeeded.toLocaleString()}</span>
+    </div>
+    <div style="height:6px;background:var(--bg3);border-radius:999px;overflow:hidden;margin-bottom:14px;">
       <div style="height:100%;width:${xpPct}%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:999px;transition:width .6s ease;"></div>
     </div>
     <!-- Stat legend -->
@@ -9696,25 +9748,62 @@ function buildBattlePage() {
 
   buildStatBreakdown(p, st, skin, petD);
 
-  const streak = calcStreak(p.streakDays);
-  document.getElementById('rivalList').innerHTML = NPC_RIVALS.map((r,i) => {
-    const unlocked = i===0 || streak>=i || p.level>=(i*5);
+  const beaten = p.beatenRivals || [];
+  const ELEM_GLOW = { Fire:'#ef4444', Water:'#3b82f6', Electric:'#eab308', Earth:'#a855f7', Air:'#22d3ee', Cosmic:'#FFD700' };
+  const list = document.getElementById('rivalList');
+  list.className = 'fighter-grid';
+  list.innerHTML = NPC_RIVALS.map((r,i) => {
+    // Sequential unlock: first is always open; the rest unlock by beating the previous rival
+    const prev = NPC_RIVALS[i-1];
+    const unlocked = i===0 || beaten.includes(prev.id);
+    const isBeaten = beaten.includes(r.id);
     const rd = PET_DATA[r.pet] || {};
-    const rti = TYPE_ICONS[rd.element] || '';
+    const elem = rd.element || 'Earth';
+    const rti = TYPE_ICONS[elem] || '';
+    const glow = ELEM_GLOW[elem] || '#a855f7';
+    const win = battleWinChance(st, r.stats);
+    const winColor = win >= 60 ? 'var(--accent)' : win >= 40 ? '#facc15' : '#f87171';
+    const rewardBits = [`◆ ${r.reward.gold}`];
+    if (r.reward.case) rewardBits.push(`🎁 ${r.reward.case}`);
     return `
-      <div class="rival-card ${unlocked?'':'locked'}" onclick="${unlocked?`startAutoBattle('${r.id}')`:'showToast(\"🔒 Level up or build your streak to unlock!\")'}">
-        <div class="rival-pet">${petImgHtml(r.pet,r.emoji)}</div>
-        <div class="rival-info">
-          <div class="rival-name">${r.name} <span class="type-badge type-${rd.element||'Earth'}">${rti} ${rd.element||'Earth'}</span></div>
-          <div class="rival-desc">${r.desc}</div>
-          <div class="rival-stats">❤️${r.stats.hp} ⚔️${r.stats.atk} 💨${r.stats.spd} 🛡${r.stats.def}${r.reward.case?` · 🎁 ${r.reward.case} case`:''}</div>
+      <div class="fighter-card ${unlocked?'':'locked'}" onclick="${unlocked?`startAutoBattle('${r.id}')`:`showToast('🔒 Beat ${prev ? prev.name.replace(/'/g, '') : 'the previous rival'} first!')`}">
+        <div class="fc-glow" style="background:radial-gradient(circle, ${glow}, transparent 70%);"></div>
+        <div class="fc-diff-badge diff-${r.diff}">${r.diffLabel}</div>
+        ${isBeaten ? '<div class="fc-beaten">✓ BEATEN</div>' : `<div class="fc-num">#${i+1}</div>`}
+        <div class="fc-portrait">${petImgHtml(r.pet,r.emoji,'fc-portrait-img')}</div>
+        <div class="fc-name">${r.name}</div>
+        <div class="fc-element"><span class="type-badge type-${elem}">${rti} ${elem}</span></div>
+        <div class="fc-win">
+          <div class="fc-win-row"><span>WIN CHANCE</span><span class="fc-win-pct" style="color:${winColor};">${win}%</span></div>
+          <div class="fc-win-bar"><div class="fc-win-fill" style="width:${win}%;background:${winColor};"></div></div>
         </div>
-        <div class="rival-diff diff-${r.diff}">${unlocked?r.diffLabel:'🔒'}</div>
+        <div class="fc-reward">${rewardBits.join(' · ')}</div>
+        ${unlocked ? '' : `<div class="fc-lock"><div class="fc-lock-icon">🔒</div><div class="fc-lock-req">BEAT #${i}</div></div>`}
       </div>`;
   }).join('');
 
   document.getElementById('battleSelect').style.display = '';
   document.getElementById('battleArena').style.display  = 'none';
+  const bph = document.getElementById('battlePageHeader');
+  if (bph) bph.style.display = '';
+}
+
+// Estimate win chance with a time-to-kill combat model.
+// Whoever kills the other faster wins; the bigger the gap, the closer to 0/100%.
+function battleWinChance(P, E) {
+  // Effective damage per turn = attack minus a fraction of the target's defense,
+  // scaled slightly by speed (faster fighters land more hits).
+  const dmg = (atk, defTarget, spd) =>
+    Math.max(1, (atk || 0) - (defTarget || 0) * 0.4) * (1 + (spd || 0) / 120);
+  const pDmg = dmg(P.atk, E.def, P.spd);
+  const eDmg = dmg(E.atk, P.def, E.spd);
+  // Turns each side needs to kill the other (lower = better)
+  const pTTK = (E.hp || 1) / pDmg; // you killing the enemy
+  const eTTK = (P.hp || 1) / eDmg; // enemy killing you
+  const margin = eTTK / pTTK;      // >1 means you kill faster → you're favored
+  // Logistic curve: a 2× speed-to-kill advantage ≈ ~83%, 3× ≈ ~93%, even ≈ 50%
+  const win = 1 / (1 + Math.pow(1 / margin, 2.2));
+  return Math.max(2, Math.min(99, Math.round(win * 100)));
 }
 
 function startBattle(id) { startAutoBattle(id); } // alias
@@ -9794,6 +9883,8 @@ function startAutoBattle(npcId) {
 
   document.getElementById('battleSelect').style.display = 'none';
   document.getElementById('battleArena').style.display  = '';
+  const bph = document.getElementById('battlePageHeader');
+  if (bph) bph.style.display = 'none';
 
   initWheelBattle();
 }
@@ -10453,6 +10544,9 @@ function endAutoBattle(won) {
     p.gold=(p.gold||0)+r.gold; p.xp=(p.xp||0)+r.xp;
     p.level=calcLevel(p.xp).level;
     if (r.case) p.cases[r.case]=(p.cases[r.case]||0)+1;
+    // Record this rival as beaten — beating one unlocks the next
+    if (!p.beatenRivals) p.beatenRivals = [];
+    if (!p.beatenRivals.includes(ABS.npc.id)) p.beatenRivals.push(ABS.npc.id);
     saveP(p); refreshHomeStats(); updateCaseCounts();
     abLog(`Wave ${ABS.waveIdx+1} cleared! +${r.gold} gold +${r.xp} XP${r.case?' +1 '+r.case+' case':''}`, 'system');
 
@@ -10460,8 +10554,8 @@ function endAutoBattle(won) {
     if (nextNpc) {
       setTimeout(()=>startAutoBattle(nextNpc.id), 1200);
     } else {
-      abLog('🎉 ALL RIVALS DEFEATED — You are the Iron Legend!', 'system');
-      setTimeout(()=>{ showToast('🎉 All rivals beaten! You\'re the Iron Legend!'); setTimeout(()=>{ ABS=null; buildBattlePage(); }, 3000); }, 800);
+      abLog('🎉 ALL RIVALS DEFEATED — You are the Cosmic Overlord!', 'system');
+      setTimeout(()=>{ showToast('👑 Every rival crushed! You are the Cosmic Overlord!'); setTimeout(()=>{ ABS=null; buildBattlePage(); }, 3000); }, 800);
     }
   } else {
     abLog(`Defeated by ${ABS.npc.name}. Keep training!`, 'system');
