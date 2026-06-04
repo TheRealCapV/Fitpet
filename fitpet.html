@@ -2496,13 +2496,15 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
     <!-- e1RM per exercise -->
     <div class="card">
-      <div class="card-header" style="margin-bottom:4px;">
+      <div class="card-header" style="margin-bottom:4px;cursor:pointer;" onclick="toggleE1rmCard()">
         <span class="card-title">Est. 1 Rep Max</span>
-        <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">EPLEY FORMULA</span>
+        <span style="display:flex;align-items:center;gap:8px;font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">EPLEY FORMULA <span id="e1rmChevron" style="font-size:13px;transition:transform .2s;">▾</span></span>
       </div>
-      <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.5;">Calculated as: weight × (1 + reps / 30). Shows your best set ever per exercise.</div>
-      <input type="text" id="e1rmSearch" placeholder="Filter exercises…" oninput="renderE1RM(this.value)" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:10px;box-sizing:border-box;">
-      <div id="e1rmList"></div>
+      <div id="e1rmBody">
+        <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.5;">Calculated as: weight × (1 + reps / 30). Shows your best set ever per exercise.</div>
+        <input type="text" id="e1rmSearch" placeholder="Filter exercises…" oninput="renderE1RM(this.value)" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:10px;box-sizing:border-box;">
+        <div id="e1rmList"></div>
+      </div>
     </div>
 
   </div>
@@ -2858,6 +2860,22 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
       <button class="pd-switch-btn" style="width:100%;padding:12px;border-radius:10px;font-size:13px;margin-bottom:8px;background:var(--accent);color:#000;border-color:var(--accent);font-weight:800;" onclick="backupData()">⬇ Back up my progress</button>
       <textarea id="backupBox" placeholder="Your backup code appears here — copy &amp; keep it safe. To restore, paste a code here and tap Restore." spellcheck="false" style="width:100%;height:90px;background:#000;color:var(--accent);border:1px solid var(--border);border-radius:8px;font-family:'DM Mono',monospace;font-size:10px;padding:10px;box-sizing:border-box;resize:vertical;margin-bottom:8px;"></textarea>
       <button class="pd-switch-btn" style="width:100%;padding:12px;border-radius:10px;font-size:13px;" onclick="restoreData()">⬆ Restore from code</button>
+
+      <!-- Import from another app -->
+      <div style="height:1px;background:var(--border);margin:18px 0 14px;"></div>
+      <div style="font-size:11px;font-weight:800;letter-spacing:1px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:8px;">IMPORT OLD WORKOUTS</div>
+      <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.6;margin-bottom:10px;">Bring your history from <b style="color:var(--text);">Strong</b>. In Strong: Profile → Settings → Export Data → share the <b style="color:var(--text);">.csv</b>, then upload it here. Your past sets feed straight into your stats &amp; progressive overload.</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;">Weights are in</span>
+        <select id="strongUnitSelect" style="background:var(--bg3);color:var(--text);border:1px solid var(--border);border-radius:7px;padding:5px 8px;font-family:'DM Mono',monospace;font-size:11px;">
+          <option value="auto">Auto-detect</option>
+          <option value="lb">Pounds (lb)</option>
+          <option value="kg">Kilograms (kg)</option>
+        </select>
+      </div>
+      <input type="file" id="strongCsvInput" accept=".csv,text/csv" style="display:none;" onchange="handleStrongImport(event)">
+      <button class="pd-switch-btn" style="width:100%;padding:12px;border-radius:10px;font-size:13px;background:rgba(204,255,0,.1);border-color:rgba(204,255,0,.35);color:var(--accent);font-weight:800;" onclick="document.getElementById('strongCsvInput').click()">📥 Import from Strong (.csv)</button>
+      <div id="strongImportStatus" style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.6;margin-top:10px;"></div>
     </div>
   </div>
 </div>
@@ -3082,6 +3100,217 @@ function restoreData() {
   location.reload();
 }
 
+// ══════════════════════════════════════════
+//  STRONG CSV IMPORT
+// ══════════════════════════════════════════
+// Normalize an exercise name for matching (drop equipment parens, punctuation, case)
+function _normExName(name) {
+  return String(name || '')
+    .toLowerCase()
+    .replace(/\([^)]*\)/g, ' ')            // remove "(Barbell)", "(Machine)" etc
+    .replace(/[^a-z0-9]+/g, ' ')           // punctuation → space
+    .replace(/\bbarbell\b|\bdumbbell\b|\bmachine\b|\bcable\b|\bsmith\b/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Build a lookup of normalized app-exercise-name → id (cached)
+let _exNameIndex = null;
+function _buildExNameIndex() {
+  if (_exNameIndex) return _exNameIndex;
+  _exNameIndex = {};
+  for (const ex of Object.values(ALL_EXERCISES)) {
+    _exNameIndex[_normExName(ex.name)] = ex.id;
+  }
+  // Common Strong → app aliases
+  const aliases = {
+    'bench press': 'bench', 'incline bench press': 'incline_bar', 'incline press': 'incline',
+    'squat': 'squat', 'back squat': 'squat', 'front squat': 'front_squat',
+    'deadlift': 'deadlift', 'romanian deadlift': 'rdl', 'rdl': 'rdl',
+    'overhead press': 'ohp', 'shoulder press': 'ohp', 'military press': 'ohp',
+    'pull up': 'pullup', 'pullup': 'pullup', 'chin up': 'pullup',
+    'lat pulldown': 'latpull', 'bent over row': 'row', 'barbell row': 'row',
+    'seated cable row': 'cable_row', 'seated row': 'cable_row',
+    'bicep curl': 'curl', 'curl': 'curl', 'hammer curl': 'hammer',
+    'tricep extension': 'tricep_ext', 'triceps extension': 'tricep_ext',
+    'lateral raise': 'lateral', 'leg press': 'legpress', 'leg extension': 'legext',
+    'leg curl': 'legcurl', 'lying leg curl': 'legcurl', 'calf raise': 'calf',
+    'pec deck': 'pec_deck', 'chest fly': 'cable_fly', 'cable fly': 'cable_fly',
+  };
+  for (const [k, v] of Object.entries(aliases)) {
+    if (ALL_EXERCISES[v] && !_exNameIndex[k]) _exNameIndex[k] = v;
+  }
+  return _exNameIndex;
+}
+
+// Resolve a Strong exercise name to an app exercise id (creating a custom one if needed)
+function _resolveExerciseId(p, rawName) {
+  const idx = _buildExNameIndex();
+  const norm = _normExName(rawName);
+  if (idx[norm]) return idx[norm];
+  // create a custom exercise so history renders correctly
+  const cid = 'imp_' + norm.replace(/\s+/g, '_').slice(0, 28) + '_' + (norm.length);
+  if (!p.customExercises) p.customExercises = {};
+  if (!p.customExercises[cid]) {
+    p.customExercises[cid] = { id: cid, name: rawName.trim() || 'Imported Exercise', icon: '📋', muscle: 'Other', imported: true };
+  }
+  ALL_EXERCISES[cid] = p.customExercises[cid]; // make available immediately
+  idx[norm] = cid;
+  return cid;
+}
+
+// Robust CSV parser → array of row-objects keyed by header. Handles quotes + , or ; delimiters.
+function _parseCsv(text) {
+  text = text.replace(/^﻿/, '').replace(/\r\n?/g, '\n');
+  const firstLine = text.slice(0, text.indexOf('\n') >= 0 ? text.indexOf('\n') : text.length);
+  const delim = (firstLine.split(';').length > firstLine.split(',').length) ? ';' : ',';
+  const rows = [];
+  let field = '', row = [], inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQ) {
+      if (c === '"') { if (text[i + 1] === '"') { field += '"'; i++; } else inQ = false; }
+      else field += c;
+    } else {
+      if (c === '"') inQ = true;
+      else if (c === delim) { row.push(field); field = ''; }
+      else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+      else field += c;
+    }
+  }
+  if (field.length || row.length) { row.push(field); rows.push(row); }
+  if (!rows.length) return [];
+  const headers = rows.shift().map(h => h.trim());
+  return rows.filter(r => r.some(c => c.trim() !== '')).map(r => {
+    const o = {};
+    headers.forEach((h, i) => { o[h] = (r[i] || '').trim(); });
+    return o;
+  });
+}
+
+function _findCol(obj, names) {
+  const keys = Object.keys(obj);
+  for (const n of names) {
+    const k = keys.find(k => k.toLowerCase().replace(/[^a-z]/g, '') === n);
+    if (k) return k;
+  }
+  return null;
+}
+
+function handleStrongImport(event) {
+  const file = event.target.files && event.target.files[0];
+  event.target.value = ''; // allow re-selecting same file
+  if (!file) return;
+  const status = document.getElementById('strongImportStatus');
+  if (status) status.textContent = '⏳ Reading file…';
+  const reader = new FileReader();
+  reader.onload = e => {
+    try { importStrongData(e.target.result); }
+    catch (err) { console.error(err); if (status) status.textContent = '⚠ Import failed: ' + err.message; }
+  };
+  reader.onerror = () => { if (status) status.textContent = '⚠ Could not read that file.'; };
+  reader.readAsText(file);
+}
+
+function importStrongData(text) {
+  const status = document.getElementById('strongImportStatus');
+  const p = getP();
+  if (!p) { if (status) status.textContent = '⚠ No profile loaded.'; return; }
+  const rows = _parseCsv(text);
+  if (!rows.length) { if (status) status.textContent = '⚠ No rows found in that CSV.'; return; }
+
+  const sample = rows[0];
+  const cDate = _findCol(sample, ['date']);
+  const cWorkout = _findCol(sample, ['workoutname', 'workout']);
+  const cEx = _findCol(sample, ['exercisename', 'exercise']);
+  const cWeight = _findCol(sample, ['weight', 'weightkg', 'weightlb', 'weightlbs']);
+  const cReps = _findCol(sample, ['reps', 'rep']);
+  const cUnit = _findCol(sample, ['weightunit', 'unit']);
+  if (!cDate || !cEx) { if (status) status.textContent = '⚠ This CSV is missing Date/Exercise columns — is it a Strong export?'; return; }
+
+  // Unit handling
+  const unitSel = (document.getElementById('strongUnitSelect') || {}).value || 'auto';
+  const kgToLb = v => Math.round(v * 2.20462 * 10) / 10;
+
+  // Group rows into sessions keyed by date+workout
+  const sessions = {};
+  let setCount = 0;
+  for (const r of rows) {
+    const dateStr = r[cDate];
+    if (!dateStr) continue;
+    const ts = (() => { const d = new Date(dateStr.replace(' ', 'T')); return isNaN(d) ? Date.parse(dateStr) : d.getTime(); })();
+    if (!ts || isNaN(ts)) continue;
+    const exId = _resolveExerciseId(p, r[cEx]);
+    let lbs = parseFloat(cWeight ? r[cWeight] : 0) || 0;
+    const reps = parseInt(cReps ? r[cReps] : 0) || 0;
+    if (lbs === 0 && reps === 0) continue; // skip warmup/empty rows
+    if (reps > 50) continue; // skip unrealistic rep counts (bad source data)
+    // unit conversion
+    let unit = unitSel;
+    if (unitSel === 'auto') unit = (cUnit && /kg/i.test(r[cUnit])) ? 'kg' : 'lb';
+    if (unit === 'kg') lbs = kgToLb(lbs);
+    const key = ts + '|' + (cWorkout ? r[cWorkout] : '');
+    if (!sessions[key]) sessions[key] = { date: ts, name: (cWorkout ? r[cWorkout] : '') || 'Imported Workout', exercises: {} };
+    if (!sessions[key].exercises[exId]) sessions[key].exercises[exId] = [];
+    sessions[key].exercises[exId].push({ lbs, reps, done: true });
+    setCount++;
+  }
+
+  const sessionList = Object.values(sessions).sort((a, b) => a.date - b.date);
+  if (!sessionList.length) { if (status) status.textContent = '⚠ No valid sets found to import.'; return; }
+
+  // Dedupe against existing imported workouts (by date)
+  const existingDates = new Set((p.workoutLog || []).map(w => w.date));
+  if (!p.workoutLog) p.workoutLog = [];
+  let added = 0;
+  const days = new Set();
+  for (const s of sessionList) {
+    if (existingDates.has(s.date)) continue;
+    const totalSets = Object.values(s.exercises).reduce((n, arr) => n + arr.length, 0);
+    p.workoutLog.push({ date: s.date, exercises: s.exercises, totalSets, xp: 0, template: s.name, imported: true });
+    added++;
+    days.add(new Date(s.date).toISOString().slice(0, 10));
+  }
+
+  // Add imported days to streak history (so calendar reflects them)
+  if (!p.streakDays) p.streakDays = [];
+  const sd = new Set(p.streakDays);
+  days.forEach(d => sd.add(d));
+  p.streakDays = [...sd].sort();
+
+  // Keep workout log sorted by date
+  p.workoutLog.sort((a, b) => a.date - b.date);
+  saveP(p);
+  refreshHomeStats();
+
+  const customCount = Object.keys(p.customExercises || {}).length;
+  if (status) status.innerHTML = `✅ Imported <b style="color:var(--accent)">${added}</b> workouts · <b style="color:var(--accent)">${setCount}</b> sets.` +
+    (customCount ? `<br>${customCount} exercise${customCount > 1 ? 's' : ''} not in the app were added as custom.` : '') +
+    `<br>Check your <b style="color:var(--text)">Stats</b> tab!`;
+  showAchieve({ type: 'quest', icon: '📥', eyebrow: 'Import Complete', title: `${added} workouts added`, sub: `${setCount} sets imported from Strong` });
+}
+
+// Strip sets with absurd rep counts (>50) from the whole workout log.
+// Removes emptied exercises and emptied workouts; recomputes totalSets.
+function sanitizeWorkoutReps(p) {
+  if (!p || !Array.isArray(p.workoutLog)) return false;
+  let changed = false;
+  p.workoutLog = p.workoutLog.filter(w => {
+    let totalSets = 0;
+    for (const exId of Object.keys(w.exercises || {})) {
+      const before = w.exercises[exId].length;
+      let sets = w.exercises[exId].filter(s => (s.reps || 0) <= 50);
+      sets.forEach(s => { if (s.drops) s.drops = s.drops.filter(d => (d.reps || 0) <= 50); });
+      if (sets.length !== before) changed = true;
+      if (sets.length) { w.exercises[exId] = sets; totalSets += sets.length; }
+      else { delete w.exercises[exId]; changed = true; }
+    }
+    w.totalSets = totalSets;
+    return Object.keys(w.exercises || {}).length > 0;
+  });
+  return changed;
+}
+
 function getProfile(username) {
   const store = loadStore();
   return store.profiles.find(p => p.username === username) || null;
@@ -3214,6 +3443,10 @@ function loginAs(username) {
   const p = getP();
   // One-time starter cases for existing users with none
   if (p) {
+    // Re-register any imported custom exercises so history/stats render correctly
+    if (p.customExercises) Object.assign(ALL_EXERCISES, p.customExercises);
+    // One-time cleanup: strip absurd (>50) rep sets left over from imports
+    if (!p.repCleanupV1) { p.repCleanupV1 = true; sanitizeWorkoutReps(p); saveP(p); }
     if (!p.cases) p.cases = { basic: 0, rare: 0, legendary: 0 };
     // One-time starter cases — granted exactly once per profile, never again
     if (!p.starterCasesGiven) {
@@ -10762,7 +10995,7 @@ function renderOverloadPortfolio() {
       } else {
         start = new Date(now.getFullYear(), now.getMonth() - i, 1);
         end = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
-        label = monShort(start);
+        label = `${monShort(start)} ${start.getFullYear()}`;
       }
       buckets.push({ start, end, label, value: 0 });
     }
@@ -10938,6 +11171,15 @@ function attachChartScrubber(svg) {
   }
 }
 
+function toggleE1rmCard() {
+  const body = document.getElementById('e1rmBody');
+  const chev = document.getElementById('e1rmChevron');
+  if (!body) return;
+  const open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : '';
+  if (chev) chev.style.transform = open ? 'rotate(-90deg)' : '';
+}
+
 function renderE1RM(filter) {
   const map = window._e1rmData || {};
   const el = document.getElementById('e1rmList');
@@ -10958,10 +11200,14 @@ function renderE1RM(filter) {
   el.innerHTML = entries.map(([id, data], i) => {
     const ex = ALL_EXERCISES[id];
     const isPR = i === 0;
+    const dateLabel = (() => {
+      const d = new Date(data.date);
+      return isNaN(d) ? '' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    })();
     return `<div class="e1rm-row overload-row-clickable" style="border-radius:8px;" onclick="openExerciseStock('${id}')">
       <div>
         <div class="e1rm-name">${ex.name}</div>
-        <div class="e1rm-sub">${data.weight} lbs × ${data.reps} reps · ${data.date}</div>
+        <div class="e1rm-sub">${data.weight} lbs × ${data.reps} reps${dateLabel ? ' · ' + dateLabel : ''}</div>
       </div>
       <div style="text-align:right;display:flex;align-items:center;gap:8px;">
         <div>
@@ -11115,7 +11361,7 @@ function renderExStock(chartOnly) {
 
   // Chart series = e1RM per session (or volume for cardio there's no e1RM, use vol)
   const series = sessions.map(s => ({
-    label: new Date(s.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    label: new Date(s.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
     value: cardio ? s.vol : s.e1rm
   }));
 
@@ -11152,7 +11398,7 @@ function renderExStock(chartOnly) {
 
   // History rows (most recent first)
   const histRows = [...sessions].reverse().map(s => {
-    const date = new Date(s.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const date = new Date(s.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     const chips = s.sets.map(set => {
       const isPR = !cardio && pr && set.lbs === pr.lbs && set.reps === pr.reps;
       if (cardio) return `<span class="exinfo-hist-set">${set.mins || 0}m ${String(set.secs || 0).padStart(2,'0')}s</span>`;
