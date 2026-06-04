@@ -483,28 +483,32 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .template-name{font-size:15px;font-weight:700;margin-bottom:4px;}
 .template-desc{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;}
 /* ── PET BIO MODAL ── */
-.pet-bio-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:950;display:flex;align-items:center;justify-content:center;padding:12px;}
+.pet-bio-overlay{position:fixed;inset:0;background:rgba(0,0,0,.86);backdrop-filter:blur(4px);z-index:950;display:flex;align-items:center;justify-content:center;padding:14px;}
 .pet-bio-overlay.hidden{display:none;}
-.pet-bio-modal{display:flex;width:100%;max-width:700px;max-height:92vh;overflow:hidden;border-radius:20px;border:1px solid var(--border);position:relative;}
-.pet-bio-close{position:absolute;top:12px;right:12px;z-index:2;background:rgba(0,0,0,.5);border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:4px 10px;font-size:16px;cursor:pointer;transition:all .15s;}
-.pet-bio-close:hover{color:var(--text);border-color:var(--text);}
-.pet-bio-left{width:38%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:20px 16px 20px;position:relative;overflow:hidden;}
-.pet-bio-info-col{display:flex;flex-direction:column;align-items:center;width:100%;}
-.pet-bio-action-wrap{margin-top:auto;padding-top:16px;width:100%;}
-.pet-bio-left::before{content:none;}
-.pet-bio-art{width:140px;height:140px;display:flex;align-items:center;justify-content:center;font-size:90px;filter:drop-shadow(0 0 24px currentColor);position:relative;}
+.pet-bio-modal{display:flex;flex-direction:column;width:100%;max-width:430px;max-height:92vh;overflow:hidden;border-radius:24px;border:1px solid var(--border);position:relative;background:var(--bg2);box-shadow:0 28px 90px rgba(0,0,0,.75);animation:petBioPop .3s cubic-bezier(.34,1.4,.64,1);}
+@keyframes petBioPop{0%{opacity:0;transform:scale(.94) translateY(14px);}100%{opacity:1;transform:none;}}
+.pet-bio-close{position:absolute;top:14px;right:14px;z-index:3;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:10px;width:34px;height:34px;font-size:15px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;}
+.pet-bio-close:hover{background:rgba(0,0,0,.7);border-color:rgba(255,255,255,.3);}
+/* HERO HEADER */
+.pet-bio-hero{position:relative;flex-shrink:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:34px 24px 24px;overflow:hidden;}
+.pet-bio-hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);}
+.pet-bio-chip-row{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;margin-bottom:12px;}
+.pet-bio-art{width:138px;height:138px;display:flex;align-items:center;justify-content:center;font-size:90px;filter:drop-shadow(0 0 24px currentColor);position:relative;z-index:1;margin-bottom:12px;}
+.pet-bio-art::before{content:'';position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:96px;height:20px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.5),transparent 70%);z-index:-1;}
 .bio-lock-badge{position:absolute;bottom:-6px;right:-6px;font-size:28px;filter:none;line-height:1;}
-.pet-bio-art img{width:140px;height:140px;object-fit:contain;filter:drop-shadow(0 4px 20px rgba(0,0,0,.7));}
-.pet-bio-rarity-strip{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;margin:6px 0 2px;}
-.pet-bio-name{font-size:26px;font-weight:900;font-family:'Syne',sans-serif;text-transform:uppercase;font-style:italic;text-align:center;line-height:1.1;margin-bottom:4px;}
-.pet-bio-element{font-size:14px;font-weight:700;text-align:center;margin-bottom:8px;}
-.pet-bio-desc{font-size:12px;color:var(--muted);text-align:center;line-height:1.5;margin-bottom:10px;}
-.pet-bio-tags{display:flex;flex-direction:column;gap:6px;width:100%;}
-.pet-bio-tag{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;font-family:'DM Mono',monospace;padding:5px 10px;border-radius:6px;border:1px solid;text-align:center;}
-.pet-bio-equip-btn{flex:1;padding:10px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#000;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-weight:800;font-size:13px;cursor:pointer;transition:all .2s;}
-.pet-bio-equip-btn:hover{filter:brightness(1.1);box-shadow:0 4px 16px var(--accent-glow);}
-.pet-bio-equip-btn.equipped{background:var(--bg3);color:var(--muted);border:1px solid var(--border);cursor:default;pointer-events:none;}
-.pet-bio-right{flex:1;overflow-y:auto;padding:20px 18px 20px 16px;background:var(--bg2);}
+.pet-bio-art img{width:138px;height:138px;object-fit:contain;filter:drop-shadow(0 6px 22px rgba(0,0,0,.75));}
+.pet-bio-rarity-strip{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:6px;opacity:.95;}
+.pet-bio-name{font-size:30px;font-weight:900;font-family:'Syne',sans-serif;text-transform:uppercase;font-style:italic;text-align:center;line-height:1.05;margin-bottom:10px;letter-spacing:-.5px;}
+.pet-bio-element{font-size:11px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:.5px;display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);}
+.pet-bio-element .bio-locked-blur{filter:blur(4px);}
+.pet-bio-desc{font-size:12.5px;color:var(--muted);text-align:center;line-height:1.55;margin-bottom:16px;max-width:330px;}
+.pet-bio-tags{display:flex;gap:6px;}
+.pet-bio-tag{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;font-family:'DM Mono',monospace;padding:4px 10px;border-radius:999px;border:1px solid;white-space:nowrap;}
+.pet-bio-action-wrap{width:100%;}
+.pet-bio-equip-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#000;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(200,255,0,.25);}
+.pet-bio-equip-btn:hover{filter:brightness(1.08);box-shadow:0 6px 24px rgba(200,255,0,.4);transform:translateY(-1px);}
+.pet-bio-equip-btn.equipped{background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--border);cursor:default;pointer-events:none;box-shadow:none;}
+.pet-bio-right{flex:1 1 auto;min-height:0;overflow-y:auto;padding:20px 20px 26px;background:var(--bg2);}
 .pet-bio-section-title{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
 .pet-bio-xp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .pet-bio-xp-tile{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
@@ -1032,6 +1036,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .history-filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
 .filter-btn{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--bg3);color:var(--muted);font-family:'Syne',sans-serif;transition:all .2s;}
 .filter-btn.active,.filter-btn:hover{color:var(--text);border-color:var(--text);}
+.filter-btn-divine{color:#FFD700;border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.08);}
+.filter-btn-divine.active,.filter-btn-divine:hover{color:#FFD700;border-color:#FFD700;box-shadow:0 0 12px rgba(255,215,0,.3);}
 .history-list{display:flex;flex-direction:column;gap:12px;}
 .history-workout-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
 .hwc-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;transition:background .2s;gap:12px;}
@@ -1626,41 +1632,23 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
   .te-ex-handle{font-size:20px;padding:4px 6px;}
 
   /* ── PET BIO MODAL — stack vertically on phone ── */
-  .pet-bio-overlay{padding:0;align-items:flex-end;}
+  .pet-bio-overlay{padding:0;align-items:flex-end;backdrop-filter:blur(3px);}
   .pet-bio-modal{
-    flex-direction:column;
     max-width:100%;
     max-height:94vh;
-    border-radius:20px 20px 0 0;
+    border-radius:24px 24px 0 0;
     border-bottom:none;
   }
-  .pet-bio-left{
-    width:100%;
-    flex-direction:row;
-    align-items:center;
-    gap:14px;
-    padding:16px 16px 12px;
-    border-bottom:1px solid var(--border);
-  }
-  .pet-bio-art{width:80px;height:80px;font-size:54px;flex-shrink:0;}
-  .pet-bio-art img{width:80px;height:80px;}
-  .pet-bio-name{font-size:20px;text-align:left;}
-  .pet-bio-rarity-strip{text-align:left;margin:2px 0;}
-  .pet-bio-element{text-align:left;font-size:12px;}
-  .pet-bio-desc{text-align:left;font-size:11px;margin-bottom:6px;}
-  .pet-bio-tags{flex-direction:row;flex-wrap:wrap;gap:4px;}
-  .pet-bio-tag{font-size:10px;padding:3px 7px;}
-  .pet-bio-left > div:last-child{ /* equip/frag wrap */
-    margin-top:0;
-    padding-top:0;
-  }
-  .pet-bio-equip-btn{padding:9px 14px;font-size:12px;white-space:nowrap;}
-  .pet-bio-right{max-height:55vh;padding:14px 14px;}
-  .pet-bio-xp-grid{gap:6px;}
-  .pet-bio-xp-tile{padding:8px 10px;}
-  .pet-bio-xp-tile-val{font-size:18px;}
-  .pet-bio-close{top:8px;right:10px;}
-  .bio-lock-badge{font-size:20px;bottom:-4px;right:-4px;}
+  .pet-bio-hero{padding:26px 20px 20px;}
+  .pet-bio-art{width:110px;height:110px;font-size:70px;margin-bottom:10px;}
+  .pet-bio-art img{width:110px;height:110px;}
+  .pet-bio-name{font-size:26px;}
+  .pet-bio-desc{font-size:12px;margin-bottom:14px;}
+  .pet-bio-right{padding:16px 16px 22px;}
+  .pet-bio-xp-grid{gap:7px;}
+  .pet-bio-xp-tile{padding:9px 11px;}
+  .pet-bio-xp-tile-val{font-size:19px;}
+  .bio-lock-badge{font-size:22px;bottom:-4px;right:-4px;}
 
   /* ── CASES SHOP ── */
   .shop-grid{grid-template-columns:1fr;gap:8px;}
@@ -2191,48 +2179,43 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 <div class="pet-bio-overlay hidden" id="petBioOverlay" onclick="closePetBio(event)">
   <div class="pet-bio-modal" onclick="event.stopPropagation()">
     <button class="pet-bio-close" onclick="closePetBio()">✕</button>
-    <!-- LEFT PANEL -->
-    <div class="pet-bio-left" id="petBioLeft">
+
+    <!-- HERO HEADER -->
+    <div class="pet-bio-hero" id="petBioLeft">
       <div class="pet-bio-art" id="petBioArt"></div>
-      <!-- Info column — sits beside art on mobile, below art on desktop -->
-      <div class="pet-bio-info-col">
       <div class="pet-bio-rarity-strip" id="petBioRarityStrip"></div>
       <div class="pet-bio-name" id="petBioName">Iron Rhino</div>
-      <div class="pet-bio-element" id="petBioElement"></div>
+      <div class="pet-bio-chip-row">
+        <div class="pet-bio-element" id="petBioElement"></div>
+        <div class="pet-bio-tags" id="petBioTags"></div>
+      </div>
       <div class="pet-bio-desc" id="petBioDesc"></div>
-      <div class="pet-bio-tags" id="petBioTags"></div>
       <div class="pet-bio-action-wrap">
-        <!-- Unlocked: equip button -->
         <div id="petBioEquipWrap">
-          <button class="pet-bio-equip-btn" id="petBioEquipBtn" onclick="petBioEquip()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Equip</button>
+          <button class="pet-bio-equip-btn" id="petBioEquipBtn" onclick="petBioEquip()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Equip</button>
         </div>
-        <!-- Locked: fragment progress -->
         <div id="petBioFragWrap" style="display:none;">
-          <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:11px;font-family:'DM Mono',monospace;color:#6b7280;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:11px;font-family:'DM Mono',monospace;color:#9ca3af;letter-spacing:.5px;">
             <span>FRAGMENTS</span><span id="petBioFragCount">0 / 50</span>
           </div>
-          <div style="background:var(--bg3);border-radius:6px;height:8px;overflow:hidden;border:1px solid var(--border);">
-            <div id="petBioFragBar" style="height:100%;width:0%;border-radius:6px;transition:width .3s;"></div>
+          <div style="background:rgba(0,0,0,.35);border-radius:999px;height:9px;overflow:hidden;border:1px solid var(--border);">
+            <div id="petBioFragBar" style="height:100%;width:0%;border-radius:999px;transition:width .4s ease;"></div>
           </div>
-          <div id="petBioForgeWrap" style="margin-top:10px;"></div>
-          <div id="petBioFragHint" style="margin-top:8px;font-size:11px;color:#4b5563;text-align:center;font-family:'DM Mono',monospace;">Earn fragments by opening cases</div>
+          <div id="petBioForgeWrap" style="margin-top:12px;"></div>
+          <div id="petBioFragHint" style="margin-top:8px;font-size:11px;color:var(--muted);text-align:center;font-family:'DM Mono',monospace;">Earn fragments by opening cases</div>
         </div>
-      </div><!-- /pet-bio-action-wrap -->
-      </div><!-- /pet-bio-info-col -->
+      </div>
     </div>
-    <!-- RIGHT PANEL -->
+
+    <!-- BODY -->
     <div class="pet-bio-right">
-      <!-- XP STATS -->
       <div class="pet-bio-section-title"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>XP OUTPUT</div>
       <div class="pet-bio-xp-grid" id="petBioXpGrid"></div>
-      <!-- BATTLE MOVES -->
-      <div class="pet-bio-section-title" style="margin-top:18px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/></svg>ATTACKS</div>
+      <div class="pet-bio-section-title" style="margin-top:20px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/></svg>ATTACKS</div>
       <div id="petBioMoves"></div>
-      <!-- PASSIVE -->
-      <div class="pet-bio-section-title" style="margin-top:18px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>PASSIVE ABILITY</div>
+      <div class="pet-bio-section-title" style="margin-top:20px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>PASSIVE ABILITY</div>
       <div class="pet-bio-passive" id="petBioPassive"></div>
-      <!-- BATTLE STATS -->
-      <div class="pet-bio-section-title" style="margin-top:18px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>BATTLE STATS</div>
+      <div class="pet-bio-section-title" style="margin-top:20px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>BATTLE STATS</div>
       <div class="pet-bio-stat-grid" id="petBioStats"></div>
     </div>
   </div>
@@ -2715,14 +2698,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 
   <!-- COLLECTION TAB -->
   <div id="petsTabCollection">
-    <div class="collection-stats">
-      <div class="col-stat"><div class="col-stat-val" id="colCommon" style="color:var(--common)">0</div><div class="col-stat-label">Common</div></div>
-      <div class="col-stat"><div class="col-stat-val" id="colRare" style="color:var(--rare)">0</div><div class="col-stat-label">Rare</div></div>
-      <div class="col-stat"><div class="col-stat-val" id="colEpic" style="color:var(--epic)">0</div><div class="col-stat-label">Epic</div></div>
-      <div class="col-stat"><div class="col-stat-val" id="colLegendary" style="color:var(--legendary)">0</div><div class="col-stat-label">Legendary</div></div>
-    </div>
     <div class="collection-filters">
       <button class="filter-btn active" onclick="filterSkins(this,'all')">All</button>
+      <button class="filter-btn filter-btn-divine" onclick="filterSkins(this,'divine')">✨ Divine</button>
       <button class="filter-btn" onclick="filterSkins(this,'legendary')">Legendary</button>
       <button class="filter-btn" onclick="filterSkins(this,'epic')">Epic</button>
       <button class="filter-btn" onclick="filterSkins(this,'rare')">Rare</button>
@@ -3245,6 +3223,11 @@ function loginAs(username) {
       for (let lv = 1; lv < (p.level || 1); lv++) p.claimedLevels.push(lv);
       // Leave current level as claimable
       if ((p.level || 1) >= 1) p.claimedLevels.push(-(p.level || 1));
+    } else {
+      // Clean up bad data: remove "claimable" markers for levels not yet reached
+      // (a negative -lv means level lv is claimable, but only valid once lv <= current level)
+      const lvl = p.level || 1;
+      p.claimedLevels = p.claimedLevels.filter(x => !(x < 0 && -x > lvl));
     }
     if (!p.newPets) p.newPets = [];
     saveP(p);
@@ -5903,7 +5886,9 @@ function claimLevelReward(lv) {
 
 function updateUnclaimedBadge() {
   const p = getP();
-  const count = p ? (p.claimedLevels || []).filter(x => x < 0).length : 0;
+  // Only count claimable levels the player has actually reached
+  const lvl = p ? (p.level || 1) : 1;
+  const count = p ? (p.claimedLevels || []).filter(x => x < 0 && -x <= lvl).length : 0;
   // XP bar badge
   const badge = document.getElementById('lrUnclaimedBadge');
   if (badge) { badge.textContent = count; badge.style.display = count > 0 ? '' : 'none'; }
@@ -7301,12 +7286,6 @@ function renderSkins(filter='all') {
     : filter === 'locked' ? ALL_SKINS.filter(s => !unlocked.has(s.id))
     : ALL_SKINS.filter(s => s.rarity === filter);
 
-  const counts = { legendary:0, epic:0, rare:0, common:0, divine:0 };
-  ALL_SKINS.forEach(s => { if (unlocked.has(s.id)) counts[s.rarity] = (counts[s.rarity]||0) + 1; });
-  document.getElementById('colCommon').textContent = counts.common;
-  document.getElementById('colRare').textContent = counts.rare;
-  document.getElementById('colEpic').textContent = counts.epic;
-  document.getElementById('colLegendary').textContent = counts.legendary;
   const total = ALL_SKINS.filter(s => unlocked.has(s.id)).length;
   document.getElementById('collectedBadge').textContent = total + ' / ' + ALL_SKINS.length + ' Collected';
 
@@ -7342,7 +7321,6 @@ function renderSkins(filter='all') {
       ${isNew ? '<div class="new-pet-dot"></div>' : ''}
       ${isEquipped ? '<div class="equipped-tag">ON</div>' : ''}
       ${imgHtml}
-      ${tierLabel}
       <div class="skin-name">${s.name}</div>
       <div class="skin-rarity-tag" style="color:${rarityColors[s.rarity]}">${s.rarity.toUpperCase()}</div>
       ${fragProgress}
@@ -7450,8 +7428,7 @@ function _openPetBioInner(id) {
   document.getElementById('petBioTags').innerHTML = `
     <div class="pet-bio-tag" style="color:${col.fg};border-color:${col.fg};background:${col.bg};">
       ${stars} ${skin.rarity.charAt(0).toUpperCase() + skin.rarity.slice(1)}
-    </div>
-    ${!isLocked ? `<div class="pet-bio-tag" style="color:var(--muted);border-color:var(--border);background:var(--bg3);">${evoTier.name} · Tier ${evoTier.tier + 1}</div>` : ''}`;
+    </div>`;
 
   // Bottom action — equip button OR fragment progress bar
   const equipWrap = document.getElementById('petBioEquipWrap');
@@ -11340,7 +11317,8 @@ function openLevelRoad() {
   }
 
   const claimed = new Set((p.claimedLevels || []).filter(x => x > 0));
-  const unclaimed = new Set((p.claimedLevels || []).filter(x => x < 0).map(x => -x));
+  // Only levels actually reached can be claimable
+  const unclaimed = new Set((p.claimedLevels || []).filter(x => x < 0 && -x <= level).map(x => -x));
 
   // Render
   const road = document.getElementById('lrRoad');
