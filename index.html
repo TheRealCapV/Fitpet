@@ -22,6 +22,22 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{overflow-x:hidden;}
+/* ── Portrait lock: block landscape on phones ── */
+.rotate-lock{display:none;}
+@media (orientation: landscape) and (max-height: 540px){
+  .rotate-lock{
+    display:flex;position:fixed;inset:0;z-index:100000;
+    background:var(--bg);color:var(--text);
+    flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:24px;gap:6px;
+  }
+  .rotate-lock .rotate-icon{font-size:54px;animation:rotate-nudge 2s ease-in-out infinite;}
+  .rotate-lock .rotate-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;}
+  .rotate-lock .rotate-sub{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:.5px;}
+  /* hide everything else behind the overlay */
+  body > *:not(.rotate-lock){visibility:hidden;}
+}
+@keyframes rotate-nudge{0%,100%{transform:rotate(0);}50%{transform:rotate(-90deg);}}
 body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 input,textarea{-webkit-user-select:text!important;user-select:text!important;}
 html{background:var(--bg2);overscroll-behavior:none;}
@@ -1764,6 +1780,13 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 </style>
 </head>
 <body>
+
+<!-- PORTRAIT LOCK — blocks landscape on phones -->
+<div class="rotate-lock" id="rotateLock">
+  <div class="rotate-icon">📱</div>
+  <div class="rotate-title">Rotate your phone</div>
+  <div class="rotate-sub">FitPet is designed for portrait mode</div>
+</div>
 
 <!-- AUTH SCREEN -->
 <div class="auth-screen" id="authScreen">
@@ -4754,14 +4777,18 @@ function buildExerciseCard(ex) {
     }
   }
 
-  // default sets (copy from last or blank)
-  const defaultSets = cardio
-    ? (lastSets.length
-        ? lastSets.map(s => ({ mins: s.mins||0, secs: s.secs||0, done: false }))
-        : [{ mins: 10, secs: 0, done: false }])
-    : (lastSets.length
-        ? lastSets.map(s => ({ lbs: s.lbs, reps: s.reps, done: false }))
-        : [{ lbs: 45, reps: 8, done: false }, { lbs: 45, reps: 8, done: false }, { lbs: 45, reps: 8, done: false }]);
+  // Preserve already-logged sets (e.g. restored after a crash/reload); otherwise
+  // seed defaults copied from last session or blank.
+  const existing = sessionSets[ex.id];
+  const defaultSets = (Array.isArray(existing) && existing.length)
+    ? existing
+    : (cardio
+        ? (lastSets.length
+            ? lastSets.map(s => ({ mins: s.mins||0, secs: s.secs||0, done: false }))
+            : [{ mins: 10, secs: 0, done: false }])
+        : (lastSets.length
+            ? lastSets.map(s => ({ lbs: s.lbs, reps: s.reps, done: false }))
+            : [{ lbs: 45, reps: 8, done: false }, { lbs: 45, reps: 8, done: false }, { lbs: 45, reps: 8, done: false }]));
   sessionSets[ex.id] = defaultSets;
 
   const setRows = defaultSets.map((s, i) => buildSetRow(ex.id, i, s, lastSets[i])).join('');
@@ -4848,6 +4875,7 @@ function stepReps(exId, idx, delta, btn) {
   set.reps = Math.max(0, (set.reps || 0) + delta);
   const input = document.getElementById('reps-' + exId + '-' + idx);
   if (input) input.value = set.reps;
+  saveWorkoutSession();
 }
 
 function stepDropReps(exId, setIdx, dropIdx, delta, btn) {
@@ -4857,6 +4885,7 @@ function stepDropReps(exId, setIdx, dropIdx, delta, btn) {
   drop.reps = Math.max(0, (drop.reps || 0) + delta);
   const input = document.getElementById('reps-' + exId + '-' + setIdx + '-d' + dropIdx);
   if (input) input.value = drop.reps;
+  saveWorkoutSession();
 }
 
 function stepLbs(exId, idx, delta, btn) {
@@ -4866,6 +4895,7 @@ function stepLbs(exId, idx, delta, btn) {
   set.lbs = Math.max(0, Math.round(((set.lbs || 0) + delta) * 10) / 10);
   const input = document.getElementById('lbs-' + exId + '-' + idx);
   if (input) input.value = set.lbs;
+  saveWorkoutSession();
 }
 
 function stepDropLbs(exId, setIdx, dropIdx, delta, btn) {
@@ -4875,6 +4905,7 @@ function stepDropLbs(exId, setIdx, dropIdx, delta, btn) {
   drop.lbs = Math.max(0, Math.round(((drop.lbs || 0) + delta) * 10) / 10);
   const input = document.getElementById('lbs-' + exId + '-' + setIdx + '-d' + dropIdx);
   if (input) input.value = drop.lbs;
+  saveWorkoutSession();
 }
 
 function updateSet(exId, idx, field, val) {
@@ -4897,6 +4928,7 @@ function stepField(exId, idx, field, delta, btn) {
     const input = document.getElementById(field + '-' + exId + '-' + idx);
     if (input) input.value = set[field];
   }
+  saveWorkoutSession();
 }
 
 function addSet(exId) {
@@ -4910,6 +4942,7 @@ function addSet(exId) {
   const lastSets = getLastSessionForExercise(exId);
   const idx = sets.length - 1;
   tbody.insertAdjacentHTML('beforeend', buildSetRow(exId, idx, newSet, lastSets[idx]));
+  saveWorkoutSession();
 }
 
 // "+ Drop Set" — turns the LAST existing set into a drop set (adds a drop
@@ -4929,6 +4962,7 @@ function addDrop(exId, setIdx) {
   const dropLbs = Math.max(5, Math.round((ref.lbs || 45) * 0.8 / 5) * 5); // ~80% rounded to 5
   set.drops.push({ lbs: dropLbs, reps: ref.reps || 8 });
   rebuildSetInPlace(exId, setIdx);
+  saveWorkoutSession();
 }
 
 // Re-render a single set's rows (main + drops) in place without rebuilding the table
@@ -4957,6 +4991,7 @@ function updateDrop(exId, setIdx, dropIdx, field, val) {
   const set = sessionSets[exId]?.[setIdx];
   if (set?.drops?.[dropIdx]) {
     set.drops[dropIdx][field] = field === 'lbs' ? (parseFloat(val) || 0) : (parseInt(val) || 0);
+    saveWorkoutSession();
   }
 }
 
@@ -4965,6 +5000,7 @@ function removeSet(exId, idx) {
   if (!sets || sets.length <= 1) return;
   sets.splice(idx, 1);
   rebuildSetRows(exId);
+  saveWorkoutSession();
 }
 
 function rebuildSetRows(exId) {
