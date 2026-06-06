@@ -598,6 +598,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .fc-auto-btn{margin-top:9px;width:100%;padding:7px;background:rgba(204,255,0,.12);border:1px solid rgba(204,255,0,.4);color:var(--accent);border-radius:9px;font-family:'DM Mono',monospace;font-weight:800;font-size:10.5px;letter-spacing:.5px;cursor:pointer;transition:all .15s;position:relative;z-index:2;}
 @media(hover:hover){.fc-auto-btn:hover{background:var(--accent);color:#000;box-shadow:0 0 14px rgba(204,255,0,.4);}}
 .fc-auto-btn:active{transform:scale(.96);}
+.fc-auto-locked{background:var(--bg3);border-color:var(--border);color:var(--muted);opacity:.7;}
+@media(hover:hover){.fc-auto-locked:hover{background:var(--bg3);color:var(--muted);box-shadow:none;}}
 .fighter-card.on-cooldown{opacity:.55;}
 .fc-cd .fc-lock-icon{filter:saturate(.6);}
 .fc-cd .fc-lock-req{color:#facc15;}
@@ -678,6 +680,59 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .yf-power{display:flex;align-items:center;justify-content:space-between;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px 12px;margin-bottom:12px;}
 .yf-power-lbl{font-size:9px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:1.5px;color:var(--muted);}
 .yf-power-val{font-size:18px;font-weight:800;font-family:'Syne',sans-serif;color:var(--accent);}
+/* ── YOUR FIGHTER — redesigned ── */
+.yf-hero2{position:relative;display:flex;align-items:center;gap:13px;padding:15px;border-radius:16px;overflow:hidden;margin-bottom:12px;border:1px solid var(--border);}
+.yf-hero2-glow{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:96px;height:96px;border-radius:50%;filter:blur(18px);opacity:.4;pointer-events:none;z-index:0;}
+.yf-portrait-frame{width:74px;height:74px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.35);position:relative;z-index:1;}
+.yf-portrait-frame img{width:66px;height:66px;object-fit:contain;filter:drop-shadow(0 3px 9px rgba(0,0,0,.7));}
+.yf-id{flex:1;min-width:0;z-index:1;}
+.yf-level-ring{flex-shrink:0;z-index:1;width:56px;height:56px;border-radius:50%;border:2px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.4);}
+.yf-power2{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,rgba(204,255,0,.12),rgba(204,255,0,.02));border:1px solid rgba(204,255,0,.28);border-radius:12px;padding:11px 15px;margin-bottom:13px;box-shadow:inset 0 0 24px rgba(204,255,0,.05);}
+.yf-power2-lbl{font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--muted);font-family:'DM Mono',monospace;}
+.yf-power2-val{font-size:25px;font-weight:800;font-family:'Syne',sans-serif;color:var(--accent);line-height:1;letter-spacing:-.5px;}
+.yf-stat-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;}
+.yf-stat-tile{grid-column:span 2;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:9px 11px;position:relative;overflow:hidden;}
+.yf-stat-tile.wide{grid-column:span 3;}
+.yf-stat-head{display:flex;align-items:center;gap:5px;margin-bottom:2px;}
+.yf-stat-label{font-size:9px;font-weight:800;letter-spacing:1px;color:var(--muted);font-family:'DM Mono',monospace;}
+.yf-stat-value{font-size:20px;font-weight:800;font-family:'Syne',sans-serif;line-height:1;display:flex;align-items:baseline;}
+.yf-stat-bonus{font-size:9px;font-weight:700;font-family:'DM Mono',monospace;margin-left:4px;}
+.yf-stat-bar{height:4px;border-radius:999px;background:rgba(255,255,255,.08);margin-top:8px;overflow:hidden;}
+.yf-stat-fill{height:100%;border-radius:999px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+/* ── Battle help button + tutorial ── */
+.yf-help-btn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:rgba(204,255,0,.1);border:1px solid rgba(204,255,0,.35);color:var(--accent);cursor:pointer;transition:all .18s;flex-shrink:0;}
+.yf-help-btn:hover{background:var(--accent);color:#000;box-shadow:0 0 14px rgba(204,255,0,.35);}
+.bt-overlay{position:fixed;inset:0;z-index:1300;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:16px;}
+.bt-overlay.hidden{display:none;}
+.bt-modal{width:100%;max-width:420px;max-height:90vh;display:flex;flex-direction:column;background:var(--bg2);border:1px solid var(--border);border-radius:24px;overflow:hidden;box-shadow:0 28px 90px rgba(0,0,0,.75);animation:btPop .3s cubic-bezier(.34,1.4,.64,1);}
+@keyframes btPop{0%{opacity:0;transform:scale(.94) translateY(14px);}100%{opacity:1;transform:none;}}
+.bt-top{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 0;}
+.bt-dots{display:flex;gap:6px;}
+.bt-dot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:all .25s;}
+.bt-dot.active{background:var(--accent);width:20px;border-radius:999px;box-shadow:0 0 8px rgba(204,255,0,.5);}
+.bt-skip{background:none;border:none;color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;padding:4px;}
+.bt-skip:hover{color:var(--text);}
+.bt-body{flex:1;overflow-y:auto;padding:22px 24px 8px;text-align:center;}
+.bt-icon{width:78px;height:78px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:40px;margin:6px auto 16px;position:relative;}
+.bt-icon::after{content:'';position:absolute;inset:-8px;border-radius:26px;opacity:.25;filter:blur(14px);background:inherit;z-index:-1;}
+.bt-title{font-size:23px;font-weight:800;font-family:'Syne',sans-serif;line-height:1.1;margin-bottom:10px;}
+.bt-text{font-size:13.5px;line-height:1.6;color:var(--muted);}
+.bt-text b{color:var(--text);font-weight:700;}
+.bt-statlist{text-align:left;margin-top:6px;display:flex;flex-direction:column;gap:9px;}
+.bt-statrow{display:flex;align-items:flex-start;gap:11px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:11px 13px;}
+.bt-stat-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;font-weight:800;}
+.bt-stat-name{font-size:13px;font-weight:800;font-family:'Syne',sans-serif;margin-bottom:1px;}
+.bt-stat-desc{font-size:11.5px;line-height:1.45;color:var(--muted);}
+.bt-mini{display:flex;flex-direction:column;gap:8px;margin-top:8px;text-align:left;}
+.bt-mini-row{display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:9px 12px;font-size:12.5px;line-height:1.4;}
+.bt-mini-row .k{font-weight:800;font-family:'DM Mono',monospace;flex-shrink:0;}
+.bt-nav{display:flex;gap:10px;padding:14px 18px calc(16px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border);}
+.bt-back{flex:1;padding:13px;background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:12px;font-family:'Syne',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .15s;}
+.bt-back:hover{color:var(--text);}
+.bt-back:disabled{opacity:.35;cursor:default;}
+.bt-next{flex:2;padding:13px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#000;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .15s;box-shadow:0 4px 16px rgba(204,255,0,.25);}
+.bt-next:hover{filter:brightness(1.08);box-shadow:0 6px 22px rgba(204,255,0,.4);}
+@media(max-width:520px){.bt-overlay{padding:0;align-items:flex-end;}.bt-modal{max-width:100%;border-radius:24px 24px 0 0;max-height:92vh;}}
 .bc-status-icons{display:flex;gap:4px;flex-wrap:wrap;align-items:center;min-height:20px;}
 .status-pill{font-size:9px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:.8px;padding:2px 6px;border-radius:4px;}.burn-pill{background:rgba(249,115,22,.2);color:#fb923c;border:1px solid rgba(249,115,22,.4);}.dot-pill{background:rgba(168,85,247,.2);color:#c084fc;border:1px solid rgba(168,85,247,.4);}.stun-pill{background:rgba(99,102,241,.2);color:#818cf8;border:1px solid rgba(99,102,241,.4);}
 .bc-hp-bar-wrap{height:7px;background:var(--bg3);border-radius:999px;overflow:hidden;margin-bottom:2px;}
@@ -2945,7 +3000,10 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
     <div class="card" style="margin-bottom:16px;padding:12px 14px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
         <div class="card-title">YOUR FIGHTER</div>
-        <button class="stat-preview-toggle" onclick="toggleStatPreview()" id="statPreviewToggle">Level Preview ▾</button>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button class="yf-help-btn" onclick="openBattleTutorial()" title="How battles work" aria-label="How to battle"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button>
+          <button class="stat-preview-toggle" onclick="toggleStatPreview()" id="statPreviewToggle">Level Preview ▾</button>
+        </div>
       </div>
 
       <!-- Level preview panel -->
@@ -4614,11 +4672,12 @@ function openExerciseInfo(exId) {
       const e = (set.lbs || 0) * (1 + (set.reps || 0) / 30);
       if (e > best1rm) best1rm = e;
     }));
+    const _t = exInputType(exId);
     histRows = sessions.slice(-10).reverse().map(w => {
       const date = new Date(w.date).toLocaleDateString('en-US', { month:'short', day:'numeric' });
       const chips = w.exercises[exId].map(s => {
-        const isPR = pr && s.lbs === pr.lbs && s.reps === pr.reps;
-        return `<span class="exinfo-hist-set${isPR?' pr':''}">${s.lbs}×${s.reps}</span>`;
+        const isPR = _t === 'weight' && pr && s.lbs === pr.lbs && s.reps === pr.reps;
+        return `<span class="exinfo-hist-set${isPR?' pr':''}">${fmtSetChip(s, _t)}</span>`;
       }).join('');
       return `<div class="exinfo-hist-row"><span class="exinfo-hist-date">${date}</span><div class="exinfo-hist-sets">${chips}</div></div>`;
     }).join('');
@@ -4742,17 +4801,66 @@ function isCardio(exId) {
   return ALL_EXERCISES[exId]?.muscle === 'Cardio';
 }
 
+// Exercises whose real-world tracking isn't weight×reps.
+// 'time' = held/timed (planks, cardio). 'reps' = bodyweight reps (no external load).
+const EXERCISE_INPUT = {
+  // isometric holds → timed
+  plank:'time', side_plank:'time', hollow_body:'time',
+  // bodyweight reps → reps only (no weight field)
+  push_up:'reps', situp:'reps', leg_raise:'reps', toes_to_bar:'reps',
+  dead_bug:'reps', dragon_flag:'reps', nordic:'reps', sissy_squat:'reps',
+  ab_wheel:'reps', pullup:'reps', chinup:'reps',
+};
+function exInputType(exId) {
+  if (isCardio(exId)) return 'time';     // all cardio is timed
+  return EXERCISE_INPUT[exId] || 'weight';
+}
+
 function fmtDuration(mins, secs) {
   return `${mins}m ${String(secs).padStart(2,'0')}s`;
 }
 
+// All-time best for non-weight exercises (longest hold / most reps)
+function getExerciseBest(exId, type) {
+  const p = getP(); if (!p) return null;
+  let best = null;
+  for (const w of (p.workoutLog || [])) {
+    const sets = w.exercises?.[exId];
+    if (!sets) continue;
+    for (const s of sets) {
+      if (type === 'time') {
+        const t = (s.mins || 0) * 60 + (s.secs || 0);
+        if (t > 0 && (!best || t > best.t)) best = { t, mins: s.mins || 0, secs: s.secs || 0 };
+      } else if (type === 'reps') {
+        const r = s.reps || 0;
+        if (r > 0 && (!best || r > best.reps)) best = { reps: r };
+      }
+    }
+  }
+  return best;
+}
+
+// Format one logged set as a short chip label, by input type
+function fmtSetChip(s, type) {
+  if (type === 'time') return `${s.mins || 0}m ${String(s.secs || 0).padStart(2, '0')}s`;
+  if (type === 'reps') return `${s.reps || 0} reps`;
+  return `${s.lbs}×${s.reps}`;
+}
+
 function buildExerciseCard(ex) {
-  const cardio = isCardio(ex.id);
+  const type = exInputType(ex.id);
   const pr = getPrForExercise(ex.id);
   const lastSets = getLastSessionForExercise(ex.id);
-  const prLabel = cardio
-    ? (lastSets.length ? `Best: ${fmtDuration(lastSets[0].mins||0, lastSets[0].secs||0)}` : 'No history yet')
-    : (pr ? `Best: ${pr.lbs} lbs × ${pr.reps}` : 'No history yet');
+  let prLabel;
+  if (type === 'time') {
+    const b = getExerciseBest(ex.id, 'time');
+    prLabel = b ? `Best: ${fmtDuration(b.mins, b.secs)}` : 'No history yet';
+  } else if (type === 'reps') {
+    const b = getExerciseBest(ex.id, 'reps');
+    prLabel = b ? `Best: ${b.reps} reps` : 'No history yet';
+  } else {
+    prLabel = pr ? `Best: ${pr.lbs} lbs × ${pr.reps}` : 'No history yet';
+  }
 
   // history rows
   const p = getP();
@@ -4764,8 +4872,8 @@ function buildExerciseCard(ex) {
         const date = new Date(w.date).toLocaleDateString('en-US',{month:'short',day:'numeric'});
         const sets = w.exercises[ex.id];
         const chips = sets.map(s => {
-          const isPR = pr && s.lbs === pr.lbs && s.reps === pr.reps;
-          let chip = `<span class="inline-hist-set${isPR?' pr':''}">${s.lbs}×${s.reps}</span>`;
+          const isPR = type === 'weight' && pr && s.lbs === pr.lbs && s.reps === pr.reps;
+          let chip = `<span class="inline-hist-set${isPR?' pr':''}">${fmtSetChip(s, type)}</span>`;
           if (s.drops) chip += s.drops.map(d => {
             const dPR = pr && d.lbs === pr.lbs && d.reps === pr.reps;
             return `<span class="inline-hist-set${dPR?' pr':''}" style="opacity:.7;border-color:rgba(239,68,68,.3);">↓${d.lbs}×${d.reps}</span>`;
@@ -4780,21 +4888,32 @@ function buildExerciseCard(ex) {
   // Preserve already-logged sets (e.g. restored after a crash/reload); otherwise
   // seed defaults copied from last session or blank.
   const existing = sessionSets[ex.id];
-  const defaultSets = (Array.isArray(existing) && existing.length)
-    ? existing
-    : (cardio
-        ? (lastSets.length
-            ? lastSets.map(s => ({ mins: s.mins||0, secs: s.secs||0, done: false }))
-            : [{ mins: 10, secs: 0, done: false }])
-        : (lastSets.length
-            ? lastSets.map(s => ({ lbs: s.lbs, reps: s.reps, done: false }))
-            : [{ lbs: 45, reps: 8, done: false }, { lbs: 45, reps: 8, done: false }, { lbs: 45, reps: 8, done: false }]));
+  let defaultSets;
+  if (Array.isArray(existing) && existing.length) {
+    defaultSets = existing;
+  } else if (type === 'time') {
+    // cardio defaults to ~10 min; isometric holds (plank, etc.) to ~30 sec
+    const seed = isCardio(ex.id) ? { mins: 10, secs: 0 } : { mins: 0, secs: 30 };
+    defaultSets = lastSets.length
+      ? lastSets.map(s => ({ mins: s.mins||0, secs: s.secs||0, done: false }))
+      : [{ ...seed, done: false }];
+  } else if (type === 'reps') {
+    defaultSets = lastSets.length
+      ? lastSets.map(s => ({ reps: s.reps||10, done: false }))
+      : [{ reps: 10, done: false }, { reps: 10, done: false }, { reps: 10, done: false }];
+  } else {
+    defaultSets = lastSets.length
+      ? lastSets.map(s => ({ lbs: s.lbs, reps: s.reps, done: false }))
+      : [{ lbs: 45, reps: 8, done: false }, { lbs: 45, reps: 8, done: false }, { lbs: 45, reps: 8, done: false }];
+  }
   sessionSets[ex.id] = defaultSets;
 
   const setRows = defaultSets.map((s, i) => buildSetRow(ex.id, i, s, lastSets[i])).join('');
-  const thead = cardio
-    ? `<tr><th>SET</th><th>PREV</th><th>MIN</th><th>SEC</th><th><button class="edit-sets-btn" id="editbtn-${ex.id}" onclick="toggleEditSets('${ex.id}')">Edit</button></th></tr>`
-    : `<tr><th>SET</th><th>PREV</th><th>LBS</th><th>REPS</th><th><button class="edit-sets-btn" id="editbtn-${ex.id}" onclick="toggleEditSets('${ex.id}')">Edit</button></th></tr>`;
+  const editBtn = `<button class="edit-sets-btn" id="editbtn-${ex.id}" onclick="toggleEditSets('${ex.id}')">Edit</button>`;
+  const thead =
+    type === 'time' ? `<tr><th>SET</th><th>PREV</th><th>MIN</th><th>SEC</th><th>${editBtn}</th></tr>`
+    : type === 'reps' ? `<tr><th>SET</th><th>PREV</th><th>REPS</th><th>${editBtn}</th></tr>`
+    : `<tr><th>SET</th><th>PREV</th><th>LBS</th><th>REPS</th><th>${editBtn}</th></tr>`;
 
   return `
     <div class="log-exercise-card" id="excard-${ex.id}" draggable="true" data-exid="${ex.id}">
@@ -4818,28 +4937,34 @@ function buildExerciseCard(ex) {
       </table>
       <div class="add-set-row">
         <button class="add-set-btn" onclick="addSet('${ex.id}')">+ Add Set</button>
-        ${cardio ? '' : `<button class="add-set-btn-drop" onclick="addDropSet('${ex.id}')">+ Drop Set</button>`}
+        ${type === 'weight' ? `<button class="add-set-btn-drop" onclick="addDropSet('${ex.id}')">+ Drop Set</button>` : ''}
       </div>
     </div>`;
 }
 
 function buildSetRow(exId, idx, set, prevSet) {
-  const cardio = isCardio(exId);
-  const prevLabel = cardio
-    ? (prevSet ? fmtDuration(prevSet.mins||0, prevSet.secs||0) : '—')
-    : (prevSet ? `${prevSet.lbs}×${prevSet.reps}` : '—');
+  const type = exInputType(exId);
+  const prevLabel = prevSet ? fmtSetChip(prevSet, type) : '—';
   const isDropSet = set.drops && set.drops.length > 0;
-  const col3 = cardio
-    ? `<td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepField('${exId}',${idx},'mins',-1,this)">−</button><input class="reps-input" type="number" id="mins-${exId}-${idx}" value="${set.mins||0}" min="0" onchange="updateSet('${exId}',${idx},'mins',this.value)"><button class="reps-stepper-btn" onclick="stepField('${exId}',${idx},'mins',1,this)">+</button></div></td>`
-    : `<td><div class="lbs-stepper"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},-2.5,this)">−</button><input class="lbs-input" type="number" id="lbs-${exId}-${idx}" value="${set.lbs}" min="0" step="2.5" onchange="updateSet('${exId}',${idx},'lbs',this.value)"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},2.5,this)">+</button></div></td>`;
-  const col4 = cardio
-    ? `<td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepField('${exId}',${idx},'secs',-5,this)">−</button><input class="reps-input" type="number" id="secs-${exId}-${idx}" value="${set.secs||0}" min="0" max="59" onchange="updateSet('${exId}',${idx},'secs',this.value)"><button class="reps-stepper-btn" onclick="stepField('${exId}',${idx},'secs',5,this)">+</button></div></td>`
-    : `<td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},-1,this)">−</button><input class="reps-input" type="number" id="reps-${exId}-${idx}" value="${set.reps}" min="0" onchange="updateSet('${exId}',${idx},'reps',this.value)"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},1,this)">+</button></div></td>`;
+  // Build the data column(s) for this input type
+  let dataCols;
+  if (type === 'time') {
+    dataCols =
+      `<td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepField('${exId}',${idx},'mins',-1,this)">−</button><input class="reps-input" type="number" id="mins-${exId}-${idx}" value="${set.mins||0}" min="0" onchange="updateSet('${exId}',${idx},'mins',this.value)"><button class="reps-stepper-btn" onclick="stepField('${exId}',${idx},'mins',1,this)">+</button></div></td>` +
+      `<td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepField('${exId}',${idx},'secs',-5,this)">−</button><input class="reps-input" type="number" id="secs-${exId}-${idx}" value="${set.secs||0}" min="0" max="59" onchange="updateSet('${exId}',${idx},'secs',this.value)"><button class="reps-stepper-btn" onclick="stepField('${exId}',${idx},'secs',5,this)">+</button></div></td>`;
+  } else if (type === 'reps') {
+    dataCols =
+      `<td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},-1,this)">−</button><input class="reps-input" type="number" id="reps-${exId}-${idx}" value="${set.reps}" min="0" onchange="updateSet('${exId}',${idx},'reps',this.value)"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},1,this)">+</button></div></td>`;
+  } else {
+    dataCols =
+      `<td><div class="lbs-stepper"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},-2.5,this)">−</button><input class="lbs-input" type="number" id="lbs-${exId}-${idx}" value="${set.lbs}" min="0" step="2.5" onchange="updateSet('${exId}',${idx},'lbs',this.value)"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},2.5,this)">+</button></div></td>` +
+      `<td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},-1,this)">−</button><input class="reps-input" type="number" id="reps-${exId}-${idx}" value="${set.reps}" min="0" onchange="updateSet('${exId}',${idx},'reps',this.value)"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},1,this)">+</button></div></td>`;
+  }
   let html = `
     <tr id="setrow-${exId}-${idx}" class="${set.done?'set-row-done':''}">
       <td class="set-num">${idx+1}${isDropSet ? '<span class="drop-badge">DROP</span>' : ''}</td>
       <td style="color:var(--muted);font-size:12px">${prevLabel}</td>
-      ${col3}${col4}
+      ${dataCols}
       <td><button class="set-done-btn${set.done?' done':''}" onclick="toggleSetDone(this,'${exId}',${idx})">&#10003;</button><button class="set-delete-btn" onclick="removeSet('${exId}',${idx})">✕</button></td>
     </tr>`;
   if (isDropSet) {
@@ -4934,8 +5059,10 @@ function stepField(exId, idx, field, delta, btn) {
 function addSet(exId) {
   const sets = sessionSets[exId];
   const last = sets[sets.length - 1];
-  const newSet = isCardio(exId)
-    ? { mins: last ? last.mins : 10, secs: last ? last.secs : 0, done: false }
+  const type = exInputType(exId);
+  const newSet =
+    type === 'time' ? { mins: last ? last.mins : 0, secs: last ? last.secs : 30, done: false }
+    : type === 'reps' ? { reps: last ? last.reps : 10, done: false }
     : { lbs: last ? last.lbs : 45, reps: last ? last.reps : 8, done: false };
   sets.push(newSet);
   const tbody = document.getElementById('tbody-'+exId);
@@ -5261,8 +5388,19 @@ function finishWorkout() {
   const exercises = {};
   let totalSets = 0;
   for (const exId of Object.keys(sessionSets)) {
-    const done = (sessionSets[exId] || []).filter(s => s.done && (s.lbs > 0 || s.reps > 0));
-    if (done.length) { exercises[exId] = done.map(s => s.drops ? { lbs: s.lbs, reps: s.reps, drops: s.drops } : { lbs: s.lbs, reps: s.reps }); totalSets += done.length + done.reduce((a,s)=>a+(s.drops?.length||0),0); }
+    const type = exInputType(exId);
+    const hasData = s =>
+      type === 'time' ? ((s.mins || 0) > 0 || (s.secs || 0) > 0)
+      : type === 'reps' ? ((s.reps || 0) > 0)
+      : ((s.lbs || 0) > 0 || (s.reps || 0) > 0);
+    const done = (sessionSets[exId] || []).filter(s => s.done && hasData(s));
+    if (done.length) {
+      exercises[exId] = done.map(s =>
+        type === 'time' ? { mins: s.mins || 0, secs: s.secs || 0 }
+        : type === 'reps' ? { reps: s.reps || 0 }
+        : (s.drops ? { lbs: s.lbs, reps: s.reps, drops: s.drops } : { lbs: s.lbs, reps: s.reps }));
+      totalSets += done.length + done.reduce((a, s) => a + (s.drops?.length || 0), 0);
+    }
   }
 
   if (!totalSets) { showToast('— Log at least one set first!'); return; }
@@ -5596,13 +5734,14 @@ function renderHistoryList(workouts) {
 
     const exRows = Object.entries(w.exercises||{}).map(([exId, sets]) => {
       const ex = ALL_EXERCISES[exId];
+      const _t = exInputType(exId);
       let exVol = 0;
       const chips = sets.map(s => {
         exVol += (s.lbs||0)*(s.reps||0);
         if (s.drops) s.drops.forEach(d => { exVol += (d.lbs||0)*(d.reps||0); });
         const pr = allPRs[exId];
-        const is1RM = pr && s.lbs === pr.lbs && s.reps === pr.reps;
-        let chip = `<span class="hwc-set-chip${is1RM?' pr':''}">${s.lbs}×${s.reps}</span>`;
+        const is1RM = _t === 'weight' && pr && s.lbs === pr.lbs && s.reps === pr.reps;
+        let chip = `<span class="hwc-set-chip${is1RM?' pr':''}">${fmtSetChip(s, _t)}</span>`;
         if (s.drops) chip += s.drops.map(d => {
           const dPR = pr && d.lbs === pr.lbs && d.reps === pr.reps;
           return `<span class="hwc-set-chip${dPR?' pr':''}" style="opacity:.7;border-color:rgba(239,68,68,.3);">↓${d.lbs}×${d.reps}</span>`;
@@ -5879,7 +6018,8 @@ function buildInlineHistory() {
     const icon = ex ? (ex.icon || '💪') : '💪';
     const muscle = ex ? ex.muscle : '';
     const last = getLastSessionForExercise(id);
-    const histText = last && last.length ? last.map(s => `${s.lbs}×${s.reps}`).join(' · ') : '';
+    const _t = exInputType(id);
+    const histText = last && last.length ? last.map(s => fmtSetChip(s, _t)).join(' · ') : '';
     return `<div class="exercise-row" onclick="showPage('log')">
       <div class="exercise-icon">${icon}</div>
       <div class="exercise-info">
@@ -8053,7 +8193,11 @@ function rtStart(exName, setNum, lbs, reps, exId) {
   rtEndTime = Date.now() + rtTotal * 1000;
   rtRemaining = rtTotal;
   document.getElementById('rtNextSet').textContent = exName + ' — Set ' + setNum;
-  document.getElementById('rtSetInfo').textContent = lbs ? 'Target: ' + lbs + ' lbs × ' + reps + ' reps' : '';
+  const _t = exId ? exInputType(exId) : 'weight';
+  let _info = '';
+  if (_t === 'weight' && lbs) _info = 'Target: ' + lbs + ' lbs × ' + reps + ' reps';
+  else if (_t === 'reps' && reps) _info = 'Target: ' + reps + ' reps';
+  document.getElementById('rtSetInfo').textContent = _info;
   rtUpdateRing();
   document.getElementById('restTimerBar').classList.add('visible');
   updateRtTab();
@@ -9750,29 +9894,19 @@ function calcPlayerStats(p) { // kept for any legacy calls
   return calcPlayerStats5(p);
 }
 function calcPlayerStats5(p) {
-  const workouts = p.workoutLog || [];
-  let powerSets=0, speedSets=0, totalSets=0, coreSets=0;
-  workouts.forEach(w => {
-    totalSets += w.totalSets || 0;
-    Object.keys(w.exercises || {}).forEach(exId => {
-      const muscle = ALL_EXERCISES[exId]?.muscle;
-      const count  = (w.exercises[exId] || []).length;
-      if (['Chest','Back','Arms','Shoulders'].includes(muscle)) powerSets += count;
-      if (['Legs','Cardio','Glutes','Calves'].includes(muscle)) speedSets += count;
-      if (muscle === 'Core') coreSets += count;
-    });
-  });
+  // Final battle stats = base stats (level + capped workout bonus) × rarity multiplier.
+  const base   = calcBaseStats(p, p.level || 1);
   const skin   = ALL_SKINS_MAP?.[p.equippedSkin];
   const rarity = skin?.rarity || 'common';
-  const rm     = { common:1.0, rare:1.2, epic:1.5, legendary:2.0 }[rarity];
-  const lvl    = p.level || 1;
-  const wc     = workouts.length;
-  const hp     = Math.round(Math.min(450, (80  + totalSets * 1.2  + lvl * 4)) * rm);
-  const atk    = Math.round(Math.min(80,  (12  + powerSets * 0.55 + lvl * 1.2)) * rm);
-  const spd    = Math.round(Math.min(60,  (8   + speedSets * 0.4  + lvl * 0.8)) * rm);
-  const def    = Math.round(Math.min(50,  (5   + wc * 0.5         + lvl * 0.6)) * rm);
-  const focus  = Math.min(.40, (.05 + coreSets * 0.003 + lvl * 0.004));
-  return { hp, atk, spd, def, focus, rarity, skinId: p.equippedSkin };
+  const rm     = (RARITY_MULT[rarity] || 1.0);
+  return {
+    hp:    Math.round(base.hp  * rm),
+    atk:   Math.round(base.atk * rm),
+    spd:   Math.round(base.spd * rm),
+    def:   Math.round(base.def * rm),
+    focus: Math.min(0.60, (base.focus / 100) * rm),  // base.focus is an integer percent
+    rarity, skinId: p.equippedSkin
+  };
 }
 
 // ── Damage formula ──
@@ -9851,7 +9985,7 @@ function clearABTimers() { abTimers.forEach(clearInterval); abTimers=[]; }
 // ── STAT BREAKDOWN + LEVEL PREVIEW ──
 const RARITY_MULT = { common:1.0, rare:1.2, epic:1.5, legendary:2.0, divine:2.0 };
 const RARITY_COLORS = { common:'#6b7280', rare:'#38bdf8', epic:'#a855f7', legendary:'#fbbf24', divine:'#FFD700' };
-const STAT_CAPS = { hp:450, atk:80, spd:60, def:50 };
+const STAT_CAPS = { hp:900, atk:180, spd:130, def:120 };
 
 function calcBaseStats(p, lvl) {
   // Base stats from level + workouts, before rarity multiplier
@@ -9867,18 +10001,20 @@ function calcBaseStats(p, lvl) {
       if (muscle === 'Core') coreSets += count;
     });
   });
+  // Workout volume gives a BONUS (capped), and LEVEL drives stats up to the cap —
+  // so every level visibly raises your fighter (and the level preview works).
   return {
-    hp:    Math.min(STAT_CAPS.hp,  Math.round(80  + totalSets * 1.2  + lvl * 4)),
-    atk:   Math.min(STAT_CAPS.atk, Math.round(12  + powerSets * 0.55 + lvl * 1.2)),
-    spd:   Math.min(STAT_CAPS.spd, Math.round(8   + speedSets * 0.4  + lvl * 0.8)),
-    def:   Math.min(STAT_CAPS.def, Math.round(5   + wc * 0.5         + lvl * 0.6)),
-    focus: Math.min(40, Math.round((.05 + coreSets * 0.003 + lvl * 0.004) * 100)),
+    hp:    Math.min(STAT_CAPS.hp,  Math.round(80 + Math.min(totalSets * 1.2,  327) + lvl * 8.9)),
+    atk:   Math.min(STAT_CAPS.atk, Math.round(12 + Math.min(powerSets * 0.55, 57)  + lvl * 2.1)),
+    spd:   Math.min(STAT_CAPS.spd, Math.round(8  + Math.min(speedSets * 0.4,  50)  + lvl * 1.4)),
+    def:   Math.min(STAT_CAPS.def, Math.round(5  + Math.min(wc * 0.5,         47)  + lvl * 1.3)),
+    focus: Math.min(50, Math.round(5 + Math.min(coreSets * 0.3, 15) + lvl * 0.6)),
   };
 }
 
 function statBar(label, base, final, cap, color, baseColor) {
-  const basePct  = Math.round((base  / cap) * 100);
-  const petPct   = Math.round(((final - base) / cap) * 100);
+  const basePct  = Math.min(100, Math.round((base  / cap) * 100));
+  const petPct   = Math.min(100, Math.round((final / cap) * 100));
   return `<div class="stat-row">
     <div class="stat-row-label">${label}</div>
     <div class="stat-bar-wrap">
@@ -9911,52 +10047,59 @@ function buildStatBreakdown(p, st, skin, petD) {
   const elem = petD.element || 'Earth';
   const ti = TYPE_ICONS[elem] || '';
   const power = (st.hp||0) + (st.atk||0)*4 + (st.spd||0)*2 + (st.def||0)*3;
+
+  // One colored stat tile. val=final battle stat, base=pre-rarity base, cap for bar fill.
+  const tile = (label, icon, val, base, cap, color, wide, isPct) => {
+    const bonus = (!isPct && val > base) ? val - base : 0;
+    const pct = Math.min(100, Math.round((val / cap) * 100));
+    return `<div class="yf-stat-tile${wide ? ' wide' : ''}">
+      <div class="yf-stat-head"><span style="color:${color};font-size:11px;">${icon}</span><span class="yf-stat-label">${label}</span></div>
+      <div class="yf-stat-value" style="color:${color};">${isPct ? val + '%' : val.toLocaleString()}${bonus > 0 ? `<span class="yf-stat-bonus" style="color:${rc};">+${bonus}</span>` : ''}</div>
+      <div class="yf-stat-bar"><div class="yf-stat-fill" style="width:${pct}%;background:${color};"></div></div>
+    </div>`;
+  };
+
   el.innerHTML = `
     <!-- Hero header -->
-    <div class="yf-hero">
-      <div class="yf-portrait" style="box-shadow:0 0 0 2px ${rc}66, 0 0 18px ${rc}44;">
+    <div class="yf-hero2" style="background:linear-gradient(135deg, ${rc}26, ${rc}0a 55%, var(--bg2));">
+      <div class="yf-hero2-glow" style="background:radial-gradient(circle, ${rc}, transparent 70%);"></div>
+      <div class="yf-portrait-frame" style="box-shadow:0 0 0 2px ${rc}66, 0 0 18px ${rc}40;">
         <img src="${tierImg}" onerror="this.src='pets/${p.equippedSkin}.png';this.onerror=null;">
       </div>
-      <div style="min-width:0;flex:1;">
+      <div class="yf-id">
         <div class="yf-name">${skin?.name || 'Iron Rhino'}</div>
         <div class="yf-chips">
           <span class="type-badge type-${elem}">${ti} ${elem}</span>
-          <span class="yf-rarity-chip" style="color:${rc};background:${rc}1a;border:1px solid ${rc}55;">${rarity} · ${rm}×</span>
+          <span class="yf-rarity-chip" style="color:${rc};background:${rc}1a;border:1px solid ${rc}55;">${rarity}${rm > 1 ? ' · ' + rm + '×' : ''}</span>
         </div>
       </div>
-      <div class="yf-level">
+      <div class="yf-level-ring" style="border-color:${rc}99;">
         <div class="yf-lvl-num">${lvl}</div>
-        <div class="yf-lvl-lbl">LEVEL</div>
+        <div class="yf-lvl-lbl">LVL</div>
       </div>
     </div>
-    <!-- Power rating -->
-    <div class="yf-power">
-      <span class="yf-power-lbl">⚔ BATTLE POWER</span>
-      <span class="yf-power-val">${power.toLocaleString()}</span>
+
+    <!-- Battle power -->
+    <div class="yf-power2">
+      <span class="yf-power2-lbl">⚔ BATTLE POWER</span>
+      <span class="yf-power2-val">${power.toLocaleString()}</span>
     </div>
+
     <!-- XP bar -->
-    <div style="display:flex;justify-content:space-between;font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:4px;letter-spacing:.5px;">
-      <span>XP TO NEXT LEVEL</span><span>${xpHave.toLocaleString()} / ${xpNeeded.toLocaleString()}</span>
+    <div style="display:flex;justify-content:space-between;font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:5px;letter-spacing:.5px;">
+      <span>XP TO LEVEL ${lvl + 1}</span><span>${xpHave.toLocaleString()} / ${xpNeeded.toLocaleString()}</span>
     </div>
     <div style="height:6px;background:var(--bg3);border-radius:999px;overflow:hidden;margin-bottom:14px;">
-      <div style="height:100%;width:${xpPct}%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:999px;transition:width .6s ease;"></div>
+      <div style="height:100%;width:${xpPct}%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:999px;transition:width .6s ease;box-shadow:0 0 10px rgba(204,255,0,.4);"></div>
     </div>
-    <!-- Stat legend -->
-    <div style="display:flex;gap:12px;margin-bottom:10px;font-size:9px;font-family:'DM Mono',monospace;letter-spacing:.5px;">
-      <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:10px;height:4px;border-radius:2px;background:#6b7280;"></span>Base (Lv+Gym)</span>
-      <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:10px;height:4px;border-radius:2px;background:${rc};opacity:.7;"></span>Pet bonus</span>
-    </div>
-    <!-- Stat bars -->
-    ${statBar('HP',    base.hp,  st.hp,  STAT_CAPS.hp,  rc, '#6b7280')}
-    ${statBar('ATK',   base.atk, st.atk, STAT_CAPS.atk, rc, '#6b7280')}
-    ${statBar('SPD',   base.spd, st.spd, STAT_CAPS.spd, rc, '#6b7280')}
-    ${statBar('DEF',   base.def, st.def, STAT_CAPS.def, rc, '#6b7280')}
-    <div class="stat-row">
-      <div class="stat-row-label">FOCUS</div>
-      <div class="stat-bar-wrap">
-        <div class="stat-bar-fill" style="width:${base.focus}%;background:#6b7280;"></div>
-      </div>
-      <div class="stat-row-vals" style="color:var(--text);">${base.focus}%</div>
+
+    <!-- Stat tiles -->
+    <div class="yf-stat-grid">
+      ${tile('HP',  '❤', st.hp,  base.hp,  STAT_CAPS.hp,  '#4ade80', false, false)}
+      ${tile('ATK', '⚔', st.atk, base.atk, STAT_CAPS.atk, '#f87171', false, false)}
+      ${tile('SPD', '⚡', st.spd, base.spd, STAT_CAPS.spd, '#38bdf8', false, false)}
+      ${tile('DEF', '🛡', st.def, base.def, STAT_CAPS.def, '#a855f7', true,  false)}
+      ${tile('FOCUS', '◎', base.focus, base.focus, 50,     '#fbbf24', true,  true)}
     </div>
   `;
 
@@ -9989,15 +10132,16 @@ function updateLvlPreview(lvl) {
   const cur     = calcBaseStats(p, p.level || 1);
   const fut     = calcBaseStats(p, lvl);
   const curFin  = calcPlayerStats5(p); // current final
+  // base stats are already capped; rarity multiplies on top (matches calcPlayerStats5)
   const stats   = [
-    { label:'HP',  curB:cur.hp,  futB:fut.hp,  cap:STAT_CAPS.hp,  curF:curFin.hp,  futF:Math.min(STAT_CAPS.hp,  Math.round(fut.hp  * rm)) },
-    { label:'ATK', curB:cur.atk, futB:fut.atk, cap:STAT_CAPS.atk, curF:curFin.atk, futF:Math.min(STAT_CAPS.atk, Math.round(fut.atk * rm)) },
-    { label:'SPD', curB:cur.spd, futB:fut.spd, cap:STAT_CAPS.spd, curF:curFin.spd, futF:Math.min(STAT_CAPS.spd, Math.round(fut.spd * rm)) },
-    { label:'DEF', curB:cur.def, futB:fut.def, cap:STAT_CAPS.def, curF:curFin.def, futF:Math.min(STAT_CAPS.def, Math.round(fut.def * rm)) },
+    { label:'HP',  cap:STAT_CAPS.hp  * rm, curF:curFin.hp,  futF:Math.round(fut.hp  * rm) },
+    { label:'ATK', cap:STAT_CAPS.atk * rm, curF:curFin.atk, futF:Math.round(fut.atk * rm) },
+    { label:'SPD', cap:STAT_CAPS.spd * rm, curF:curFin.spd, futF:Math.round(fut.spd * rm) },
+    { label:'DEF', cap:STAT_CAPS.def * rm, curF:curFin.def, futF:Math.round(fut.def * rm) },
   ];
   el.innerHTML = stats.map(s => {
-    const curPct = Math.round((s.curF / s.cap) * 100);
-    const futPct = Math.round((s.futF / s.cap) * 100);
+    const curPct = Math.min(100, Math.round((s.curF / s.cap) * 100));
+    const futPct = Math.min(100, Math.round((s.futF / s.cap) * 100));
     const gain   = s.futF - s.curF;
     const gainColor = gain > 0 ? '#22c55e' : gain < 0 ? '#ef4444' : 'var(--muted)';
     return `<div class="stat-preview-row">
@@ -10013,6 +10157,99 @@ function updateLvlPreview(lvl) {
       </div>
     </div>`;
   }).join('');
+}
+
+// ══════════════════════════════════════════
+//  BATTLE TUTORIAL
+// ══════════════════════════════════════════
+const BATTLE_TUTORIAL = [
+  {
+    icon:'⚔️', color:'#f87171',
+    title:'Welcome to the Arena',
+    html:`Your FitPet duels rivals in an automatic <b>wheel battle</b>. Each round, both fighters spin — and where it lands decides who lands hits, crits, or misses.<br><br>The stronger your fighter, the better your odds. Here's everything you need to know.`
+  },
+  {
+    icon:'📊', color:'#38bdf8',
+    title:`Your Fighter's Stats`,
+    html:`<div class="bt-statlist">
+      <div class="bt-statrow"><div class="bt-stat-ico" style="background:rgba(74,222,128,.15);color:#4ade80;">❤</div><div><div class="bt-stat-name" style="color:#4ade80;">HP · Health</div><div class="bt-stat-desc">How much damage you can take before you're knocked out. More HP = you last longer in a fight.</div></div></div>
+      <div class="bt-statrow"><div class="bt-stat-ico" style="background:rgba(248,113,113,.15);color:#f87171;">⚔</div><div><div class="bt-stat-name" style="color:#f87171;">ATK · Attack</div><div class="bt-stat-desc">The base damage your hits deal. Higher ATK defeats enemies faster.</div></div></div>
+      <div class="bt-statrow"><div class="bt-stat-ico" style="background:rgba(56,189,248,.15);color:#38bdf8;">⚡</div><div><div class="bt-stat-name" style="color:#38bdf8;">SPD · Speed</div><div class="bt-stat-desc">Faster fighters act first and land more hits over the course of the battle.</div></div></div>
+      <div class="bt-statrow"><div class="bt-stat-ico" style="background:rgba(168,85,247,.15);color:#a855f7;">🛡</div><div><div class="bt-stat-name" style="color:#a855f7;">DEF · Defense</div><div class="bt-stat-desc">Reduces the damage you take from enemy hits — key to surviving tough rivals.</div></div></div>
+      <div class="bt-statrow"><div class="bt-stat-ico" style="background:rgba(251,191,36,.15);color:#fbbf24;">◎</div><div><div class="bt-stat-name" style="color:#fbbf24;">FOCUS · Crit Chance</div><div class="bt-stat-desc">Your chance to land a critical hit for big bonus damage.</div></div></div>
+    </div>`
+  },
+  {
+    icon:'💥', color:'#ccff00',
+    title:'Battle Power',
+    html:`One number that sums up your whole fighter:<br><br><b style="color:var(--accent);font-size:15px;">HP + ATK×4 + SPD×2 + DEF×3</b><br><br>It's a quick way to compare your overall strength at a glance — the bigger the number, the tougher you are.`
+  },
+  {
+    icon:'🎰', color:'#a855f7',
+    title:'How a Fight Works',
+    html:`Each round, both fighters spin a wheel. Where it lands decides the action:
+    <div class="bt-mini">
+      <div class="bt-mini-row"><span class="k" style="color:var(--accent)">HIT</span> Deal normal damage based on your ATK.</div>
+      <div class="bt-mini-row"><span class="k" style="color:#fbbf24">CRIT</span> A powerful bonus-damage strike (boosted by Focus).</div>
+      <div class="bt-mini-row"><span class="k" style="color:#fb923c">BURN&nbsp;/&nbsp;STUN</span> Status moves — damage over time, or skip a turn.</div>
+      <div class="bt-mini-row"><span class="k" style="color:var(--muted)">MISS</span> The attack fizzles — no damage that spin.</div>
+    </div>
+    It all plays out automatically — just spin and watch!`
+  },
+  {
+    icon:'🎯', color:'#4ade80',
+    title:'Win Chance',
+    html:`Before each fight, the <b>Win Chance %</b> estimates your odds by comparing how fast each side can defeat the other.<br><br><b style="color:#4ade80">90%+</b> nearly guaranteed<br><b style="color:#facc15">~50%</b> a real coin-flip<br><b style="color:#f87171">low %</b> you're the underdog — level up first!`
+  },
+  {
+    icon:'📈', color:'#fbbf24',
+    title:'Getting Stronger',
+    html:`Two ways to power up your fighter:
+    <div class="bt-mini">
+      <div class="bt-mini-row"><span class="k" style="color:var(--accent)">LEVEL&nbsp;UP</span> Earn XP from workouts — every level raises all your stats.</div>
+      <div class="bt-mini-row"><span class="k" style="color:#fbbf24">RARER&nbsp;PETS</span> Equip rare → legendary pets to multiply your stats up to 2×.</div>
+    </div>
+    Tap <b>Level Preview</b> on your fighter card to see exactly how strong you'll become!`
+  },
+  {
+    icon:'🏆', color:'#fb923c',
+    title:'Climb the Ladder',
+    html:`Beat a rival to <b>unlock the next one</b>. Each win rewards <b>gold, XP, and cases</b>.<br><br>Every rival resets on a <b>24-hour cooldown</b> — it's a daily challenge. Once you've beaten a rival, you can <b>⚡ Auto Win</b> it each day to skip straight to the rewards.<br><br>Now get in there and become the <b>Cosmic Overlord</b>! 🐉`
+  },
+];
+let _btIndex = 0;
+
+function openBattleTutorial() {
+  _btIndex = 0;
+  renderBattleTutorial();
+  document.getElementById('battleTutorialOverlay').classList.remove('hidden');
+}
+function closeBattleTutorial() {
+  document.getElementById('battleTutorialOverlay').classList.add('hidden');
+  const p = getP();
+  if (p && !p.seenBattleTutorial) { p.seenBattleTutorial = true; saveP(p); }
+}
+function btNav(dir) {
+  const next = _btIndex + dir;
+  if (next < 0) return;
+  if (next >= BATTLE_TUTORIAL.length) { closeBattleTutorial(); return; }
+  _btIndex = next;
+  renderBattleTutorial();
+}
+function renderBattleTutorial() {
+  const slide = BATTLE_TUTORIAL[_btIndex];
+  const body = document.getElementById('btBody');
+  if (!body) return;
+  body.innerHTML = `
+    <div class="bt-icon" style="background:${slide.color}22;color:${slide.color};">${slide.icon}</div>
+    <div class="bt-title">${slide.title}</div>
+    <div class="bt-text">${slide.html}</div>`;
+  body.scrollTop = 0;
+  document.getElementById('btDots').innerHTML = BATTLE_TUTORIAL.map((_, i) => `<div class="bt-dot${i === _btIndex ? ' active' : ''}"></div>`).join('');
+  const back = document.getElementById('btBack');
+  back.disabled = _btIndex === 0;
+  const next = document.getElementById('btNext');
+  next.textContent = _btIndex === BATTLE_TUTORIAL.length - 1 ? "Let's Battle! ⚔️" : 'Next';
 }
 
 function buildBattlePage() {
@@ -10046,7 +10283,11 @@ function buildBattlePage() {
     const cdLeft = battleCdLeft(r.id);
     const onCd = cdLeft > 0;
     const battleable = unlocked && !onCd;
-    const canAuto = battleable && win >= AUTO_WIN_THRESHOLD;
+    // Auto Win shows once win chance is high enough, but stays LOCKED until you've
+    // beaten the rival once (must fight it manually the first time).
+    const autoEligible = battleable && win >= AUTO_WIN_THRESHOLD;
+    const canAuto = autoEligible && isBeaten;
+    const lockedAuto = autoEligible && !isBeaten;
     const safeName = r.name.replace(/'/g, '');
     const onClick = battleable
       ? `startAutoBattle('${r.id}')`
@@ -10067,6 +10308,7 @@ function buildBattlePage() {
         </div>
         <div class="fc-reward">${rewardBits.join(' · ')}</div>
         ${canAuto ? `<button class="fc-auto-btn" onclick="event.stopPropagation();autoWinBattle('${r.id}')">⚡ Auto Win</button>` : ''}
+        ${lockedAuto ? `<button class="fc-auto-btn fc-auto-locked" onclick="event.stopPropagation();showToast('🔒 Beat ${safeName} once to unlock Auto Win!')">🔒 Auto Win</button>` : ''}
         ${!unlocked
           ? `<div class="fc-lock"><div class="fc-lock-icon">🔒</div><div class="fc-lock-req">BEAT #${i}</div></div>`
           : (onCd ? `<div class="fc-lock fc-cd"><div class="fc-lock-icon">⏳</div><div class="fc-lock-req">READY IN ${fmtBattleCd(cdLeft)}</div></div>` : '')}
@@ -10077,6 +10319,9 @@ function buildBattlePage() {
   document.getElementById('battleArena').style.display  = 'none';
   const bph = document.getElementById('battlePageHeader');
   if (bph) bph.style.display = '';
+
+  // First visit → show the battle tutorial automatically (once)
+  if (p && !p.seenBattleTutorial) setTimeout(openBattleTutorial, 450);
 }
 
 // Estimate win chance with a time-to-kill combat model.
@@ -10119,6 +10364,8 @@ function autoWinBattle(rivalId) {
   const p = getP();
   const npc = NPC_RIVALS.find(r => r.id === rivalId);
   if (!p || !npc) return;
+  // Must beat a rival manually at least once before Auto Win unlocks
+  if (!(p.beatenRivals || []).includes(rivalId)) { showToast('⚔ Beat this rival once before you can Auto Win it!'); return; }
   if (battleCdLeft(rivalId) > 0) { showToast('⏳ Already battled today!'); return; }
   const r = npc.reward;
   p.gold = (p.gold || 0) + r.gold;
@@ -11464,17 +11711,17 @@ function renderExStock(chartOnly) {
   }
 
   // History rows (most recent first)
+  const exType = exInputType(exId);
   const histRows = [...sessions].reverse().map(s => {
     const date = new Date(s.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     const chips = s.sets.map(set => {
-      const isPR = !cardio && pr && set.lbs === pr.lbs && set.reps === pr.reps;
-      if (cardio) return `<span class="exinfo-hist-set">${set.mins || 0}m ${String(set.secs || 0).padStart(2,'0')}s</span>`;
-      return `<span class="exinfo-hist-set${isPR ? ' pr' : ''}">${set.lbs}×${set.reps}</span>`;
+      const isPR = exType === 'weight' && pr && set.lbs === pr.lbs && set.reps === pr.reps;
+      return `<span class="exinfo-hist-set${isPR ? ' pr' : ''}">${fmtSetChip(set, exType)}</span>`;
     }).join('');
     return `<div class="exinfo-hist-row">
       <span class="exinfo-hist-date">${date}</span>
       <div class="exinfo-hist-sets">${chips}</div>
-      <span class="exs-hist-vol">${s.vol.toLocaleString()} lbs</span>
+      <span class="exs-hist-vol">${exType === 'weight' ? s.vol.toLocaleString() + ' lbs' : ''}</span>
     </div>`;
   }).join('');
 
@@ -11785,10 +12032,11 @@ function openDayDetail(dateStr) {
   bodyEl.innerHTML = sessions.map(session => {
     const exRows = Object.entries(session.exercises || {}).map(([exId, sets]) => {
       const ex = ALL_EXERCISES[exId];
+      const exType = exInputType(exId);
       const chips = sets.map(s => {
         const pr = allPRs[exId];
-        const isPR = pr && s.lbs === pr.lbs && s.reps === pr.reps;
-        let chip = `<span style="display:inline-flex;align-items:center;gap:3px;background:${isPR?'rgba(204,255,0,.12)':'var(--bg)'};border:1px solid ${isPR?'var(--accent)':'var(--border)'};border-radius:6px;padding:3px 8px;font-size:11px;font-family:'DM Mono',monospace;color:${isPR?'var(--accent)':'var(--text)'};">${s.lbs}×${s.reps}${isPR?' <span style="font-size:9px;color:var(--accent);">PR</span>':''}</span>`;
+        const isPR = exType === 'weight' && pr && s.lbs === pr.lbs && s.reps === pr.reps;
+        let chip = `<span style="display:inline-flex;align-items:center;gap:3px;background:${isPR?'rgba(204,255,0,.12)':'var(--bg)'};border:1px solid ${isPR?'var(--accent)':'var(--border)'};border-radius:6px;padding:3px 8px;font-size:11px;font-family:'DM Mono',monospace;color:${isPR?'var(--accent)':'var(--text)'};">${fmtSetChip(s, exType)}${isPR?' <span style="font-size:9px;color:var(--accent);">PR</span>':''}</span>`;
         if (s.drops) chip += s.drops.map(d => `<span style="display:inline-flex;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);">↓${d.lbs}×${d.reps}</span>`).join('');
         return chip;
       }).join('');
@@ -11942,6 +12190,22 @@ function closeDayDetail() {
   <div class="move-index-panel" id="moveIndexPanel"></div>
 </div>
 <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleMoveIndex()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:108;"></div>
+
+<!-- BATTLE TUTORIAL -->
+<div class="bt-overlay hidden" id="battleTutorialOverlay" onclick="if(event.target===this)closeBattleTutorial()">
+  <div class="bt-modal">
+    <div class="bt-top">
+      <div class="bt-dots" id="btDots"></div>
+      <button class="bt-skip" onclick="closeBattleTutorial()">Skip</button>
+    </div>
+    <div class="bt-body" id="btBody"></div>
+    <div class="bt-nav">
+      <button class="bt-back" id="btBack" onclick="btNav(-1)">Back</button>
+      <button class="bt-next" id="btNext" onclick="btNav(1)">Next</button>
+    </div>
+  </div>
+</div>
+
 <!-- RANK SELECTOR -->
 <div id="rankSelectorOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:970;flex-direction:column;align-items:stretch;justify-content:flex-end;" onclick="if(event.target===this)closeRankSelector()">
   <div style="background:var(--bg2);border-radius:20px 20px 0 0;border-top:1px solid var(--border);max-height:75vh;display:flex;flex-direction:column;">
