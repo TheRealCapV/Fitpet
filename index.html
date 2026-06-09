@@ -1029,7 +1029,12 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .template-edit-save-btn:hover{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#000;}
 .template-edit-cancel-btn{padding:12px 18px;background:var(--bg3);color:var(--muted);border:1px solid var(--border);border-radius:8px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .2s;}
 .template-edit-cancel-btn:hover{color:var(--text);}
+.prev-cell{font-size:12px;color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:2px;-webkit-tap-highlight-color:transparent;transition:color .15s;}
+@media(hover:hover){.prev-cell:hover{color:var(--text);}}
+.prev-cell:active{opacity:.6;}
+@keyframes prev-flash{0%{background:rgba(204,255,0,.22);}100%{background:transparent;}}
 .set-row-done{background:rgba(204,255,0,.07);box-shadow:inset 3px 0 0 var(--accent);}
+tr.prev-applied td{animation:prev-flash .5s ease;}
 .set-row-done td{color:var(--muted);}
 .drop-badge{font-size:8px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);border-radius:4px;padding:1px 5px;font-family:'DM Mono',monospace;vertical-align:middle;margin-left:4px;}
 .drop-sub-row td{padding:6px 16px 6px 28px;border-bottom:1px solid rgba(42,42,56,.5);background:rgba(239,68,68,.03);}
@@ -2013,6 +2018,14 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
       </div>
       <!-- Exercise pills -->
       <div class="summary-exercises" id="summaryExercises"></div>
+      <!-- Optional heart rate input -->
+      <div id="summaryHrRow" style="margin:10px 0 4px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:6px;">&#9829; Avg Heart Rate <span style="font-weight:400;opacity:.5;">(optional)</span></div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <input id="summaryHrInput" type="number" inputmode="numeric" min="40" max="220" placeholder="— bpm" style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:16px;outline:none;text-align:center;-webkit-text-fill-color:var(--text);" oninput="let v=parseInt(this.value);if(v>220)this.value=220;if(v<0)this.value=''">
+          <span style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;flex-shrink:0;">bpm</span>
+        </div>
+      </div>
       <div id="summaryTemplatePrompt" style="display:none;margin-bottom:12px;">
         <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:8px;text-align:center;">Exercises changed — update template?</div>
         <div style="display:flex;gap:8px;">
@@ -2958,6 +2971,26 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
       <div id="strongImportStatus" style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.6;margin-top:10px;"></div>
     </div>
   </div>
+
+  <!-- Apple Health Export -->
+  <div class="settings-section">
+    <div class="settings-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Apple Health Export</div>
+    <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.6;margin-bottom:14px;">Export all workouts as an Apple Health XML file. On your iPhone: tap the downloaded file → Share → Health → Import All.</div>
+    <!-- Body weight row -->
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:6px;">Body weight <span style="font-weight:400;opacity:.55;">(used for calorie estimates)</span></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <input id="ahBodyWeight" type="number" inputmode="decimal" min="30" max="400" placeholder="70" style="width:76px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 10px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;text-align:center;" oninput="localStorage.setItem('fitpet_bw',JSON.stringify({v:this.value,u:_ahUnit}))">
+        <div style="display:flex;gap:4px;">
+          <button id="ahBtnKg" onclick="ahSetUnit('kg')" style="padding:6px 10px;border-radius:6px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;cursor:pointer;transition:all .15s;border:1px solid var(--border);background:var(--accent);color:#000;">kg</button>
+          <button id="ahBtnLb" onclick="ahSetUnit('lb')" style="padding:6px 10px;border-radius:6px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;cursor:pointer;transition:all .15s;border:1px solid var(--border);background:none;color:var(--muted);">lb</button>
+        </div>
+      </div>
+    </div>
+    <button onclick="exportToAppleHealth()" style="width:100%;padding:12px;border-radius:10px;font-size:13px;font-family:'Syne',sans-serif;font-weight:800;background:rgba(204,255,0,.1);border:1px solid rgba(204,255,0,.35);color:var(--accent);cursor:pointer;transition:all .2s;letter-spacing:.2px;" onmouseover="this.style.background='rgba(204,255,0,.18)'" onmouseout="this.style.background='rgba(204,255,0,.1)'">&#10084; Export to Apple Health</button>
+    <div id="ahExportStatus" style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.6;margin-top:8px;min-height:14px;"></div>
+  </div>
+
 </div>
 
 <!-- PROFILE CUSTOMIZE MODAL -->
@@ -4960,10 +4993,13 @@ function buildSetRow(exId, idx, set, prevSet) {
       `<td><div class="lbs-stepper"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},-2.5,this)">−</button><input class="lbs-input" type="number" id="lbs-${exId}-${idx}" value="${set.lbs}" min="0" step="2.5" onchange="updateSet('${exId}',${idx},'lbs',this.value)"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},2.5,this)">+</button></div></td>` +
       `<td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},-1,this)">−</button><input class="reps-input" type="number" id="reps-${exId}-${idx}" value="${set.reps}" min="0" onchange="updateSet('${exId}',${idx},'reps',this.value)"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},1,this)">+</button></div></td>`;
   }
+  const prevCell = prevSet
+    ? `<td class="prev-cell" onclick="applyPrevSet('${exId}',${idx})" title="Tap to use these numbers">${prevLabel}</td>`
+    : `<td style="color:var(--muted);font-size:12px">${prevLabel}</td>`;
   let html = `
     <tr id="setrow-${exId}-${idx}" class="${set.done?'set-row-done':''}">
       <td class="set-num">${idx+1}${isDropSet ? '<span class="drop-badge">DROP</span>' : ''}</td>
-      <td style="color:var(--muted);font-size:12px">${prevLabel}</td>
+      ${prevCell}
       ${dataCols}
       <td><button class="set-done-btn${set.done?' done':''}" onclick="toggleSetDone(this,'${exId}',${idx})">&#10003;</button><button class="set-delete-btn" onclick="removeSet('${exId}',${idx})">✕</button></td>
     </tr>`;
@@ -5038,6 +5074,32 @@ function updateSet(exId, idx, field, val) {
     sessionSets[exId][idx][field] = field === 'lbs' ? (parseFloat(val) || 0) : (parseInt(val) || 0);
     saveWorkoutSession();
   }
+}
+
+// Tap the PREV cell to copy last session's numbers into the current set
+function applyPrevSet(exId, idx) {
+  const prev = getLastSessionForExercise(exId)[idx];
+  const set = sessionSets[exId]?.[idx];
+  if (!prev || !set) return;
+  const type = exInputType(exId);
+  const setVal = (field, value, inputId) => {
+    set[field] = value;
+    const el = document.getElementById(inputId);
+    if (el) el.value = value;
+  };
+  if (type === 'time') {
+    setVal('mins', prev.mins || 0, `mins-${exId}-${idx}`);
+    setVal('secs', prev.secs || 0, `secs-${exId}-${idx}`);
+  } else if (type === 'reps') {
+    setVal('reps', prev.reps || 0, `reps-${exId}-${idx}`);
+  } else {
+    setVal('lbs', prev.lbs || 0, `lbs-${exId}-${idx}`);
+    setVal('reps', prev.reps || 0, `reps-${exId}-${idx}`);
+  }
+  // brief highlight so it's clear it applied
+  const row = document.getElementById(`setrow-${exId}-${idx}`);
+  if (row) { row.classList.add('prev-applied'); setTimeout(() => row.classList.remove('prev-applied'), 500); }
+  saveWorkoutSession();
 }
 
 function stepField(exId, idx, field, delta, btn) {
@@ -5444,7 +5506,7 @@ function finishWorkout() {
   const newUnlocks = checkFragmentUnlocks(p);
 
   // log session
-  p.workoutLog.push({ date: Date.now(), exercises, totalSets, xp: xpGained, template: getTemplateName(activeTemplate) || 'Workout' });
+  p.workoutLog.push({ date: Date.now(), startTime: workoutStartTime || null, exercises, totalSets, xp: xpGained, template: getTemplateName(activeTemplate) || 'Workout' });
   saveP(p);
 
   // Quest progress — workout completed
@@ -8480,6 +8542,8 @@ function onVolumeChange(val) {
 
 function refreshSettingsPage() {
   const p = getP(); if (!p) return;
+  // Apple Health body weight restore
+  _ahInitSettings();
   // Volume
   const vol = Math.round((p.soundVolume ?? 0.8) * 100);
   const sv = document.getElementById('settingsVolSlider');
@@ -9526,6 +9590,9 @@ let _summaryWorkoutData = null;
 function showSummaryCard(data) {
   _summaryWorkoutData = data;
   const p = getP(); if (!p) return;
+  // Reset HR input for fresh entry
+  const hrInput = document.getElementById('summaryHrInput');
+  if (hrInput) hrInput.value = '';
   const skin = ALL_SKINS_MAP?.[p.equippedSkin];
   const imgEl = document.getElementById('summaryPetImg');
   imgEl.innerHTML = petImgHtml(p.equippedSkin, skin?.emoji || '🦏', 'summary-pet-img');
@@ -9595,7 +9662,19 @@ function advanceTemplate() {
   buildInlineHistory();
 }
 
+function _saveSummaryHr() {
+  const val = parseInt(document.getElementById('summaryHrInput')?.value) || 0;
+  if (val >= 40 && val <= 220) {
+    const p = getP();
+    if (p && p.workoutLog.length) {
+      p.workoutLog[p.workoutLog.length - 1].avgHR = val;
+      saveP(p);
+    }
+  }
+}
+
 function closeSummary() {
+  _saveSummaryHr();
   document.getElementById('summaryOverlay').classList.remove('open');
   endWorkoutSession();
   advanceTemplate();
@@ -12098,6 +12177,140 @@ function removeWorkoutExercise(sessionDate, exId, dateStr) {
 
 function closeDayDetail() {
   document.getElementById('dayDetailOverlay').style.display = 'none';
+}
+
+// ══════════════════════════════════════════
+//  APPLE HEALTH EXPORT
+// ══════════════════════════════════════════
+
+let _ahUnit = 'kg'; // 'kg' or 'lb'
+
+function ahSetUnit(u) {
+  _ahUnit = u;
+  document.getElementById('ahBtnKg').style.cssText += u === 'kg'
+    ? ';background:var(--accent);color:#000;border-color:var(--accent)'
+    : ';background:none;color:var(--muted);border-color:var(--border)';
+  document.getElementById('ahBtnLb').style.cssText += u === 'lb'
+    ? ';background:var(--accent);color:#000;border-color:var(--accent)'
+    : ';background:none;color:var(--muted);border-color:var(--border)';
+  // persist
+  const cur = JSON.parse(localStorage.getItem('fitpet_bw') || '{}');
+  cur.u = u;
+  localStorage.setItem('fitpet_bw', JSON.stringify(cur));
+}
+
+function _ahInitSettings() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('fitpet_bw') || '{}');
+    if (saved.v) document.getElementById('ahBodyWeight').value = saved.v;
+    if (saved.u && saved.u !== 'kg') ahSetUnit(saved.u);
+  } catch(e) {}
+}
+
+function _ahFormatDate(ts) {
+  const d = new Date(ts);
+  const pad = n => String(n).padStart(2, '0');
+  const y = d.getFullYear(), mo = pad(d.getMonth()+1), da = pad(d.getDate());
+  const h = pad(d.getHours()), mi = pad(d.getMinutes()), se = pad(d.getSeconds());
+  const off = -d.getTimezoneOffset();
+  const sign = off >= 0 ? '+' : '-';
+  const absOff = Math.abs(off);
+  const oh = pad(Math.floor(absOff/60)), om = pad(absOff%60);
+  return `${y}-${mo}-${da} ${h}:${mi}:${se} ${sign}${oh}${om}`;
+}
+
+function exportToAppleHealth() {
+  const p = getP();
+  if (!p || !p.workoutLog?.length) {
+    showToast('No workouts to export yet');
+    return;
+  }
+
+  const bwRaw = parseFloat(document.getElementById('ahBodyWeight')?.value) || 70;
+  const bodyWeightKg = _ahUnit === 'lb' ? bwRaw * 0.453592 : bwRaw;
+  const MET = 4.0;          // METs for traditional strength training
+  const SECS_PER_SET = 210; // ~3.5 min per set (work + rest) when no start time
+
+  let workoutXml = '';
+  let recordXml  = '';
+  let exported   = 0;
+
+  for (const w of p.workoutLog) {
+    if (!w.date) continue;
+    const endTs    = w.date;
+    const durSec   = w.startTime ? Math.max(60, Math.floor((endTs - w.startTime) / 1000))
+                                 : Math.max(60, (w.totalSets || 1) * SECS_PER_SET);
+    const durMin   = Math.round(durSec / 60);
+    const startTs  = w.startTime || (endTs - durSec * 1000);
+    const calories = Math.round(MET * bodyWeightKg * (durMin / 60));
+
+    const sd = _ahFormatDate(startTs);
+    const ed = _ahFormatDate(endTs);
+
+    workoutXml +=
+`\n <Workout workoutActivityType="HKWorkoutActivityTypeTraditionalStrengthTraining" duration="${durMin}.00" durationUnit="min" totalEnergyBurned="${calories}.000" totalEnergyBurnedUnit="Cal" sourceName="FitPet" sourceVersion="1.0" startDate="${sd}" endDate="${ed}">` +
+`\n  <WorkoutStatistics type="HKQuantityTypeIdentifierActiveEnergyBurned" startDate="${sd}" endDate="${ed}" sum="${calories}.000" unit="Cal"/>` +
+(w.avgHR ? `\n  <WorkoutStatistics type="HKQuantityTypeIdentifierHeartRate" startDate="${sd}" endDate="${ed}" average="${w.avgHR}.000" unit="count/min"/>` : '') +
+`\n </Workout>`;
+
+    recordXml +=
+`\n <Record type="HKQuantityTypeIdentifierActiveEnergyBurned" sourceName="FitPet" sourceVersion="1.0" unit="Cal" startDate="${sd}" endDate="${ed}" value="${calories}.000"/>`;
+
+    if (w.avgHR) {
+      recordXml +=
+`\n <Record type="HKQuantityTypeIdentifierHeartRate" sourceName="FitPet" sourceVersion="1.0" unit="count/min" startDate="${sd}" endDate="${ed}" value="${w.avgHR}">` +
+`\n  <MetadataEntry key="HKMetadataKeyHeartRateMotionContext" value="0"/>` +
+`\n </Record>`;
+    }
+
+    exported++;
+  }
+
+  if (!exported) { showToast('No valid workouts found'); return; }
+
+  const xml =
+`<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HealthData [
+<!ATTLIST Record sourceName CDATA "">
+<!ATTLIST Record sourceVersion CDATA "">
+<!ATTLIST Record unit CDATA "">
+<!ATTLIST Record startDate CDATA "">
+<!ATTLIST Record endDate CDATA "">
+<!ATTLIST Record value CDATA "">
+<!ATTLIST Workout sourceName CDATA "">
+<!ATTLIST Workout sourceVersion CDATA "">
+<!ATTLIST Workout workoutActivityType CDATA "">
+<!ATTLIST Workout duration CDATA "">
+<!ATTLIST Workout durationUnit CDATA "">
+<!ATTLIST Workout totalEnergyBurned CDATA "">
+<!ATTLIST Workout totalEnergyBurnedUnit CDATA "">
+<!ATTLIST Workout startDate CDATA "">
+<!ATTLIST Workout endDate CDATA "">
+]>
+<HealthData locale="en_US">
+ <ExportDate value="${_ahFormatDate(Date.now())}"/>
+ <Me HKCharacteristicTypeIdentifierBiologicalSex="HKBiologicalSexNotSet" HKCharacteristicTypeIdentifierBloodType="HKBloodTypeNotSet" HKCharacteristicTypeIdentifierFitzpatrickSkinType="HKFitzpatrickSkinTypeNotSet" HKCharacteristicTypeIdentifierCardioFitnessMedicationsUse="HKCategoryValueNotApplicable"/>
+${workoutXml}
+${recordXml}
+</HealthData>`;
+
+  try {
+    const blob = new Blob([xml], { type: 'application/xml' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `fitpet_health_${new Date().toISOString().slice(0,10)}.xml`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+
+    const status = document.getElementById('ahExportStatus');
+    if (status) status.innerHTML = `✅ Exported <b style="color:var(--text)">${exported}</b> workout${exported !== 1 ? 's' : ''}. Open the file on your iPhone → Share → Health.`;
+    showToast(`✓ Exported ${exported} workout${exported !== 1 ? 's' : ''}`);
+  } catch(e) {
+    showToast('Export failed — try from Safari on your iPhone');
+  }
 }
 </script>
 
