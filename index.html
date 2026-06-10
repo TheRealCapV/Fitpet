@@ -1839,6 +1839,26 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .lr-icon.unclaimed{border-color:var(--accent);box-shadow:0 0 16px rgba(200,255,0,.5);animation:lr-pulse 2s ease-in-out infinite;}
 
 /* ────────────────────────────────────────────────
+   DAILY QUEST CARDS
+──────────────────────────────────────────────── */
+.quest-list{display:flex;flex-direction:column;gap:8px;}
+.quest-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 14px;transition:border-color .2s;}
+.quest-card.quest-done{opacity:.6;}
+.quest-top{display:flex;align-items:center;gap:11px;margin-bottom:9px;}
+.quest-icon-wrap{width:36px;height:36px;border-radius:9px;border:1px solid;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.quest-body{flex:1;min-width:0;}
+.quest-title{font-size:13px;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:2px;}
+.quest-card.quest-done .quest-title{text-decoration:line-through;color:var(--muted);}
+.quest-flavor{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.quest-card.quest-done .quest-flavor{color:rgba(255,255,255,.22);}
+.quest-reward-pill{font-size:11px;font-weight:800;font-family:'DM Mono',monospace;padding:4px 9px;border-radius:7px;border:1px solid;white-space:nowrap;flex-shrink:0;letter-spacing:.3px;}
+.quest-done-pill{font-size:11px;font-weight:800;font-family:'DM Mono',monospace;padding:4px 9px;border-radius:7px;background:rgba(204,255,0,.08);border:1px solid rgba(204,255,0,.2);color:var(--accent);white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:4px;}
+.quest-bottom{display:flex;align-items:center;gap:8px;}
+.quest-track{flex:1;height:3px;background:rgba(255,255,255,.07);border-radius:999px;overflow:hidden;}
+.quest-fill{height:100%;border-radius:999px;transition:width .55s cubic-bezier(.22,1,.36,1);}
+.quest-count{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);white-space:nowrap;min-width:32px;text-align:right;}
+
+/* ────────────────────────────────────────────────
    PR CELEBRATION BANNER
 ──────────────────────────────────────────────── */
 #prBanner{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.5);width:min(310px,88vw);z-index:9100;pointer-events:none;opacity:0;}
@@ -9469,32 +9489,28 @@ function toggleDevModeSettings() {
 // tracked: workout, sets, sets_muscle, case, tap.
 const QUEST_POOL = [
   // ── Complete a workout ──
-  { type:'workout',     icon:'◈', desc:'Complete a workout',        target:1,   barColor:'mission-bar-green',  reward:{ type:'case', kind:'basic', label:'+1 Basic Case' } },
-  { type:'workout',     icon:'◈', desc:'Crush a full workout',      target:1,   barColor:'mission-bar-green',  reward:{ type:'gold', amount:300,  label:'+300 Gold' } },
-  { type:'workout',     icon:'◈', desc:'Get a workout in today',    target:1,   barColor:'mission-bar-green',  reward:{ type:'xp',   amount:350,  label:'+350 XP' } },
+  { type:'workout',     desc:'Complete a workout',           flavor:'Any template counts',            target:1,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'workout',     desc:'Get a session in today',       flavor:'Log at least one full set',      target:1,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'workout',     desc:'Train today',                  flavor:'Any exercise, any weight',       target:1,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
   // ── Total sets logged ──
-  { type:'sets',        icon:'◎', desc:'Log 8 sets',                target:8,   barColor:'mission-bar-purple', reward:{ type:'xp',   amount:200,  label:'+200 XP' } },
-  { type:'sets',        icon:'◎', desc:'Log 12 sets',               target:12,  barColor:'mission-bar-purple', reward:{ type:'xp',   amount:300,  label:'+300 XP' } },
-  { type:'sets',        icon:'◎', desc:'Log 16 sets',               target:16,  barColor:'mission-bar-purple', reward:{ type:'gold', amount:350,  label:'+350 Gold' } },
-  { type:'sets',        icon:'◎', desc:'Log 20 sets',               target:20,  barColor:'mission-bar-purple', reward:{ type:'xp',   amount:450,  label:'+450 XP' } },
-  { type:'sets',        icon:'◎', desc:'Log 25 sets',               target:25,  barColor:'mission-bar-purple', reward:{ type:'case', kind:'basic', label:'+1 Basic Case' } },
+  { type:'sets',        desc:'Log 6 sets',                   flavor:'Warm-up volume',                 target:6,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'sets',        desc:'Log 9 sets',                   flavor:'Solid session',                  target:9,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'sets',        desc:'Log 12 sets',                  flavor:'Full-effort workout',            target:12, reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'sets',        desc:'Log 15 sets',                  flavor:'Big volume day',                 target:15, reward:{ type:'gold', amount:500, label:'+500 ◆' } },
   // ── Sets for a specific muscle ──
-  { type:'sets_muscle', icon:'◈', desc:'Log 6 chest sets',          target:6,   barColor:'mission-bar-purple', muscle:'Chest',     reward:{ type:'xp',   amount:250,  label:'+250 XP' } },
-  { type:'sets_muscle', icon:'◈', desc:'Log 6 back sets',           target:6,   barColor:'mission-bar-purple', muscle:'Back',      reward:{ type:'xp',   amount:250,  label:'+250 XP' } },
-  { type:'sets_muscle', icon:'◈', desc:'Log 6 leg sets',            target:6,   barColor:'mission-bar-purple', muscle:'Legs',      reward:{ type:'xp',   amount:250,  label:'+250 XP' } },
-  { type:'sets_muscle', icon:'◈', desc:'Log 5 shoulder sets',       target:5,   barColor:'mission-bar-purple', muscle:'Shoulders', reward:{ type:'xp',   amount:220,  label:'+220 XP' } },
-  { type:'sets_muscle', icon:'◈', desc:'Log 5 arm sets',            target:5,   barColor:'mission-bar-purple', muscle:'Arms',      reward:{ type:'xp',   amount:220,  label:'+220 XP' } },
-  { type:'sets_muscle', icon:'◈', desc:'Log 4 core sets',           target:4,   barColor:'mission-bar-purple', muscle:'Core',      reward:{ type:'gold', amount:200,  label:'+200 Gold' } },
-  { type:'sets_muscle', icon:'◈', desc:'Log 4 glute sets',          target:4,   barColor:'mission-bar-purple', muscle:'Glutes',    reward:{ type:'gold', amount:200,  label:'+200 Gold' } },
+  { type:'sets_muscle', desc:'4 chest sets',                 flavor:'Bench, fly, dips…',              target:4,  muscle:'Chest',     reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'sets_muscle', desc:'4 back sets',                  flavor:'Row, pull-down, deadlift',       target:4,  muscle:'Back',      reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'sets_muscle', desc:'Leg day — 4 sets',             flavor:'No skipping allowed',            target:4,  muscle:'Legs',      reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'sets_muscle', desc:'3 shoulder sets',              flavor:'Press or lateral raise',         target:3,  muscle:'Shoulders', reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'sets_muscle', desc:'3 arm sets',                   flavor:'Curls or extensions',            target:3,  muscle:'Arms',      reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'sets_muscle', desc:'3 core sets',                  flavor:'Planks, crunches, ab work',      target:3,  muscle:'Core',      reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'sets_muscle', desc:'3 glute sets',                 flavor:'Hip thrusts, kickbacks…',        target:3,  muscle:'Glutes',    reward:{ type:'gold', amount:500, label:'+500 ◆' } },
   // ── Open cases ──
-  { type:'case',        icon:'◻', desc:'Open a case',               target:1,   barColor:'mission-bar-green',  reward:{ type:'xp',   amount:150,  label:'+150 XP' } },
-  { type:'case',        icon:'◻', desc:'Open 2 cases',              target:2,   barColor:'mission-bar-green',  reward:{ type:'gold', amount:250,  label:'+250 Gold' } },
-  { type:'case',        icon:'◻', desc:'Open 3 cases',              target:3,   barColor:'mission-bar-green',  reward:{ type:'gold', amount:400,  label:'+400 Gold' } },
-  // ── Tap your pet ──
-  { type:'tap',         icon:'◆', desc:'Tap your pet 25 times',     target:25,  barColor:'mission-bar-orange', reward:{ type:'xp',   amount:80,   label:'+80 XP' } },
-  { type:'tap',         icon:'◆', desc:'Tap your pet 50 times',     target:50,  barColor:'mission-bar-orange', reward:{ type:'xp',   amount:120,  label:'+120 XP' } },
-  { type:'tap',         icon:'◆', desc:'Tap your pet 75 times',     target:75,  barColor:'mission-bar-orange', reward:{ type:'gold', amount:180,  label:'+180 Gold' } },
-  { type:'tap',         icon:'◆', desc:'Tap your pet 100 times',    target:100, barColor:'mission-bar-orange', reward:{ type:'gold', amount:250,  label:'+250 Gold' } },
+  { type:'case',        desc:'Open any case',                flavor:'Cases tab → tap to open',        target:1,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'case',        desc:'Open 2 cases',                 flavor:'Earn cases from workouts',       target:2,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  // ── Pet ──
+  { type:'tap',         desc:'Tap your pet 10 times',        flavor:'Give your pet some love',        target:10, reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'tap',         desc:'Tap your pet 25 times',        flavor:'Your pet is very appreciative',  target:25, reward:{ type:'gold', amount:500, label:'+500 ◆' } },
 ];
 
 // Seeded pseudo-random using date string + username
@@ -9525,7 +9541,7 @@ function generateDailyQuests(username, dateStr) {
   return chosen;
 }
 
-const QUEST_VERSION = 3; // bump when QUEST_POOL changes to refresh existing players
+const QUEST_VERSION = 4; // bump when QUEST_POOL changes to refresh existing players
 function loadDailyQuests(p) {
   const today = todayStr();
   if (!p.dailyQuests || p.dailyQuests.date !== today || p.dailyQuests.v !== QUEST_VERSION) {
@@ -9535,29 +9551,79 @@ function loadDailyQuests(p) {
   return p.dailyQuests.quests;
 }
 
+// Returns SVG markup for a quest type
+function _questIconSvg(type) {
+  const s = 'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+  if (type === 'workout')
+    return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" ${s}><path d="M6 4v16M18 4v16M2 9h4M18 9h4M2 15h4M18 15h4M6 9h12M6 15h12"/></svg>`;
+  if (type === 'sets')
+    return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" ${s}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`;
+  if (type === 'sets_muscle')
+    return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" ${s}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>`;
+  if (type === 'case')
+    return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" ${s}><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`;
+  if (type === 'tap')
+    return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" ${s}><path d="M12 2a5 5 0 1 0 0 10A5 5 0 0 0 12 2z"/><path d="M12 12v10M8 16l4 6 4-6"/></svg>`;
+  return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" ${s}><circle cx="12" cy="12" r="10"/></svg>`;
+}
+
+// Returns color/style tokens for a quest type
+function _questStyle(type) {
+  switch (type) {
+    case 'workout':     return { c:'#ccff00', bg:'rgba(204,255,0,.1)',  br:'rgba(204,255,0,.22)',  fill:'#ccff00' };
+    case 'sets':        return { c:'#a855f7', bg:'rgba(168,85,247,.1)', br:'rgba(168,85,247,.22)', fill:'#a855f7' };
+    case 'sets_muscle': return { c:'#38bdf8', bg:'rgba(56,189,248,.1)', br:'rgba(56,189,248,.22)', fill:'#38bdf8' };
+    case 'case':        return { c:'#fbbf24', bg:'rgba(251,191,36,.1)', br:'rgba(251,191,36,.22)', fill:'#fbbf24' };
+    case 'tap':         return { c:'#f97316', bg:'rgba(249,115,22,.1)', br:'rgba(249,115,22,.22)', fill:'#f97316' };
+    default:            return { c:'#ccff00', bg:'rgba(204,255,0,.1)',  br:'rgba(204,255,0,.22)',  fill:'#ccff00' };
+  }
+}
+
 function renderDailyQuests(p) {
   if (!p) return;
   const quests = loadDailyQuests(p);
-  const done = quests.filter(q => q.done).length;
+  const doneCount = quests.filter(q => q.done).length;
+
   const badge = document.getElementById('questBadge');
-  if (badge) badge.textContent = done + ' / 3 Done';
+  if (badge) {
+    badge.textContent = doneCount + ' / 3 Done';
+    badge.style.background = doneCount === 3 ? 'rgba(204,255,0,.18)' : '';
+    badge.style.color = doneCount === 3 ? 'var(--accent)' : '';
+    badge.style.borderColor = doneCount === 3 ? 'rgba(204,255,0,.35)' : '';
+  }
 
   const list = document.getElementById('missionList');
   if (!list) return;
+  list.className = 'quest-list';
+
   list.innerHTML = quests.map((q, i) => {
-    const pct = Math.min(100, Math.round((q.progress / q.target) * 100));
-    return `
-      <div class="mission-item ${q.done ? 'done' : ''}" id="quest_${i}">
-        <div class="mission-icon">${q.icon}</div>
-        <div class="mission-info">
-          <div class="mission-name">${q.desc}</div>
-          <div class="mission-bar-wrap"><div class="mission-bar ${q.barColor}" style="width:${pct}%"></div></div>
-          <div class="mission-label">${q.progress} / ${q.target}</div>
-        </div>
-        <div class="mission-reward">
-          ${q.done ? '<div class="mission-done-check">✓</div>' : `<div class="mission-reward-top">${q.reward.label}</div><div class="mission-reward-bot">${q.claimed?'Claimed':'Reward'}</div>`}
-        </div>
-      </div>`;
+    const pct  = q.target > 0 ? Math.min(100, Math.round((q.progress / q.target) * 100)) : 0;
+    const st   = _questStyle(q.type);
+    const icon = _questIconSvg(q.type);
+    const flavor = q.flavor || '';
+
+    const rewardHtml = q.done
+      ? `<div class="quest-done-pill"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Claimed</div>`
+      : `<div class="quest-reward-pill" style="color:${st.c};background:${st.bg};border-color:${st.br};">500 ◆</div>`;
+
+    return `<div class="quest-card${q.done ? ' quest-done' : ''}" id="quest_${i}">
+  <div class="quest-top">
+    <div class="quest-icon-wrap" style="background:${q.done ? 'rgba(204,255,0,.1)' : st.bg};border-color:${q.done ? 'rgba(204,255,0,.22)' : st.br};color:${q.done ? '#ccff00' : st.c};">
+      ${q.done ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : icon}
+    </div>
+    <div class="quest-body">
+      <div class="quest-title">${q.desc}</div>
+      <div class="quest-flavor">${q.done ? 'Completed' : flavor}</div>
+    </div>
+    ${rewardHtml}
+  </div>
+  <div class="quest-bottom">
+    <div class="quest-track">
+      <div class="quest-fill" style="width:${pct}%;background:${q.done ? 'var(--accent)' : st.fill};"></div>
+    </div>
+    <div class="quest-count" style="${q.done ? 'color:var(--accent)' : ''}">${q.done ? q.target + ' / ' + q.target : q.progress + ' / ' + q.target}</div>
+  </div>
+</div>`;
   }).join('');
 }
 
@@ -12104,13 +12170,15 @@ function openLevelRoad() {
     </div>`;
   }).join('');
 
-  // Scroll to current level
+  // Scroll to lowest unclaimed level, or current level if nothing to claim
   const overlay = document.getElementById('levelRoadOverlay');
   overlay.style.display = 'flex';
   setTimeout(() => {
     const nodes = road.querySelectorAll('.lr-node');
-    const cur = nodes[level - 1];
-    if (cur) cur.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const scrollTarget = unclaimed.size > 0
+      ? nodes[Math.min(...unclaimed) - 1]   // lowest level with a pending claim
+      : nodes[level - 1];                   // current level
+    if (scrollTarget) scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, 100);
 }
 
