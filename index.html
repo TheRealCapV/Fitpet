@@ -984,13 +984,30 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .pc-target-row input{flex:1;min-width:0;background:#000;border:1px solid var(--border);border-radius:10px;color:var(--accent);font-family:'DM Mono',monospace;font-size:22px;font-weight:800;text-align:center;padding:8px;appearance:textfield;-moz-appearance:textfield;}
 .pc-target-row input::-webkit-outer-spin-button,.pc-target-row input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 .pc-unit{font-family:'DM Mono',monospace;color:var(--muted);font-size:14px;}
-.pc-visual{display:flex;align-items:center;justify-content:center;gap:2px;min-height:80px;margin:18px 0 8px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px 8px;overflow-x:auto;}
-.pc-bar-graphic{width:46px;height:8px;background:linear-gradient(180deg,#bbb,#777);border-radius:3px;flex-shrink:0;}
-.pc-collar{width:6px;height:22px;background:#555;border-radius:2px;flex-shrink:0;}
-.pc-plate{width:13px;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#000;font-family:'DM Mono',monospace;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);}
-.pc-result{font-family:'DM Mono',monospace;font-size:13px;color:var(--text);text-align:center;line-height:1.8;}
-.pc-result .pc-chip{display:inline-block;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:3px 9px;margin:3px;font-weight:700;}
+/* Horizontal barbell visual */
+.pc-barbell-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:20px 14px;margin:16px 0 14px;display:flex;align-items:center;justify-content:center;overflow-x:auto;min-height:104px;}
+.pcb-wrap{display:flex;align-items:center;gap:0;flex-shrink:0;}
+.pcb-sleeve{width:42px;height:11px;background:linear-gradient(180deg,#ddd 0%,#bbb 20%,#888 55%,#777 75%,#999 100%);flex-shrink:0;box-shadow:0 1px 0 rgba(0,0,0,.4);}
+.pcb-sleeve-l{border-radius:6px 1px 1px 6px;}
+.pcb-sleeve-r{border-radius:1px 6px 6px 1px;}
+.pcb-collar{width:12px;height:40px;background:linear-gradient(90deg,#6a6a80 0%,#44445a 45%,#2a2a3c 100%);border-left:2px solid #8a8aa0;border-right:1px solid #18182a;flex-shrink:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(0,0,0,.4);}
+.pcb-center{flex:1;min-width:28px;max-width:56px;height:13px;background:repeating-linear-gradient(90deg,#8a8a8a 0px,#8a8a8a 2px,#606060 2px,#606060 4px);border-radius:2px;box-shadow:inset 0 2px 0 rgba(255,255,255,.15),inset 0 -2px 0 rgba(0,0,0,.45);}
+.pcb-plate{position:relative;border-radius:2px;flex-shrink:0;box-shadow:inset 2px 0 0 rgba(255,255,255,.18),inset -2px 0 0 rgba(0,0,0,.4),inset 0 2px 0 rgba(255,255,255,.14),inset 0 -2px 0 rgba(0,0,0,.32);}
+.pcb-plate::before{content:'';position:absolute;inset:4px 2px;border:1px solid rgba(0,0,0,.22);border-radius:1px;z-index:2;pointer-events:none;}
+.pcb-plate::after{content:'';position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:9px;background:rgba(0,0,0,.28);border-top:1px solid rgba(0,0,0,.42);border-bottom:1px solid rgba(0,0,0,.42);z-index:1;pointer-events:none;}
+.pcb-plate-lbl{position:absolute;top:3px;left:0;right:0;height:calc(50% - 8px);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:5.5px;font-weight:900;color:rgba(0,0,0,.55);writing-mode:vertical-rl;line-height:1;pointer-events:none;z-index:3;overflow:hidden;}
+/* Per-side result */
+.pc-perside-head{display:flex;align-items:baseline;gap:8px;margin-bottom:10px;}
+.pc-perside-label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;}
+.pc-chips-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.pc-chip2{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:10px;border:1px solid;font-family:'DM Mono',monospace;font-size:13px;font-weight:800;line-height:1;}
+.pc-chip2-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.pc-totline{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);padding:10px 14px;background:rgba(255,255,255,.04);border-radius:10px;border:1px solid var(--border);line-height:1.6;}
+.pc-totline strong{color:var(--text);font-size:15px;}
 .pc-warn{color:#fbbf24;font-size:12px;font-family:'DM Mono',monospace;text-align:center;padding:6px;}
+/* Inline plate icon on lbs stepper */
+.pc-lbs-btn{width:26px;height:28px;border-radius:6px;background:rgba(204,255,0,.07);border:1px solid rgba(204,255,0,.18);color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;transition:background .15s,border-color .15s;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;}
+.pc-lbs-btn:active{background:rgba(204,255,0,.2);border-color:rgba(204,255,0,.4);}
 /* Daily spin button (home) */
 .daily-spin-btn{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;cursor:pointer;font-family:'DM Mono',monospace;font-size:11px;font-weight:800;white-space:nowrap;border:1px solid rgba(251,191,36,.45);background:rgba(251,191,36,.12);color:#fbbf24;transition:all .2s;box-shadow:0 0 10px rgba(251,191,36,.2);}
 .daily-spin-btn:hover{border-color:#fbbf24;filter:brightness(1.08);}
@@ -2196,21 +2213,21 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 <div class="pc-overlay hidden" id="pcOverlay" onclick="closePlateCalc(event)">
   <div class="pc-sheet" onclick="event.stopPropagation()">
     <div class="exinfo-handle"></div>
-    <div style="display:flex;align-items:center;gap:10px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
       <div class="pc-title">Plate Calculator</div>
       <button class="exinfo-close" style="margin-left:auto;" onclick="closePlateCalc()">✕</button>
     </div>
-    <div class="pc-label">Bar weight</div>
+    <div class="pc-label">Bar</div>
     <div class="pc-bar-opts" id="pcBarOpts"></div>
-    <div class="pc-label">Target total weight</div>
+    <div class="pc-label">Total weight</div>
     <div class="pc-target-row">
       <button onclick="pcStep(-5)">−</button>
       <input id="pcTarget" type="number" inputmode="decimal" value="135" oninput="pcRender()">
       <button onclick="pcStep(5)">+</button>
       <span class="pc-unit">lbs</span>
     </div>
-    <div class="pc-visual" id="pcVisual"></div>
-    <div class="pc-result" id="pcResult"></div>
+    <div class="pc-barbell-wrap" id="pcBarbell"></div>
+    <div id="pcResult"></div>
   </div>
 </div>
 
@@ -2625,12 +2642,9 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
         <div class="active-workout-title" id="activeWorkoutTitle">Push Day A</div>
         <div class="workout-elapsed" id="workoutElapsed">00:00</div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start;">
-        <div style="display:flex;gap:8px;">
-          <button class="add-exercise-workout-btn" onclick="openAddExerciseModal()" style="margin-top:0;width:auto;padding:10px 14px;font-size:13px;">+ Add</button>
-          <button class="cancel-workout-btn" onclick="cancelWorkout()">&#x2715; Cancel</button>
-        </div>
-        <button class="add-exercise-workout-btn" onclick="openPlateCalc()" title="Plate Calculator" style="margin-top:0;width:auto;padding:10px 14px;font-size:13px;">Plates</button>
+      <div style="display:flex;gap:8px;">
+        <button class="add-exercise-workout-btn" onclick="openAddExerciseModal()" style="margin-top:0;width:auto;padding:10px 14px;font-size:13px;">+ Add</button>
+        <button class="cancel-workout-btn" onclick="cancelWorkout()">&#x2715; Cancel</button>
       </div>
     </div>
     <div class="log-exercise-list" id="logExerciseList"></div>
@@ -4847,6 +4861,7 @@ const PC_PLATES = [45, 35, 25, 10, 5, 2.5];
 const PC_BARS   = [45, 35, 25, 15, 0];
 const PC_COLORS = { 45:'#ccff00', 35:'#f59e0b', 25:'#38bdf8', 10:'#a78bfa', 5:'#f87171', 2.5:'#9ca3af' };
 const PC_HEIGHTS= { 45:64, 35:56, 25:50, 10:40, 5:34, 2.5:28 };
+const PC_WIDTHS = { 45:20, 35:18, 25:16, 10:14, 5:12, 2.5:11 };
 let pcBar = 45;
 
 function openPlateCalc(prefill) {
@@ -4873,41 +4888,93 @@ function pcStep(d) {
   pcRender();
 }
 function pcRender() {
-  const target = parseFloat(document.getElementById('pcTarget').value) || 0;
-  const visual = document.getElementById('pcVisual');
-  const result = document.getElementById('pcResult');
-  const perSide = (target - pcBar) / 2;
+  const target    = parseFloat(document.getElementById('pcTarget').value) || 0;
+  const barbellEl = document.getElementById('pcBarbell');
+  const result    = document.getElementById('pcResult');
+  const perSide   = (target - pcBar) / 2;
 
-  if (target <= 0) { visual.innerHTML = ''; result.innerHTML = '<div class="pc-warn">Enter a target weight.</div>'; return; }
-  if (perSide < 0) { visual.innerHTML = ''; result.innerHTML = `<div class="pc-warn">Target is less than the ${pcBar} lb bar.</div>`; return; }
+  if (target <= 0) {
+    barbellEl.innerHTML = _pcEmptyBar();
+    result.innerHTML = '<div class="pc-warn">Enter a target weight.</div>';
+    return;
+  }
+  if (perSide < 0) {
+    barbellEl.innerHTML = _pcEmptyBar();
+    result.innerHTML = `<div class="pc-warn">Target is below the ${pcBar || 0} lb bar.</div>`;
+    return;
+  }
 
-  // greedy plate breakdown per side
+  // Greedy plate breakdown per side (heaviest first)
   let rem = perSide;
   const plates = [];
   for (const p of PC_PLATES) {
     while (rem >= p - 1e-9) { plates.push(p); rem = +(rem - p).toFixed(2); }
   }
 
-  // visual: bar + collar + plates (heaviest nearest the bar)
-  let v = '<div class="pc-bar-graphic"></div>';
-  plates.forEach(p => {
-    v += `<div class="pc-plate" style="height:${PC_HEIGHTS[p]}px;background:${PC_COLORS[p]};">${p}</div>`;
-  });
-  v += '<div class="pc-collar"></div>';
-  visual.innerHTML = v;
+  // === Symmetric horizontal barbell visual ===
+  const mkPlates = arr => arr.map(p => {
+    const lbl = p >= 5 ? `<span class="pcb-plate-lbl">${parseInt(p)}</span>` : '';
+    return `<div class="pcb-plate" style="height:${PC_HEIGHTS[p]}px;width:${PC_WIDTHS[p]}px;background:${PC_COLORS[p]};">${lbl}</div>`;
+  }).join('');
+  // Left side: lightest outermost → heaviest at collar (reverse of plates array)
+  // Right side: heaviest at collar → lightest outermost (plates array as-is)
+  const leftHtml  = mkPlates([...plates].reverse());
+  const rightHtml = mkPlates(plates);
 
-  // text breakdown grouped
+  barbellEl.innerHTML = `<div class="pcb-wrap">
+    <div class="pcb-sleeve pcb-sleeve-l"></div>
+    ${leftHtml}
+    <div class="pcb-collar"></div><div class="pcb-center"></div><div class="pcb-collar"></div>
+    ${rightHtml}
+    <div class="pcb-sleeve pcb-sleeve-r"></div>
+  </div>`;
+
+  // === Per-side result section ===
   if (!plates.length) {
-    result.innerHTML = `<div>Just the bar — no plates needed.</div>`;
-  } else {
-    const counts = {};
-    plates.forEach(p => counts[p] = (counts[p] || 0) + 1);
-    const chips = Object.keys(counts).sort((a, b) => b - a)
-      .map(p => `<span class="pc-chip">${counts[p]} × ${p}</span>`).join('');
-    let html = `<div style="margin-bottom:6px;color:var(--muted);">Per side (×2 total):</div>${chips}`;
-    if (rem > 0.01) html += `<div class="pc-warn">Closest with standard plates — ${ (rem*2).toFixed(1) } lb short of target.</div>`;
-    result.innerHTML = html;
+    result.innerHTML = `<div class="pc-totline" style="text-align:center;">
+      <strong>Just the bar</strong><br>
+      <span style="font-size:11px;">No plates needed — ${pcBar} lbs total</span>
+    </div>`;
+    return;
   }
+
+  const counts = {};
+  plates.forEach(p => counts[p] = (counts[p] || 0) + 1);
+  const plateKeys = Object.keys(counts).map(Number).sort((a, b) => b - a);
+
+  const chips = plateKeys.map(w => {
+    const col = PC_COLORS[w];
+    return `<div class="pc-chip2" style="border-color:${col}44;background:${col}13;">
+      <div class="pc-chip2-dot" style="background:${col};"></div>
+      <span style="color:${col};">${counts[w]}&thinsp;&times;&thinsp;${w}</span>
+    </div>`;
+  }).join('');
+
+  const perSideActual = plates.reduce((s, p) => s + p, 0);
+  const totalActual   = pcBar + perSideActual * 2;
+  const barLabel      = pcBar > 0 ? `${pcBar} lb bar` : 'No bar';
+
+  let html = `
+    <div class="pc-perside-head">
+      <span class="pc-perside-label">Per side</span>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);">${plates.length} plate${plates.length !== 1 ? 's' : ''} · ${perSideActual} lbs</span>
+    </div>
+    <div class="pc-chips-row">${chips}</div>
+    <div class="pc-totline">${barLabel} + ${perSideActual}&thinsp;&times;&thinsp;2 = <strong>${totalActual} lbs</strong></div>`;
+
+  if (rem > 0.01) {
+    html += `<div class="pc-warn" style="margin-top:8px;">⚠ Missing ${(rem * 2).toFixed(1)} lb — not achievable with standard plates</div>`;
+  }
+
+  result.innerHTML = html;
+}
+
+function _pcEmptyBar() {
+  return `<div class="pcb-wrap">
+    <div class="pcb-sleeve pcb-sleeve-l"></div>
+    <div class="pcb-collar"></div><div class="pcb-center"></div><div class="pcb-collar"></div>
+    <div class="pcb-sleeve pcb-sleeve-r"></div>
+  </div>`;
 }
 
 function isCardio(exId) {
@@ -5070,7 +5137,7 @@ function buildSetRow(exId, idx, set, prevSet) {
       `<td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},-1,this)">−</button><input class="reps-input" type="number" id="reps-${exId}-${idx}" value="${set.reps}" min="0" onchange="updateSet('${exId}',${idx},'reps',this.value)"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},1,this)">+</button></div></td>`;
   } else {
     dataCols =
-      `<td><div class="lbs-stepper"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},-2.5,this)">−</button><input class="lbs-input" type="number" id="lbs-${exId}-${idx}" value="${set.lbs}" min="0" step="2.5" onchange="updateSet('${exId}',${idx},'lbs',this.value)"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},2.5,this)">+</button></div></td>` +
+      `<td><div class="lbs-stepper"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},-2.5,this)">−</button><input class="lbs-input" type="number" id="lbs-${exId}-${idx}" value="${set.lbs}" min="0" step="2.5" onchange="updateSet('${exId}',${idx},'lbs',this.value)"><button class="reps-stepper-btn" onclick="stepLbs('${exId}',${idx},2.5,this)">+</button><button class="pc-lbs-btn" onclick="openPlateCalc(parseFloat(document.getElementById('lbs-${exId}-${idx}').value)||0)" title="Plate breakdown"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="0" y="6" width="5" height="12" rx="1.5"/><rect x="5" y="9" width="3" height="6" rx="1"/><rect x="8" y="10" width="8" height="4" rx="1"/><rect x="16" y="9" width="3" height="6" rx="1"/><rect x="19" y="6" width="5" height="12" rx="1.5"/></svg></button></div></td>` +
       `<td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},-1,this)">−</button><input class="reps-input" type="number" id="reps-${exId}-${idx}" value="${set.reps}" min="0" onchange="updateSet('${exId}',${idx},'reps',this.value)"><button class="reps-stepper-btn" onclick="stepReps('${exId}',${idx},1,this)">+</button></div></td>`;
   }
   const prevCell = prevSet
@@ -5089,7 +5156,7 @@ function buildSetRow(exId, idx, set, prevSet) {
     <tr id="setrow-${exId}-${idx}-drop-${di}" class="drop-sub-row${set.done?' set-row-done':''}">
       <td class="drop-arrow">↓</td>
       <td style="color:var(--muted);font-size:12px">—</td>
-      <td><div class="lbs-stepper"><button class="reps-stepper-btn" onclick="stepDropLbs('${exId}',${idx},${di},-2.5,this)">−</button><input class="lbs-input" type="number" id="lbs-${exId}-${idx}-d${di}" value="${drop.lbs}" min="0" step="2.5" onchange="updateDrop('${exId}',${idx},${di},'lbs',this.value)"><button class="reps-stepper-btn" onclick="stepDropLbs('${exId}',${idx},${di},2.5,this)">+</button></div></td>
+      <td><div class="lbs-stepper"><button class="reps-stepper-btn" onclick="stepDropLbs('${exId}',${idx},${di},-2.5,this)">−</button><input class="lbs-input" type="number" id="lbs-${exId}-${idx}-d${di}" value="${drop.lbs}" min="0" step="2.5" onchange="updateDrop('${exId}',${idx},${di},'lbs',this.value)"><button class="reps-stepper-btn" onclick="stepDropLbs('${exId}',${idx},${di},2.5,this)">+</button><button class="pc-lbs-btn" onclick="openPlateCalc(parseFloat(document.getElementById('lbs-${exId}-${idx}-d${di}').value)||0)" title="Plate breakdown"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="0" y="6" width="5" height="12" rx="1.5"/><rect x="5" y="9" width="3" height="6" rx="1"/><rect x="8" y="10" width="8" height="4" rx="1"/><rect x="16" y="9" width="3" height="6" rx="1"/><rect x="19" y="6" width="5" height="12" rx="1.5"/></svg></button></div></td>
       <td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepDropReps('${exId}',${idx},${di},-1,this)">−</button><input class="reps-input" type="number" id="reps-${exId}-${idx}-d${di}" value="${drop.reps}" min="0" onchange="updateDrop('${exId}',${idx},${di},'reps',this.value)"><button class="reps-stepper-btn" onclick="stepDropReps('${exId}',${idx},${di},1,this)">+</button></div></td>
       <td>${di === set.drops.length-1 ? `<button class="add-drop-btn" onclick="addDrop('${exId}',${idx})">+drop</button>` : ''}<button class="set-delete-btn" onclick="removeDrop('${exId}',${idx},${di})">✕</button></td>
     </tr>`;
