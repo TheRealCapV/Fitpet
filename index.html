@@ -3211,7 +3211,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .flap-chip-row{display:flex;gap:9px;justify-content:center;margin-bottom:20px;}
 .flap-chip{flex:1;max-width:124px;display:flex;flex-direction:column;gap:3px;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:9px 6px;}
 .flap-chip-val{font-family:'DM Mono',monospace;font-size:17px;font-weight:800;color:var(--text);}
-.flap-chip-val.accent{color:var(--accent);}
+.flap-chip-val.accent{color:#fbbf24;}
 .flap-chip-lbl{font-size:8.5px;letter-spacing:1.5px;font-weight:700;color:var(--muted);font-family:'DM Mono',monospace;}
 
 .flap-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:15px;border:none;border-radius:13px;background:var(--accent);color:#0a0a0c;font-family:'DM Mono',monospace;font-weight:800;font-size:15px;letter-spacing:1.5px;cursor:pointer;transition:transform .12s,box-shadow .2s,filter .2s;box-shadow:0 6px 20px -6px rgba(163,230,53,.5);}
@@ -3222,8 +3222,8 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .flap-hint .flap-kbd{font-size:9.5px;padding:0 5px;}
 
 /* game over */
-.flap-medal{width:64px;height:64px;margin:0 auto 11px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:31px;background:var(--bg3);border:1px solid var(--border);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);}
-.flap-medal.best{border-color:rgba(163,230,53,.5);box-shadow:0 0 28px -4px rgba(163,230,53,.55),inset 0 0 0 1px rgba(163,230,53,.2);}
+.flap-medal{width:64px;height:64px;margin:0 auto 11px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);background:var(--bg3);border:1px solid var(--border);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);}
+.flap-medal.best{color:#fbbf24;border-color:rgba(251,191,36,.5);box-shadow:0 0 28px -4px rgba(251,191,36,.5),inset 0 0 0 1px rgba(251,191,36,.2);}
 .flap-over-eyebrow{font-family:'DM Mono',monospace;font-size:11px;font-weight:800;letter-spacing:2.5px;color:var(--muted);margin-bottom:8px;}
 .flap-over-eyebrow.best{color:var(--accent);}
 .flap-over-score{font-family:'DM Mono',monospace;font-size:58px;font-weight:800;line-height:1;color:var(--text);}
@@ -3231,15 +3231,39 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .flap-stats{display:flex;gap:10px;margin-bottom:20px;}
 .flap-stat{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:11px 6px;display:flex;flex-direction:column;gap:4px;}
 .flap-stat-val{font-family:'DM Mono',monospace;font-weight:800;font-size:19px;color:var(--text);}
-.flap-stat-val.gold{color:var(--accent);}
+.flap-stat-val.gold{color:#fbbf24;}
 .flap-stat-lbl{font-size:8.5px;letter-spacing:1.5px;color:var(--muted);font-family:'DM Mono',monospace;font-weight:700;}
 
-.flap-statbar{display:flex;gap:9px;max-width:560px;margin:13px auto 0;}
+.flap-statbar{display:flex;gap:9px;max-width:560px;margin:8px auto 0;}
 .flap-sb{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:12px 6px;transition:border-color .2s;}
 .flap-sb:hover{border-color:rgba(163,230,53,.3);}
 .flap-sb-val{font-family:'DM Mono',monospace;font-weight:800;font-size:18px;color:var(--text);}
-.flap-sb-val.accent{color:var(--accent);}
+.flap-sb-val.accent{color:#fbbf24;}
 .flap-sb-lbl{font-size:9px;letter-spacing:1.5px;font-weight:700;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;}
+
+.flap-stattabs{display:flex;gap:3px;justify-content:center;align-items:center;width:max-content;margin:14px auto 0;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:3px;}
+.flap-stattab{border:none;background:none;color:var(--muted);font-family:'DM Mono',monospace;font-weight:700;font-size:10px;letter-spacing:.4px;padding:5px 13px;border-radius:7px;cursor:pointer;transition:background .18s,color .18s;}
+.flap-stattab.active{background:var(--accent);color:#0a0a0c;}
+.flap-stattab:not(.active):hover{color:var(--text);}
+
+.flap-info-btn{position:absolute;top:13px;right:13px;width:25px;height:25px;border-radius:50%;border:1px solid var(--border);background:var(--bg3);color:var(--muted);font-family:'DM Mono',monospace;font-weight:800;font-size:13px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;z-index:3;transition:color .18s,border-color .18s;}
+.flap-info-btn:hover{color:var(--accent);border-color:var(--accent);}
+.flap-info-card{text-align:left;}
+.flap-info-close{position:absolute;top:11px;right:11px;width:28px;height:28px;border:none;background:none;color:var(--muted);font-size:18px;line-height:1;cursor:pointer;border-radius:8px;padding:0;}
+.flap-info-close:hover{color:var(--text);}
+.flap-info-title{font-family:'DM Mono',monospace;font-weight:800;font-size:13px;letter-spacing:2px;color:var(--accent);text-align:center;margin-bottom:18px;}
+.flap-inforow{display:flex;align-items:center;gap:12px;margin-bottom:14px;text-align:left;}
+.flap-inforow-ic{flex-shrink:0;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--bg3);border:1px solid var(--border);}
+.flap-inforow-txt{display:flex;flex-direction:column;gap:2px;}
+.flap-inforow-txt b{font-size:13.5px;color:var(--text);font-weight:700;}
+.flap-inforow-txt span{font-size:11px;color:var(--muted);line-height:1.45;}
+.flap-info-card .flap-btn{margin-top:8px;}
+
+.flap-bonus-pop{position:absolute;top:-4px;left:50%;transform:translate(-50%,6px) scale(.6);font-family:'DM Mono',monospace;font-weight:800;font-size:13px;color:#fbbf24;white-space:nowrap;opacity:0;pointer-events:none;text-shadow:0 2px 8px rgba(0,0,0,.7);z-index:4;}
+.flap-bonus-pop.show{animation:flapBonusPop 1.15s cubic-bezier(.2,.7,.3,1) forwards;}
+@keyframes flapBonusPop{0%{opacity:0;transform:translate(-50%,6px) scale(.6);}14%{opacity:1;transform:translate(-50%,-3px) scale(1.18);}32%{transform:translate(-50%,-7px) scale(1);}78%{opacity:1;transform:translate(-50%,-24px) scale(1);}100%{opacity:0;transform:translate(-50%,-34px) scale(1);}}
+.flap-stat-val.bonus-pulse{animation:flapValPulse .65s ease-out;}
+@keyframes flapValPulse{0%{transform:scale(1);}26%{transform:scale(1.2);color:#fde047;}100%{transform:scale(1);}}
 </style>
 <div class="page" id="page-battle">
   <div class="page-header"><div class="page-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:8px"><line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>Flap Run</div></div>
@@ -3252,6 +3276,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
     <!-- Start overlay -->
     <div class="flap-overlay" id="flapStart">
       <div class="flap-card">
+        <button class="flap-info-btn" onclick="openFlapInfo()" aria-label="How coins work">?</button>
         <div class="flap-pet-stage">
           <div class="flap-pet-glow"></div>
           <div class="flap-pet-ring"></div>
@@ -3271,23 +3296,48 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
     <!-- Game over overlay -->
     <div class="flap-overlay hidden" id="flapOver">
       <div class="flap-card">
-        <div class="flap-medal" id="flapMedal">&#129414;</div>
+        <button class="flap-info-btn" onclick="openFlapInfo()" aria-label="How coins work">?</button>
+        <div class="flap-medal" id="flapMedal"></div>
         <div class="flap-over-eyebrow" id="flapOverEyebrow">RUN OVER</div>
         <div class="flap-over-score" id="flapOverScore">0</div>
         <div class="flap-over-label">gates cleared</div>
         <div class="flap-stats">
-          <div class="flap-stat"><span class="flap-stat-val" id="flapOverBest">0</span><span class="flap-stat-lbl">BEST</span></div>
-          <div class="flap-stat"><span class="flap-stat-val gold" id="flapOverGold">&#9670; 0</span><span class="flap-stat-lbl">EARNED</span></div>
+          <div class="flap-stat" style="position:relative;"><span class="flap-stat-val gold" id="flapOverGold">&#9670; 0</span><span class="flap-stat-lbl">Earned</span><span class="flap-bonus-pop" id="flapBonusBadge">+0</span></div>
+          <div class="flap-stat"><span class="flap-stat-val" id="flapOverBest">0</span><span class="flap-stat-lbl">Best</span></div>
         </div>
         <button class="flap-btn" id="flapAgainBtn" onclick="flapStartGame()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>PLAY AGAIN</button>
         <div class="flap-hint">tap to retry</div>
       </div>
     </div>
+    <!-- Coin rewards info -->
+    <div class="flap-overlay flap-info hidden" id="flapInfo" onclick="flapInfoBg(event)">
+      <div class="flap-card flap-info-card">
+        <button class="flap-info-close" onclick="closeFlapInfo()" aria-label="Close">&times;</button>
+        <div class="flap-info-title">&#9670; COIN REWARDS</div>
+        <div class="flap-inforow">
+          <div class="flap-inforow-ic" style="color:#fbbf24;border-color:rgba(251,191,36,.35);">&#9670;</div>
+          <div class="flap-inforow-txt"><b>+<span id="fiPerGate">5</span> coins per gate</b><span>Earned for every gate you clear in a run.</span></div>
+        </div>
+        <div class="flap-inforow">
+          <div class="flap-inforow-ic" style="color:#fbbf24;border-color:rgba(251,191,36,.35);">&#9733;</div>
+          <div class="flap-inforow-txt"><b>+<span id="fiBest">40</span> high-score bonus</b><span>Beat your personal best to earn a bonus on top.</span></div>
+        </div>
+        <div class="flap-inforow">
+          <div class="flap-inforow-ic" style="color:var(--muted);">&#8593;</div>
+          <div class="flap-inforow-txt"><b>Up to <span id="fiCap">500</span> per run</b><span>The most coins a single run can pay out.</span></div>
+        </div>
+        <button class="flap-btn" onclick="closeFlapInfo()">GOT IT</button>
+      </div>
+    </div>
+  </div>
+  <div class="flap-stattabs" id="flapStatTabs">
+    <button class="flap-stattab" data-mode="run" onclick="flapSetStatMode('run')">This Run</button>
+    <button class="flap-stattab active" data-mode="all" onclick="flapSetStatMode('all')">All-Time</button>
   </div>
   <div class="flap-statbar">
-    <div class="flap-sb"><div class="flap-sb-val" id="flapSbBest">0</div><div class="flap-sb-lbl">Best</div></div>
-    <div class="flap-sb"><div class="flap-sb-val accent" id="flapSbCoins">◆ 0</div><div class="flap-sb-lbl">Earned</div></div>
-    <div class="flap-sb"><div class="flap-sb-val" id="flapSbRuns">0</div><div class="flap-sb-lbl">Runs</div></div>
+    <div class="flap-sb"><div class="flap-sb-val" id="flapSb1v">0</div><div class="flap-sb-lbl" id="flapSb1l">Best</div></div>
+    <div class="flap-sb"><div class="flap-sb-val accent" id="flapSb2v">◆ 0</div><div class="flap-sb-lbl" id="flapSb2l">Earned</div></div>
+    <div class="flap-sb"><div class="flap-sb-val" id="flapSb3v">0</div><div class="flap-sb-lbl" id="flapSb3l">Runs</div></div>
   </div>
 </div>
 
@@ -9944,6 +9994,10 @@ const QUEST_POOL = [
   // ── Pet ──
   { type:'tap',         desc:'Tap your duck 10 times',       flavor:'Give your duck some love',       target:10, reward:{ type:'gold', amount:500, label:'+500 ◆' } },
   { type:'tap',         desc:'Tap your duck 25 times',       flavor:'Your duck is very appreciative', target:25, reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  // ── Flap Run (Arcade) ──
+  { type:'flap_score',  desc:'Score 5+ in Flap Run',         flavor:'Arcade tab · thread the gates',  target:5,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'flap_score',  desc:'Score 10+ in Flap Run',        flavor:'Arcade tab · thread the gates',  target:10, reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'flap_score',  desc:'Score 15+ in Flap Run',        flavor:'Arcade tab · for the pros',       target:15, reward:{ type:'gold', amount:500, label:'+500 ◆' } },
 ];
 
 // Seeded pseudo-random using date string + username
@@ -9974,7 +10028,7 @@ function generateDailyQuests(username, dateStr) {
   return chosen;
 }
 
-const QUEST_VERSION = 4; // bump when QUEST_POOL changes to refresh existing players
+const QUEST_VERSION = 5; // bump when QUEST_POOL changes to refresh existing players
 function loadDailyQuests(p) {
   const today = todayStr();
   if (!p.dailyQuests || p.dailyQuests.date !== today || p.dailyQuests.v !== QUEST_VERSION) {
@@ -9997,6 +10051,8 @@ function _questIconSvg(type) {
     return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" ${s}><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`;
   if (type === 'tap')
     return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" ${s}><path d="M12 2a5 5 0 1 0 0 10A5 5 0 0 0 12 2z"/><path d="M12 12v10M8 16l4 6 4-6"/></svg>`;
+  if (type === 'flap_score')
+    return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" ${s}><line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>`;
   return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" ${s}><circle cx="12" cy="12" r="10"/></svg>`;
 }
 
@@ -10008,6 +10064,7 @@ function _questStyle(type) {
     case 'sets_muscle': return { c:'#38bdf8', bg:'rgba(56,189,248,.1)', br:'rgba(56,189,248,.22)', fill:'#38bdf8' };
     case 'case':        return { c:'#fbbf24', bg:'rgba(251,191,36,.1)', br:'rgba(251,191,36,.22)', fill:'#fbbf24' };
     case 'tap':         return { c:'#f97316', bg:'rgba(249,115,22,.1)', br:'rgba(249,115,22,.22)', fill:'#f97316' };
+    case 'flap_score':  return { c:'#ec4899', bg:'rgba(236,72,153,.1)', br:'rgba(236,72,153,.22)', fill:'#ec4899' };
     default:            return { c:'#a3e635', bg:'rgba(163,230,53,.1)',  br:'rgba(163,230,53,.22)',  fill:'#a3e635' };
   }
 }
@@ -10070,7 +10127,8 @@ function updateQuestProgress(type, amount, extra) {
     if (q.type === type) matches = true;
     if (q.type === 'sets_muscle' && type === 'sets_muscle' && q.muscle === extra) matches = true;
     if (!matches) return;
-    q.progress = Math.min(q.target, (q.progress || 0) + (amount || 1));
+    if (q.type === 'flap_score') q.progress = Math.min(q.target, Math.max(q.progress || 0, amount || 0)); // best score, not cumulative
+    else q.progress = Math.min(q.target, (q.progress || 0) + (amount || 1));
     if (q.progress >= q.target && !q.done) {
       q.done = true;
       anyCompleted = true;
@@ -13175,6 +13233,8 @@ function _runWoConfetti(canvas, duration) {
   let particles=[], motes=[], shake=0, flash=0, dying=false, dieT=0, flapped=false;
   let duckImg=null, duckReady=false, duckEmoji='🦆', duckGlow='#a3e635';
   let idleRAF=null, idleMode=false, idleLast=0;
+  let flapStatPref='all', lastRunScore=0, lastRunGold=0;
+  let flapBonusTimer=null, flapBonusRAF=null;
 
   const el = id => document.getElementById(id);
   const pageActive = () => { const pg=el('page-battle'); return pg && pg.classList.contains('active'); };
@@ -13257,38 +13317,58 @@ function _runWoConfetti(canvas, duration) {
   function startGame(){
     if(!canvas){ initFlapGame(); }
     stopIdle();
+    if(flapBonusTimer){ clearTimeout(flapBonusTimer); flapBonusTimer=null; }
+    if(flapBonusRAF){ cancelAnimationFrame(flapBonusRAF); flapBonusRAF=null; }
+    const _bb=el('flapBonusBadge'); if(_bb) _bb.classList.remove('show');
     el('flapStart').classList.add('hidden');
     el('flapOver').classList.add('hidden');
     loadDuckImage();
     sizeCanvas();
     reset();
     const s=el('flapScore'); s.style.display='block'; s.textContent='0'; s.classList.remove('pop');
-    running=true; lastT=performance.now();
+    running=true; lastT=performance.now(); refreshStats();
     if(raf) cancelAnimationFrame(raf);
     raf=requestAnimationFrame(loop);
   }
   window.flapStartGame = startGame;
 
   function rankFor(s){
-    if(s>=35) return {m:'🔥',t:'INSANE'};
-    if(s>=20) return {m:'🥇',t:'BEAST MODE'};
-    if(s>=10) return {m:'🥈',t:'SOLID RUN'};
-    if(s>=5)  return {m:'🥉',t:'NICE'};
-    return {m:'🦆',t:'RUN OVER'};
+    if(s>=35) return 'INSANE';
+    if(s>=20) return 'BEAST MODE';
+    if(s>=10) return 'SOLID RUN';
+    if(s>=5)  return 'NICE';
+    return 'RUN OVER';
   }
 
+  function flapBonusReveal(from, to, bonus){
+    const valEl=el('flapOverGold'), badge=el('flapBonusBadge');
+    if(!valEl) return;
+    if(badge){ badge.textContent='+'+bonus; badge.classList.remove('show'); void badge.offsetWidth; badge.classList.add('show'); }
+    valEl.classList.remove('bonus-pulse'); void valEl.offsetWidth; valEl.classList.add('bonus-pulse');
+    const dur=750, t0=performance.now();
+    if(flapBonusRAF) cancelAnimationFrame(flapBonusRAF);
+    (function step(now){
+      const pr=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-pr,3);
+      valEl.textContent='◆ '+Math.round(from+(to-from)*e);
+      if(pr<1){ flapBonusRAF=requestAnimationFrame(step); }
+      else { valEl.textContent='◆ '+to; flapBonusRAF=null; setTimeout(()=>valEl.classList.remove('bonus-pulse'), 350); }
+    })(performance.now());
+  }
   function finalizeEnd(){
     running=false; dying=false;
     if(raf){ cancelAnimationFrame(raf); raf=null; }
     el('flapScore').style.display='none';
-    let best=0, gold=0, isBest=false;
+    if(flapBonusTimer){ clearTimeout(flapBonusTimer); flapBonusTimer=null; }
+    if(flapBonusRAF){ cancelAnimationFrame(flapBonusRAF); flapBonusRAF=null; }
+    let best=0, gold=0, gatesGold=0, bonus=0, isBest=false;
     try{
       const p=getP();
       if(p){
         best=p.flapBest||0;
         if(score>best){ best=score; p.flapBest=best; isBest=true; }
-        gold=Math.min(score*GOLD_PER_POINT, GOLD_CAP);
-        if(isBest && score>0) gold+=NEW_BEST_BONUS;
+        gatesGold=Math.min(score*GOLD_PER_POINT, GOLD_CAP);
+        bonus=(isBest && score>0) ? NEW_BEST_BONUS : 0;
+        gold=gatesGold+bonus;
         if(gold>0) p.gold=(p.gold||0)+gold;
         p.flapGoldTotal=(p.flapGoldTotal||0)+gold; p.flapRuns=(p.flapRuns||0)+1;
         if(typeof saveP==='function') saveP(p);
@@ -13297,13 +13377,23 @@ function _runWoConfetti(canvas, duration) {
     }catch(e){}
     el('flapOverScore').textContent=score;
     el('flapOverBest').textContent=best;
-    el('flapOverGold').textContent='◆ '+gold;
+    const _badge=el('flapBonusBadge'); if(_badge) _badge.classList.remove('show');
+    if(bonus>0){
+      el('flapOverGold').textContent='◆ '+gatesGold;          // gates-only first
+      flapBonusTimer=setTimeout(()=>flapBonusReveal(gatesGold, gold, bonus), 680);
+    } else {
+      el('flapOverGold').textContent='◆ '+gold;
+    }
     const eb=el('flapOverEyebrow'), md=el('flapMedal');
-    if(isBest && score>0){ md.textContent='⭐'; md.classList.add('best'); eb.textContent='NEW BEST!'; eb.classList.add('best'); }
-    else { const rk=rankFor(score); md.textContent=rk.m; md.classList.remove('best'); eb.textContent=rk.t; eb.classList.remove('best'); }
+    const STAR_FILL='<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2.4l2.95 5.98 6.6.96-4.77 4.65 1.13 6.57L12 17.5l-5.91 3.06 1.13-6.57L2.45 9.34l6.6-.96L12 2.4z"/></svg>';
+    const STAR_LINE='<svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2.4l2.95 5.98 6.6.96-4.77 4.65 1.13 6.57L12 17.5l-5.91 3.06 1.13-6.57L2.45 9.34l6.6-.96L12 2.4z"/></svg>';
+    if(isBest && score>0){ md.innerHTML=STAR_FILL; md.classList.add('best'); eb.textContent='NEW BEST!'; eb.classList.add('best'); }
+    else { md.innerHTML=STAR_LINE; md.classList.remove('best'); eb.textContent=rankFor(score); eb.classList.remove('best'); }
     el('flapOver').classList.remove('hidden');
     if(gold>0 && typeof showToast==='function') showToast('◆ +'+gold+' from Flap Run');
-    updateStatbar(); startIdle();
+    lastRunScore=score; lastRunGold=gold;
+    try{ if(typeof updateQuestProgress==='function' && score>0){ updateQuestProgress('flap_score', score); const gc=el('goldCount'); const pq=getP(); if(gc&&pq) gc.textContent=((pq.gold)||0).toLocaleString(); } }catch(e){}
+    refreshStats(); startIdle();
   }
 
   function loop(now){
@@ -13339,8 +13429,8 @@ function _runWoConfetti(canvas, duration) {
 
     updateEffects(dt);
 
-    if(duck.y - duck.r < 0){ duck.y=duck.r; duck.vy=0; }
-    if(duck.y + duck.r > groundY){ duck.y=groundY-duck.r; death(); draw(); raf=requestAnimationFrame(loop); return; }
+    if(duck.y - duck.r < 0){ duck.y=duck.r; duck.vy=0; }                 // ceiling = bonk
+    if(duck.y + duck.r > groundY){ duck.y=groundY-duck.r; duck.vy=0; }    // floor = land, not death
     for(const o of obstacles){ if(hits(duck,o)){ death(); draw(); raf=requestAnimationFrame(loop); return; } }
 
     draw();
@@ -13351,6 +13441,7 @@ function _runWoConfetti(canvas, duration) {
     const s=el('flapScore'); s.textContent=score;
     s.classList.remove('pop'); void s.offsetWidth; s.classList.add('pop');
     spawnSparkle(duck.x, o.gapY + o.gap/2);
+    refreshStats();
   }
 
   function hits(d,o){
@@ -13483,6 +13574,7 @@ function _runWoConfetti(canvas, duration) {
 
   function onKey(e){
     if(!pageActive()) return;
+    if(el('flapInfo') && !el('flapInfo').classList.contains('hidden')){ if(e.code==='Space'||e.key===' ') e.preventDefault(); return; }
     if(e.code==='Space' || e.key===' '){
       e.preventDefault();
       if(running) flap();
@@ -13529,15 +13621,47 @@ function _runWoConfetti(canvas, duration) {
     idleRAF=requestAnimationFrame(idleLoop);
   }
   function stopIdle(){ idleMode=false; if(idleRAF){ cancelAnimationFrame(idleRAF); idleRAF=null; } }
-  function updateStatbar(){
-    try{
-      const p=getP(); if(!p) return;
-      const a=el('flapSbBest'), b=el('flapSbCoins'), c=el('flapSbRuns');
-      if(a) a.textContent=p.flapBest||0;
-      if(b) b.textContent='◆ '+((p.flapGoldTotal||0).toLocaleString());
-      if(c) c.textContent=p.flapRuns||0;
-    }catch(e){}
+  function setStat(i, val, label, accent){
+    const v=el('flapSb'+i+'v'), l=el('flapSb'+i+'l');
+    if(v){ v.textContent=val; v.classList.toggle('accent', !!accent); }
+    if(l) l.textContent=label;
   }
+  function refreshStats(){
+    const live = running;                 // mid-game (incl. crash tumble)
+    const tabs = el('flapStatTabs');
+    if(tabs){
+      tabs.style.visibility = live ? 'hidden' : 'visible';
+      tabs.querySelectorAll('.flap-stattab').forEach(b=>b.classList.toggle('active', b.dataset.mode===flapStatPref));
+    }
+    let best=0, earned=0, runs=0;
+    try{ const p=getP(); if(p){ best=p.flapBest||0; earned=p.flapGoldTotal||0; runs=p.flapRuns||0; } }catch(e){}
+    const mode = live ? 'run' : flapStatPref;
+    if(mode==='run'){
+      const sc_ = live ? score : lastRunScore;
+      const gd_ = live ? Math.min(score*GOLD_PER_POINT, GOLD_CAP) : lastRunGold;
+      setStat(1, sc_, live ? 'Gates' : 'Last Run', false);
+      setStat(2, '◆ '+gd_.toLocaleString(), 'Coins', true);
+      setStat(3, best, 'Best', false);
+    } else {
+      setStat(1, best, 'Best', false);
+      setStat(2, '◆ '+earned.toLocaleString(), 'Earned', true);
+      setStat(3, runs, 'Runs', false);
+    }
+  }
+  function flapSetStatMode(m){
+    if(running) return;                   // mid-game always shows the live run
+    flapStatPref = (m==='run') ? 'run' : 'all';
+    try{ const p=getP(); if(p){ p.flapStatPref=flapStatPref; if(typeof saveP==='function') saveP(p); } }catch(e){}
+    refreshStats();
+  }
+  window.flapSetStatMode = flapSetStatMode;
+  function openFlapInfo(){
+    try{ el('fiPerGate').textContent=GOLD_PER_POINT; el('fiBest').textContent=NEW_BEST_BONUS; el('fiCap').textContent=GOLD_CAP; }catch(e){}
+    const o=el('flapInfo'); if(o) o.classList.remove('hidden');
+  }
+  function closeFlapInfo(){ const o=el('flapInfo'); if(o) o.classList.add('hidden'); }
+  function flapInfoBg(e){ if(e && e.target && e.target.id==='flapInfo') closeFlapInfo(); }
+  window.openFlapInfo=openFlapInfo; window.closeFlapInfo=closeFlapInfo; window.flapInfoBg=flapInfoBg;
   function initFlapGame(){
     canvas = el('flapCanvas'); if(!canvas) return;
     if(!ctx) ctx = canvas.getContext('2d');
@@ -13556,7 +13680,8 @@ function _runWoConfetti(canvas, duration) {
       el('flapStartPet').innerHTML = petImgHtml(p.equippedSkin, sk?sk.emoji:'🦆');
       el('flapBestVal').textContent = p.flapBest||0;
     }catch(e){}
-    updateStatbar();
+    try{ const p=getP(); flapStatPref=(p&&p.flapStatPref)||'all'; }catch(e){}
+    refreshStats();
     startIdle();
     if(!initFlapGame._bound){
       initFlapGame._bound=true;
