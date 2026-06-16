@@ -2364,7 +2364,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
         <div style="width:36px;height:36px;border-radius:10px;background:rgba(163,230,53,.08);border:1px solid rgba(163,230,53,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">▶</div>
         <div style="flex:1;">
           <div style="font-size:13px;font-weight:800;color:var(--accent);">Watch Ad</div>
-          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;" id="adRewardSub">+200 ◆ OR 1× EGG</div>
+          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;" id="adRewardSub">+200 ◆ & 1× EGG</div>
         </div>
         <button class="gold-claim-btn gold-claim-btn-sm" id="adRewardBtn" onclick="openAdReward()" style="border-color:rgba(163,230,53,.4);color:var(--accent);background:rgba(163,230,53,.08);padding:5px 12px;font-size:11px;">Watch</button>
       </div>
@@ -9592,22 +9592,23 @@ function collectAdReward() {
   const p = getP(); if (!p) return;
   const today = new Date().toISOString().slice(0,10);
 
-  // Pick reward: alternate gold and case, weighted toward gold
-  const giveCase = Math.random() < 0.35;
-  if (giveCase) {
-    p.cases = p.cases || {};
-    p.cases.basic = (p.cases.basic || 0) + 1;
-    showAchieve({ type:'quest', icon:'🥚', eyebrow:'Ad Reward', title:'1× Plain Egg', sub:'Hatch it in the Eggs tab!' });
-  } else {
-    p.gold = (p.gold || 0) + AD_GOLD;
-    showAchieve({ type:'gold', icon:'▶', eyebrow:'Ad Reward', title:`+${AD_GOLD} ◆ Gold`, sub:'Watch another ad in 30 minutes' });
-  }
+  // Every ad pays gold AND an egg — mostly Plain, small chance of a better tier
+  p.gold = (p.gold || 0) + AD_GOLD;
+  p.cases = p.cases || {};
+  const _r = Math.random();
+  let _kind, _eggName;
+  if (_r < 0.05)      { _kind = 'legendary'; _eggName = 'Golden Egg';   }   // 5%
+  else if (_r < 0.25) { _kind = 'rare';      _eggName = 'Speckled Egg'; }   // 20%
+  else                { _kind = 'basic';     _eggName = 'Plain Egg';    }   // 75%
+  p.cases[_kind] = (p.cases[_kind] || 0) + 1;
+  showAchieve({ type:'gold', icon:'🥚', eyebrow:'Ad Reward', title:`+${AD_GOLD} ◆ & 1× ${_eggName}`, sub:'Hatch it in the Eggs tab!' });
 
   p.lastAdClaim  = Date.now();
   p.adCountToday = (p.adCountToday || 0) + 1;
   p.lastAdDay    = today;
   saveP(p);
   refreshHomeStats();
+  if (typeof updateCaseCounts === 'function') updateCaseCounts();
   updateAdRewardUI();
   closeAdReward();
 }
@@ -9636,7 +9637,7 @@ function updateAdRewardUI() {
     if (sub) sub.textContent = `MAX ${AD_MAX_DAILY}/DAY REACHED`;
   } else {
     btn.textContent = 'Watch';
-    if (sub) sub.textContent = `${count}/${AD_MAX_DAILY} TODAY · +200 ◆ OR 1× CASE`;
+    if (sub) sub.textContent = `${count}/${AD_MAX_DAILY} TODAY · +200 ◆ & 1× EGG`;
   }
 }
 
@@ -13231,6 +13232,7 @@ function _runWoConfetti(canvas, duration) {
   let raf=null, running=false, lastT=0;
   let duck, obstacles, spawnDist, score, scrollX, groundY;
   let particles=[], motes=[], shake=0, flash=0, dying=false, dieT=0, flapped=false;
+  let flapRecord=0, gateCount=0;   // record gate = the gate that reaches your current best
   let duckImg=null, duckReady=false, duckEmoji='🦆', duckGlow='#a3e635';
   let idleRAF=null, idleMode=false, idleLast=0;
   let flapStatPref='all', lastRunScore=0, lastRunGold=0;
@@ -13283,7 +13285,7 @@ function _runWoConfetti(canvas, duration) {
 
   function reset(){
     duck = { x: W*0.28, y: H*0.44, vy:0, r:24*sc, rot:0 };
-    obstacles=[]; spawnDist=W*0.62; score=0; scrollX=0;
+    obstacles=[]; spawnDist=W*0.62; score=0; scrollX=0; gateCount=0;
     particles=[]; shake=0; flash=0; dying=false; dieT=0; flapped=false;
   }
 
@@ -13291,7 +13293,7 @@ function _runWoConfetti(canvas, duration) {
     const gap = Math.max(150*sc, (212 - Math.min(score*4,72))*sc);
     const m = 58*sc;
     const top = m + Math.random()*Math.max(10,(groundY - m - gap - m));
-    obstacles.push({ x: W + 40*sc, w: 64*sc, gapY: top, gap: gap, passed:false });
+    obstacles.push({ x: W + 40*sc, w: 64*sc, gapY: top, gap: gap, passed:false, num: ++gateCount });
   }
 
   // ── particles ──
@@ -13325,6 +13327,7 @@ function _runWoConfetti(canvas, duration) {
     loadDuckImage();
     sizeCanvas();
     reset();
+    flapRecord = (function(){ try{ return (getP()&&getP().flapBest)||0; }catch(e){ return 0; } })();
     const s=el('flapScore'); s.style.display='block'; s.textContent='0'; s.classList.remove('pop');
     running=true; lastT=performance.now(); refreshStats();
     if(raf) cancelAnimationFrame(raf);
@@ -13460,12 +13463,14 @@ function _runWoConfetti(canvas, duration) {
   }
   function line(x1,y1,x2,y2){ ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); }
 
-  function drawCap(x, edgeY, w, top){
+  function drawCap(x, edgeY, w, top, gold){
     const capH=16*sc, r=7*sc, y= top? edgeY-capH : edgeY;
     ctx.save();
-    ctx.shadowColor='rgba(163,230,53,.65)'; ctx.shadowBlur=15*sc;
+    ctx.shadowColor = gold ? 'rgba(251,191,36,.8)' : 'rgba(163,230,53,.65)';
+    ctx.shadowBlur = (gold?20:15)*sc;
     const gg=ctx.createLinearGradient(0,y,0,y+capH);
-    gg.addColorStop(0, top?'#7fae24':'#a3e635'); gg.addColorStop(1, top?'#a3e635':'#7fae24');
+    if(gold){ gg.addColorStop(0, top?'#b07d12':'#fbbf24'); gg.addColorStop(1, top?'#fbbf24':'#b07d12'); }
+    else { gg.addColorStop(0, top?'#7fae24':'#a3e635'); gg.addColorStop(1, top?'#a3e635':'#7fae24'); }
     roundRect(x-3*sc, y, w+6*sc, capH, r); ctx.fillStyle=gg; ctx.fill();
     ctx.restore();
     ctx.strokeStyle='rgba(255,255,255,.4)'; ctx.lineWidth=1.5;
@@ -13474,19 +13479,25 @@ function _runWoConfetti(canvas, duration) {
 
   function drawObstacle(o){
     const r=11*sc, by=o.gapY+o.gap;
+    const isRecord = (flapRecord>0 && o.num===flapRecord);   // the gate that reaches your best → full gold
     const grad=ctx.createLinearGradient(o.x,0,o.x+o.w,0);
-    grad.addColorStop(0,'#191920'); grad.addColorStop(0.16,'#34343f');
-    grad.addColorStop(0.5,'#26262f'); grad.addColorStop(0.84,'#1b1b21'); grad.addColorStop(1,'#131318');
+    if(isRecord){
+      grad.addColorStop(0,'#2a2310'); grad.addColorStop(0.16,'#5a4a1c');
+      grad.addColorStop(0.5,'#3e3414'); grad.addColorStop(0.84,'#2a230f'); grad.addColorStop(1,'#1c1708');
+    } else {
+      grad.addColorStop(0,'#191920'); grad.addColorStop(0.16,'#34343f');
+      grad.addColorStop(0.5,'#26262f'); grad.addColorStop(0.84,'#1b1b21'); grad.addColorStop(1,'#131318');
+    }
     roundRect(o.x,-34,o.w,o.gapY+34,r); ctx.fillStyle=grad; ctx.fill();
     roundRect(o.x,by,o.w,groundY-by+34,r); ctx.fillStyle=grad; ctx.fill();
-    ctx.strokeStyle='rgba(255,255,255,.06)'; ctx.lineWidth=1.5;
+    ctx.strokeStyle = isRecord ? 'rgba(251,191,36,.3)' : 'rgba(255,255,255,.06)'; ctx.lineWidth=1.5;
     roundRect(o.x,-34,o.w,o.gapY+34,r); ctx.stroke();
     roundRect(o.x,by,o.w,groundY-by+34,r); ctx.stroke();
     ctx.strokeStyle='rgba(0,0,0,.24)'; ctx.lineWidth=2;
     for(let i=1;i<=4;i++){ const yy=o.gapY-24*sc-i*18*sc; if(yy>3) line(o.x+8*sc,yy,o.x+o.w-8*sc,yy); }
     for(let i=1;i<=4;i++){ const yy=by+24*sc+i*18*sc; if(yy<groundY-3) line(o.x+8*sc,yy,o.x+o.w-8*sc,yy); }
-    drawCap(o.x,o.gapY,o.w,true);
-    drawCap(o.x,by,o.w,false);
+    drawCap(o.x,o.gapY,o.w,true,isRecord);
+    drawCap(o.x,by,o.w,false,isRecord);
   }
 
   function drawDuck(){
