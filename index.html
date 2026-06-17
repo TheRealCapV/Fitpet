@@ -3197,6 +3197,8 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .flap-pet-stage{position:relative;width:124px;height:124px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .14s;}
 .flap-pet-stage:active{transform:scale(.94);}
 body:has(.rest-timer-bar.visible) .flap-statbar{margin-bottom:calc(104px + env(safe-area-inset-bottom,0px));}
+.gold-badge.gold-bump{animation:goldBump .85s ease-out;}
+@keyframes goldBump{0%{transform:scale(1);}22%{transform:scale(1.13);}100%{transform:scale(1);}}
 .flap-pet-glow{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 50% 44%, var(--accent-glow), transparent 66%);}
 .flap-pet-ring{position:absolute;inset:9px;border-radius:50%;border:1px solid rgba(163,230,53,.26);}
 .flap-pet{position:relative;width:98px;height:98px;display:flex;align-items:center;justify-content:center;animation:flapBob 3s ease-in-out infinite;z-index:1;}
@@ -13364,6 +13366,24 @@ function _runWoConfetti(canvas, duration) {
       else { valEl.textContent='◆ '+to; flapBonusRAF=null; setTimeout(()=>valEl.classList.remove('bonus-pulse'), 350); }
     })(performance.now());
   }
+  let goldAnimRAF=null;
+  function animateGold(from, to){
+    const gc=el('goldCount'); if(!gc) return;
+    from=Math.round(from); to=Math.round(to);
+    if(goldAnimRAF){ cancelAnimationFrame(goldAnimRAF); goldAnimRAF=null; }
+    if(to===from){ gc.textContent=to.toLocaleString(); return; }
+    gc.textContent=from.toLocaleString();
+    const badge=gc.closest('.gold-badge');
+    if(badge){ badge.classList.remove('gold-bump'); void badge.offsetWidth; badge.classList.add('gold-bump'); setTimeout(()=>badge.classList.remove('gold-bump'),900); }
+    const dur=850, t0=performance.now();
+    (function step(now){
+      const pr=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-pr,3);
+      gc.textContent=Math.round(from+(to-from)*e).toLocaleString();
+      if(pr<1){ goldAnimRAF=requestAnimationFrame(step); }
+      else { gc.textContent=to.toLocaleString(); goldAnimRAF=null; }
+    })(performance.now());
+  }
+
   function finalizeEnd(){
     running=false; dying=false;
     if(raf){ cancelAnimationFrame(raf); raf=null; }
@@ -13371,6 +13391,7 @@ function _runWoConfetti(canvas, duration) {
     if(flapBonusTimer){ clearTimeout(flapBonusTimer); flapBonusTimer=null; }
     if(flapBonusRAF){ cancelAnimationFrame(flapBonusRAF); flapBonusRAF=null; }
     let best=0, gold=0, gatesGold=0, bonus=0, isBest=false;
+    let goldStart=0; try{ const pp=getP(); goldStart=pp?(pp.gold||0):0; }catch(e){}   // wallet before this run's payout
     try{
       const p=getP();
       if(p){
@@ -13382,7 +13403,6 @@ function _runWoConfetti(canvas, duration) {
         if(gold>0) p.gold=(p.gold||0)+gold;
         p.flapGoldTotal=(p.flapGoldTotal||0)+gold; p.flapRuns=(p.flapRuns||0)+1;
         if(typeof saveP==='function') saveP(p);
-        const gc=el('goldCount'); if(gc) gc.textContent=((p.gold)||0).toLocaleString();
       }
     }catch(e){}
     el('flapOverScore').textContent=score;
@@ -13400,10 +13420,11 @@ function _runWoConfetti(canvas, duration) {
     if(isBest && score>0){ md.innerHTML=STAR_FILL; md.classList.add('best'); eb.textContent='NEW BEST!'; eb.classList.add('best'); }
     else { md.innerHTML=STAR_LINE; md.classList.remove('best'); eb.textContent=rankFor(score); eb.classList.remove('best'); }
     el('flapOver').classList.remove('hidden');
-    if(gold>0 && typeof showToast==='function') showToast('◆ +'+gold+' from Flap Run');
     lastRunScore=score; lastRunGold=gold;
-    try{ if(typeof updateQuestProgress==='function' && score>0){ updateQuestProgress('flap_score', score); const gc=el('goldCount'); const pq=getP(); if(gc&&pq) gc.textContent=((pq.gold)||0).toLocaleString(); } }catch(e){}
+    try{ if(typeof updateQuestProgress==='function' && score>0) updateQuestProgress('flap_score', score); }catch(e){}
     refreshStats(); startIdle();
+    // Count the wallet total up to its new value (run gold + any quest bonus)
+    try{ const pp=getP(); animateGold(goldStart, pp?(pp.gold||0):goldStart); }catch(e){}
   }
 
   function loop(now){
