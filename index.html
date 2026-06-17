@@ -3194,7 +3194,9 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 @keyframes flapRise{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
 
 /* duck pedestal on start screen */
-.flap-pet-stage{position:relative;width:124px;height:124px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;}
+.flap-pet-stage{position:relative;width:124px;height:124px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .14s;}
+.flap-pet-stage:active{transform:scale(.94);}
+body:has(.rest-timer-bar.visible) .flap-statbar{margin-bottom:calc(104px + env(safe-area-inset-bottom,0px));}
 .flap-pet-glow{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 50% 44%, var(--accent-glow), transparent 66%);}
 .flap-pet-ring{position:absolute;inset:9px;border-radius:50%;border:1px solid rgba(163,230,53,.26);}
 .flap-pet{position:relative;width:98px;height:98px;display:flex;align-items:center;justify-content:center;animation:flapBob 3s ease-in-out infinite;z-index:1;}
@@ -3277,7 +3279,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
     <div class="flap-overlay" id="flapStart">
       <div class="flap-card">
         <button class="flap-info-btn" onclick="openFlapInfo()" aria-label="How coins work">?</button>
-        <div class="flap-pet-stage">
+        <div class="flap-pet-stage" onclick="showPage('collection');clearNewPetsBadge();" title="Tap to switch duck">
           <div class="flap-pet-glow"></div>
           <div class="flap-pet-ring"></div>
           <div class="flap-pet" id="flapStartPet"></div>
@@ -13306,6 +13308,11 @@ function _runWoConfetti(canvas, duration) {
   function spawnCrash(){
     for(let i=0;i<24;i++){ const a=Math.random()*Math.PI*2, s=(80+Math.random()*240)*sc; particles.push({ x:duck.x, y:duck.y, vx:Math.cos(a)*s, vy:Math.sin(a)*s-60*sc, life:.4+Math.random()*.55, max:.95, r:(2+Math.random()*3)*sc, c:Math.random()<.5?'163,230,53':'244,244,245', g:560*sc }); }
   }
+  // Sparks kicked up while the duck skids along the ground
+  function spawnGroundSpark(){
+    const n = 1 + (Math.random()<0.5?1:0);
+    for(let i=0;i<n;i++) particles.push({ x:duck.x+(Math.random()-0.5)*duck.r, y:groundY-2*sc, vx:-(110+Math.random()*190)*sc, vy:-(90+Math.random()*180)*sc, life:.2+Math.random()*.3, max:.5, r:(1+Math.random()*2.2)*sc, c:Math.random()<.55?'251,191,36':'255,238,170', g:780*sc });
+  }
   function updateEffects(dt){
     for(const p of particles){ p.vy += (p.g||0)*dt; p.x += p.vx*dt; p.y += p.vy*dt; p.life -= dt; }
     if(particles.length) particles = particles.filter(p=>p.life>0);
@@ -13434,6 +13441,7 @@ function _runWoConfetti(canvas, duration) {
 
     if(duck.y - duck.r < 0){ duck.y=duck.r; duck.vy=0; }                 // ceiling = bonk
     if(duck.y + duck.r > groundY){ duck.y=groundY-duck.r; duck.vy=0; }    // floor = land, not death
+    if(duck.y + duck.r >= groundY-3*sc && Math.random()<0.6) spawnGroundSpark();   // skid sparks on the ground
     for(const o of obstacles){ if(hits(duck,o)){ death(); draw(); raf=requestAnimationFrame(loop); return; } }
 
     draw();
@@ -13502,8 +13510,12 @@ function _runWoConfetti(canvas, duration) {
 
   function drawDuck(){
     const t=Math.max(0,Math.min(1,1-(groundY-duck.y)/(H*0.85)));
-    ctx.save(); ctx.globalAlpha=0.16+t*0.24; ctx.fillStyle='#000';
-    ctx.beginPath(); ctx.ellipse(duck.x, groundY-2*sc, duck.r*(1.0+t*0.9), 5*sc*(0.6+t*0.9), 0,0,Math.PI*2); ctx.fill();
+    const shW=duck.r*(0.95+t*0.7);
+    ctx.save();
+    const sg=ctx.createRadialGradient(duck.x, groundY-2*sc, 0, duck.x, groundY-2*sc, shW);
+    sg.addColorStop(0,'rgba(0,0,0,'+(0.26+t*0.18).toFixed(3)+')'); sg.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=sg;
+    ctx.beginPath(); ctx.ellipse(duck.x, groundY-2*sc, shW, 5.5*sc*(0.5+t*0.6), 0,0,Math.PI*2); ctx.fill();
     ctx.restore();
     ctx.save();
     const ag=ctx.createRadialGradient(duck.x,duck.y,0,duck.x,duck.y,duck.r*2);
