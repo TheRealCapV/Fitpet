@@ -916,9 +916,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .replace-ex-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:'DM Mono',monospace;white-space:nowrap;transition:all .15s;text-align:center;}
 .replace-ex-btn:hover{border-color:var(--accent);color:var(--accent);}
 /* Replace exercise modal */
-.replace-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:900;display:flex;align-items:flex-end;justify-content:center;}
+.replace-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:900;display:flex;align-items:flex-end;justify-content:center;padding-bottom:var(--kb,0px);transition:padding-bottom .2s ease;}
 .replace-modal-overlay.hidden{display:none;}
-.replace-modal-sheet{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;}
+.replace-modal-sheet{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:min(92vh, calc(100vh - var(--kb,0px) - 14px));display:flex;flex-direction:column;overflow:hidden;}
 .replace-modal-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--border);}
 .replace-modal-title{font-size:16px;font-weight:700;flex:1;}
 .replace-modal-close{background:var(--bg3);border:none;color:var(--text);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
@@ -1764,7 +1764,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
   .hwc-body{padding:12px 12px;}
 
   /* Replace modal is already a bottom sheet */
-  .replace-modal-sheet{max-height:92vh;}
+  .replace-modal-sheet{max-height:min(92vh, calc(100vh - var(--kb,0px) - 14px));}
 
   /* Rest timer — full-width, above bottom nav, no transform offset */
   .rest-timer-bar{
@@ -2264,9 +2264,9 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 
 <!-- CUSTOM EXERCISE MODAL -->
 <style>
-.custom-ex-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1100;display:flex;align-items:flex-end;justify-content:center;}
+.custom-ex-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1100;display:flex;align-items:flex-end;justify-content:center;padding-bottom:var(--kb,0px);transition:padding-bottom .2s ease;}
 .custom-ex-overlay.hidden{display:none;}
-.custom-ex-sheet{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;animation:customExUp .28s cubic-bezier(.2,.8,.2,1);}
+.custom-ex-sheet{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:min(92vh, calc(100vh - var(--kb,0px) - 14px));display:flex;flex-direction:column;overflow:hidden;animation:customExUp .28s cubic-bezier(.2,.8,.2,1);}
 @keyframes customExUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
 .custom-ex-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 6px;}
 .custom-ex-title{font-size:16px;font-weight:800;letter-spacing:-.2px;}
@@ -13851,6 +13851,30 @@ function _runWoConfetti(canvas, duration) {
     }
   }
   window.initFlapGame = initFlapGame;
+})();
+</script>
+
+<script>
+// ── Keyboard-aware sheets ──
+// Track the on-screen keyboard height (incl. the AutoFill bar) via the
+// visualViewport API and expose it as --kb, so bottom-sheet modals can lift
+// their inputs above the keyboard instead of being covered.
+(function(){
+  const root = document.documentElement, vv = window.visualViewport;
+  function update(){
+    const kb = vv ? Math.max(0, Math.round(window.innerHeight - vv.height - (vv.offsetTop || 0))) : 0;
+    root.style.setProperty('--kb', kb + 'px');
+  }
+  if (vv) { vv.addEventListener('resize', update); vv.addEventListener('scroll', update); }
+  // The keyboard animates in after focus, so recompute a few times.
+  document.addEventListener('focusin', e => {
+    const t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) {
+      [60, 260, 500].forEach(d => setTimeout(update, d));
+    }
+  });
+  document.addEventListener('focusout', () => setTimeout(update, 120));
+  update();
 })();
 </script>
 
