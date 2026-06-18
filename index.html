@@ -4703,6 +4703,8 @@ function initLogExDrag() {
   if (list._cleanupDrag) list._cleanupDrag();
 
   let srcCard = null, placeholder = null, fixedTop = 0, touchOffY = 0;
+  let lastClientY = 0, autoScrollRAF = null, scrollDir = 0;
+  const SCROLL_EDGE = 95, SCROLL_MAX = 16;   // edge zone + max px/frame for auto-scroll
 
   function getCards() {
     return [...list.querySelectorAll('.log-exercise-card')];
@@ -4745,34 +4747,58 @@ function initLogExDrag() {
     fixedTop = rect.top;
   }
 
+  function updateDragPosition(clientY) {
+    if (!srcCard || !placeholder) return;
+    srcCard.style.top = (clientY - touchOffY) + 'px';
+    // Find which card the placeholder should go before
+    const cards = getCards();
+    let target = null;
+    for (const c of cards) {
+      if (c === srcCard || c === placeholder) continue;
+      const r = c.getBoundingClientRect();
+      if (clientY < r.top + r.height * 0.5) { target = c; break; }
+    }
+    if (target !== placeholder.nextElementSibling) {
+      placeholder.style.transition = 'none';
+      insertPlaceholderBefore(target);
+    }
+  }
+
+  function stopAutoScroll() {
+    scrollDir = 0;
+    if (autoScrollRAF) { cancelAnimationFrame(autoScrollRAF); autoScrollRAF = null; }
+  }
+
+  // Keep scrolling while the finger is held near the top/bottom edge so you can
+  // drag an exercise past what's currently on screen.
+  function autoScrollTick() {
+    if (!srcCard || scrollDir === 0) { autoScrollRAF = null; return; }
+    const vh = window.innerHeight;
+    const dist = scrollDir < 0 ? lastClientY : (vh - lastClientY);
+    const t = Math.max(0, Math.min(1, (SCROLL_EDGE - dist) / SCROLL_EDGE));
+    const before = window.scrollY;
+    window.scrollBy(0, Math.max(1, Math.round(SCROLL_MAX * t)) * scrollDir);
+    if (window.scrollY !== before) updateDragPosition(lastClientY);  // page moved → re-place
+    autoScrollRAF = requestAnimationFrame(autoScrollTick);
+  }
+
+  function maybeAutoScroll(clientY) {
+    const vh = window.innerHeight;
+    scrollDir = clientY < SCROLL_EDGE ? -1 : (clientY > vh - SCROLL_EDGE ? 1 : 0);
+    if (scrollDir !== 0 && !autoScrollRAF) autoScrollRAF = requestAnimationFrame(autoScrollTick);
+  }
+
   function onTouchMove(e) {
     if (!srcCard || !placeholder) return;
     e.preventDefault();
     const t = e.touches[0];
-    const newTop = t.clientY - touchOffY;
-    srcCard.style.top = newTop + 'px';
-
-    // Find which card the placeholder should go before
-    const cards = getCards();
-    const midY = t.clientY;
-    let target = null; // insert before this card, or null = append
-
-    for (const c of cards) {
-      if (c === srcCard || c === placeholder) continue;
-      const r = c.getBoundingClientRect();
-      if (midY < r.top + r.height * 0.5) { target = c; break; }
-    }
-
-    // Only move placeholder if it would change position
-    const nextSib = placeholder.nextElementSibling;
-    const wantBefore = target;
-    if (wantBefore !== nextSib) {
-      placeholder.style.transition = 'none';
-      insertPlaceholderBefore(wantBefore);
-    }
+    lastClientY = t.clientY;
+    updateDragPosition(t.clientY);
+    maybeAutoScroll(t.clientY);
   }
 
   function onTouchEnd() {
+    stopAutoScroll();
     if (!srcCard || !placeholder) return;
 
     // Reset card styles
@@ -4847,6 +4873,7 @@ function initLogExDrag() {
   list.addEventListener('touchend',  onTouchEnd);
 
   list._cleanupDrag = () => {
+    stopAutoScroll();
     getCards().forEach(card => {
       card.removeEventListener('dragstart', onDragStart);
       card.removeEventListener('dragend',   onDragEnd);
