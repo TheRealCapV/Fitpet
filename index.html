@@ -2262,6 +2262,45 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
   </div>
 </div>
 
+<!-- CUSTOM EXERCISE MODAL -->
+<style>
+.custom-ex-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1100;display:flex;align-items:flex-end;justify-content:center;}
+.custom-ex-overlay.hidden{display:none;}
+.custom-ex-sheet{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;animation:customExUp .28s cubic-bezier(.2,.8,.2,1);}
+@keyframes customExUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.custom-ex-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 6px;}
+.custom-ex-title{font-size:16px;font-weight:800;letter-spacing:-.2px;}
+.custom-ex-body{padding:2px 16px calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;overflow-y:auto;}
+.custom-ex-label{font-size:10px;font-weight:700;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:14px 0 7px;}
+.custom-ex-input{width:100%;box-sizing:border-box;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);padding:12px 14px;font-size:15px;font-family:'Inter',sans-serif;outline:none;transition:border-color .15s;}
+.custom-ex-input:focus{border-color:var(--accent);}
+.custom-ex-pills{display:flex;flex-wrap:wrap;gap:7px;}
+.custom-ex-pill{background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:7px 13px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+.custom-ex-pill.active{background:var(--accent);color:#0a0a0c;border-color:var(--accent);}
+.custom-ex-error{color:#f87171;font-size:12px;font-family:'DM Mono',monospace;min-height:15px;margin-top:12px;}
+.custom-ex-submit{margin-top:6px;width:100%;padding:14px;border:none;border-radius:12px;background:var(--accent);color:#0a0a0c;font-weight:800;font-size:15px;font-family:'Inter',sans-serif;cursor:pointer;transition:transform .12s,filter .2s;}
+.custom-ex-submit:hover{filter:brightness(1.05);}
+.custom-ex-submit:active{transform:scale(.98);}
+.custom-ex-create-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;box-sizing:border-box;background:rgba(163,230,53,.1);border:1px dashed rgba(163,230,53,.45);color:var(--accent);border-radius:10px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;margin:6px 0;transition:background .15s;}
+.custom-ex-create-btn:hover{background:rgba(163,230,53,.16);}
+</style>
+<div class="custom-ex-overlay hidden" id="customExOverlay" onclick="closeCustomExercise(event)">
+  <div class="custom-ex-sheet" onclick="event.stopPropagation()">
+    <div class="custom-ex-header">
+      <div class="custom-ex-title">New Custom Exercise</div>
+      <button class="replace-modal-close" onclick="closeCustomExercise()">✕</button>
+    </div>
+    <div class="custom-ex-body">
+      <div class="custom-ex-label">Exercise name</div>
+      <input class="custom-ex-input" id="customExName" type="text" maxlength="40" placeholder="e.g. Zercher Squat" autocomplete="off" oninput="document.getElementById('customExError').textContent='';" onkeydown="if(event.key==='Enter'){event.preventDefault();createCustomExercise();}">
+      <div class="custom-ex-label">Muscle group</div>
+      <div class="custom-ex-pills" id="customExMuscles"></div>
+      <div class="custom-ex-error" id="customExError"></div>
+      <button class="custom-ex-submit" onclick="createCustomExercise()">Create &amp; add to workout</button>
+    </div>
+  </div>
+</div>
+
 <!-- EXERCISE INFO MODAL -->
 <div class="exinfo-overlay hidden" id="exInfoOverlay" onclick="closeExerciseInfo(event)">
   <div class="exinfo-sheet" onclick="event.stopPropagation()">
@@ -3199,6 +3238,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 body:has(.rest-timer-bar.visible) .flap-statbar{margin-bottom:calc(104px + env(safe-area-inset-bottom,0px));}
 .gold-badge.gold-bump{animation:goldBump .85s ease-out;}
 @keyframes goldBump{0%{transform:scale(1);}22%{transform:scale(1.13);}100%{transform:scale(1);}}
+body.flap-noscroll{overflow:hidden;}
 .flap-pet-glow{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 50% 44%, var(--accent-glow), transparent 66%);}
 .flap-pet-ring{position:absolute;inset:9px;border-radius:50%;border:1px solid rgba(163,230,53,.26);}
 .flap-pet{position:relative;width:98px;height:98px;display:flex;align-items:center;justify-content:center;animation:flapBob 3s ease-in-out infinite;z-index:1;}
@@ -3840,6 +3880,7 @@ function showPage(id) {
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.bn-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
+  document.body.classList.toggle('flap-noscroll', id === 'battle');   // lock scroll on Flap Run
   const idx = {home:0,log:1,history:2,battle:3,cases:4,collection:5,settings:6};
   if (idx[id] !== undefined) {
     document.querySelectorAll('.nav-tab')[idx[id]]?.classList.add('active');
@@ -5628,6 +5669,61 @@ function closeReplaceModal(e) {
   _templateEditReplaceIdx = -1;
 }
 
+// ── Custom exercises (user-created, persisted on the profile) ──
+function escHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+const CUSTOM_MUSCLES = ['Chest','Back','Shoulders','Arms','Legs','Glutes','Calves','Core','Cardio','Other'];
+let _customExMuscle = 'Other';
+function openCustomExercise() {
+  const q = (document.getElementById('replaceSearch')?.value || '').replace(/[<>]/g,'').trim().slice(0,40);
+  document.getElementById('customExName').value = q;
+  _customExMuscle = 'Other';
+  renderCustomMusclePills();
+  document.getElementById('customExError').textContent = '';
+  document.getElementById('customExOverlay').classList.remove('hidden');
+  setTimeout(() => { try { document.getElementById('customExName').focus(); } catch(e){} }, 60);
+}
+function closeCustomExercise(e) {
+  if (e && e.target !== document.getElementById('customExOverlay')) return;
+  document.getElementById('customExOverlay').classList.add('hidden');
+}
+function selectCustomMuscle(m) { _customExMuscle = m; renderCustomMusclePills(); }
+function renderCustomMusclePills() {
+  document.getElementById('customExMuscles').innerHTML = CUSTOM_MUSCLES.map(m =>
+    `<button type="button" class="custom-ex-pill${m === _customExMuscle ? ' active' : ''}" onclick="selectCustomMuscle('${m}')">${m}</button>`
+  ).join('');
+}
+function createCustomExercise() {
+  const p = getP(); if (!p) return;
+  const err = document.getElementById('customExError');
+  let name = (document.getElementById('customExName').value || '').replace(/[<>]/g,'').replace(/\s+/g,' ').trim().slice(0,40);
+  if (!name) { err.textContent = 'Enter an exercise name.'; return; }
+  // If an exercise with that name already exists, reuse it instead of duplicating
+  let id = null, isNew = false;
+  const existing = Object.values(ALL_EXERCISES).find(ex => (ex.name||'').toLowerCase() === name.toLowerCase());
+  if (existing) {
+    id = existing.id;
+  } else {
+    let base = 'custom_' + name.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'');
+    if (base === 'custom_') base = 'custom_ex';
+    id = base; let n = 2;
+    while (ALL_EXERCISES[id]) id = base + '_' + (n++);
+    const exObj = { id, name, icon:'✎', muscle: _customExMuscle, custom: true };
+    if (!p.customExercises) p.customExercises = {};
+    p.customExercises[id] = exObj;
+    ALL_EXERCISES[id] = exObj;          // available immediately
+    saveP(p);                            // persists to the profile
+    isNew = true;
+  }
+  document.getElementById('customExOverlay').classList.add('hidden');
+  // Add into whatever picker context opened it
+  if (_templateEditAddMode) doAddExToTemplate(id);
+  else if (_templateEditReplaceIdx >= 0) doReplaceExToTemplate(id);
+  else if (_addExerciseMode) doAddExercise(id);
+  else if (_replaceTargetId) doReplaceExercise(id);
+  else document.getElementById('replaceModalOverlay').classList.add('hidden');
+  if (isNew && typeof showToast === 'function') showToast('✓ Saved “' + name + '” to your exercises');
+}
+
 function renderReplaceList(query) {
   const q = (query || '').toLowerCase();
   const alreadyAdded = _templateEditAddMode
@@ -5665,7 +5761,9 @@ function renderReplaceList(query) {
       </div>`).join('')}
   `).join('');
 
-  document.getElementById('replaceExList').innerHTML = html || '<div style="color:var(--muted);text-align:center;padding:24px;">No exercises found</div>';
+  const _q = (query || '').trim();
+  const _createBtn = `<button type="button" class="custom-ex-create-btn" onclick="openCustomExercise()">＋ ${_q ? 'Create “' + escHtml(_q) + '”' : 'Create custom exercise'}</button>`;
+  document.getElementById('replaceExList').innerHTML = _createBtn + (html || '<div style="color:var(--muted);text-align:center;padding:18px 24px;">Not in the list? Create it above.</div>');
 }
 
 function doAddExToTemplate(exId) {
@@ -6287,6 +6385,32 @@ function renderPRs(query) {
 // ══════════════════════════════════════════
 //  HOME STATS & CALENDAR
 // ══════════════════════════════════════════
+// Animated gold counter — whenever the wallet total goes UP, count the nav
+// number up to its new value with a little badge pulse. Decreases (spending)
+// and the first render set instantly; _lastGoldShown stops the app-load count-up.
+let _lastGoldShown = null, _goldElRAF = null;
+function _animateGoldEl(gc, to) {
+  const from = parseInt((gc.textContent || '0').replace(/[^0-9]/g, ''), 10) || 0;
+  if (from === to) { gc.textContent = to.toLocaleString(); return; }
+  if (_goldElRAF) { cancelAnimationFrame(_goldElRAF); _goldElRAF = null; }
+  const badge = gc.closest('.gold-badge');
+  if (badge) { badge.classList.remove('gold-bump'); void badge.offsetWidth; badge.classList.add('gold-bump'); setTimeout(() => badge.classList.remove('gold-bump'), 900); }
+  const dur = 850, t0 = performance.now();
+  (function step(now) {
+    const pr = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - pr, 3);
+    gc.textContent = Math.round(from + (to - from) * e).toLocaleString();
+    if (pr < 1) { _goldElRAF = requestAnimationFrame(step); }
+    else { gc.textContent = to.toLocaleString(); _goldElRAF = null; }
+  })(performance.now());
+}
+function updateGoldCounter(to) {
+  if (typeof to !== 'number') { const p = getP(); to = p ? (p.gold || 0) : 0; }
+  const sg = document.getElementById('statGold'); if (sg) sg.textContent = '◆ ' + to.toLocaleString();
+  const gc = document.getElementById('goldCount'); if (!gc) return;
+  if (_lastGoldShown !== null && to > _lastGoldShown) _animateGoldEl(gc, to);
+  else gc.textContent = to.toLocaleString();
+  _lastGoldShown = to;
+}
 function refreshHomeStats() {
   const p = getP();
   if (!p) return;
@@ -6418,8 +6542,7 @@ function refreshHomeStats() {
   document.getElementById('statSets').textContent = totalSets;
   document.getElementById('statStreak').textContent = calcBestStreak(p.streakDays);
   const gold = p.gold || 0;
-  document.getElementById('statGold').textContent = '◆ ' + gold.toLocaleString();
-  document.getElementById('goldCount').textContent = gold.toLocaleString();
+  updateGoldCounter(gold);
 
   // Pet mood
   refreshPetMood(p);
@@ -13270,7 +13393,9 @@ function _runWoConfetti(canvas, duration) {
   function sizeCanvas(){
     const wrap = el('flapWrap'); if(!wrap||!canvas) return;
     const cssW = wrap.clientWidth || 360;
-    const cssH = Math.max(380, Math.min(Math.round(window.innerHeight*0.62), 620));
+    // Fit the game between its top and the stats below so the page needs no scroll
+    let avail; try{ avail = window.innerHeight - wrap.getBoundingClientRect().top - 158; }catch(e){ avail = window.innerHeight*0.62; }
+    const cssH = Math.max(440, Math.min(Math.round(avail), 620));
     dpr = window.devicePixelRatio || 1;
     W=cssW; H=cssH; sc=H/560; groundY = H - 26*sc;
     canvas.style.height = cssH+'px';
@@ -13322,8 +13447,16 @@ function _runWoConfetti(canvas, duration) {
     flash *= 0.84; if(flash<0.01) flash=0;
   }
 
-  function flap(){ if(!running||dying) return; duck.vy=-560*sc; flapped=true; spawnFlapPuff(); }
-  function death(){ if(dying) return; dying=true; dieT=0.55; shake=15*sc; flash=0.5; spawnCrash(); }
+  // ── Sound effects (synth via the app's shared AudioContext; respects the volume setting) ──
+  function _sfx(notes, vol){ try{ if(typeof playToneSequence==='function') playToneSequence(notes, vol); }catch(e){} }
+  function sfxFlap(){   _sfx([{freq:300,start:0,dur:0.05,type:'sine',vol:0.5},{freq:520,start:0.025,dur:0.06,type:'sine',vol:0.4}], 0.4); }
+  function sfxScore(){  _sfx([{freq:880,start:0,dur:0.06,type:'square',vol:0.45},{freq:1318.5,start:0.05,dur:0.11,type:'square',vol:0.45}], 0.45); }
+  function sfxRecord(){ _sfx([{freq:1046.5,start:0,dur:0.08,type:'triangle',vol:0.5},{freq:1318.5,start:0.07,dur:0.08,type:'triangle',vol:0.5},{freq:1568,start:0.14,dur:0.2,type:'triangle',vol:0.55}], 0.5); }
+  function sfxCrash(){  _sfx([{freq:300,start:0,dur:0.1,type:'sawtooth',vol:0.5},{freq:170,start:0.07,dur:0.18,type:'sawtooth',vol:0.5},{freq:90,start:0.17,dur:0.22,type:'sawtooth',vol:0.45}], 0.5); }
+  function sfxBest(){   _sfx([{freq:659.25,start:0,dur:0.1,vol:0.5},{freq:880,start:0.1,dur:0.1,vol:0.5},{freq:1046.5,start:0.2,dur:0.1,vol:0.5},{freq:1318.5,start:0.3,dur:0.32,vol:0.55}], 0.5); }
+
+  function flap(){ if(!running||dying) return; duck.vy=-560*sc; flapped=true; spawnFlapPuff(); sfxFlap(); }
+  function death(){ if(dying) return; dying=true; dieT=0.55; shake=15*sc; flash=0.5; spawnCrash(); sfxCrash(); }
 
   function startGame(){
     if(!canvas){ initFlapGame(); }
@@ -13366,24 +13499,6 @@ function _runWoConfetti(canvas, duration) {
       else { valEl.textContent='◆ '+to; flapBonusRAF=null; setTimeout(()=>valEl.classList.remove('bonus-pulse'), 350); }
     })(performance.now());
   }
-  let goldAnimRAF=null;
-  function animateGold(from, to){
-    const gc=el('goldCount'); if(!gc) return;
-    from=Math.round(from); to=Math.round(to);
-    if(goldAnimRAF){ cancelAnimationFrame(goldAnimRAF); goldAnimRAF=null; }
-    if(to===from){ gc.textContent=to.toLocaleString(); return; }
-    gc.textContent=from.toLocaleString();
-    const badge=gc.closest('.gold-badge');
-    if(badge){ badge.classList.remove('gold-bump'); void badge.offsetWidth; badge.classList.add('gold-bump'); setTimeout(()=>badge.classList.remove('gold-bump'),900); }
-    const dur=850, t0=performance.now();
-    (function step(now){
-      const pr=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-pr,3);
-      gc.textContent=Math.round(from+(to-from)*e).toLocaleString();
-      if(pr<1){ goldAnimRAF=requestAnimationFrame(step); }
-      else { gc.textContent=to.toLocaleString(); goldAnimRAF=null; }
-    })(performance.now());
-  }
-
   function finalizeEnd(){
     running=false; dying=false;
     if(raf){ cancelAnimationFrame(raf); raf=null; }
@@ -13391,7 +13506,6 @@ function _runWoConfetti(canvas, duration) {
     if(flapBonusTimer){ clearTimeout(flapBonusTimer); flapBonusTimer=null; }
     if(flapBonusRAF){ cancelAnimationFrame(flapBonusRAF); flapBonusRAF=null; }
     let best=0, gold=0, gatesGold=0, bonus=0, isBest=false;
-    let goldStart=0; try{ const pp=getP(); goldStart=pp?(pp.gold||0):0; }catch(e){}   // wallet before this run's payout
     try{
       const p=getP();
       if(p){
@@ -13417,14 +13531,14 @@ function _runWoConfetti(canvas, duration) {
     const eb=el('flapOverEyebrow'), md=el('flapMedal');
     const STAR_FILL='<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2.4l2.95 5.98 6.6.96-4.77 4.65 1.13 6.57L12 17.5l-5.91 3.06 1.13-6.57L2.45 9.34l6.6-.96L12 2.4z"/></svg>';
     const STAR_LINE='<svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2.4l2.95 5.98 6.6.96-4.77 4.65 1.13 6.57L12 17.5l-5.91 3.06 1.13-6.57L2.45 9.34l6.6-.96L12 2.4z"/></svg>';
-    if(isBest && score>0){ md.innerHTML=STAR_FILL; md.classList.add('best'); eb.textContent='NEW BEST!'; eb.classList.add('best'); }
+    if(isBest && score>0){ md.innerHTML=STAR_FILL; md.classList.add('best'); eb.textContent='NEW BEST!'; eb.classList.add('best'); sfxBest(); }
     else { md.innerHTML=STAR_LINE; md.classList.remove('best'); eb.textContent=rankFor(score); eb.classList.remove('best'); }
     el('flapOver').classList.remove('hidden');
     lastRunScore=score; lastRunGold=gold;
     try{ if(typeof updateQuestProgress==='function' && score>0) updateQuestProgress('flap_score', score); }catch(e){}
     refreshStats(); startIdle();
     // Count the wallet total up to its new value (run gold + any quest bonus)
-    try{ const pp=getP(); animateGold(goldStart, pp?(pp.gold||0):goldStart); }catch(e){}
+    try{ if(typeof updateGoldCounter==='function') updateGoldCounter(); }catch(e){}
   }
 
   function loop(now){
@@ -13473,6 +13587,7 @@ function _runWoConfetti(canvas, duration) {
     const s=el('flapScore'); s.textContent=score;
     s.classList.remove('pop'); void s.offsetWidth; s.classList.add('pop');
     spawnSparkle(duck.x, o.gapY + o.gap/2);
+    if(flapRecord>0 && o.num===flapRecord) sfxRecord(); else sfxScore();
     refreshStats();
   }
 
@@ -13708,6 +13823,7 @@ function _runWoConfetti(canvas, duration) {
   window.openFlapInfo=openFlapInfo; window.closeFlapInfo=closeFlapInfo; window.flapInfoBg=flapInfoBg;
   function initFlapGame(){
     canvas = el('flapCanvas'); if(!canvas) return;
+    try{ window.scrollTo(0,0); }catch(e){}   // sit at top so the game fits without scrolling
     if(!ctx) ctx = canvas.getContext('2d');
     running=false; if(raf){ cancelAnimationFrame(raf); raf=null; }
     sizeCanvas();
