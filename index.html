@@ -1718,7 +1718,11 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
   .log-ex-header{padding:12px 12px;gap:8px;}
   .log-ex-name{font-size:13px;}
   .set-input{width:56px;font-size:13px;padding:6px 4px;}
-  .sets-table th,.sets-table td{padding:6px 4px;font-size:12px;}
+  .sets-table th,.sets-table td{padding:6px 3px;font-size:12px;}
+  /* Keep the row narrow enough that the ✓/Edit column never spills past the card edge */
+  .lbs-stepper,.reps-stepper{gap:2px;}
+  .lbs-input{width:48px;}
+  .reps-input{width:32px;}
   .replace-ex-btn{font-size:10px;padding:3px 6px;}
 
   /* CASES */
@@ -5630,6 +5634,11 @@ function removeExercise(exId) {
   delete sessionSets[exId];
   delete sessionWarmups[exId];
   card.remove();
+  // Drop it from the session order too, otherwise it stays "already added" and
+  // can't be re-added, and a stale id lingers in the saved order.
+  const idx = _sessionExerciseOrder.indexOf(exId);
+  if (idx >= 0) _sessionExerciseOrder.splice(idx, 1);
+  saveWorkoutSession();
 }
 
 function removeDrop(exId, setIdx, dropIdx) {
@@ -5877,6 +5886,7 @@ function doAddExercise(newId) {
   // Close modal
   document.getElementById('replaceModalOverlay').classList.add('hidden');
   _addExerciseMode = false;
+  saveWorkoutSession();
   showToast(`+ Added ${newEx.name}`);
 }
 
@@ -5896,6 +5906,9 @@ function doReplaceExercise(newId) {
     // Re-render the card in place
     const newCardHtml = buildExerciseCard(newEx);
     card.outerHTML = newCardHtml;
+    // outerHTML created a fresh node with no drag listeners — rebind so the
+    // replaced exercise can still be dragged to reorder it.
+    initLogExDrag();
   }
 
   _sessionHadReplacements = true;
@@ -5907,6 +5920,7 @@ function doReplaceExercise(newId) {
   // Close modal
   document.getElementById('replaceModalOverlay').classList.add('hidden');
   _replaceTargetId = null;
+  saveWorkoutSession();
   showToast(`↔ Replaced with ${newEx.name}`);
 }
 
