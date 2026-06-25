@@ -554,7 +554,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .start-workout-btn:hover{background:var(--accent2);transform:translateY(-1px);}
 .active-workout-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
 .active-workout-title{font-size:28px;font-weight:800;letter-spacing:-.5px;}
-.workout-elapsed{font-size:13px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:4px;letter-spacing:.5px;}
+.workout-elapsed{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--accent);font-family:'DM Mono',monospace;margin-top:9px;letter-spacing:.5px;font-weight:700;background:rgba(163,230,53,.08);border:1px solid rgba(163,230,53,.2);border-radius:999px;padding:4px 12px 4px 9px;}
+.workout-elapsed::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;animation:wo-pulse 1.6s ease-in-out infinite;}
+@keyframes wo-pulse{0%,100%{opacity:1;}50%{opacity:.25;}}
 .cancel-workout-btn{padding:10px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:#f87171;font-family:'Inter',sans-serif;transition:all .2s;}
 .cancel-workout-btn:hover{background:rgba(239,68,68,.18);border-color:#ef4444;}
 .templates-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
@@ -922,7 +924,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .log-ex-header{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);}
 .log-ex-drag-handle{font-size:18px;color:var(--muted);cursor:grab;padding:2px 4px;flex-shrink:0;touch-action:none;user-select:none;line-height:1;}
 .log-ex-drag-handle:active{cursor:grabbing;color:var(--accent);}
-.log-ex-icon{font-size:22px;}
+.log-ex-icon{font-size:19px;width:38px;height:38px;border-radius:11px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);}
 .log-ex-name{font-size:15px;font-weight:700;flex:1;}
 .log-ex-best{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
 .log-ex-actions{display:flex;flex-direction:column;gap:5px;flex-shrink:0;align-items:stretch;}
@@ -973,9 +975,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .lbs-input:focus{border-color:var(--accent);}
 .set-done-btn{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:none;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--muted);}
 .set-done-btn.done{background:var(--accent);border-color:var(--accent);color:#000;}
-.add-set-row{padding:10px 16px;border-top:1px solid var(--border);}
-.add-set-btn{font-size:12px;font-weight:700;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.5px;transition:color .2s;}
-.add-set-btn:hover{color:var(--accent);}
+.add-set-row{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;}
+.add-set-btn{font-size:12px;font-weight:700;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:8px 13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.3px;transition:border-color .18s,color .18s,background .18s;}
+.add-set-btn:hover{color:var(--accent);border-color:var(--accent);background:rgba(163,230,53,.05);}
 .finish-workout-btn{background:var(--accent);color:#0a0a0c;width:100%;padding:16px;border-radius:12px;font-size:16px;font-weight:700;border:none;cursor:pointer;font-family:'Inter',sans-serif;margin-top:12px;transition:all .2s;}
 .finish-workout-btn:hover{filter:brightness(1.1);box-shadow:0 4px 24px var(--accent-glow);transform:translateY(-2px);}
 .add-exercise-workout-btn{background:var(--bg3);color:var(--text);width:100%;padding:13px;border-radius:var(--radius-sm);font-size:14px;font-weight:700;border:1px dashed var(--border);cursor:pointer;font-family:'Inter',sans-serif;margin-top:16px;transition:all .2s;letter-spacing:.3px;}
@@ -1125,16 +1127,19 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .drop-badge{font-size:8px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);border-radius:4px;padding:1px 5px;font-family:'DM Mono',monospace;vertical-align:middle;margin-left:4px;}
 .drop-sub-row td{padding:6px 16px 6px 28px;border-bottom:1px solid rgba(42,42,56,.5);background:rgba(239,68,68,.03);}
 .drop-sub-row .drop-arrow{color:#f87171;font-size:11px;font-family:'DM Mono',monospace;}
-.add-drop-btn{font-size:11px;color:#f87171;background:none;border:none;cursor:pointer;font-family:'DM Mono',monospace;padding:0;opacity:.7;transition:opacity .15s;}
-.add-drop-btn:hover{opacity:1;}
-.add-set-btn-drop{font-size:12px;font-weight:700;color:#f87171;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.5px;transition:color .2s;margin-left:12px;opacity:.8;}
-.add-set-btn-drop:hover{opacity:1;}
+.add-drop-btn{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;font-size:15px;color:#f87171;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);cursor:pointer;font-family:'DM Mono',monospace;padding:0;line-height:1;transition:all .15s;}
+.add-drop-btn:hover{background:rgba(239,68,68,.16);border-color:rgba(239,68,68,.4);}
+.sets-table.edit-mode .add-drop-btn{display:none;}
+.add-set-btn-drop{font-size:12px;font-weight:700;color:#f87171;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.22);border-radius:9px;padding:8px 13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.3px;transition:border-color .18s,background .18s;}
+.add-set-btn-drop:hover{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.4);}
 .warm-num{font-size:11px;font-weight:800;color:#fbbf24;font-family:'DM Mono',monospace;letter-spacing:.3px;}
 .warm-row td{padding:6px 16px;border-bottom:1px solid rgba(42,42,56,.5);background:rgba(251,191,36,.025);}
 .warm-row.set-row-done td{opacity:.45;}
-.add-set-btn-warm{font-size:12px;font-weight:700;color:#fbbf24;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.5px;transition:opacity .2s;margin-left:12px;opacity:.8;}
-.add-set-btn-warm:hover{opacity:1;}
-.set-delete-btn{background:none;border:none;color:rgba(239,68,68,.5);font-size:15px;cursor:pointer;padding:0 2px;line-height:1;transition:color .15s;display:none;}
+.add-set-btn-warm{font-size:12px;font-weight:700;color:#fbbf24;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.22);border-radius:9px;padding:8px 13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.3px;transition:border-color .18s,background .18s;}
+.add-set-btn-warm:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.4);}
+.set-delete-btn{display:none;width:28px;height:28px;border-radius:50%;border:1px solid rgba(239,68,68,.32);background:rgba(239,68,68,.1);color:#f87171;font-size:13px;cursor:pointer;align-items:center;justify-content:center;padding:0;line-height:1;transition:all .15s;}
+.set-delete-btn:hover{background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.55);}
+.set-delete-btn:active{transform:scale(.9);}
 .sets-table.edit-mode .set-delete-btn{display:inline-flex;}
 .sets-table.edit-mode .set-done-btn{display:none;}
 .edit-sets-btn{font-size:11px;font-weight:700;color:var(--muted);background:none;border:none;cursor:pointer;font-family:"DM Mono",monospace;margin-left:8px;padding:0;transition:color .15s;opacity:.7;}
@@ -1731,11 +1736,14 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
   .log-ex-header{padding:12px 12px;gap:8px;}
   .log-ex-name{font-size:13px;}
   .set-input{width:56px;font-size:13px;padding:6px 4px;}
-  .sets-table th,.sets-table td{padding:6px 3px;font-size:12px;}
-  /* Keep the row narrow enough that the ✓/Edit column never spills past the card edge */
+  .sets-table th,.sets-table td{padding:6px 2px;font-size:12px;}
+  /* Keep the row narrow enough that the ✓/✕/Done column never spills past the card edge,
+     even with the wider "W1" / "DROP" labels in the SET column. */
+  .sets-table td.set-num,.sets-table th:first-child{padding-left:6px;}
   .lbs-stepper,.reps-stepper{gap:2px;}
-  .lbs-input{width:48px;}
-  .reps-input{width:32px;}
+  .lbs-input{width:44px;}
+  .reps-input{width:30px;}
+  .drop-badge{font-size:7px;padding:1px 3px;margin-left:3px;letter-spacing:.4px;}
   .replace-ex-btn{font-size:10px;padding:3px 6px;}
 
   /* CASES */
@@ -5472,7 +5480,7 @@ function buildSetRow(exId, idx, set, prevSet) {
       <td style="color:var(--muted);font-size:12px">—</td>
       <td><div class="lbs-stepper"><button class="reps-stepper-btn" onclick="stepDropLbs('${exId}',${idx},${di},-2.5,this)">−</button><input class="lbs-input" type="number" id="lbs-${exId}-${idx}-d${di}" value="${drop.lbs}" min="0" step="2.5" onchange="updateDrop('${exId}',${idx},${di},'lbs',this.value)"><button class="reps-stepper-btn" onclick="stepDropLbs('${exId}',${idx},${di},2.5,this)">+</button><button class="pc-lbs-btn" onclick="openPlateCalc(parseFloat(document.getElementById('lbs-${exId}-${idx}-d${di}').value)||0)" title="Plate breakdown"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="0" y="6" width="5" height="12" rx="1.5"/><rect x="5" y="9" width="3" height="6" rx="1"/><rect x="8" y="10" width="8" height="4" rx="1"/><rect x="16" y="9" width="3" height="6" rx="1"/><rect x="19" y="6" width="5" height="12" rx="1.5"/></svg></button></div></td>
       <td><div class="reps-stepper"><button class="reps-stepper-btn" onclick="stepDropReps('${exId}',${idx},${di},-1,this)">−</button><input class="reps-input" type="number" id="reps-${exId}-${idx}-d${di}" value="${drop.reps}" min="0" onchange="updateDrop('${exId}',${idx},${di},'reps',this.value)"><button class="reps-stepper-btn" onclick="stepDropReps('${exId}',${idx},${di},1,this)">+</button></div></td>
-      <td>${di === set.drops.length-1 ? `<button class="add-drop-btn" onclick="addDrop('${exId}',${idx})">+drop</button>` : ''}<button class="set-delete-btn" onclick="removeDrop('${exId}',${idx},${di})">✕</button></td>
+      <td>${di === set.drops.length-1 ? `<button class="add-drop-btn" onclick="addDrop('${exId}',${idx})" title="Add another drop">＋</button>` : ''}<button class="set-delete-btn" onclick="removeDrop('${exId}',${idx},${di})" title="Remove drop">✕</button></td>
     </tr>`;
     });
   }
@@ -5611,7 +5619,7 @@ function addDrop(exId, setIdx) {
   const ref = set.drops.length ? set.drops[set.drops.length - 1] : set;
   const dropLbs = Math.max(5, Math.round((ref.lbs || 45) * 0.8 / 5) * 5); // ~80% rounded to 5
   set.drops.push({ lbs: dropLbs, reps: ref.reps || 8 });
-  rebuildSetInPlace(exId, setIdx);
+  rebuildSetRows(exId);
   saveWorkoutSession();
 }
 
@@ -5654,11 +5662,16 @@ function removeSet(exId, idx) {
 }
 
 function rebuildSetRows(exId) {
-  const sets = sessionSets[exId];
+  const sets = sessionSets[exId] || [];
   const tbody = document.getElementById('tbody-' + exId);
+  if (!tbody) return;
   const lastSets = getLastSessionForExercise(exId);
-  const inEditMode = document.getElementById('table-' + exId)?.classList.contains('edit-mode');
-  tbody.innerHTML = sets.map((s, i) => buildSetRow(exId, i, s, lastSets[i])).join('');
+  // Warmups live in the same tbody above the working sets — re-render them too so
+  // rebuilding the sets (add/remove set or drop) doesn't wipe the warmup rows.
+  const warmups = sessionWarmups[exId] || [];
+  const warmHtml = warmups.map((w, wi) => buildWarmupRow(exId, wi, w)).join('');
+  const setHtml = sets.map((s, i) => buildSetRow(exId, i, s, lastSets[i])).join('');
+  tbody.innerHTML = warmHtml + setHtml;
 }
 
 
@@ -5690,9 +5703,12 @@ function removeExercise(exId) {
 function removeDrop(exId, setIdx, dropIdx) {
   const set = sessionSets[exId]?.[setIdx];
   if (!set?.drops) return;
-  if (set.drops.length <= 1) { removeSet(exId, setIdx); return; }
+  // Removing a drop only removes that drop. If it was the last one, the set
+  // reverts to a normal set — it does NOT delete the whole set.
   set.drops.splice(dropIdx, 1);
+  if (!set.drops.length) delete set.drops;
   rebuildSetRows(exId);
+  saveWorkoutSession();
 }
 
 // ── Warmup Sets ──
