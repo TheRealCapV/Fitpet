@@ -47,11 +47,13 @@ body{overscroll-behavior:none;-webkit-overflow-scrolling:touch;}
 .auth-screen{position:fixed;inset:0;background:var(--bg);z-index:800;display:flex;align-items:center;justify-content:center;padding:24px;}
 .auth-screen.hidden{display:none;}
 .auth-box{background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:40px 36px;width:100%;max-width:400px;}
-.auth-logo{font-size:28px;font-weight:800;letter-spacing:-.5px;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:32px;}
+.auth-logo{font-size:28px;font-weight:800;letter-spacing:-.5px;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;}
 .logo-dot{width:10px;height:10px;background:var(--accent);border-radius:50%;}
 @keyframes pulse-dot{0%,100%{box-shadow:0 0 12px var(--accent);}50%{box-shadow:0 0 28px var(--accent),0 0 48px var(--accent);}}
-.auth-title{font-size:22px;font-weight:800;margin-bottom:6px;}
-.auth-sub{font-size:13px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:28px;line-height:1.5;}
+.auth-tagline{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;text-align:center;margin-bottom:32px;}
+.auth-title{font-size:25px;font-weight:800;letter-spacing:-.4px;margin-bottom:6px;}
+.auth-sub{font-size:13px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:24px;line-height:1.5;}
+.auth-caption{font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:11px;}
 .auth-tabs{display:flex;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:24px;}
 .auth-tab{flex:1;padding:8px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);border:none;background:none;font-family:'Inter',sans-serif;transition:all .2s;}
 .auth-tab.active{background:var(--accent);color:#000;}
@@ -65,12 +67,21 @@ body{overscroll-behavior:none;-webkit-overflow-scrolling:touch;}
 .auth-btn{width:100%;padding:14px;background:var(--accent);color:#0a0a0c;border:none;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:700;font-size:15px;cursor:pointer;margin-top:8px;transition:all .2s;}
 .auth-btn:hover{background:var(--accent2);}
 .auth-error{font-size:12px;color:#f87171;font-family:'DM Mono',monospace;margin-top:10px;min-height:16px;text-align:center;}
-.profiles-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;max-height:220px;overflow-y:auto;}
-.profile-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;}
-.profile-item:hover{border-color:var(--accent);background:rgba(163,230,53,.04);}
-.profile-avatar{width:36px;height:36px;border-radius:50%;background:var(--bg2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;}
-.profile-name{font-size:14px;font-weight:700;flex:1;}
-.profile-meta{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
+.profiles-list{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;max-height:340px;overflow-y:auto;}
+.profile-item{display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;cursor:pointer;transition:border-color .18s,background .18s,transform .08s;}
+.profile-item:hover{border-color:var(--accent);background:rgba(163,230,53,.05);}
+.profile-item:active{transform:scale(.985);}
+.profile-avatar{width:46px;height:46px;border-radius:50%;background:var(--bg2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden;}
+.profile-item-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
+.profile-name{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-meta{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;display:flex;align-items:center;gap:6px;}
+.profile-lvl{color:var(--accent);font-weight:700;}
+.profile-dot{opacity:.45;}
+.profile-chevron{font-size:22px;color:var(--muted);line-height:1;flex-shrink:0;transition:color .18s,transform .18s;}
+.profile-item:hover .profile-chevron{color:var(--accent);transform:translateX(3px);}
+.auth-btn-ghost{width:100%;padding:13px;background:transparent;color:var(--text);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:border-color .18s,color .18s,background .18s;display:flex;align-items:center;justify-content:center;gap:7px;}
+.auth-btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:rgba(163,230,53,.04);}
+.auth-btn-ghost .ghost-plus{font-size:17px;line-height:0;}
 .no-profiles{text-align:center;padding:20px;color:var(--muted);font-size:13px;font-family:'DM Mono',monospace;}
 
 /* ── NAV ── */
@@ -122,7 +133,9 @@ nav::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:500px
 .shop-btn-legendary{background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(251,191,36,.1));color:#fbbf24;border:1px solid rgba(251,191,36,.4);}
 .shop-btn-legendary:hover{background:rgba(251,191,36,.35);}
 /* ── LEVELUP BANNER ── */
-.levelup-banner{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(220px);background:linear-gradient(135deg,var(--bg2),rgba(163,230,53,.06));border:1px solid rgba(163,230,53,.28);border-radius:12px;padding:8px 18px;z-index:650;box-shadow:0 4px 20px rgba(0,0,0,.6),0 0 16px rgba(163,230,53,.12);transition:transform .45s cubic-bezier(.34,1.56,.64,1);text-align:center;min-width:0;white-space:nowrap;pointer-events:none;}
+.levelup-banner{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(220px);background:rgba(20,20,27,.84);-webkit-backdrop-filter:blur(22px) saturate(1.3);backdrop-filter:blur(22px) saturate(1.3);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:13px 20px 13px 14px;z-index:650;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 22px 52px rgba(0,0,0,.55);transition:transform .45s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;gap:14px;min-width:0;white-space:nowrap;pointer-events:none;}
+.levelup-icon{width:44px;height:44px;border-radius:13px;background:rgba(163,230,53,.13);border:1px solid rgba(163,230,53,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:21px;color:var(--accent);flex-shrink:0;}
+.levelup-text{text-align:left;}
 .levelup-banner.show{transform:translateX(-50%) translateY(0);}
 /* ── EVOLUTION TIERS ── */
 .evolved-banner{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(300px);background:linear-gradient(135deg,#0a0a0f,rgba(168,85,247,.12));border:1px solid rgba(168,85,247,.5);border-radius:16px;padding:16px 32px;z-index:660;box-shadow:0 8px 60px rgba(0,0,0,.7),0 0 40px rgba(168,85,247,.2);transition:transform .5s cubic-bezier(.34,1.56,.64,1);text-align:center;min-width:280px;pointer-events:none;}
@@ -234,8 +247,8 @@ nav::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:500px
 .golden-duck-img,.golden-duck-emoji{filter:sepia(1) saturate(12) hue-rotate(5deg) brightness(1.25);}
 @keyframes gold-shimmer{0%,100%{filter:sepia(1) saturate(12) hue-rotate(5deg) brightness(1.25);}50%{filter:sepia(1) saturate(16) hue-rotate(10deg) brightness(1.5) drop-shadow(0 0 16px gold);}}
 .pet-emoji .golden-duck-img{animation:gold-shimmer 2s ease-in-out infinite;}
-.levelup-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-family:'DM Mono',monospace;margin-bottom:2px;}
-.levelup-level{font-size:24px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px;}
+.levelup-title{font-size:9.5px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--accent);font-family:'DM Mono',monospace;margin-bottom:2px;}
+.levelup-level{font-size:20px;font-weight:800;letter-spacing:-.4px;margin-bottom:2px;}
 .levelup-rewards{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);}
 .streak-fire{color:var(--accent3);}
 .nav-profile-btn{display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:6px 14px 6px 8px;cursor:pointer;transition:all .2s;}
@@ -1505,7 +1518,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 /* ── TOAST / XP FLOATER ── */
 .toast{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:50%;opacity:0;transform:translateX(-50%) translateY(calc(-100% - 16px));background:rgba(18,18,26,.96);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:10px 16px 10px 12px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;z-index:1300;box-shadow:0 8px 32px rgba(0,0,0,.5);transition:transform .35s cubic-bezier(.34,1.4,.64,1),opacity .25s;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);white-space:nowrap;font-family:'DM Mono',monospace;letter-spacing:.2px;pointer-events:none;max-width:calc(100vw - 32px);}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
-.toast-icon{font-size:16px;width:30px;height:30px;border-radius:8px;background:rgba(139,92,246,.18);border:1px solid rgba(163,230,53,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.toast-icon{font-size:16px;width:30px;height:30px;border-radius:8px;background:rgba(163,230,53,.13);border:1px solid rgba(163,230,53,.28);color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 #toast-text{white-space:normal;max-width:260px;line-height:1.45;}
 .xp-floater{position:fixed;pointer-events:none;z-index:700;font-size:18px;font-weight:800;color:var(--accent);font-family:'DM Mono',monospace;text-shadow:0 0 20px rgba(163,230,53,.6);animation:xp-rise 2s ease forwards;}
 @keyframes xp-rise{0%{transform:translateY(0);opacity:1;}100%{transform:translateY(-80px);opacity:0;}}
@@ -1860,15 +1873,36 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 /* ── ACHIEVEMENT NOTIFICATION ── */
 #achieveNotif{position:fixed;top:-120px;left:50%;transform:translateX(-50%);z-index:1200;pointer-events:none;transition:top .45s cubic-bezier(.34,1.4,.64,1),opacity .3s;width:min(340px,calc(100vw - 32px));touch-action:pan-y;}
 #achieveNotif.show{top:calc(16px + env(safe-area-inset-top,0px));pointer-events:all;}
-.achieve-inner{background:linear-gradient(135deg,#111118,#0e0e18);border:1px solid var(--border);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 40px rgba(0,0,0,.7);}
-.achieve-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
-.achieve-icon-gold{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);}
-.achieve-icon-quest{background:rgba(163,230,53,.12);border:1px solid rgba(163,230,53,.3);}
-.achieve-eyebrow{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:3px;}
+.achieve-inner{position:relative;overflow:hidden;background:rgba(20,20,27,.84);-webkit-backdrop-filter:blur(22px) saturate(1.3);backdrop-filter:blur(22px) saturate(1.3);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:15px 18px;display:flex;align-items:center;gap:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 22px 52px rgba(0,0,0,.55);}
+.achieve-icon{position:relative;width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:23px;flex-shrink:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);}
+.achieve-icon-gold{background:rgba(251,191,36,.14);border:1px solid rgba(251,191,36,.3);}
+.achieve-icon-quest{background:rgba(163,230,53,.13);border:1px solid rgba(163,230,53,.3);}
+.achieve-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:3px;}
 .achieve-eyebrow-gold{color:#fbbf24;}
 .achieve-eyebrow-quest{color:var(--accent);}
-.achieve-title{font-size:15px;font-weight:800;line-height:1.2;}
-.achieve-sub{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px;}
+.achieve-title{font-size:15.5px;font-weight:800;line-height:1.2;letter-spacing:-.2px;}
+.achieve-sub{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:3px;line-height:1.35;}
+.achieve-progress{position:absolute;left:0;right:0;bottom:0;height:2.5px;background:rgba(255,255,255,.04);}
+.achieve-progress-fill{height:100%;width:100%;transform-origin:left;transform:scaleX(0);background:var(--ach-accent,var(--accent));}
+#achieveNotif.show .achieve-progress-fill{animation:achieveCountdown 3.5s linear forwards;}
+@keyframes achieveCountdown{from{transform:scaleX(1);}to{transform:scaleX(0);}}
+/* ── WELCOME BACK (away XP reward) ── */
+.wb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.62);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:1250;display:none;align-items:center;justify-content:center;padding:24px;opacity:0;transition:opacity .25s;}
+.wb-overlay.show{display:flex;opacity:1;}
+.wb-card{position:relative;overflow:hidden;background:rgba(20,20,27,.9);-webkit-backdrop-filter:blur(24px) saturate(1.3);backdrop-filter:blur(24px) saturate(1.3);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:26px 24px 22px;width:100%;max-width:320px;text-align:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 30px 80px rgba(0,0,0,.62);transform:translateY(14px) scale(.95);transition:transform .32s cubic-bezier(.34,1.45,.64,1);}
+.wb-overlay.show .wb-card{transform:translateY(0) scale(1);}
+.wb-eyebrow{font-size:10px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;color:var(--accent);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.wb-pet{width:104px;height:104px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;}
+.wb-pet img{width:100%;height:100%;object-fit:contain;}
+.wb-pet span{font-size:72px;line-height:1;}
+.wb-title{font-size:22px;font-weight:800;letter-spacing:-.4px;margin-bottom:18px;}
+.wb-reward{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:14px;padding:15px 16px;margin-bottom:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);}
+.wb-xp-amt{font-size:34px;font-weight:800;color:var(--accent);letter-spacing:-.5px;line-height:1;}
+.wb-xp-unit{font-size:15px;font-weight:700;color:var(--accent);margin-left:3px;}
+.wb-sub{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:7px;letter-spacing:.3px;}
+.wb-collect{width:100%;padding:14px;background:var(--accent);color:#0a0a0c;border:none;border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-weight:700;font-size:15px;cursor:pointer;transition:background .2s;}
+.wb-collect:hover{background:var(--accent2);}
+.wb-collect:active{transform:scale(.99);}
 /* ── REST TIMER TAB ── */
 #rtMiniTab{display:none;align-items:center;gap:7px;background:rgba(163,230,53,.1);border:1px solid rgba(163,230,53,.3);border-radius:8px;padding:5px 10px;cursor:pointer;transition:all .2s;font-family:'DM Mono',monospace;}
 #rtMiniTab.active{display:flex;}
@@ -2030,13 +2064,15 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 <div class="auth-screen" id="authScreen">
   <div class="auth-box">
     <div class="auth-logo"><div class="logo-dot"></div>FitPet</div>
+    <div class="auth-tagline">Train · Level Up · Collect</div>
 
     <!-- Profile selector -->
     <div id="authSelectView">
       <div class="auth-title">Welcome back</div>
-      <div class="auth-sub">Choose your profile or create a new one.</div>
+      <div class="auth-sub">Pick up where you left off.</div>
+      <div class="auth-caption" id="profilesCaption">Your Profiles</div>
       <div class="profiles-list" id="profilesList"></div>
-      <button class="auth-btn" onclick="authShowCreate()">+ Create New Profile</button>
+      <button class="auth-btn-ghost" onclick="authShowCreate()"><span class="ghost-plus">+</span> Create New Profile</button>
     </div>
 
     <!-- Create new profile -->
@@ -2594,9 +2630,12 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 
 <!-- LEVEL UP BANNER -->
 <div class="levelup-banner" id="levelupBanner">
-  <div class="levelup-title">Level Up</div>
-  <div class="levelup-level" id="levelupLevel">LVL 2</div>
-  <div class="levelup-rewards" id="levelupRewards">+200 ◆ &middot; +1 Plain Egg</div>
+  <div class="levelup-icon">⬆</div>
+  <div class="levelup-text">
+    <div class="levelup-title">Level Up</div>
+    <div class="levelup-level" id="levelupLevel">LVL 2</div>
+    <div class="levelup-rewards" id="levelupRewards">+200 ◆ &middot; +1 Plain Egg</div>
+  </div>
 </div>
 
 <!-- EVOLUTION ANIMATION OVERLAY -->
@@ -2851,12 +2890,12 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
         <div class="active-workout-title" id="activeWorkoutTitle">Push Day A</div>
         <div class="workout-elapsed" id="workoutElapsed">00:00</div>
       </div>
-      <div style="display:flex;gap:8px;">
-        <button class="add-exercise-workout-btn" onclick="openAddExerciseModal()" style="margin-top:0;width:auto;padding:10px 14px;font-size:13px;">+ Add</button>
-        <button class="cancel-workout-btn" onclick="cancelWorkout()">&#x2715; Cancel</button>
-      </div>
     </div>
     <div class="log-exercise-list" id="logExerciseList"></div>
+    <div style="display:flex;gap:8px;margin-top:16px;">
+      <button class="add-exercise-workout-btn" onclick="openAddExerciseModal()" style="margin-top:0;width:auto;padding:10px 14px;font-size:13px;">+ Add</button>
+      <button class="cancel-workout-btn" onclick="cancelWorkout()">&#x2715; Cancel</button>
+    </div>
     <button class="finish-workout-btn" onclick="finishWorkout()">&#9889; Finish Workout &amp; Earn XP</button>
   </div>
 
@@ -3820,18 +3859,25 @@ function authShowSelect() {
 function renderProfilesList() {
   const store = loadStore();
   const list = document.getElementById('profilesList');
+  const caption = document.getElementById('profilesCaption');
   if (!store.profiles.length) {
+    if (caption) caption.style.display = 'none';
     list.innerHTML = '<div class="no-profiles">No profiles yet. Create one to get started!</div>';
     return;
   }
+  if (caption) caption.style.display = '';
   list.innerHTML = store.profiles.map(p => {
     const av = _profileAvatarHtml(p);
-    const name = p.displayName || p.username;
+    const name = escHtml(p.displayName || p.username);
+    const n = p.workoutLog.length;
     return `
     <div class="profile-item" onclick="authSelectProfile('${p.username}')">
       <div class="profile-avatar" style="${av.style}">${av.inner}</div>
-      <div class="profile-name">${name}</div>
-      <div class="profile-meta">LVL ${p.level} &middot; ${p.workoutLog.length} workouts</div>
+      <div class="profile-item-info">
+        <div class="profile-name">${name}</div>
+        <div class="profile-meta"><span class="profile-lvl">LVL ${p.level}</span><span class="profile-dot">&middot;</span>${n} ${n === 1 ? 'workout' : 'workouts'}</div>
+      </div>
+      <div class="profile-chevron">&rsaquo;</div>
     </div>`;
   }).join('');
 }
@@ -9993,11 +10039,32 @@ function applyCatchupXP() {
   if (p.level > oldLevel) awardLevelUp(p, oldLevel, p.level);
   saveP(p);
   refreshHomeStats();
-  // Show a catchup toast so the user knows XP was earned
+  // Only surface the "Welcome Back" popup after a meaningful absence — short app
+  // switches still earn XP silently, they just don't interrupt with a banner.
+  const WELCOME_BACK_MIN_SECONDS = 300; // 5 minutes
+  if (secondsGone < WELCOME_BACK_MIN_SECONDS) return;
   const mins = Math.floor(secondsGone / 60);
   const secs = secondsGone % 60;
   const timeStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
-  showAchieve({ type:'quest', icon:'⚡', eyebrow:'Welcome Back', title:`+${totalXP.toLocaleString()} XP`, sub:`Earned while away · ${timeStr}` });
+  showWelcomeBack(totalXP, timeStr, p);
+}
+
+// Polished "welcome back" reward card — shown when returning after a real break.
+function showWelcomeBack(totalXP, timeStr, p) {
+  const o = document.getElementById('welcomeBackOverlay');
+  if (!o) return;
+  document.getElementById('wbXpAmt').textContent = '+' + totalXP.toLocaleString();
+  document.getElementById('wbSub').textContent = `Earned over ${timeStr} away`;
+  const petEl = document.getElementById('wbPet');
+  if (petEl) {
+    const skin = ALL_SKINS_MAP && ALL_SKINS_MAP[p.equippedSkin];
+    petEl.innerHTML = petImgHtml(p.equippedSkin, skin ? skin.emoji : '🦏');
+  }
+  o.classList.add('show');
+}
+function dismissWelcomeBack() {
+  const o = document.getElementById('welcomeBackOverlay');
+  if (o) o.classList.remove('show');
 }
 
 function startAutoClicker() {
@@ -10112,12 +10179,12 @@ function showToast(msg) {
   const iconEl = document.getElementById('toast-icon');
   document.getElementById('toast-text').textContent = msg;
   // Pick icon and accent color based on message content
-  let icon = '✓', bg = 'rgba(139,92,246,.18)', border = 'rgba(163,230,53,.14)';
-  if (msg.includes('◆') || msg.includes('Gold') || msg.includes('gold')) { icon = '◆'; bg = 'rgba(251,191,36,.15)'; border = 'rgba(251,191,36,.3)'; }
-  else if (msg.includes('⚠') || msg.includes('—') || msg.includes('Not enough') || msg.includes('No ')) { icon = '!'; bg = 'rgba(239,68,68,.15)'; border = 'rgba(239,68,68,.3)'; }
-  else if (msg.includes('Unlock') || msg.includes('unlock')) { icon = '🔓'; bg = 'rgba(56,189,248,.15)'; border = 'rgba(56,189,248,.3)'; }
-  else if (msg.includes('XP') || msg.includes('Level') || msg.includes('level')) { icon = '⚡'; bg = 'rgba(163,230,53,.15)'; border = 'rgba(163,230,53,.25)'; }
-  if (iconEl) { iconEl.textContent = icon; iconEl.style.background = bg; iconEl.style.borderColor = border; }
+  let icon = '✓', col = '#a3e635', bg = 'rgba(163,230,53,.13)', border = 'rgba(163,230,53,.28)';
+  if (msg.includes('◆') || msg.includes('Gold') || msg.includes('gold')) { icon = '◆'; col = '#fbbf24'; bg = 'rgba(251,191,36,.15)'; border = 'rgba(251,191,36,.3)'; }
+  else if (msg.includes('⚠') || msg.includes('—') || msg.includes('Not enough') || msg.includes('No ')) { icon = '!'; col = '#f87171'; bg = 'rgba(239,68,68,.15)'; border = 'rgba(239,68,68,.3)'; }
+  else if (msg.includes('Unlock') || msg.includes('unlock')) { icon = '🔓'; col = '#38bdf8'; bg = 'rgba(56,189,248,.15)'; border = 'rgba(56,189,248,.3)'; }
+  else if (msg.includes('XP') || msg.includes('Level') || msg.includes('level')) { icon = '⚡'; col = '#a3e635'; bg = 'rgba(163,230,53,.15)'; border = 'rgba(163,230,53,.25)'; }
+  if (iconEl) { iconEl.textContent = icon; iconEl.style.background = bg; iconEl.style.borderColor = border; iconEl.style.color = col; }
   t.classList.remove('show');
   void t.offsetWidth;
   t.classList.add('show');
@@ -12999,6 +13066,7 @@ function _achieveNext() {
   document.getElementById('achieveIcon').className = 'achieve-icon ' + (type === 'gold' ? 'achieve-icon-gold' : 'achieve-icon-quest');
   document.getElementById('achieveEyebrow').textContent = eyebrow;
   document.getElementById('achieveEyebrow').className = 'achieve-eyebrow ' + (type === 'gold' ? 'achieve-eyebrow-gold' : 'achieve-eyebrow-quest');
+  document.getElementById('achieveInner').style.setProperty('--ach-accent', type === 'gold' ? '#fbbf24' : '#a3e635');
   document.getElementById('achieveTitle').textContent = title;
   document.getElementById('achieveSub').textContent = sub;
 
@@ -13343,9 +13411,9 @@ function closeDayDetail() {
     <div class="bn-icon-wrap">
       <!-- Duck icon -->
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15.5 4.2a2.5 2.5 0 0 0-2.5 2.5c0 .3.05.6.14.86A6.5 6.5 0 0 0 4 13.5a1 1 0 0 0 .4.8C6 15.6 8.7 17 12 17c4.2 0 7.2-2.3 8.3-5.6.3-1 .45-2 .45-2.9 0-.5-.4-.9-.9-.9h-3a2.5 2.5 0 0 0 .65-1.68 2.5 2.5 0 0 0-2.5-2.5Z"/>
-        <circle cx="15.5" cy="6.7" r="0.9" fill="var(--bg2)"/>
-        <path d="M9 17c-.3 1.4-1 2.6-2.2 3.4a.6.6 0 0 0 .35 1.1H14a.6.6 0 0 0 .2-1.17C12 19.6 11 18.4 11 17Z"/>
+        <path d="M16.5 5a3 3 0 0 0-2.96 3.5H13A8 8 0 0 0 5 16.5a1 1 0 0 0 1 1h1.2a4.5 4.5 0 0 0 4.3 3.2h2A7.5 7.5 0 0 0 21 13.2a.9.9 0 0 0-.9-.9h-2.7A3 3 0 0 0 16.5 5Z"/>
+        <path d="M18.4 8.5l3.6.62a.62.62 0 0 1 0 1.22l-3.6.62z"/>
+        <circle cx="16.3" cy="7.7" r="1" fill="var(--bg2)"/>
       </svg>
       <span class="bn-badge" id="bnPetsBadge" style="display:none;"></span>
     </div>
@@ -13401,13 +13469,28 @@ function closeDayDetail() {
 
 <!-- ACHIEVEMENT NOTIFICATION -->
 <div id="achieveNotif">
-  <div class="achieve-inner">
+  <div class="achieve-inner" id="achieveInner">
     <div class="achieve-icon" id="achieveIcon">⚡</div>
     <div>
       <div class="achieve-eyebrow" id="achieveEyebrow">Achievement</div>
       <div class="achieve-title" id="achieveTitle">+1,000 ◆ Gold</div>
       <div class="achieve-sub" id="achieveSub">Daily bonus claimed</div>
     </div>
+    <div class="achieve-progress"><div class="achieve-progress-fill"></div></div>
+  </div>
+</div>
+
+<!-- WELCOME BACK (away XP reward) -->
+<div id="welcomeBackOverlay" class="wb-overlay" onclick="if(event.target===this)dismissWelcomeBack()">
+  <div class="wb-card">
+    <div class="wb-eyebrow">While you were away</div>
+    <div class="wb-pet" id="wbPet"></div>
+    <div class="wb-title">Welcome back!</div>
+    <div class="wb-reward">
+      <span class="wb-xp-amt" id="wbXpAmt">+30</span><span class="wb-xp-unit">XP</span>
+      <div class="wb-sub" id="wbSub">Earned over 8m away</div>
+    </div>
+    <button class="wb-collect" onclick="dismissWelcomeBack()">Collect</button>
   </div>
 </div>
 
