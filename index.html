@@ -1136,6 +1136,26 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .sets-table.edit-mode .add-drop-btn{display:none;}
 .add-set-btn-drop{font-size:12px;font-weight:700;color:#f87171;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.22);border-radius:9px;padding:8px 13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.3px;transition:border-color .18s,background .18s;}
 .add-set-btn-drop:hover{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.4);}
+.add-set-btn-pyr{font-size:12px;font-weight:700;color:var(--accent);background:rgba(163,230,53,.08);border:1px solid rgba(163,230,53,.25);border-radius:9px;padding:8px 13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.3px;transition:border-color .18s,background .18s;}
+.add-set-btn-pyr:hover{background:rgba(163,230,53,.16);border-color:rgba(163,230,53,.45);}
+/* Bench / lift pyramid modal */
+.pyr-sub{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.55;margin:2px 0 16px;}
+.pyr-list{display:flex;flex-direction:column;gap:7px;margin:16px 0 18px;}
+.pyr-row{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--bg3);border:1px solid var(--border);border-radius:11px;font-family:'DM Mono',monospace;}
+.pyr-row.top{border-color:rgba(163,230,53,.4);background:rgba(163,230,53,.06);}
+.pyr-row.back{border-color:rgba(251,191,36,.32);background:rgba(251,191,36,.05);}
+.pyr-row-n{width:22px;height:22px;border-radius:6px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--muted);flex-shrink:0;}
+.pyr-row-wt{font-size:17px;font-weight:800;color:var(--text);}
+.pyr-row-wt span{font-size:10px;color:var(--muted);font-weight:600;}
+.pyr-row-x{color:var(--muted);font-size:13px;}
+.pyr-row-reps{font-size:16px;font-weight:800;color:var(--text);min-width:16px;}
+.pyr-row-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.pyr-row-tag{font-size:8px;font-weight:800;letter-spacing:1px;color:var(--muted);}
+.pyr-row-pct{font-size:11px;font-weight:700;color:var(--accent);background:rgba(163,230,53,.1);border:1px solid rgba(163,230,53,.22);border-radius:6px;padding:3px 7px;}
+.pyr-row.back .pyr-row-pct{color:#fbbf24;background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.25);}
+.pyr-load-btn{width:100%;padding:14px;border-radius:12px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-weight:800;font-size:15px;letter-spacing:.5px;background:var(--accent);color:#0a0a0c;box-shadow:inset 0 1px 0 rgba(255,255,255,.25);transition:filter .2s,transform .12s;}
+.pyr-load-btn:hover{filter:brightness(1.06);}
+.pyr-load-btn:active{transform:scale(.99);}
 .warm-num{font-size:11px;font-weight:800;color:#fbbf24;font-family:'DM Mono',monospace;letter-spacing:.3px;}
 .warm-row td{padding:6px 16px;border-bottom:1px solid rgba(42,42,56,.5);background:rgba(251,191,36,.025);}
 .warm-row.set-row-done td{opacity:.45;}
@@ -2404,6 +2424,27 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
     </div>
     <div class="pc-barbell-wrap" id="pcBarbell"></div>
     <div id="pcResult"></div>
+  </div>
+</div>
+
+<!-- BENCH / LIFT PYRAMID MODAL -->
+<div class="pc-overlay hidden" id="pyramidOverlay" onclick="closeSheet(event,'pyramidOverlay')">
+  <div class="pc-sheet" onclick="event.stopPropagation()" style="max-width:460px;">
+    <div class="exinfo-handle"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+      <div class="pc-title" id="pyrTitle">▲ Pyramid</div>
+      <button class="exinfo-close" style="margin-left:auto;" onclick="closeSheet(null,'pyramidOverlay')">✕</button>
+    </div>
+    <div class="pyr-sub">Ramp up to a heavy double, then back off. Enter your 1-rep max and load the full pyramid into your workout.</div>
+    <div class="pc-label">Your 1-rep max</div>
+    <div class="pc-target-row">
+      <button onclick="pyrStep(-5)">−</button>
+      <input id="pyrRM" type="number" inputmode="decimal" value="135" oninput="renderPyramid()">
+      <button onclick="pyrStep(5)">+</button>
+      <span class="pc-unit">lbs</span>
+    </div>
+    <div class="pyr-list" id="pyrList"></div>
+    <button class="pyr-load-btn" onclick="loadPyramid()">⤓ Load into workout</button>
   </div>
 </div>
 
@@ -5045,6 +5086,70 @@ function getPrForExercise(exId) {
   return best;
 }
 
+// ── BENCH / LIFT PYRAMID ──
+// Ramp up to a heavy double, then one back-off set (classic bench pyramid).
+const PYRAMID_SCHEME = [
+  { pct: 0.55,  reps: 10 },
+  { pct: 0.65,  reps: 8  },
+  { pct: 0.75,  reps: 6  },
+  { pct: 0.85,  reps: 4  },
+  { pct: 0.885, reps: 3  },
+  { pct: 0.925, reps: 2  },
+  { pct: 0.75,  reps: 6  },   // back-off
+];
+let _pyrExId = null;
+
+function pyrRoundedSets() {
+  const rm = Math.max(0, parseFloat(document.getElementById('pyrRM').value) || 0);
+  return PYRAMID_SCHEME.map(s => ({ lbs: Math.max(5, Math.round(rm * s.pct / 5) * 5), reps: s.reps, pct: s.pct }));
+}
+
+function openPyramid(exId) {
+  _pyrExId = exId;
+  const ex = ALL_EXERCISES[exId];
+  document.getElementById('pyrTitle').textContent = '▲ ' + (ex ? ex.name : '') + ' Pyramid';
+  // Prefill 1RM: estimate from the user's best set (Epley), else a sensible default.
+  const best = getPrForExercise(exId);
+  let rm = 135;
+  if (best && best.lbs) rm = Math.max(5, Math.round(best.lbs * (1 + (best.reps || 1) / 30) / 5) * 5);
+  document.getElementById('pyrRM').value = rm;
+  renderPyramid();
+  document.getElementById('pyramidOverlay').classList.remove('hidden');
+}
+
+function pyrStep(d) {
+  const el = document.getElementById('pyrRM');
+  el.value = Math.max(5, (parseFloat(el.value) || 0) + d);
+  renderPyramid();
+}
+
+function renderPyramid() {
+  const sets = pyrRoundedSets();
+  const topIdx = 5, backIdx = 6;
+  document.getElementById('pyrList').innerHTML = sets.map((s, i) => {
+    const cls = i === topIdx ? ' top' : (i === backIdx ? ' back' : '');
+    const tag = i === backIdx ? 'BACK-OFF' : (i === topIdx ? 'TOP SET' : '');
+    const pct = Math.round(s.pct * 1000) / 10;
+    return `<div class="pyr-row${cls}">
+      <div class="pyr-row-n">${i+1}</div>
+      <div class="pyr-row-wt">${s.lbs}<span> lb</span></div>
+      <div class="pyr-row-x">×</div>
+      <div class="pyr-row-reps">${s.reps}</div>
+      <div class="pyr-row-right">${tag ? `<span class="pyr-row-tag">${tag}</span>` : ''}<span class="pyr-row-pct">${pct}%</span></div>
+    </div>`;
+  }).join('');
+}
+
+function loadPyramid() {
+  if (!_pyrExId || !sessionSets[_pyrExId]) { closeSheet(null, 'pyramidOverlay'); return; }
+  const sets = pyrRoundedSets();
+  sessionSets[_pyrExId] = sets.map(s => ({ lbs: s.lbs, reps: s.reps, done: false }));
+  rebuildSetRows(_pyrExId);
+  saveWorkoutSession();
+  closeSheet(null, 'pyramidOverlay');
+  if (typeof showToast === 'function') showToast('Pyramid loaded · ' + sets.length + ' sets');
+}
+
 function getLastSessionForExercise(exId) {
   const p = getP();
   if (!p) return [];
@@ -5444,6 +5549,7 @@ function buildExerciseCard(ex) {
         <button class="add-set-btn" onclick="addSet('${ex.id}')">+ Add Set</button>
         ${type === 'weight' ? `<button class="add-set-btn-drop" onclick="addDropSet('${ex.id}')">+ Drop Set</button>` : ''}
         ${type === 'weight' ? `<button class="add-set-btn-warm" onclick="addWarmup('${ex.id}')">+ Warmup</button>` : ''}
+        ${type === 'weight' ? `<button class="add-set-btn-pyr" onclick="openPyramid('${ex.id}')">▲ Pyramid</button>` : ''}
       </div>
     </div>`;
 }
@@ -14098,6 +14204,15 @@ function _runWoConfetti(canvas, duration) {
     ctx.restore();
   }
 
+  // Fixed crater layout for the moon (offsets/radii as fractions of the moon radius).
+  const MOON_CRATERS = [
+    {dx:-0.30,dy:-0.30,r:0.21}, {dx: 0.26,dy:-0.14,r:0.13},
+    {dx: 0.12,dy: 0.30,r:0.17}, {dx:-0.44,dy: 0.20,r:0.10},
+    {dx: 0.40,dy: 0.36,r:0.08}, {dx:-0.04,dy:-0.02,r:0.11},
+    {dx: 0.50,dy:-0.42,r:0.07}, {dx:-0.56,dy:-0.08,r:0.08},
+    {dx: 0.32,dy: 0.10,r:0.06},
+  ];
+
   // One layer of rolling parallax hills, filled down to the ground.
   // `rim` (optional) strokes a faint light along the crest for definition.
   function drawHills(speed, baseY, amp, color, rim){
@@ -14137,15 +14252,28 @@ function _runWoConfetti(canvas, duration) {
   function drawBackground(){
     ctx.fillStyle=bgGrad||'#0d0d14'; ctx.fillRect(-14,-14,W+28,H+28);
 
-    // Moon — a dim disc with a soft accent halo, drifting very slowly.
+    // Moon — a cratered grey disc with a soft accent halo, drifting very slowly.
     const moonX=W*0.76 - (scrollX*0.015)%(W*2), moonY=H*0.185, mr=42*sc;
     const halo=ctx.createRadialGradient(moonX,moonY,mr*0.6, moonX,moonY,mr*3.4);
     halo.addColorStop(0,'rgba(163,230,53,.10)'); halo.addColorStop(0.5,'rgba(163,230,53,.035)'); halo.addColorStop(1,'rgba(163,230,53,0)');
     ctx.fillStyle=halo; ctx.fillRect(-14,-14,W+28,groundY+14);
-    const disc=ctx.createRadialGradient(moonX-mr*0.32,moonY-mr*0.32,mr*0.2, moonX,moonY,mr);
-    disc.addColorStop(0,'#23262d'); disc.addColorStop(1,'#15161d');
+    const disc=ctx.createRadialGradient(moonX-mr*0.34,moonY-mr*0.34,mr*0.12, moonX,moonY,mr);
+    disc.addColorStop(0,'#3b3f48'); disc.addColorStop(0.6,'#2a2d34'); disc.addColorStop(1,'#191b21');
     ctx.fillStyle=disc; ctx.beginPath(); ctx.arc(moonX,moonY,mr,0,Math.PI*2); ctx.fill();
-    ctx.strokeStyle='rgba(163,230,53,.16)'; ctx.lineWidth=1.5*sc; ctx.stroke();
+    // Craters (clipped to the disc), lit from the upper-left to match the disc shading.
+    ctx.save(); ctx.beginPath(); ctx.arc(moonX,moonY,mr,0,Math.PI*2); ctx.clip();
+    for(const c of MOON_CRATERS){
+      const cx=moonX+c.dx*mr, cy=moonY+c.dy*mr, crr=c.r*mr;
+      ctx.fillStyle='rgba(9,10,14,.40)';
+      ctx.beginPath(); ctx.arc(cx,cy,crr,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(9,10,14,.28)';
+      ctx.beginPath(); ctx.arc(cx+crr*0.2,cy+crr*0.2,crr*0.68,0,Math.PI*2); ctx.fill();
+      ctx.strokeStyle='rgba(222,230,212,.13)'; ctx.lineWidth=Math.max(0.6,1*sc);
+      ctx.beginPath(); ctx.arc(cx,cy,crr,Math.PI*0.92,Math.PI*1.86); ctx.stroke();
+    }
+    ctx.restore();
+    ctx.strokeStyle='rgba(222,230,235,.12)'; ctx.lineWidth=1.4*sc;
+    ctx.beginPath(); ctx.arc(moonX,moonY,mr,0,Math.PI*2); ctx.stroke();
 
     // Star field (twinkling, slow parallax) in the upper sky.
     for(const s of stars){
