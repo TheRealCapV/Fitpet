@@ -1086,19 +1086,23 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 /* Daily wheel modal */
 .dw-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:1150;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
 .dw-overlay.hidden{display:none;}
-.dw-sheet{background:var(--bg2);border:1px solid var(--border);border-radius:22px;padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px));width:min(94vw,420px);text-align:center;position:relative;}
-.dw-close{position:absolute;top:14px;right:14px;background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:14px;}
-.dw-title{font-family:'Inter',sans-serif;font-weight:800;font-size:22px;margin-bottom:4px;}
-.dw-sub{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:18px;}
-.dw-wheel-wrap{position:relative;width:min(76vw,300px);height:min(76vw,300px);margin:0 auto 16px;}
-.dw-pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:26px solid #fff;z-index:6;filter:drop-shadow(0 2px 5px rgba(0,0,0,.7));}
-.dw-wheel{width:100%;height:100%;border-radius:50%;position:relative;border:7px solid #14141c;box-shadow:0 0 0 4px rgba(251,191,36,.3),0 12px 44px rgba(0,0,0,.65);overflow:hidden;transition:transform 4.7s cubic-bezier(.16,1,.3,1);}
-.dw-label{position:absolute;inset:0;pointer-events:none;}
-.dw-label>span{position:absolute;top:13px;left:0;right:0;text-align:center;font-family:'DM Mono',monospace;font-weight:800;font-size:12px;color:#0a0a0f;text-shadow:0 1px 1px rgba(255,255,255,.25);}
-.dw-hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:#0a0a0f;border:3px solid #fbbf24;z-index:5;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 14px rgba(251,191,36,.5);}
+.dw-sheet{background:rgba(20,20,27,.92);-webkit-backdrop-filter:blur(24px) saturate(1.3);backdrop-filter:blur(24px) saturate(1.3);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:24px 20px calc(24px + env(safe-area-inset-bottom,0px));width:min(94vw,420px);text-align:center;position:relative;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 30px 80px rgba(0,0,0,.62);}
+.dw-close{position:absolute;top:14px;right:14px;background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:14px;transition:all .15s;}
+.dw-close:hover{border-color:var(--accent);color:var(--text);}
+.dw-title{font-family:'Inter',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.3px;margin-bottom:5px;}
+.dw-sub{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:20px;}
+.dw-wheel-wrap{position:relative;width:min(78vw,310px);height:min(78vw,310px);margin:2px auto 18px;}
+.dw-pointer{position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:25px solid #f4f4f5;z-index:6;filter:drop-shadow(0 3px 5px rgba(0,0,0,.85));}
+.dw-wheel{width:100%;height:100%;border-radius:50%;position:relative;border:6px solid #0e0e13;box-shadow:0 0 0 3px rgba(251,191,36,.5),0 0 0 5px rgba(0,0,0,.55),0 18px 52px -8px rgba(0,0,0,.78),inset 0 0 38px rgba(0,0,0,.6);overflow:hidden;transition:transform 4.7s cubic-bezier(.16,1,.3,1);}
+.dw-dividers{position:absolute;inset:0;border-radius:50%;pointer-events:none;z-index:2;}
+.dw-label{position:absolute;inset:0;pointer-events:none;z-index:3;}
+.dw-label>span{position:absolute;top:14px;left:0;right:0;text-align:center;font-family:'DM Mono',monospace;font-weight:800;font-size:12px;letter-spacing:.3px;}
+.dw-hub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:50px;height:50px;border-radius:50%;background:radial-gradient(circle at 38% 32%, #2a2a1a, #0a0a0f 72%);border:3px solid #fbbf24;z-index:5;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fde047;box-shadow:0 0 0 4px rgba(10,10,15,.9),0 0 16px rgba(251,191,36,.45),inset 0 1px 0 rgba(255,255,255,.12);}
 .dw-result{min-height:26px;font-family:'DM Mono',monospace;font-weight:800;font-size:17px;color:#fbbf24;margin-bottom:14px;}
-.dw-spin-btn{width:100%;padding:15px;border-radius:12px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-weight:700;font-size:16px;background:#fbbf24;color:#0a0a0c;transition:all .2s;}
-.dw-spin-btn:disabled{background:var(--bg3);color:var(--muted);box-shadow:none;cursor:default;}
+.dw-spin-btn{width:100%;padding:15px;border-radius:13px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-weight:800;font-size:16px;letter-spacing:2px;background:#fbbf24;color:#1a160a;box-shadow:0 6px 18px -6px rgba(251,191,36,.5),inset 0 1px 0 rgba(255,255,255,.3);transition:filter .2s,transform .12s,box-shadow .2s;}
+.dw-spin-btn:hover:not(:disabled){filter:brightness(1.06);}
+.dw-spin-btn:active:not(:disabled){transform:scale(.985);}
+.dw-spin-btn:disabled{background:var(--bg3);color:var(--muted);box-shadow:none;cursor:default;letter-spacing:.5px;}
 .te-ex-remove{background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;padding:2px 6px;border-radius:4px;transition:color .15s;margin-left:2px;}
 .te-ex-remove:hover{color:#f87171;}
 .te-add-ex-btn{width:100%;padding:10px;background:var(--bg3);border:1px dashed var(--border);border-radius:10px;color:var(--muted);font-family:'Inter',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
@@ -7282,19 +7286,21 @@ function openBoostModal() {
 
 // ── DAILY SPIN WHEEL ──
 const DAILY_SPIN_CD = 24 * 60 * 60 * 1000;
+// On-brand palette: dark slate → lime → gold, brighter as the prize grows.
+// `light` = use light label text (dark wedge); otherwise dark text (bright gold wedge).
 const DAILY_WHEEL = [
-  { gold: 50,    color: '#38bdf8' },
-  { gold: 250,   color: '#a855f7' },
-  { gold: 10,    color: '#fb923c' },
-  { gold: 1000,  color: '#22c55e' },
-  { gold: 100,   color: '#38bdf8' },
-  { gold: 2500,  color: '#ec4899' },
-  { gold: 25,    color: '#fb923c' },
-  { gold: 500,   color: '#a855f7' },
-  { gold: 5,     color: '#64748b' },
-  { gold: 5000,  color: '#fbbf24' },
-  { gold: 75,    color: '#38bdf8' },
-  { gold: 10000, color: '#fde047' },
+  { gold: 50,    color: '#2b3340', light: true  },
+  { gold: 250,   color: '#557f1f', light: true  },
+  { gold: 10,    color: '#1f232c', light: true  },
+  { gold: 1000,  color: '#caa12a', light: false },
+  { gold: 100,   color: '#35492f', light: true  },
+  { gold: 2500,  color: '#e3ad33', light: false },
+  { gold: 25,    color: '#262b37', light: true  },
+  { gold: 500,   color: '#669a2a', light: true  },
+  { gold: 5,     color: '#1a1d25', light: true  },
+  { gold: 5000,  color: '#f1c544', light: false },
+  { gold: 75,    color: '#2f4138', light: true  },
+  { gold: 10000, color: '#fde047', light: false },
 ];
 let _dwRotation = 0;
 let _dwSpinning = false;
@@ -7307,8 +7313,15 @@ function buildDailyWheel() {
   const n = DAILY_WHEEL.length, seg = 360 / n;
   const stops = DAILY_WHEEL.map((s, i) => `${s.color} ${i * seg}deg ${(i + 1) * seg}deg`).join(',');
   wheel.style.background = `conic-gradient(${stops})`;
-  wheel.innerHTML = DAILY_WHEEL.map((s, i) =>
-    `<div class="dw-label" style="transform:rotate(${i * seg + seg / 2}deg);"><span>◆${fmtGold(s.gold)}</span></div>`).join('');
+  // thin dividers between wedges for crispness
+  const lines = DAILY_WHEEL.map((s, i) => `rgba(0,0,0,.28) ${i*seg-0.5}deg ${i*seg+0.5}deg, transparent ${i*seg+0.5}deg ${i*seg+seg-0.5}deg`).join(',');
+  wheel.innerHTML =
+    `<div class="dw-dividers" style="background:conic-gradient(${lines});"></div>` +
+    DAILY_WHEEL.map((s, i) => {
+      const col = s.light ? '#f4f4f5' : '#1a160a';
+      const sh  = s.light ? '0 1px 3px rgba(0,0,0,.6)' : '0 1px 1px rgba(255,255,255,.3)';
+      return `<div class="dw-label" style="transform:rotate(${i * seg + seg / 2}deg);"><span style="color:${col};text-shadow:${sh};">◆${fmtGold(s.gold)}</span></div>`;
+    }).join('');
   wheel.dataset.built = '1';
 }
 
@@ -13426,7 +13439,7 @@ function closeDayDetail() {
   <button class="bn-tab" onclick="showPage('collection');clearNewPetsBadge()">
     <div class="bn-icon-wrap">
       <!-- Duck icon -->
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
         <path d="M16.5 5a3 3 0 0 0-2.96 3.5H13A8 8 0 0 0 5 16.5a1 1 0 0 0 1 1h1.2a4.5 4.5 0 0 0 4.3 3.2h2A7.5 7.5 0 0 0 21 13.2a.9.9 0 0 0-.9-.9h-2.7A3 3 0 0 0 16.5 5Z"/>
         <path d="M18.4 8.5l3.6.62a.62.62 0 0 1 0 1.22l-3.6.62z"/>
         <circle cx="16.3" cy="7.7" r="1" fill="var(--bg2)"/>
@@ -13760,7 +13773,7 @@ function _runWoConfetti(canvas, duration) {
   let canvas, ctx, W=0, H=0, dpr=1, sc=1, bgGrad=null;
   let raf=null, running=false, lastT=0;
   let duck, obstacles, spawnDist, score, scrollX, groundY;
-  let particles=[], motes=[], shake=0, flash=0, dying=false, dieT=0, flapped=false;
+  let particles=[], motes=[], stars=[], clouds=[], shake=0, flash=0, dying=false, dieT=0, flapped=false;
   let flapRecord=0, gateCount=0;   // record gate = the gate that reaches your current best
   let duckImg=null, duckReady=false, duckEmoji='🦆', duckGlow='#a3e635';
   let idleRAF=null, idleMode=false, idleLast=0;
@@ -13805,13 +13818,31 @@ function _runWoConfetti(canvas, duration) {
     canvas.height = Math.round(cssH*dpr);
     ctx.setTransform(dpr,0,0,dpr,0,0);
     bgGrad = ctx.createLinearGradient(0,0,0,H);
-    bgGrad.addColorStop(0,'#0b0b11'); bgGrad.addColorStop(0.55,'#0d0d14'); bgGrad.addColorStop(1,'#121219');
-    initMotes();
+    bgGrad.addColorStop(0,'#0a0c14'); bgGrad.addColorStop(0.42,'#0c0d15'); bgGrad.addColorStop(0.72,'#0e0f17'); bgGrad.addColorStop(1,'#13140f');
+    initMotes(); initStars(); initClouds();
   }
 
   function initMotes(){
     motes=[]; const n=18;
     for(let i=0;i<n;i++) motes.push({ x:Math.random()*W, y:Math.random()*groundY, r:(0.6+Math.random()*1.8)*sc, sp:0.08+Math.random()*0.3, ph:Math.random()*Math.PI*2 });
+  }
+
+  // Distant star field in the upper sky — fixed positions, gentle twinkle, slow parallax.
+  function initStars(){
+    stars=[]; const n=46;
+    for(let i=0;i<n;i++) stars.push({ x:Math.random()*W, y:Math.random()*(groundY*0.62), r:(0.4+Math.random()*1.2)*sc, sp:0.02+Math.random()*0.06, ph:Math.random()*Math.PI*2, tw:0.4+Math.random()*0.6 });
+  }
+
+  // Soft drifting cloud wisps in the mid sky.
+  function initClouds(){
+    clouds=[]; const n=5;
+    for(let i=0;i<n;i++) clouds.push({ x:Math.random()*W*1.4, y:(0.12+Math.random()*0.32)*groundY, w:(90+Math.random()*110)*sc, h:(20+Math.random()*22)*sc, sp:0.03+Math.random()*0.05, a:0.07+Math.random()*0.08 });
+  }
+
+  // Score-driven accent: the scene cools from lime toward teal as the run climbs.
+  function skyAccent(){
+    const p=Math.min(1,(score||0)/40);
+    return [Math.round(163+(72-163)*p), Math.round(230+(206-230)*p), Math.round(53+(168-53)*p)];
   }
 
   function reset(){
@@ -14067,17 +14098,79 @@ function _runWoConfetti(canvas, duration) {
     ctx.restore();
   }
 
+  // One layer of rolling parallax hills, filled down to the ground.
+  // `rim` (optional) strokes a faint light along the crest for definition.
+  function drawHills(speed, baseY, amp, color, rim){
+    const off=scrollX*speed, step=20*sc, pts=[];
+    ctx.fillStyle=color;
+    ctx.beginPath(); ctx.moveTo(-14, groundY+14);
+    for(let x=-14; x<=W+14; x+=step){
+      const wx=x+off;
+      const y=baseY - amp*(0.6*Math.sin(wx*0.0052) + 0.4*Math.sin(wx*0.0123+1.7));
+      ctx.lineTo(x, y); pts.push(x, y);
+    }
+    ctx.lineTo(W+14, groundY+14); ctx.closePath(); ctx.fill();
+    if(rim){
+      ctx.strokeStyle=rim; ctx.lineWidth=1.4*sc;
+      ctx.beginPath(); ctx.moveTo(pts[0], pts[1]);
+      for(let i=2;i<pts.length;i+=2) ctx.lineTo(pts[i], pts[i+1]);
+      ctx.stroke();
+    }
+  }
+
+  // Soft, squashed cloud wisps drifting slowly across the sky.
+  function drawClouds(){
+    for(const c of clouds){
+      const span=W+c.w*2;
+      const cx=((c.x - scrollX*c.sp)%span+span)%span - c.w;
+      ctx.save();
+      ctx.translate(cx, c.y); ctx.scale(1, c.h/(c.w*0.6));
+      const rg=ctx.createRadialGradient(0,0,0,0,0,c.w*0.6);
+      rg.addColorStop(0,'rgba(46,50,62,'+c.a.toFixed(3)+')');
+      rg.addColorStop(0.62,'rgba(46,50,62,'+(c.a*0.35).toFixed(3)+')');
+      rg.addColorStop(1,'rgba(46,50,62,0)');
+      ctx.fillStyle=rg; ctx.beginPath(); ctx.arc(0,0,c.w*0.6,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+  }
+
   function drawBackground(){
     ctx.fillStyle=bgGrad||'#0d0d14'; ctx.fillRect(-14,-14,W+28,H+28);
+
+    // Moon — a dim disc with a soft accent halo, drifting very slowly.
+    const moonX=W*0.76 - (scrollX*0.015)%(W*2), moonY=H*0.185, mr=42*sc;
+    const halo=ctx.createRadialGradient(moonX,moonY,mr*0.6, moonX,moonY,mr*3.4);
+    halo.addColorStop(0,'rgba(163,230,53,.10)'); halo.addColorStop(0.5,'rgba(163,230,53,.035)'); halo.addColorStop(1,'rgba(163,230,53,0)');
+    ctx.fillStyle=halo; ctx.fillRect(-14,-14,W+28,groundY+14);
+    const disc=ctx.createRadialGradient(moonX-mr*0.32,moonY-mr*0.32,mr*0.2, moonX,moonY,mr);
+    disc.addColorStop(0,'#23262d'); disc.addColorStop(1,'#15161d');
+    ctx.fillStyle=disc; ctx.beginPath(); ctx.arc(moonX,moonY,mr,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='rgba(163,230,53,.16)'; ctx.lineWidth=1.5*sc; ctx.stroke();
+
+    // Star field (twinkling, slow parallax) in the upper sky.
+    for(const s of stars){
+      const sx=((s.x - scrollX*s.sp)%W+W)%W;
+      ctx.globalAlpha=s.tw*(0.35+0.65*(0.5+0.5*Math.sin(scrollX*0.03+s.ph)));
+      ctx.fillStyle='#cfe8a8'; ctx.beginPath(); ctx.arc(sx,s.y,s.r,0,Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha=1;
+
+    // Drifting cloud wisps.
+    drawClouds();
+
+    // Soft accent glow over the playfield centre — hue and intensity drift with score.
+    const ac=skyAccent(), acStr=ac[0]+','+ac[1]+','+ac[2], gp=Math.min(1,(score||0)/40);
     const hg=ctx.createRadialGradient(W*0.5,H*0.4,0,W*0.5,H*0.4,W*0.62);
-    hg.addColorStop(0,'rgba(163,230,53,.055)'); hg.addColorStop(1,'rgba(163,230,53,0)');
+    hg.addColorStop(0,'rgba('+acStr+','+(0.05+0.045*gp).toFixed(3)+')'); hg.addColorStop(1,'rgba('+acStr+',0)');
     ctx.fillStyle=hg; ctx.fillRect(-14,-14,W+28,H+28);
-    const pw=44*sc, period=pw+150*sc, off=(scrollX*0.18)%period;
-    ctx.fillStyle='rgba(255,255,255,.025)';
-    for(let x=-off-period; x<W+period; x+=period){ roundRect(x, H*0.07, pw, groundY-H*0.14, 9*sc); ctx.fill(); }
-    ctx.strokeStyle='rgba(163,230,53,.045)'; ctx.lineWidth=1;
-    const gs=72*sc, go=(scrollX*0.34)%gs;
-    for(let x=-go; x<W; x+=gs) line(x,0,x,groundY);
+
+    // Parallax hill silhouettes — far to near — give the scene depth behind the pipes.
+    // The nearest crest catches a faint score-tinted rim light.
+    drawHills(0.05, groundY*0.66, 30*sc, '#101019');
+    drawHills(0.11, groundY*0.78, 28*sc, '#14141f');
+    drawHills(0.22, groundY*0.90, 24*sc, '#1a1a26', 'rgba('+acStr+','+(0.10+0.06*gp).toFixed(3)+')');
+
+    // Foreground dust motes drifting past.
     for(const m of motes){
       const mx=((m.x - scrollX*m.sp)%W+W)%W;
       const my=m.y + Math.sin(scrollX*0.008+m.ph)*7*sc;
