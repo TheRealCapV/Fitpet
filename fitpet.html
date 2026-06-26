@@ -559,14 +559,14 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 @keyframes wo-pulse{0%,100%{opacity:1;}50%{opacity:.25;}}
 .cancel-workout-btn{padding:10px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:#f87171;font-family:'Inter',sans-serif;transition:all .2s;}
 .cancel-workout-btn:hover{background:rgba(239,68,68,.18);border-color:#ef4444;}
-.templates-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+.templates-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;align-items:start;}
 .template-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .2s;}
 .template-card:hover,.template-card.selected{border-color:var(--accent);background:rgba(163,230,53,.04);box-shadow:0 0 0 1px rgba(163,230,53,.12);}
 .template-card.tmpl-dragging{opacity:.4;box-shadow:0 0 0 2px rgba(163,230,53,.32);}
 .template-card.tmpl-drag-over{border-color:var(--accent);box-shadow:0 0 0 2px rgba(163,230,53,.22);transform:scale(1.03);}
 .tmpl-drag-handle{font-size:16px;color:var(--muted);cursor:grab;touch-action:none;user-select:none;line-height:1;padding:2px 4px;flex-shrink:0;}
 .tmpl-drag-handle:active{cursor:grabbing;color:var(--accent);}
-.template-emoji{font-size:28px;margin-bottom:8px;}
+.template-emoji{font-size:20px;width:42px;height:42px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);flex-shrink:0;}
 .template-name{font-size:15px;font-weight:700;margin-bottom:4px;}
 .template-desc{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;}
 /* ── PET BIO MODAL ── */
@@ -1847,7 +1847,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
   /* ── TEMPLATE GRID ── */
   .templates-grid{grid-template-columns:1fr 1fr;gap:10px;}
   .template-card{padding:12px 10px;}
-  .template-emoji{font-size:22px;}
+  .template-emoji{font-size:18px;width:38px;height:38px;border-radius:11px;margin-bottom:10px;}
   .template-name{font-size:13px;}
   .template-desc{font-size:10px;}
   .tmpl-drag-handle{font-size:20px;padding:4px 6px;} /* bigger touch target */
@@ -3316,10 +3316,15 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
       <span id="backupChevron" style="color:var(--muted);font-size:13px;transition:transform .2s;font-family:'DM Mono',monospace;">▾</span>
     </button>
     <div id="backupPanel" style="display:none;padding-bottom:16px;">
-      <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.6;margin-bottom:12px;">Save your progress before re-adding the app to your home screen or switching devices. Back up first, then paste the code into the new app to restore everything.</div>
+      <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.6;margin-bottom:12px;">Save your progress before re-adding the app to your home screen or switching devices. Backing up saves a file <i>and</i> copies a code — restore on the new device with either one.</div>
       <button class="pd-switch-btn" style="width:100%;padding:12px;border-radius:10px;font-size:13px;margin-bottom:8px;background:var(--accent);color:#000;border-color:var(--accent);font-weight:800;" onclick="backupData()">⬇ Back up my progress</button>
-      <textarea id="backupBox" placeholder="Your backup code appears here — copy &amp; keep it safe. To restore, paste a code here and tap Restore." spellcheck="false" style="width:100%;height:90px;background:#000;color:var(--accent);border:1px solid var(--border);border-radius:8px;font-family:'DM Mono',monospace;font-size:10px;padding:10px;box-sizing:border-box;resize:vertical;margin-bottom:8px;"></textarea>
-      <button class="pd-switch-btn" style="width:100%;padding:12px;border-radius:10px;font-size:13px;" onclick="restoreData()">⬆ Restore from code</button>
+      <textarea id="backupBox" placeholder="Your backup code appears here — copy &amp; keep it safe. To restore, paste a code here and tap “Restore from code”, or upload your backup file." spellcheck="false" style="width:100%;height:90px;background:#000;color:var(--accent);border:1px solid var(--border);border-radius:8px;font-family:'DM Mono',monospace;font-size:10px;padding:10px;box-sizing:border-box;resize:vertical;margin-bottom:8px;"></textarea>
+      <div style="display:flex;gap:8px;">
+        <button class="pd-switch-btn" style="flex:1;padding:12px;border-radius:10px;font-size:13px;" onclick="restoreData()">⬆ Restore from code</button>
+        <input type="file" id="backupFileInput" accept=".json,application/json" style="display:none;" onchange="restoreFromFile(event)">
+        <button class="pd-switch-btn" style="flex:1;padding:12px;border-radius:10px;font-size:13px;" onclick="document.getElementById('backupFileInput').click()">📁 Restore from file</button>
+      </div>
+      <button id="undoRestoreBtn" class="pd-switch-btn" style="display:none;width:100%;padding:11px;border-radius:10px;font-size:12px;margin-top:8px;color:#fbbf24;border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.06);" onclick="undoRestore()">↩ Undo last restore</button>
 
       <!-- Import from another app -->
       <div style="height:1px;background:var(--border);margin:18px 0 14px;"></div>
@@ -3576,8 +3581,10 @@ function toggleBackupPanel() {
   const open = p.style.display === 'none';
   p.style.display = open ? 'block' : 'none';
   if (ch) ch.style.transform = open ? 'rotate(180deg)' : '';
+  if (open && typeof refreshUndoRestore === 'function') refreshUndoRestore();
 }
 const BACKUP_KEYS = ['fitpet_v2', 'fitpet_active_workout', 'fitpet_auto_bg_ts'];
+const PRERESTORE_KEY = 'fitpet_prerestore';
 function backupData() {
   const data = { _app: 'fitpet', _ts: Date.now() };
   BACKUP_KEYS.forEach(k => { const v = localStorage.getItem(k); if (v != null) data[k] = v; });
@@ -3587,29 +3594,94 @@ function backupData() {
   let copied = false;
   try { copied = document.execCommand('copy'); } catch (e) {}
   if (navigator.clipboard) { try { navigator.clipboard.writeText(json); copied = true; } catch (e) {} }
-  // also try to offer a file download (works in Safari tabs; may be ignored in standalone)
+  // also offer a file download with a dated, named filename (works in Safari tabs; may be ignored in standalone)
   try {
+    let who = 'fitpet';
+    try { const s = JSON.parse(data.fitpet_v2 || '{}'); who = (s.profiles && s.profiles[0] && (s.profiles[0].displayName || s.profiles[0].username)) || 'fitpet'; } catch (e) {}
+    who = String(who).replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '') || 'fitpet';
+    const d = new Date();
+    const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     const blob = new Blob([json], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'fitpet-backup.json';
+    a.download = `fitpet-${who}-${ds}.json`;
     document.body.appendChild(a); a.click(); a.remove();
   } catch (e) {}
   alert(copied
-    ? '✅ Backup copied to clipboard (and shown in the box).\n\nKeep it somewhere safe — paste it into the new app to restore.'
-    : '✅ Backup ready in the box below.\n\nSelect all + copy it, and keep it safe.');
+    ? '✅ Backup copied to clipboard (and shown in the box), and saved as a file.\n\nKeep it somewhere safe — paste the code or upload the file into the new app to restore.'
+    : '✅ Backup ready in the box below (and saved as a file).\n\nSelect all + copy it, and keep it safe.');
 }
-function restoreData() {
-  const box = document.getElementById('backupBox');
-  const raw = (box && box.value || '').trim();
-  if (!raw) { alert('Paste your backup code into the box first.'); return; }
-  let data;
-  try { data = JSON.parse(raw); } catch (e) { alert('That doesn’t look like a valid backup code.'); return; }
-  if (!data || !data.fitpet_v2) { alert('This code has no FitPet profile data in it.'); return; }
-  if (!confirm('Restore this backup? It will REPLACE the current data on this device.')) return;
+
+// Human-readable summary of what a backup contains, so you know what you're about to overwrite.
+function _backupSummary(data) {
+  try {
+    const store = JSON.parse(data.fitpet_v2 || '{}');
+    const profiles = store.profiles || [];
+    const names = profiles.map(p => p.displayName || p.username).filter(Boolean).join(', ') || '—';
+    const workouts = profiles.reduce((s, p) => s + ((p.workoutLog && p.workoutLog.length) || 0), 0);
+    const when = data._ts ? new Date(data._ts).toLocaleString() : 'unknown date';
+    return `Backup made: ${when}\nProfiles (${profiles.length}): ${names}\nTotal workouts: ${workouts}`;
+  } catch (e) { return 'FitPet backup'; }
+}
+
+function _applyRestore(data) {
+  if (!data || !data.fitpet_v2) { alert('This backup has no FitPet profile data in it.'); return; }
+  if (!confirm(_backupSummary(data) + '\n\n⚠️ Restore this backup? It REPLACES all data currently on this device.\n(You can tap “Undo last restore” right after if it’s wrong.)')) return;
+  // Safety snapshot of the current data so a wrong restore can be undone.
+  try {
+    const snap = { _ts: Date.now() };
+    BACKUP_KEYS.forEach(k => { const v = localStorage.getItem(k); if (v != null) snap[k] = v; });
+    localStorage.setItem(PRERESTORE_KEY, JSON.stringify(snap));
+  } catch (e) {}
   BACKUP_KEYS.forEach(k => { if (data[k] != null) localStorage.setItem(k, data[k]); });
   alert('✅ Restored! Reloading…');
   location.reload();
+}
+
+function restoreData() {
+  const box = document.getElementById('backupBox');
+  const raw = (box && box.value || '').trim();
+  if (!raw) { alert('Paste your backup code into the box first, or use “Restore from file”.'); return; }
+  let data;
+  try { data = JSON.parse(raw); } catch (e) { alert('That doesn’t look like a valid backup code.'); return; }
+  _applyRestore(data);
+}
+
+function restoreFromFile(event) {
+  const file = event.target.files && event.target.files[0];
+  event.target.value = '';   // allow re-selecting the same file later
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    let data;
+    try { data = JSON.parse(reader.result); } catch (e) { alert('That file isn’t a valid FitPet backup.'); return; }
+    const box = document.getElementById('backupBox'); if (box) box.value = reader.result; // show for transparency
+    _applyRestore(data);
+  };
+  reader.onerror = () => alert('Could not read that file.');
+  reader.readAsText(file);
+}
+
+// Undo a restore by putting the pre-restore snapshot back.
+function undoRestore() {
+  let snap;
+  try { snap = JSON.parse(localStorage.getItem(PRERESTORE_KEY) || 'null'); } catch (e) {}
+  if (!snap || !snap.fitpet_v2) { alert('Nothing to undo.'); return; }
+  if (!confirm('Undo the last restore and bring back the data from just before it?')) return;
+  BACKUP_KEYS.forEach(k => { if (snap[k] != null) localStorage.setItem(k, snap[k]); else localStorage.removeItem(k); });
+  localStorage.removeItem(PRERESTORE_KEY);
+  alert('✅ Reverted! Reloading…');
+  location.reload();
+}
+
+// Show the "Undo last restore" button when a recent (<24h) snapshot exists.
+function refreshUndoRestore() {
+  const btn = document.getElementById('undoRestoreBtn');
+  if (!btn) return;
+  let snap;
+  try { snap = JSON.parse(localStorage.getItem(PRERESTORE_KEY) || 'null'); } catch (e) {}
+  const recent = snap && snap._ts && (Date.now() - snap._ts < 24 * 3600000);
+  btn.style.display = recent ? 'block' : 'none';
 }
 
 // ══════════════════════════════════════════
@@ -5101,7 +5173,8 @@ let _pyrExId = null;
 
 function pyrRoundedSets() {
   const rm = Math.max(0, parseFloat(document.getElementById('pyrRM').value) || 0);
-  return PYRAMID_SCHEME.map(s => ({ lbs: Math.max(5, Math.round(rm * s.pct / 5) * 5), reps: s.reps, pct: s.pct }));
+  // Round to the nearest 2.5 lb so every weight is loadable on a barbell.
+  return PYRAMID_SCHEME.map(s => ({ lbs: Math.max(5, Math.round(rm * s.pct / 2.5) * 2.5), reps: s.reps, pct: s.pct }));
 }
 
 function openPyramid(exId) {
@@ -5549,7 +5622,7 @@ function buildExerciseCard(ex) {
         <button class="add-set-btn" onclick="addSet('${ex.id}')">+ Add Set</button>
         ${type === 'weight' ? `<button class="add-set-btn-drop" onclick="addDropSet('${ex.id}')">+ Drop Set</button>` : ''}
         ${type === 'weight' ? `<button class="add-set-btn-warm" onclick="addWarmup('${ex.id}')">+ Warmup</button>` : ''}
-        ${type === 'weight' ? `<button class="add-set-btn-pyr" onclick="openPyramid('${ex.id}')">▲ Pyramid</button>` : ''}
+        ${ex.id === 'bench' ? `<button class="add-set-btn-pyr" onclick="openPyramid('${ex.id}')">▲ Pyramid</button>` : ''}
       </div>
     </div>`;
 }
@@ -6679,8 +6752,12 @@ function _animateGoldEl(gc, to) {
   })(performance.now());
 }
 function updateGoldCounter(to) {
-  if (typeof to !== 'number') { const p = getP(); to = p ? (p.gold || 0) : 0; }
-  const sg = document.getElementById('statGold'); if (sg) sg.textContent = '◆ ' + to.toLocaleString();
+  const p = getP();
+  if (typeof to !== 'number') { to = p ? (p.gold || 0) : 0; }
+  // Home "Gold Earned" card shows ALL-TIME earned (current balance + lifetime spend),
+  // so spending eggs/boosts never lowers it. The nav counter still shows the balance.
+  const earned = p ? ((p.goldSpent || 0) + (p.gold || 0)) : 0;
+  const sg = document.getElementById('statGold'); if (sg) sg.textContent = '◆ ' + earned.toLocaleString();
   const gc = document.getElementById('goldCount'); if (!gc) return;
   if (_lastGoldShown !== null && to > _lastGoldShown) _animateGoldEl(gc, to);
   else gc.textContent = to.toLocaleString();
@@ -7540,6 +7617,7 @@ function buyBoost(id) {
   }
   if ((p.gold || 0) < b.cost) { showToast('— Need ◆ ' + b.cost.toLocaleString() + ' for that boost'); return; }
   p.gold -= b.cost;
+  p.goldSpent = (p.goldSpent || 0) + b.cost;   // track lifetime spend so "Gold Earned" stays all-time
   const base = cur ? cur.expires : now;   // same multiplier → extend its time
   p.boost = { mult: b.mult, expires: base + b.hours * 3600000 };
   saveP(p);
@@ -7573,6 +7651,7 @@ function buyCase(type) {
     return;
   }
   p.gold -= cost;
+  p.goldSpent = (p.goldSpent || 0) + cost;   // track lifetime spend so "Gold Earned" stays all-time
   p.cases[type] = (p.cases[type] || 0) + 1;
   saveP(p);
   updateCaseCounts();
