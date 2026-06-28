@@ -98,7 +98,31 @@ nav::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:500px
 .nav-tab:hover:not(.active){color:var(--text);}
 .nav-right{display:flex;align-items:center;gap:10px;}
 .streak-badge{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;color:#fb923c;font-family:'DM Mono',monospace;}
+.streak-fire{display:inline-flex;align-items:center;line-height:0;}
+/* Outer flame: gentle sway from the base + a flickering warm glow. */
+.streak-fire svg{transform-origin:50% 92%;animation:streakFlicker 1.3s ease-in-out infinite;}
+@keyframes streakFlicker{
+  0%,100%{transform:scale(1,1) rotate(0deg);filter:drop-shadow(0 0 1.5px rgba(249,115,22,.5));}
+  18%{transform:scale(1.05,.95) rotate(-3deg) translateX(-.3px);filter:drop-shadow(0 0 3px rgba(249,115,22,.72));}
+  36%{transform:scale(.95,1.07) rotate(2deg) translateX(.4px);filter:drop-shadow(0 0 2px rgba(249,115,22,.55));}
+  55%{transform:scale(1.04,.97) rotate(-1.5deg);filter:drop-shadow(0 0 3.5px rgba(249,115,22,.78));}
+  74%{transform:scale(.97,1.05) rotate(2.5deg) translateX(.4px);filter:drop-shadow(0 0 2px rgba(249,115,22,.5));}
+  88%{transform:scale(1.02,.99) rotate(-1deg) translateX(-.2px);filter:drop-shadow(0 0 2.5px rgba(249,115,22,.62));}
+}
+/* Inner core: faster, out-of-phase dance so the flame looks alive. */
+.streak-fire .flame-core{transform-box:fill-box;transform-origin:50% 88%;animation:streakCore .62s ease-in-out infinite;}
+@keyframes streakCore{
+  0%,100%{transform:scale(1,1) translateY(0);opacity:.9;}
+  25%{transform:scale(.9,1.2) translateY(-.4px);opacity:1;}
+  50%{transform:scale(1.1,.84) translateY(.3px);opacity:.82;}
+  75%{transform:scale(.95,1.1) translateY(-.2px);opacity:1;}
+}
+@media (prefers-reduced-motion:reduce){.streak-fire svg,.streak-fire .flame-core{animation:none;}}
 .gold-badge{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;color:#fbbf24;font-family:'DM Mono',monospace;}
+/* Shiny gold coin (replaces the ◆ for gold). Sizes with the surrounding font. */
+.coin-icon{display:inline-block;width:1.05em;height:1.05em;border-radius:50%;vertical-align:-0.13em;flex-shrink:0;position:relative;background:radial-gradient(circle at 36% 30%, #fff0b8 0%, #f7cf57 45%, #e3a92c 80%, #c98e1d 100%);box-shadow:inset 0 0 0 1px #a9701a, inset 0 .06em .1em rgba(255,255,255,.55);}
+.coin-icon::before{content:'';position:absolute;inset:22%;border-radius:50%;border:1px solid rgba(169,112,26,.4);}
+.coin-icon::after{content:'';position:absolute;top:17%;left:23%;width:37%;height:23%;border-radius:50%;background:rgba(255,255,255,.5);}
 /* ── DAILY GOLD CLAIM ── */
 .gold-claim-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
 .gold-claim-info{display:flex;flex-direction:column;gap:1px;}
@@ -503,7 +527,7 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 /* ── WORKOUT SUMMARY CARD ── */
 .summary-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:900;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s;}
 .summary-overlay.open{opacity:1;pointer-events:all;}
-.summary-card{background:linear-gradient(160deg,#0f0f18,#0d0d15);border:1px solid var(--border);border-radius:24px;padding:0;width:100%;max-width:400px;position:relative;overflow:hidden;}
+.summary-card{background:rgba(20,20,27,.94);-webkit-backdrop-filter:blur(24px) saturate(1.3);backdrop-filter:blur(24px) saturate(1.3);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:0;width:100%;max-width:400px;position:relative;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 30px 80px rgba(0,0,0,.62);}
 .summary-card::before{content:'';position:absolute;top:0;left:0;right:0;height:120px;background:radial-gradient(ellipse at 50% 0%,rgba(163,230,53,.1),transparent 70%);pointer-events:none;}
 .summary-note-wrap{margin-bottom:12px;}
 .workout-note-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;line-height:1.5;padding:10px 12px;resize:none;outline:none;transition:border-color .2s;}
@@ -515,25 +539,26 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .summary-username{font-size:22px;font-weight:800;letter-spacing:-.3px;}
 .summary-subtitle{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:4px;}
 .summary-body{padding:16px 20px 20px;}
-.summary-pet-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;background:rgba(255,255,255,.03);border-radius:12px;padding:12px 14px;border:1px solid var(--border);}
+.summary-pet-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;background:rgba(255,255,255,.03);border-radius:14px;padding:12px 14px;border:1px solid var(--border);box-shadow:inset 0 1px 0 rgba(255,255,255,.04);}
 .summary-pet-img{width:64px;height:64px;object-fit:contain;border-radius:10px;}
 .summary-pet-emoji{font-size:48px;line-height:1;}
 .summary-username-inline{font-size:15px;font-weight:800;}
 .summary-subtitle-inline{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px;}
 .summary-divider{height:1px;background:var(--border);margin:12px 0;}
-.summary-xp-row{background:linear-gradient(135deg,rgba(163,230,53,.08),rgba(163,230,53,.03));border:1px solid rgba(163,230,53,.25);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.summary-xp-row{background:rgba(163,230,53,.06);border:1px solid rgba(163,230,53,.22);border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);}
 .summary-xp-label{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:2px;}
 .summary-xp-val{font-size:30px;font-weight:800;color:var(--accent);font-family:'DM Mono',monospace;line-height:1;}
 .summary-mult{font-size:11px;font-family:'DM Mono',monospace;color:var(--legendary);text-align:right;line-height:1.5;}
 .summary-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
-.summary-stat{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px 10px;text-align:center;}
+.summary-stat{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:12px 10px;text-align:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);}
 .summary-stat-val{font-size:22px;font-weight:800;font-family:'DM Mono',monospace;}
 .summary-stat-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px;font-family:'DM Mono',monospace;}
 .summary-exercises{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;}
 .summary-ex-pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;}
 .summary-brand{text-align:center;font-size:9px;font-weight:800;letter-spacing:3px;color:var(--muted);opacity:.35;margin-top:8px;}
-.summary-close-btn{width:100%;padding:14px;background:var(--accent);color:#0a0a0c;border:none;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
-.summary-close-btn:hover{opacity:.9;transform:translateY(-1px);}
+.summary-close-btn{width:100%;padding:14px;background:var(--accent);color:#0a0a0c;border:none;border-radius:12px;font-weight:800;font-size:15px;letter-spacing:.3px;cursor:pointer;font-family:'Inter',sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.25);transition:filter .2s,transform .12s;}
+.summary-close-btn:hover{filter:brightness(1.06);}
+.summary-close-btn:active{transform:scale(.99);}
 .cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
 .case-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 12px;text-align:center;cursor:pointer;transition:all .25s;position:relative;}
 .case-item:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.4);}
@@ -1675,7 +1700,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .evo-overlay.revealed .evo-tier-name{opacity:1;transform:translateY(0) scale(1);}
 .evo-pet-name{font-size:14px;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:48px;opacity:0;transition:opacity .5s .48s;}
 .evo-overlay.revealed .evo-pet-name{opacity:1;}
-.evo-tap{background:none;border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.4);padding:12px 40px;border-radius:999px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;cursor:pointer;text-transform:uppercase;opacity:0;transition:opacity .5s .95s;}
+.evo-tap{background:rgba(255,255,255,.05);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.28);color:rgba(255,255,255,.62);padding:12px 40px;border-radius:999px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;cursor:pointer;text-transform:uppercase;opacity:0;transition:opacity .5s .95s;}
 .evo-overlay.revealed .evo-tap{opacity:1;animation:evo-tap-blink 1.6s ease-in-out infinite 1.3s;}
 @keyframes evo-tap-blink{0%,100%{opacity:1;}50%{opacity:.22;}}
 .evo-tap:hover{color:#fff;border-color:rgba(255,255,255,.5);}
@@ -2475,9 +2500,9 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
     </div>
     <div class="card" id="goldClaimCard" style="padding:0;overflow:hidden;background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(251,191,36,.02));border-color:rgba(251,191,36,.2);">
       <div id="goldBonusRow" style="padding:12px 14px;display:flex;align-items:center;gap:12px;">
-        <div id="goldBonusIcon" style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">◆</div>
+        <div id="goldBonusIcon" style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;"><span class="coin-icon"></span></div>
         <div style="flex:1;">
-          <div id="goldBonusAmount" style="font-size:14px;font-weight:800;color:#fbbf24;">+1,000 ◆</div>
+          <div id="goldBonusAmount" style="font-size:14px;font-weight:800;color:#fbbf24;">+1,000 <span class="coin-icon"></span></div>
           <div id="goldBonusLabel" style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">DAILY BONUS</div>
         </div>
         <button class="gold-claim-btn" id="goldBonusBtn" onclick="claimGoldBonus()" style="padding:7px 16px;font-size:12px;">Claim</button>
@@ -2487,7 +2512,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
         <div style="width:36px;height:36px;border-radius:10px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🎡</div>
         <div style="flex:1;">
           <div style="font-size:13px;font-weight:800;color:#fbbf24;">Daily Spin</div>
-          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">WIN UP TO 10,000 ◆ · EVERY 24H</div>
+          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;">WIN UP TO 10,000 <span class="coin-icon"></span> · EVERY 24H</div>
         </div>
         <button class="daily-spin-btn ready" id="dailySpinBtn" onclick="openDailyWheel()" style="padding:5px 12px;font-size:11px;" title="Daily gold spin">🎡 <span id="dailySpinLabel">Spin</span></button>
       </div>
@@ -2496,7 +2521,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
         <div style="width:36px;height:36px;border-radius:10px;background:rgba(163,230,53,.08);border:1px solid rgba(163,230,53,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">▶</div>
         <div style="flex:1;">
           <div style="font-size:13px;font-weight:800;color:var(--accent);">Watch Ad</div>
-          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;" id="adRewardSub">+200 ◆ & 1× EGG</div>
+          <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;" id="adRewardSub">+200 <span class="coin-icon"></span> & 1× EGG</div>
         </div>
         <button class="gold-claim-btn gold-claim-btn-sm" id="adRewardBtn" onclick="openAdReward()" style="border-color:rgba(163,230,53,.4);color:var(--accent);background:rgba(163,230,53,.08);padding:5px 12px;font-size:11px;">Watch</button>
       </div>
@@ -2538,11 +2563,11 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
   <div class="dw-sheet" onclick="event.stopPropagation()">
     <button class="dw-close" onclick="closeDailyWheel()">✕</button>
     <div class="dw-title">🎡 Daily Spin</div>
-    <div class="dw-sub">Spin once every 24 hours · win up to 10,000 ◆</div>
+    <div class="dw-sub">Spin once every 24 hours · win up to 10,000 <span class="coin-icon"></span></div>
     <div class="dw-wheel-wrap">
       <div class="dw-pointer"></div>
       <div class="dw-wheel" id="dwWheel"></div>
-      <div class="dw-hub">◆</div>
+      <div class="dw-hub"><span class="coin-icon"></span></div>
     </div>
     <div class="dw-result" id="dwResult"></div>
     <button class="dw-spin-btn" id="dwSpinBtn" onclick="spinDailyWheel()">SPIN</button>
@@ -2633,7 +2658,6 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
       <div class="pet-bio-rarity-strip" id="petBioRarityStrip"></div>
       <div class="pet-bio-name" id="petBioName">Iron Rhino</div>
       <div class="pet-bio-chip-row">
-        <div class="pet-bio-element" id="petBioElement"></div>
         <div class="pet-bio-tags" id="petBioTags"></div>
       </div>
       <div class="pet-bio-desc" id="petBioDesc"></div>
@@ -2658,12 +2682,6 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
     <div class="pet-bio-right">
       <div class="pet-bio-section-title"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>XP OUTPUT</div>
       <div class="pet-bio-xp-grid" id="petBioXpGrid"></div>
-      <div class="pet-bio-section-title" style="margin-top:20px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/></svg>ATTACKS</div>
-      <div id="petBioMoves"></div>
-      <div class="pet-bio-section-title" style="margin-top:20px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>PASSIVE ABILITY</div>
-      <div class="pet-bio-passive" id="petBioPassive"></div>
-      <div class="pet-bio-section-title" style="margin-top:20px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>BATTLE STATS</div>
-      <div class="pet-bio-stat-grid" id="petBioStats"></div>
     </div>
   </div>
 </div>
@@ -2687,7 +2705,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
   <div class="levelup-text">
     <div class="levelup-title">Level Up</div>
     <div class="levelup-level" id="levelupLevel">LVL 2</div>
-    <div class="levelup-rewards" id="levelupRewards">+200 ◆ &middot; +1 Plain Egg</div>
+    <div class="levelup-rewards" id="levelupRewards">+200 <span class="coin-icon"></span> &middot; +1 Plain Egg</div>
   </div>
 </div>
 
@@ -2729,8 +2747,8 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
         <span class="rt-mini-time" id="rtMiniTime">2:00</span>
         <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">REST</span>
       </div>
-    <div class="gold-badge" onclick="openSheet('goldModal')" style="cursor:pointer;position:relative;" title="Gold bonuses">◆ <span id="goldCount">0</span><span id="goldClaimDot" style="display:none;position:absolute;top:-4px;right:-4px;width:11px;height:11px;background:#ef4444;border:2px solid #0a0a0f;border-radius:50%;box-shadow:0 0 7px rgba(239,68,68,.8);"></span></div>
-    <div class="streak-badge" onclick="openSheet('historyModal')" style="cursor:pointer;" title="Workout history"><span class="streak-fire"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fb923c" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg></span><span id="streakCount">0</span>d</div>
+    <div class="gold-badge" onclick="openSheet('goldModal')" style="cursor:pointer;position:relative;" title="Gold bonuses"><span class="coin-icon"></span><span id="goldCount">0</span><span id="goldClaimDot" style="display:none;position:absolute;top:-4px;right:-4px;width:11px;height:11px;background:#ef4444;border:2px solid #0a0a0f;border-radius:50%;box-shadow:0 0 7px rgba(239,68,68,.8);"></span></div>
+    <div class="streak-badge" onclick="openSheet('historyModal')" style="cursor:pointer;" title="Workout history"><span class="streak-fire"><svg width="13" height="13" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle"><defs><linearGradient id="streakFlameOuter" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdba74"/><stop offset=".4" stop-color="#f97316"/><stop offset="1" stop-color="#dc2626"/></linearGradient><linearGradient id="streakFlameCore" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffbeb"/><stop offset=".5" stop-color="#fde047"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs><path fill="url(#streakFlameOuter)" d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/><path class="flame-core" fill="url(#streakFlameCore)" d="M12 11.2c1 .9 1.7 1.7 1.7 2.9a2.2 2.2 0 0 1-4.4 0c0-.8.4-1.4.9-2 .2.8.9 1.1 1.5 1-.6-.9-.4-1.9.3-1.9z"/></svg></span><span id="streakCount">0</span>d</div>
     <div class="profile-dropdown-wrap" id="profileDropdownWrap">
       <div class="nav-profile-btn" onclick="toggleProfileDropdown()">
         <div class="nav-profile-initial" id="navInitial">N</div>
@@ -2835,7 +2853,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
           </div>
           <div class="stat-chip">
             <div class="stat-chip-icon" style="background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(245,158,11,.12));"><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gc1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#f59e0b"/></linearGradient><radialGradient id="gc2" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#fef9c3"/><stop offset="100%" stop-color="#d97706"/></radialGradient></defs><circle cx="12" cy="12" r="9.5" fill="url(#gc2)" stroke="#f59e0b" stroke-width="0.5"/><circle cx="12" cy="12" r="7" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/><text x="12" y="16.5" text-anchor="middle" font-size="10" font-weight="900" font-family="serif" fill="#92400e">◆</text></svg></div>
-            <div class="stat-chip-body"><div class="stat-chip-val" id="statGold" style="color:var(--legendary)">◆ 0</div><div class="stat-chip-label">Gold</div><div class="stat-chip-sub">Earned</div></div>
+            <div class="stat-chip-body"><div class="stat-chip-val" style="color:var(--legendary);display:flex;align-items:center;gap:5px;"><span class="coin-icon"></span><span id="statGold">0</span></div><div class="stat-chip-label">Gold</div><div class="stat-chip-sub">Earned</div></div>
           </div>
         </div>
       </div>
@@ -3102,7 +3120,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
   <div class="card" style="margin-top:20px;">
     <div class="card-header">
       <span class="card-title">Shop</span>
-      <span class="gold-badge" style="font-size:13px;padding:6px 14px;">◆ <span id="shopGoldDisplay">0</span></span>
+      <span class="gold-badge" style="font-size:13px;padding:6px 14px;"><span class="coin-icon"></span><span id="shopGoldDisplay">0</span></span>
     </div>
     <div class="shop-grid">
       <div class="shop-item shop-item-basic">
@@ -3111,7 +3129,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
         </div>
         <div class="shop-name">Plain Egg</div>
         <div class="shop-desc">Common · Rare · Epic</div>
-        <div class="shop-price">◆ 300</div>
+        <div class="shop-price"><span class="coin-icon"></span> 300</div>
         <button class="shop-btn shop-btn-basic" onclick="buyCase('basic')">Buy</button>
       </div>
       <div class="shop-item shop-item-rare">
@@ -3120,7 +3138,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
         </div>
         <div class="shop-name">Speckled Egg</div>
         <div class="shop-desc">Rare · Epic · Legendary</div>
-        <div class="shop-price">◆ 1,000</div>
+        <div class="shop-price"><span class="coin-icon"></span> 1,000</div>
         <button class="shop-btn shop-btn-rare" onclick="buyCase('rare')">Buy</button>
       </div>
       <div class="shop-item shop-item-legendary">
@@ -3129,7 +3147,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
         </div>
         <div class="shop-name">Golden Egg</div>
         <div class="shop-desc">Epic &amp; Legendary</div>
-        <div class="shop-price">◆ 5,000</div>
+        <div class="shop-price"><span class="coin-icon"></span> 5,000</div>
         <button class="shop-btn shop-btn-legendary" onclick="buyCase('legendary')">Buy</button>
       </div>
     </div>
@@ -3452,6 +3470,9 @@ body.flap-noscroll{overflow:hidden;}
 .flap-stattab.active{background:var(--accent);color:#0a0a0c;}
 .flap-stattab:not(.active):hover{color:var(--text);}
 
+.flap-theme-btn{position:absolute;top:13px;left:13px;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(15,15,20,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;z-index:10;transition:transform .14s,border-color .18s;}
+.flap-theme-btn:hover{border-color:var(--accent);}
+.flap-theme-btn:active{transform:scale(.9);}
 .flap-info-btn{position:absolute;top:13px;right:13px;width:25px;height:25px;border-radius:50%;border:1px solid var(--border);background:var(--bg3);color:var(--muted);font-family:'DM Mono',monospace;font-weight:800;font-size:13px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;z-index:3;transition:color .18s,border-color .18s;}
 .flap-info-btn:hover{color:var(--accent);border-color:var(--accent);}
 .flap-info-card{text-align:left;}
@@ -3476,6 +3497,7 @@ body.flap-noscroll{overflow:hidden;}
 
   <div class="flap-wrap" id="flapWrap">
     <canvas id="flapCanvas"></canvas>
+    <button class="flap-theme-btn" id="flapThemeBtn" onclick="toggleFlapTheme()" aria-label="Toggle day / night" title="Day / night">🌙</button>
 
     <div class="flap-hud"><div class="flap-score" id="flapScore">0</div></div>
 
@@ -3542,7 +3564,7 @@ body.flap-noscroll{overflow:hidden;}
   </div>
   <div class="flap-statbar">
     <div class="flap-sb"><div class="flap-sb-val" id="flapSb1v">0</div><div class="flap-sb-lbl" id="flapSb1l">Best</div></div>
-    <div class="flap-sb"><div class="flap-sb-val accent" id="flapSb2v">◆ 0</div><div class="flap-sb-lbl" id="flapSb2l">Earned</div></div>
+    <div class="flap-sb"><div class="flap-sb-val accent" id="flapSb2v"><span class="coin-icon"></span> 0</div><div class="flap-sb-lbl" id="flapSb2l">Earned</div></div>
     <div class="flap-sb"><div class="flap-sb-val" id="flapSb3v">0</div><div class="flap-sb-lbl" id="flapSb3l">Runs</div></div>
   </div>
 </div>
@@ -3563,6 +3585,10 @@ body.flap-noscroll{overflow:hidden;}
 // ══════════════════════════════════════════
 //  DATA LAYER — localStorage per profile
 // ══════════════════════════════════════════
+// Gold coin icon (HTML) — drop-in replacement for the old ◆ wherever GOLD is shown.
+const COIN = '<span class="coin-icon"></span>';
+// Safely turn a plain string into HTML, swapping the {coin} token for the gold coin.
+function coinHTML(s){ return escHtml(String(s)).replace(/\{coin\}/g, COIN); }
 const STORE_KEY = 'fitpet_v2';
 
 function loadStore() {
@@ -5806,28 +5832,6 @@ function addDrop(exId, setIdx) {
   saveWorkoutSession();
 }
 
-// Re-render a single set's rows (main + drops) in place without rebuilding the table
-function rebuildSetInPlace(exId, setIdx) {
-  const set = sessionSets[exId]?.[setIdx];
-  if (!set) return;
-  const tbody = document.getElementById('tbody-' + exId);
-  const lastSets = getLastSessionForExercise(exId);
-  // Remove old rows for this set (main + its drops)
-  tbody.querySelectorAll(`[id^="setrow-${exId}-${setIdx}"]`).forEach(r => r.remove());
-  // Find the previous set's last row to insert after
-  const allRows = [...tbody.querySelectorAll('tr')];
-  const prevSetLastRow = allRows.filter(r => {
-    const m = r.id.match(/setrow-[^-]+-(\d+)/);
-    return m && parseInt(m[1]) === setIdx - 1;
-  }).pop();
-  const html = buildSetRow(exId, setIdx, set, lastSets[setIdx]);
-  if (prevSetLastRow) {
-    prevSetLastRow.insertAdjacentHTML('afterend', html);
-  } else {
-    tbody.insertAdjacentHTML('afterbegin', html);
-  }
-}
-
 function updateDrop(exId, setIdx, dropIdx, field, val) {
   const set = sessionSets[exId]?.[setIdx];
   if (set?.drops?.[dropIdx]) {
@@ -6757,7 +6761,7 @@ function updateGoldCounter(to) {
   // Home "Gold Earned" card shows ALL-TIME earned (current balance + lifetime spend),
   // so spending eggs/boosts never lowers it. The nav counter still shows the balance.
   const earned = p ? ((p.goldSpent || 0) + (p.gold || 0)) : 0;
-  const sg = document.getElementById('statGold'); if (sg) sg.textContent = '◆ ' + earned.toLocaleString();
+  const sg = document.getElementById('statGold'); if (sg) sg.textContent = earned.toLocaleString();
   const gc = document.getElementById('goldCount'); if (!gc) return;
   if (_lastGoldShown !== null && to > _lastGoldShown) _animateGoldEl(gc, to);
   else gc.textContent = to.toLocaleString();
@@ -7071,7 +7075,7 @@ function renderBoostShop() {
       <div style="font-size:34px;line-height:1;margin-bottom:6px;">${b.icon}</div>
       <div class="shop-name">${b.name}</div>
       <div class="shop-desc">${b.sub}</div>
-      <div class="shop-price">◆ ${b.cost.toLocaleString()}</div>
+      <div class="shop-price"><span class="coin-icon"></span> ${b.cost.toLocaleString()}</div>
       ${btn}
     </div>`;
   }).join('');
@@ -7236,9 +7240,9 @@ function claimLevelReward(lv) {
   const sub = ['+1 Plain Egg', r.rareCase ? '💎 Speckled Egg' : null, r.legendaryCase ? '👑 Golden Egg' : null].filter(Boolean).join(' · ');
   showAchieve({
     type: 'gold',
-    icon: tier ? (tier.icon || '⭐') : '◆',
+    icon: tier ? (tier.icon || '⭐') : '{coin}',
     eyebrow: tier ? `Rank Unlocked: ${tier.name}` : `Level ${lv} Claimed`,
-    title: `+${r.gold.toLocaleString()} ◆`,
+    title: `+${r.gold.toLocaleString()} {coin}`,
     sub
   });
 
@@ -7503,7 +7507,7 @@ function buildDailyWheel() {
     DAILY_WHEEL.map((s, i) => {
       const col = s.light ? '#f4f4f5' : '#1a160a';
       const sh  = s.light ? '0 1px 3px rgba(0,0,0,.6)' : '0 1px 1px rgba(255,255,255,.3)';
-      return `<div class="dw-label" style="transform:rotate(${i * seg + seg / 2}deg);"><span style="color:${col};text-shadow:${sh};">◆${fmtGold(s.gold)}</span></div>`;
+      return `<div class="dw-label" style="transform:rotate(${i * seg + seg / 2}deg);"><span style="color:${col};text-shadow:${sh};">${COIN}${fmtGold(s.gold)}</span></div>`;
     }).join('');
   wheel.dataset.built = '1';
 }
@@ -7576,7 +7580,7 @@ function spinDailyWheel() {
     p.gold = (p.gold || 0) + reward;
     p.lastDailySpin = Date.now();
     saveP(p);
-    document.getElementById('dwResult').textContent = `🎉 You won ◆ ${reward.toLocaleString()}!`;
+    document.getElementById('dwResult').innerHTML = `🎉 You won ${COIN} ${reward.toLocaleString()}!`;
     spinBtn.textContent = 'Come back in 24h';
     _dwSpinning = false;
     refreshHomeStats(); updateCaseCounts(); updateDailySpinBtn();
@@ -7615,7 +7619,7 @@ function buyBoost(id) {
     showToast(`— ${cur.mult}× boost active. Wait for it to finish before using a ${b.mult}× boost.`);
     return;
   }
-  if ((p.gold || 0) < b.cost) { showToast('— Need ◆ ' + b.cost.toLocaleString() + ' for that boost'); return; }
+  if ((p.gold || 0) < b.cost) { showToast('— Need {coin} ' + b.cost.toLocaleString() + ' for that boost'); return; }
   p.gold -= b.cost;
   p.goldSpent = (p.goldSpent || 0) + b.cost;   // track lifetime spend so "Gold Earned" stays all-time
   const base = cur ? cur.expires : now;   // same multiplier → extend its time
@@ -7647,7 +7651,7 @@ function buyCase(type) {
   if (!p) return;
   const cost = CASE_COSTS[type];
   if ((p.gold || 0) < cost) {
-    showToast('— Need ◆ ' + cost.toLocaleString() + ' — keep leveling up!');
+    showToast('— Need {coin} ' + cost.toLocaleString() + ' — keep leveling up!');
     return;
   }
   p.gold -= cost;
@@ -8907,14 +8911,6 @@ function _openPetBioInner(id) {
   }
   nameEl.style.color = isLocked ? '#6b7280' : col.fg;
 
-  // Element — blurred if teased, hidden if no shards
-  const elemIcon = ELEMENT_MOVE_ICONS[petD.element] || '✨';
-  document.getElementById('petBioElement').innerHTML = isLocked
-    ? (isTeased
-        ? `<span class="bio-locked-blur" style="color:${col.fg};font-weight:700;">${elemIcon} ${petD.element} Type</span>`
-        : `<span class="bio-locked-blur" style="color:#4b5563;font-weight:700;">${elemIcon} ??? Type</span>`)
-    : `<span style="font-size:18px;">${elemIcon}</span> <span style="color:${col.fg};font-weight:700;">${petD.element} Type</span>`;
-
   // Desc — show blurred if teased
   document.getElementById('petBioDesc').textContent = isLocked
     ? (isTeased ? skin.desc || '' : 'Collect fragments to reveal this duck\'s profile.')
@@ -8978,37 +8974,6 @@ function _openPetBioInner(id) {
       <div class="pet-bio-xp-tile-sub">On workout completion</div>
     </div>` : ''}`;
 
-  // Moves — blurred for locked
-  document.getElementById('petBioMoves').innerHTML = petD.moves.map(m => {
-    const icon = ELEMENT_MOVE_ICONS[m.type] || '⚔️';
-    const powerLabel = m.power > 0
-      ? `<span class="pet-bio-move-power" style="background:${col.bg};color:${col.fg};border:1px solid ${col.fg};">${m.power} PWR</span>`
-      : `<span class="pet-bio-move-power" style="background:rgba(100,100,100,.15);color:var(--muted);border:1px solid var(--border);">SUPPORT</span>`;
-    return `<div class="pet-bio-move ${blurCls}">
-      <div class="pet-bio-move-icon">${icon}</div>
-      <div>
-        <div class="pet-bio-move-name" style="color:${col.fg};">${m.name}</div>
-        <div class="pet-bio-move-desc">${m.desc}</div>
-        ${powerLabel}
-      </div>
-    </div>`;
-  }).join('');
-
-  // Passive — blurred for locked
-  document.getElementById('petBioPassive').innerHTML = `
-    <div class="pet-bio-passive-name ${blurCls}" style="color:${col.fg};">${petD.passive.name}</div>
-    <div class="pet-bio-passive-desc ${blurCls}">${petD.passive.desc}</div>`;
-
-  // Battle stats
-  const st = calcPlayerStats5(p);
-  document.getElementById('petBioStats').innerHTML = `
-    <div class="pet-bio-stat"><div class="pet-bio-stat-val" style="color:#ef4444;">${st.hp}</div><div class="pet-bio-stat-lbl">HP</div></div>
-    <div class="pet-bio-stat"><div class="pet-bio-stat-val" style="color:${col.fg};">${st.atk}</div><div class="pet-bio-stat-lbl">ATK</div></div>
-    <div class="pet-bio-stat"><div class="pet-bio-stat-val" style="color:#38bdf8;">${st.spd}</div><div class="pet-bio-stat-lbl">SPD</div></div>
-    <div class="pet-bio-stat"><div class="pet-bio-stat-val" style="color:#a78bfa;">${st.def}</div><div class="pet-bio-stat-lbl">DEF</div></div>
-    <div class="pet-bio-stat"><div class="pet-bio-stat-val" style="color:#fbbf24;">${Math.round(st.focus*100)}%</div><div class="pet-bio-stat-lbl">FOCUS</div></div>
-    <div class="pet-bio-stat"><div class="pet-bio-stat-val" style="color:${col.fg};">${tapXp}</div><div class="pet-bio-stat-lbl">XP/TAP</div></div>`;
-
   document.getElementById('petBioOverlay').classList.remove('hidden');
 }
 
@@ -9039,7 +9004,7 @@ function petBioEquip() {
   renderSkins();
   const skin = ALL_SKINS_MAP[id];
   const petD = PET_DATA[id] || PET_DATA['iron-rhino'];
-  showToast('Equipped ' + (skin ? getPetName(id) : id) + ' — ' + petD.element + ' element');
+  showToast('Equipped ' + (skin ? getPetName(id) : id));
   // Rebuild battle select screen so element + wheel reflect new pet immediately
   if (!ABS) buildBattlePage();
   closePetBio();
@@ -9206,7 +9171,7 @@ function equipSkin(id) {
   } catch(e) { console.error('equipSkin renderSkins crash:', e); }
   const skin = ALL_SKINS_MAP[id];
   const petD = PET_DATA[id] || PET_DATA['iron-rhino'];
-  showToast('Equipped ' + (skin ? getPetName(id) : id) + ' — ' + petD.element + ' element');
+  showToast('Equipped ' + (skin ? getPetName(id) : id));
   try {
     if (!ABS) buildBattlePage();
   } catch(e) { console.error('equipSkin buildBattlePage crash:', e); }
@@ -9920,7 +9885,7 @@ function claimGoldBonus() {
     p.lastDailyClaim = now;
     p.lastMiniClaim  = now; // reset mini too so 2h starts from now
     saveP(p); refreshHomeStats(); updateGoldClaimUI();
-    showAchieve({ type:'gold', icon:'◆', eyebrow:'Daily Bonus', title:'+1,000 Gold', sub:'Next big bonus in 24 hours' });
+    showAchieve({ type:'gold', icon:'{coin}', eyebrow:'Daily Bonus', title:'+1,000 Gold', sub:'Next big bonus in 24 hours' });
   } else if (miniReady) {
     p.gold = (p.gold || 0) + MINI_GOLD_AMOUNT;
     p.lastMiniClaim = now;
@@ -9961,10 +9926,10 @@ function updateGoldClaimUI() {
     const dailyReady = dailyLeft === 0;
     const miniReady  = miniLeft  === 0;
     if (dailyReady) {
-      bonusAmount.textContent = '+1,000 ◆';
+      bonusAmount.innerHTML = '+1,000 ' + COIN;
       bonusAmount.style.fontSize = '14px';
       bonusLabel.textContent = 'DAILY BONUS';
-      bonusIcon.textContent = '◆';
+      bonusIcon.innerHTML = COIN;
       bonusIcon.style.background = 'rgba(251,191,36,.15)';
       bonusIcon.style.borderColor = 'rgba(251,191,36,.3)';
       bonusBtn.disabled = false;
@@ -9972,7 +9937,7 @@ function updateGoldClaimUI() {
       bonusBtn.style.padding = '7px 16px';
       bonusBtn.style.fontSize = '12px';
     } else if (miniReady) {
-      bonusAmount.textContent = '+150 ◆';
+      bonusAmount.innerHTML = '+150 ' + COIN;
       bonusAmount.style.fontSize = '13px';
       bonusLabel.textContent = 'EVERY 2 HOURS';
       bonusIcon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
@@ -9986,7 +9951,7 @@ function updateGoldClaimUI() {
       // Both on cooldown — show whichever unlocks sooner
       const nextUp = dailyLeft < miniLeft ? 'Daily' : '2h Bonus';
       const nextLeft = Math.min(dailyLeft, miniLeft);
-      bonusAmount.textContent = nextUp === 'Daily' ? '+1,000 ◆' : '+150 ◆';
+      bonusAmount.innerHTML = nextUp === 'Daily' ? '+1,000 ' + COIN : '+150 ' + COIN;
       bonusAmount.style.fontSize = nextUp === 'Daily' ? '14px' : '13px';
       bonusLabel.textContent = nextUp === 'Daily' ? 'DAILY BONUS' : 'EVERY 2 HOURS';
       bonusBtn.disabled = true;
@@ -10092,7 +10057,7 @@ function collectAdReward() {
   else if (_r < 0.25) { _kind = 'rare';      _eggName = 'Speckled Egg'; }   // 20%
   else                { _kind = 'basic';     _eggName = 'Plain Egg';    }   // 75%
   p.cases[_kind] = (p.cases[_kind] || 0) + 1;
-  showAchieve({ type:'gold', icon:'🥚', eyebrow:'Ad Reward', title:`+${AD_GOLD} ◆ & 1× ${_eggName}`, sub:'Hatch it in the Eggs tab!' });
+  showAchieve({ type:'gold', icon:'🥚', eyebrow:'Ad Reward', title:`+${AD_GOLD} {coin} & 1× ${_eggName}`, sub:'Hatch it in the Eggs tab!' });
 
   p.lastAdClaim  = Date.now();
   p.adCountToday = (p.adCountToday || 0) + 1;
@@ -10128,7 +10093,7 @@ function updateAdRewardUI() {
     if (sub) sub.textContent = `MAX ${AD_MAX_DAILY}/DAY REACHED`;
   } else {
     btn.textContent = 'Watch';
-    if (sub) sub.textContent = `${count}/${AD_MAX_DAILY} TODAY · +200 ◆ & 1× EGG`;
+    if (sub) sub.innerHTML = coinHTML(`${count}/${AD_MAX_DAILY} TODAY · +200 {coin} & 1× EGG`);
   }
 }
 
@@ -10391,14 +10356,15 @@ function calcBestStreak(days) {
 function showToast(msg) {
   const t = document.getElementById('toast');
   const iconEl = document.getElementById('toast-icon');
-  document.getElementById('toast-text').textContent = msg;
+  document.getElementById('toast-text').innerHTML = coinHTML(msg);
   // Pick icon and accent color based on message content
   let icon = '✓', col = '#a3e635', bg = 'rgba(163,230,53,.13)', border = 'rgba(163,230,53,.28)';
-  if (msg.includes('◆') || msg.includes('Gold') || msg.includes('gold')) { icon = '◆'; col = '#fbbf24'; bg = 'rgba(251,191,36,.15)'; border = 'rgba(251,191,36,.3)'; }
+  if (msg.includes('{coin}') || msg.includes('Gold') || msg.includes('gold')) { icon = '{coin}'; col = '#fbbf24'; bg = 'rgba(251,191,36,.15)'; border = 'rgba(251,191,36,.3)'; }
+  else if (msg.includes('◆')) { icon = '◆'; col = '#fbbf24'; bg = 'rgba(251,191,36,.15)'; border = 'rgba(251,191,36,.3)'; }
   else if (msg.includes('⚠') || msg.includes('—') || msg.includes('Not enough') || msg.includes('No ')) { icon = '!'; col = '#f87171'; bg = 'rgba(239,68,68,.15)'; border = 'rgba(239,68,68,.3)'; }
   else if (msg.includes('Unlock') || msg.includes('unlock')) { icon = '🔓'; col = '#38bdf8'; bg = 'rgba(56,189,248,.15)'; border = 'rgba(56,189,248,.3)'; }
   else if (msg.includes('XP') || msg.includes('Level') || msg.includes('level')) { icon = '⚡'; col = '#a3e635'; bg = 'rgba(163,230,53,.15)'; border = 'rgba(163,230,53,.25)'; }
-  if (iconEl) { iconEl.textContent = icon; iconEl.style.background = bg; iconEl.style.borderColor = border; iconEl.style.color = col; }
+  if (iconEl) { iconEl.innerHTML = coinHTML(icon); iconEl.style.background = bg; iconEl.style.borderColor = border; iconEl.style.color = col; }
   t.classList.remove('show');
   void t.offsetWidth;
   t.classList.add('show');
@@ -10485,32 +10451,32 @@ function toggleDevModeSettings() {
 // tracked: workout, sets, sets_muscle, case, tap.
 const QUEST_POOL = [
   // ── Complete a workout ──
-  { type:'workout',     desc:'Complete a workout',           flavor:'Any template counts',            target:1,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'workout',     desc:'Get a session in today',       flavor:'Log at least one full set',      target:1,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'workout',     desc:'Train today',                  flavor:'Any exercise, any weight',       target:1,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'workout',     desc:'Complete a workout',           flavor:'Any template counts',            target:1,  reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'workout',     desc:'Get a session in today',       flavor:'Log at least one full set',      target:1,  reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'workout',     desc:'Train today',                  flavor:'Any exercise, any weight',       target:1,  reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
   // ── Total sets logged ──
-  { type:'sets',        desc:'Log 6 sets',                   flavor:'Warm-up volume',                 target:6,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'sets',        desc:'Log 9 sets',                   flavor:'Solid session',                  target:9,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'sets',        desc:'Log 12 sets',                  flavor:'Full-effort workout',            target:12, reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'sets',        desc:'Log 15 sets',                  flavor:'Big volume day',                 target:15, reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'sets',        desc:'Log 6 sets',                   flavor:'Warm-up volume',                 target:6,  reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'sets',        desc:'Log 9 sets',                   flavor:'Solid session',                  target:9,  reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'sets',        desc:'Log 12 sets',                  flavor:'Full-effort workout',            target:12, reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'sets',        desc:'Log 15 sets',                  flavor:'Big volume day',                 target:15, reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
   // ── Sets for a specific muscle ──
-  { type:'sets_muscle', desc:'4 chest sets',                 flavor:'Bench, fly, dips…',              target:4,  muscle:'Chest',     reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'sets_muscle', desc:'4 back sets',                  flavor:'Row, pull-down, deadlift',       target:4,  muscle:'Back',      reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'sets_muscle', desc:'Leg day — 4 sets',             flavor:'No skipping allowed',            target:4,  muscle:'Legs',      reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'sets_muscle', desc:'3 shoulder sets',              flavor:'Press or lateral raise',         target:3,  muscle:'Shoulders', reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'sets_muscle', desc:'3 arm sets',                   flavor:'Curls or extensions',            target:3,  muscle:'Arms',      reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'sets_muscle', desc:'3 core sets',                  flavor:'Planks, crunches, ab work',      target:3,  muscle:'Core',      reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'sets_muscle', desc:'3 glute sets',                 flavor:'Hip thrusts, kickbacks…',        target:3,  muscle:'Glutes',    reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'sets_muscle', desc:'4 chest sets',                 flavor:'Bench, fly, dips…',              target:4,  muscle:'Chest',     reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'sets_muscle', desc:'4 back sets',                  flavor:'Row, pull-down, deadlift',       target:4,  muscle:'Back',      reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'sets_muscle', desc:'Leg day — 4 sets',             flavor:'No skipping allowed',            target:4,  muscle:'Legs',      reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'sets_muscle', desc:'3 shoulder sets',              flavor:'Press or lateral raise',         target:3,  muscle:'Shoulders', reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'sets_muscle', desc:'3 arm sets',                   flavor:'Curls or extensions',            target:3,  muscle:'Arms',      reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'sets_muscle', desc:'3 core sets',                  flavor:'Planks, crunches, ab work',      target:3,  muscle:'Core',      reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'sets_muscle', desc:'3 glute sets',                 flavor:'Hip thrusts, kickbacks…',        target:3,  muscle:'Glutes',    reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
   // ── Open cases ──
-  { type:'case',        desc:'Hatch any egg',                flavor:'Eggs tab → tap to hatch',        target:1,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'case',        desc:'Hatch 2 eggs',                 flavor:'Earn eggs from workouts',        target:2,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'case',        desc:'Hatch any egg',                flavor:'Eggs tab → tap to hatch',        target:1,  reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'case',        desc:'Hatch 2 eggs',                 flavor:'Earn eggs from workouts',        target:2,  reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
   // ── Pet ──
-  { type:'tap',         desc:'Tap your duck 10 times',       flavor:'Give your duck some love',       target:10, reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'tap',         desc:'Tap your duck 25 times',       flavor:'Your duck is very appreciative', target:25, reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'tap',         desc:'Tap your duck 10 times',       flavor:'Give your duck some love',       target:10, reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'tap',         desc:'Tap your duck 25 times',       flavor:'Your duck is very appreciative', target:25, reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
   // ── Flap Run (Arcade) ──
-  { type:'flap_score',  desc:'Score 5+ in Flap Run',         flavor:'Arcade tab · thread the gates',  target:5,  reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'flap_score',  desc:'Score 10+ in Flap Run',        flavor:'Arcade tab · thread the gates',  target:10, reward:{ type:'gold', amount:500, label:'+500 ◆' } },
-  { type:'flap_score',  desc:'Score 15+ in Flap Run',        flavor:'Arcade tab · for the pros',       target:15, reward:{ type:'gold', amount:500, label:'+500 ◆' } },
+  { type:'flap_score',  desc:'Score 5+ in Flap Run',         flavor:'Arcade tab · thread the gates',  target:5,  reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'flap_score',  desc:'Score 10+ in Flap Run',        flavor:'Arcade tab · thread the gates',  target:10, reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
+  { type:'flap_score',  desc:'Score 15+ in Flap Run',        flavor:'Arcade tab · for the pros',       target:15, reward:{ type:'gold', amount:500, label:'+500 {coin}' } },
 ];
 
 // Seeded pseudo-random using date string + username
@@ -10607,7 +10573,7 @@ function renderDailyQuests(p) {
 
     const rewardHtml = q.done
       ? `<div class="quest-done-pill"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Claimed</div>`
-      : `<div class="quest-reward-pill" style="color:${st.c};background:${st.bg};border-color:${st.br};">500 ◆</div>`;
+      : `<div class="quest-reward-pill" style="color:${st.c};background:${st.bg};border-color:${st.br};">500 </div>`;
 
     return `<div class="quest-card${q.done ? ' quest-done' : ''}" id="quest_${i}">
   <div class="quest-top">
@@ -10774,7 +10740,7 @@ function renderAchievements(){
     } else {
       const rw = s.tier.reward;
       const rewardCls = rw.gold ? 'gold' : 'egg';
-      const rewardTxt = rw.gold ? ('◆ ' + rw.gold.toLocaleString()) : ('1 ' + _achEggName(rw.egg) + ' Egg');
+      const rewardTxt = rw.gold ? (COIN + ' ' + rw.gold.toLocaleString()) : ('1 ' + _achEggName(rw.egg) + ' Egg');
       rewardHtml = `<div class="ach-reward ${rewardCls}">${rewardTxt}</div>`;
       desc = achTierDesc(a, s.goal);
       tierLabel = 'Tier ' + (s.claimed+1) + '/' + total;
@@ -10849,7 +10815,7 @@ function claimAllAchievements(){
   if (eggs && typeof updateCaseCounts === 'function') updateCaseCounts();
   if (typeof showAchieve === 'function') {
     const parts = [];
-    if (gold) parts.push('+' + gold.toLocaleString() + ' ◆');
+    if (gold) parts.push('+' + gold.toLocaleString() + ' {coin}');
     if (eggs) parts.push('+' + eggs + ' Egg' + (eggs>1?'s':''));
     showAchieve({ type:'gold', icon:'🏆', eyebrow:'Achievements Claimed', title: parts.join('  ·  '), sub: count + ' tier' + (count>1?'s':'') + ' claimed' });
   }
@@ -11824,7 +11790,7 @@ function autoWinBattle(rivalId) {
   if (!p.beatenRivals.includes(rivalId)) p.beatenRivals.push(rivalId);
   setBattleCd(p, rivalId);
   saveP(p); refreshHomeStats(); updateCaseCounts();
-  showAchieve({ type:'gold', icon:'⚡', eyebrow:'Auto Win', title:`+${r.gold.toLocaleString()} ◆`, sub:`Beat ${npc.name}${r.case ? ` · +1 ${r.case} case` : ''}` });
+  showAchieve({ type:'gold', icon:'⚡', eyebrow:'Auto Win', title:`+${r.gold.toLocaleString()} {coin}`, sub:`Beat ${npc.name}${r.case ? ` · +1 ${r.case} case` : ''}` });
   buildBattlePage();
 }
 
@@ -13276,12 +13242,12 @@ function _achieveNext() {
   const el = document.getElementById('achieveNotif');
   if (!el) { _achieveShowing = false; _achieveNext(); return; }
 
-  document.getElementById('achieveIcon').textContent = icon;
+  document.getElementById('achieveIcon').innerHTML = coinHTML(icon);
   document.getElementById('achieveIcon').className = 'achieve-icon ' + (type === 'gold' ? 'achieve-icon-gold' : 'achieve-icon-quest');
   document.getElementById('achieveEyebrow').textContent = eyebrow;
   document.getElementById('achieveEyebrow').className = 'achieve-eyebrow ' + (type === 'gold' ? 'achieve-eyebrow-gold' : 'achieve-eyebrow-quest');
   document.getElementById('achieveInner').style.setProperty('--ach-accent', type === 'gold' ? '#fbbf24' : '#a3e635');
-  document.getElementById('achieveTitle').textContent = title;
+  document.getElementById('achieveTitle').innerHTML = coinHTML(title);
   document.getElementById('achieveSub').textContent = sub;
 
   el.classList.remove('show');
@@ -13363,7 +13329,7 @@ function openLevelRoad() {
   for (let lv = 1; lv <= maxShow; lv++) {
     const gold = lv * 200;
     const rewards = [];
-    rewards.push({ label: `+${gold.toLocaleString()} ◆`, color: '#fbbf24', bg: 'rgba(251,191,36,.12)' });
+    rewards.push({ label: `+${gold.toLocaleString()} {coin}`, color: '#fbbf24', bg: 'rgba(251,191,36,.12)' });
     rewards.push({ label: '+1 Plain Egg', color: '#38bdf8', bg: 'rgba(56,189,248,.1)' });
 
     let icon = '⭐', iconColor = '#6b7280', isEvo = false, title = `Level ${lv}`;
@@ -13687,7 +13653,7 @@ function closeDayDetail() {
     <div class="achieve-icon" id="achieveIcon">⚡</div>
     <div>
       <div class="achieve-eyebrow" id="achieveEyebrow">Achievement</div>
-      <div class="achieve-title" id="achieveTitle">+1,000 ◆ Gold</div>
+      <div class="achieve-title" id="achieveTitle">+1,000 <span class="coin-icon"></span> Gold</div>
       <div class="achieve-sub" id="achieveSub">Daily bonus claimed</div>
     </div>
     <div class="achieve-progress"><div class="achieve-progress-fill"></div></div>
@@ -13956,6 +13922,7 @@ function _runWoConfetti(canvas, duration) {
   const ELEM_COL = { Fire:'#ff7a45', Water:'#3b82f6', Electric:'#facc15', Earth:'#a3e635', Air:'#22d3ee', Cosmic:'#c084fc' };
 
   let canvas, ctx, W=0, H=0, dpr=1, sc=1, bgGrad=null;
+  let _flapDay = false; try{ _flapDay = localStorage.getItem('fitpet_flap_day')==='1'; }catch(e){}
   let raf=null, running=false, lastT=0;
   let duck, obstacles, spawnDist, score, scrollX, groundY;
   let particles=[], motes=[], stars=[], clouds=[], shake=0, flash=0, dying=false, dieT=0, flapped=false;
@@ -14002,10 +13969,32 @@ function _runWoConfetti(canvas, duration) {
     canvas.width  = Math.round(cssW*dpr);
     canvas.height = Math.round(cssH*dpr);
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    bgGrad = ctx.createLinearGradient(0,0,0,H);
-    bgGrad.addColorStop(0,'#0a0c14'); bgGrad.addColorStop(0.42,'#0c0d15'); bgGrad.addColorStop(0.72,'#0e0f17'); bgGrad.addColorStop(1,'#13140f');
+    buildSkyGrad();
     initMotes(); initStars(); initClouds();
+    updateFlapThemeBtn();
   }
+
+  // Sky gradient depends on day/night theme.
+  function buildSkyGrad(){
+    if(!ctx || !H) return;
+    bgGrad = ctx.createLinearGradient(0,0,0,H);
+    if(_flapDay){
+      bgGrad.addColorStop(0,'#4ea7e0'); bgGrad.addColorStop(0.4,'#7cc4ec'); bgGrad.addColorStop(0.72,'#b9e3f5'); bgGrad.addColorStop(1,'#e6f4e4');
+    } else {
+      bgGrad.addColorStop(0,'#0a0c14'); bgGrad.addColorStop(0.42,'#0c0d15'); bgGrad.addColorStop(0.72,'#0e0f17'); bgGrad.addColorStop(1,'#13140f');
+    }
+  }
+  function updateFlapThemeBtn(){
+    const b=document.getElementById('flapThemeBtn');
+    if(b) b.textContent = _flapDay ? '☀️' : '🌙';
+  }
+  function toggleFlapTheme(){
+    _flapDay = !_flapDay;
+    try{ localStorage.setItem('fitpet_flap_day', _flapDay?'1':'0'); }catch(e){}
+    buildSkyGrad();
+    updateFlapThemeBtn();
+  }
+  window.toggleFlapTheme = toggleFlapTheme;
 
   function initMotes(){
     motes=[]; const n=18;
@@ -14112,9 +14101,9 @@ function _runWoConfetti(canvas, duration) {
     if(flapBonusRAF) cancelAnimationFrame(flapBonusRAF);
     (function step(now){
       const pr=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-pr,3);
-      valEl.textContent='◆ '+Math.round(from+(to-from)*e);
+      valEl.innerHTML=COIN+' '+Math.round(from+(to-from)*e);
       if(pr<1){ flapBonusRAF=requestAnimationFrame(step); }
-      else { valEl.textContent='◆ '+to; flapBonusRAF=null; setTimeout(()=>valEl.classList.remove('bonus-pulse'), 350); }
+      else { valEl.innerHTML=COIN+' '+to; flapBonusRAF=null; setTimeout(()=>valEl.classList.remove('bonus-pulse'), 350); }
     })(performance.now());
   }
   function finalizeEnd(){
@@ -14141,10 +14130,10 @@ function _runWoConfetti(canvas, duration) {
     el('flapOverBest').textContent=best;
     const _badge=el('flapBonusBadge'); if(_badge) _badge.classList.remove('show');
     if(bonus>0){
-      el('flapOverGold').textContent='◆ '+gatesGold;          // gates-only first
+      el('flapOverGold').innerHTML=COIN+' '+gatesGold;          // gates-only first
       flapBonusTimer=setTimeout(()=>flapBonusReveal(gatesGold, gold, bonus), 680);
     } else {
-      el('flapOverGold').textContent='◆ '+gold;
+      el('flapOverGold').innerHTML=COIN+' '+gold;
     }
     const eb=el('flapOverEyebrow'), md=el('flapMedal');
     const STAR_FILL='<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2.4l2.95 5.98 6.6.96-4.77 4.65 1.13 6.57L12 17.5l-5.91 3.06 1.13-6.57L2.45 9.34l6.6-.96L12 2.4z"/></svg>';
@@ -14314,15 +14303,17 @@ function _runWoConfetti(canvas, duration) {
 
   // Soft, squashed cloud wisps drifting slowly across the sky.
   function drawClouds(){
+    const cc = _flapDay ? '255,255,255' : '46,50,62';
+    const am = _flapDay ? 2.4 : 1;
     for(const c of clouds){
       const span=W+c.w*2;
       const cx=((c.x - scrollX*c.sp)%span+span)%span - c.w;
       ctx.save();
       ctx.translate(cx, c.y); ctx.scale(1, c.h/(c.w*0.6));
       const rg=ctx.createRadialGradient(0,0,0,0,0,c.w*0.6);
-      rg.addColorStop(0,'rgba(46,50,62,'+c.a.toFixed(3)+')');
-      rg.addColorStop(0.62,'rgba(46,50,62,'+(c.a*0.35).toFixed(3)+')');
-      rg.addColorStop(1,'rgba(46,50,62,0)');
+      rg.addColorStop(0,'rgba('+cc+','+Math.min(0.92,c.a*am).toFixed(3)+')');
+      rg.addColorStop(0.62,'rgba('+cc+','+(c.a*am*0.35).toFixed(3)+')');
+      rg.addColorStop(1,'rgba('+cc+',0)');
       ctx.fillStyle=rg; ctx.beginPath(); ctx.arc(0,0,c.w*0.6,0,Math.PI*2); ctx.fill();
       ctx.restore();
     }
@@ -14330,71 +14321,100 @@ function _runWoConfetti(canvas, duration) {
 
   function drawBackground(){
     ctx.fillStyle=bgGrad||'#0d0d14'; ctx.fillRect(-14,-14,W+28,H+28);
+    const day=_flapDay;
 
-    // Moon — a cratered grey disc with a soft accent halo, drifting very slowly.
-    const moonX=W*0.76 - (scrollX*0.015)%(W*2), moonY=H*0.185, mr=42*sc;
-    const halo=ctx.createRadialGradient(moonX,moonY,mr*0.6, moonX,moonY,mr*3.4);
-    halo.addColorStop(0,'rgba(163,230,53,.10)'); halo.addColorStop(0.5,'rgba(163,230,53,.035)'); halo.addColorStop(1,'rgba(163,230,53,0)');
-    ctx.fillStyle=halo; ctx.fillRect(-14,-14,W+28,groundY+14);
-    const disc=ctx.createRadialGradient(moonX-mr*0.34,moonY-mr*0.34,mr*0.12, moonX,moonY,mr);
-    disc.addColorStop(0,'#3b3f48'); disc.addColorStop(0.6,'#2a2d34'); disc.addColorStop(1,'#191b21');
-    ctx.fillStyle=disc; ctx.beginPath(); ctx.arc(moonX,moonY,mr,0,Math.PI*2); ctx.fill();
-    // Craters (clipped to the disc), lit from the upper-left to match the disc shading.
-    ctx.save(); ctx.beginPath(); ctx.arc(moonX,moonY,mr,0,Math.PI*2); ctx.clip();
-    for(const c of MOON_CRATERS){
-      const cx=moonX+c.dx*mr, cy=moonY+c.dy*mr, crr=c.r*mr;
-      ctx.fillStyle='rgba(9,10,14,.40)';
-      ctx.beginPath(); ctx.arc(cx,cy,crr,0,Math.PI*2); ctx.fill();
-      ctx.fillStyle='rgba(9,10,14,.28)';
-      ctx.beginPath(); ctx.arc(cx+crr*0.2,cy+crr*0.2,crr*0.68,0,Math.PI*2); ctx.fill();
-      ctx.strokeStyle='rgba(222,230,212,.13)'; ctx.lineWidth=Math.max(0.6,1*sc);
-      ctx.beginPath(); ctx.arc(cx,cy,crr,Math.PI*0.92,Math.PI*1.86); ctx.stroke();
-    }
-    ctx.restore();
-    ctx.strokeStyle='rgba(222,230,235,.12)'; ctx.lineWidth=1.4*sc;
-    ctx.beginPath(); ctx.arc(moonX,moonY,mr,0,Math.PI*2); ctx.stroke();
+    if(day){
+      // Sun — a bright warm disc with a soft glow, drifting very slowly (upper-right).
+      const sunX=W*0.78 - (scrollX*0.012)%(W*2), sunY=H*0.18, sr=40*sc;
+      const sHalo=ctx.createRadialGradient(sunX,sunY,sr*0.5, sunX,sunY,sr*4);
+      sHalo.addColorStop(0,'rgba(255,240,160,.5)'); sHalo.addColorStop(0.4,'rgba(255,226,130,.16)'); sHalo.addColorStop(1,'rgba(255,226,130,0)');
+      ctx.fillStyle=sHalo; ctx.fillRect(-14,-14,W+28,groundY+14);
+      const sDisc=ctx.createRadialGradient(sunX-sr*0.3,sunY-sr*0.3,sr*0.2, sunX,sunY,sr);
+      sDisc.addColorStop(0,'#fffdf2'); sDisc.addColorStop(0.55,'#ffe98a'); sDisc.addColorStop(1,'#ffd24d');
+      ctx.fillStyle=sDisc; ctx.beginPath(); ctx.arc(sunX,sunY,sr,0,Math.PI*2); ctx.fill();
+    } else {
+      // Moon — a cratered grey disc with a soft accent halo, drifting very slowly.
+      const moonX=W*0.76 - (scrollX*0.015)%(W*2), moonY=H*0.185, mr=42*sc;
+      const halo=ctx.createRadialGradient(moonX,moonY,mr*0.6, moonX,moonY,mr*3.4);
+      halo.addColorStop(0,'rgba(163,230,53,.10)'); halo.addColorStop(0.5,'rgba(163,230,53,.035)'); halo.addColorStop(1,'rgba(163,230,53,0)');
+      ctx.fillStyle=halo; ctx.fillRect(-14,-14,W+28,groundY+14);
+      const disc=ctx.createRadialGradient(moonX-mr*0.34,moonY-mr*0.34,mr*0.12, moonX,moonY,mr);
+      disc.addColorStop(0,'#3b3f48'); disc.addColorStop(0.6,'#2a2d34'); disc.addColorStop(1,'#191b21');
+      ctx.fillStyle=disc; ctx.beginPath(); ctx.arc(moonX,moonY,mr,0,Math.PI*2); ctx.fill();
+      // Craters (clipped to the disc), lit from the upper-left to match the disc shading.
+      ctx.save(); ctx.beginPath(); ctx.arc(moonX,moonY,mr,0,Math.PI*2); ctx.clip();
+      for(const c of MOON_CRATERS){
+        const cx=moonX+c.dx*mr, cy=moonY+c.dy*mr, crr=c.r*mr;
+        ctx.fillStyle='rgba(9,10,14,.40)';
+        ctx.beginPath(); ctx.arc(cx,cy,crr,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle='rgba(9,10,14,.28)';
+        ctx.beginPath(); ctx.arc(cx+crr*0.2,cy+crr*0.2,crr*0.68,0,Math.PI*2); ctx.fill();
+        ctx.strokeStyle='rgba(222,230,212,.13)'; ctx.lineWidth=Math.max(0.6,1*sc);
+        ctx.beginPath(); ctx.arc(cx,cy,crr,Math.PI*0.92,Math.PI*1.86); ctx.stroke();
+      }
+      ctx.restore();
+      ctx.strokeStyle='rgba(222,230,235,.12)'; ctx.lineWidth=1.4*sc;
+      ctx.beginPath(); ctx.arc(moonX,moonY,mr,0,Math.PI*2); ctx.stroke();
 
-    // Star field (twinkling, slow parallax) in the upper sky.
-    for(const s of stars){
-      const sx=((s.x - scrollX*s.sp)%W+W)%W;
-      ctx.globalAlpha=s.tw*(0.35+0.65*(0.5+0.5*Math.sin(scrollX*0.03+s.ph)));
-      ctx.fillStyle='#cfe8a8'; ctx.beginPath(); ctx.arc(sx,s.y,s.r,0,Math.PI*2); ctx.fill();
+      // Star field (twinkling, slow parallax) in the upper sky.
+      for(const s of stars){
+        const sx=((s.x - scrollX*s.sp)%W+W)%W;
+        ctx.globalAlpha=s.tw*(0.35+0.65*(0.5+0.5*Math.sin(scrollX*0.03+s.ph)));
+        ctx.fillStyle='#cfe8a8'; ctx.beginPath(); ctx.arc(sx,s.y,s.r,0,Math.PI*2); ctx.fill();
+      }
+      ctx.globalAlpha=1;
     }
-    ctx.globalAlpha=1;
 
     // Drifting cloud wisps.
     drawClouds();
 
-    // Soft accent glow over the playfield centre — hue and intensity drift with score.
-    const ac=skyAccent(), acStr=ac[0]+','+ac[1]+','+ac[2], gp=Math.min(1,(score||0)/40);
-    const hg=ctx.createRadialGradient(W*0.5,H*0.4,0,W*0.5,H*0.4,W*0.62);
-    hg.addColorStop(0,'rgba('+acStr+','+(0.05+0.045*gp).toFixed(3)+')'); hg.addColorStop(1,'rgba('+acStr+',0)');
-    ctx.fillStyle=hg; ctx.fillRect(-14,-14,W+28,H+28);
-
-    // Parallax hill silhouettes — far to near — give the scene depth behind the pipes.
-    // The nearest crest catches a faint score-tinted rim light.
-    drawHills(0.05, groundY*0.66, 30*sc, '#101019');
-    drawHills(0.11, groundY*0.78, 28*sc, '#14141f');
-    drawHills(0.22, groundY*0.90, 24*sc, '#1a1a26', 'rgba('+acStr+','+(0.10+0.06*gp).toFixed(3)+')');
+    if(day){
+      // Soft warm glow over the playfield centre.
+      const hg=ctx.createRadialGradient(W*0.5,H*0.4,0,W*0.5,H*0.4,W*0.62);
+      hg.addColorStop(0,'rgba(255,252,225,.10)'); hg.addColorStop(1,'rgba(255,252,225,0)');
+      ctx.fillStyle=hg; ctx.fillRect(-14,-14,W+28,H+28);
+      // Parallax green hills — far (hazy light) to near (deeper), lit crest on the nearest.
+      drawHills(0.05, groundY*0.66, 30*sc, '#bfe2a0');
+      drawHills(0.11, groundY*0.78, 28*sc, '#a1d484');
+      drawHills(0.22, groundY*0.90, 24*sc, '#82bf5e', 'rgba(255,255,255,.22)');
+    } else {
+      // Soft accent glow over the playfield centre — hue and intensity drift with score.
+      const ac=skyAccent(), acStr=ac[0]+','+ac[1]+','+ac[2], gp=Math.min(1,(score||0)/40);
+      const hg=ctx.createRadialGradient(W*0.5,H*0.4,0,W*0.5,H*0.4,W*0.62);
+      hg.addColorStop(0,'rgba('+acStr+','+(0.05+0.045*gp).toFixed(3)+')'); hg.addColorStop(1,'rgba('+acStr+',0)');
+      ctx.fillStyle=hg; ctx.fillRect(-14,-14,W+28,H+28);
+      // Parallax hill silhouettes — far to near. The nearest crest catches a faint rim light.
+      drawHills(0.05, groundY*0.66, 30*sc, '#101019');
+      drawHills(0.11, groundY*0.78, 28*sc, '#14141f');
+      drawHills(0.22, groundY*0.90, 24*sc, '#1a1a26', 'rgba('+acStr+','+(0.10+0.06*gp).toFixed(3)+')');
+    }
 
     // Foreground dust motes drifting past.
+    const moteCol = day ? '#ffffff' : '#a3e635';
+    const moteA   = day ? 0.5 : 1;
     for(const m of motes){
       const mx=((m.x - scrollX*m.sp)%W+W)%W;
       const my=m.y + Math.sin(scrollX*0.008+m.ph)*7*sc;
-      ctx.globalAlpha=0.05+0.05*(0.5+0.5*Math.sin(scrollX*0.02+m.ph));
-      ctx.fillStyle='#a3e635'; ctx.beginPath(); ctx.arc(mx,my,m.r,0,Math.PI*2); ctx.fill();
+      ctx.globalAlpha=(0.05+0.05*(0.5+0.5*Math.sin(scrollX*0.02+m.ph)))*moteA;
+      ctx.fillStyle=moteCol; ctx.beginPath(); ctx.arc(mx,my,m.r,0,Math.PI*2); ctx.fill();
     }
     ctx.globalAlpha=1;
   }
 
   function drawGround(){
     const gg=ctx.createLinearGradient(0,groundY,0,H);
-    gg.addColorStop(0,'#17171c'); gg.addColorStop(1,'#0c0c10');
+    if(_flapDay){ gg.addColorStop(0,'#7cb342'); gg.addColorStop(1,'#56892b'); }
+    else        { gg.addColorStop(0,'#17171c'); gg.addColorStop(1,'#0c0c10'); }
     ctx.fillStyle=gg; ctx.fillRect(-14,groundY,W+28,H-groundY+14);
-    ctx.save(); ctx.shadowColor='rgba(163,230,53,.5)'; ctx.shadowBlur=10*sc;
-    ctx.strokeStyle='rgba(163,230,53,.7)'; ctx.lineWidth=2; line(-14,groundY,W+14,groundY);
-    ctx.restore();
-    ctx.globalAlpha=.5; ctx.strokeStyle='#2a2a32'; ctx.lineWidth=2;
+    if(_flapDay){
+      ctx.strokeStyle='rgba(198,234,150,.85)'; ctx.lineWidth=2; line(-14,groundY,W+14,groundY);
+      ctx.globalAlpha=.4; ctx.strokeStyle='#46711f'; ctx.lineWidth=2;
+    } else {
+      ctx.save(); ctx.shadowColor='rgba(163,230,53,.5)'; ctx.shadowBlur=10*sc;
+      ctx.strokeStyle='rgba(163,230,53,.7)'; ctx.lineWidth=2; line(-14,groundY,W+14,groundY);
+      ctx.restore();
+      ctx.globalAlpha=.5; ctx.strokeStyle='#2a2a32'; ctx.lineWidth=2;
+    }
     const hs=26*sc, ho=scrollX%hs;
     for(let x=-ho; x<W; x+=hs) line(x,groundY+7,x-9*sc,H);
     ctx.globalAlpha=1;
@@ -14484,7 +14504,7 @@ function _runWoConfetti(canvas, duration) {
   function stopIdle(){ idleMode=false; if(idleRAF){ cancelAnimationFrame(idleRAF); idleRAF=null; } }
   function setStat(i, val, label, accent){
     const v=el('flapSb'+i+'v'), l=el('flapSb'+i+'l');
-    if(v){ v.textContent=val; v.classList.toggle('accent', !!accent); }
+    if(v){ v.innerHTML=val; v.classList.toggle('accent', !!accent); }
     if(l) l.textContent=label;
   }
   function refreshStats(){
@@ -14501,11 +14521,11 @@ function _runWoConfetti(canvas, duration) {
       const sc_ = live ? score : lastRunScore;
       const gd_ = live ? Math.min(score*GOLD_PER_POINT, GOLD_CAP) : lastRunGold;
       setStat(1, sc_, live ? 'Gates' : 'Last Run', false);
-      setStat(2, '◆ '+gd_.toLocaleString(), 'Coins', true);
+      setStat(2, COIN+' '+gd_.toLocaleString(), 'Coins', true);
       setStat(3, best, 'Best', false);
     } else {
       setStat(1, best, 'Best', false);
-      setStat(2, '◆ '+earned.toLocaleString(), 'Earned', true);
+      setStat(2, COIN+' '+earned.toLocaleString(), 'Earned', true);
       setStat(3, runs, 'Runs', false);
     }
   }
