@@ -520,7 +520,16 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .mission-item.done{opacity:.6;border-color:rgba(163,230,53,.18);}
 .mission-item.done .mission-name{text-decoration:line-through;color:var(--muted);}
 .mission-done-check{font-size:14px;font-weight:800;min-width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:rgba(163,230,53,.12);border:1px solid rgba(163,230,53,.22);border-radius:50%;color:var(--accent);}
-.streak-mult-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.35);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:800;font-family:'DM Mono',monospace;color:var(--legendary);}
+.streak-mult-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.26);border-radius:8px;padding:4px 10px 4px 8px;font-size:12px;font-weight:800;font-family:'DM Mono',monospace;color:#f5a623;letter-spacing:.2px;transition:border-color .2s;}
+.streak-mult-badge:hover{border-color:rgba(245,158,11,.5);}
+.streak-mult-badge .smb-flame{width:13px;height:13px;flex-shrink:0;display:block;}
+.streak-mult-badge .smb-flame svg{width:100%;height:100%;display:block;}
+.streak-mult-badge.danger{color:#fca5a5;animation:smb-danger 0.85s steps(1,end) infinite;}
+@keyframes smb-danger{
+  0%{background:rgba(239,68,68,.28);border-color:rgba(239,68,68,.95);color:#fecaca;}
+  50%{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.3);color:#f87171;}
+  100%{background:rgba(239,68,68,.28);border-color:rgba(239,68,68,.95);color:#fecaca;}
+}
 /* mood dot states */
 .mood-dot.happy{background:#4ade80;box-shadow:0 0 8px #4ade80;}
 .mood-dot.neutral{background:#facc15;box-shadow:0 0 8px #facc15;}
@@ -2910,17 +2919,6 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 
 <!-- HOME PAGE -->
 <div class="page active" id="page-home">
-  <div class="streak-strip" id="streakCard" onclick="openStreakInfo()" title="Streak XP bonus">
-    <div class="ss-flame" id="scFlame"></div>
-    <div class="ss-body">
-      <div class="ss-row">
-        <span class="ss-count"><b id="scNum">0</b> <span id="scLabel">day streak</span></span>
-        <span class="sc-mult-badge" id="scBadge">1.0×</span>
-      </div>
-      <div class="sc-track" id="scTrack"></div>
-    </div>
-    <svg class="ss-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
-  </div>
   <div class="home-grid">
     <div class="pet-card">
       <div class="pet-bg">
@@ -2940,7 +2938,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
         </div>
         <div class="pet-mood" style="justify-content:flex-end;">
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
-            <div class="streak-mult-badge" id="streakMultBadge" onclick="openStreakInfo()" title="Streak XP bonus" style="display:none;cursor:pointer;">▲ <span id="streakMultVal">1.0×</span> XP</div>
+            <div class="streak-mult-badge" id="streakMultBadge" onclick="openStreakInfo()" title="Streak XP bonus" style="display:none;cursor:pointer;"><span class="smb-flame"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="translate(2 1.2)"><path d="M12.6 2c.5 2.7-1.8 4.2-2 6.6-.1 1 .5 2 1.5 2.3.4-.9.6-1.7.7-2.7 1.8 1.4 3 3.4 3 5.6a5.8 5.8 0 0 1-11.6 0c0-3.6 2.9-5.3 4-9.2.4 1.6 1.4 2.6 2.8 3.1C12.7 7.9 11.8 5 12.6 2Z" fill="currentColor"/></g></svg></span><span id="streakMultVal">1.0×</span> XP</div>
             <div class="auto-indicator" id="autoIndicator" onclick="openBoostModal()" title="Passive XP rate — tap for power-ups" style="cursor:pointer;"><div class="auto-dot"></div>AUTO <span id="autoMultLabel">1×</span><span id="autoBoostTime" style="display:none;"></span></div>
           </div>
         </div>
@@ -7017,8 +7015,15 @@ function refreshHomeStats() {
     if (mult > 1) {
       multVal.textContent = mult.toFixed(1) + '×';
       multBadge.style.display = '';
+      // Turn red when the streak survives only on its grace day (last workout 2 days ago):
+      // miss today and it resets. calcStreak's grace means mult>1 implies daysSince ≤ 2.
+      const dayNums = (p.streakDays || []).map(_dayNum);
+      const daysSince = dayNums.length ? (_dayNum(todayStr()) - Math.max(...dayNums)) : 99;
+      multBadge.classList.toggle('danger', daysSince >= 2);
+      multBadge.title = daysSince >= 2 ? 'Streak about to reset — train today!' : 'Streak XP bonus';
     } else {
       multBadge.style.display = 'none';
+      multBadge.classList.remove('danger');
     }
   }
 
@@ -14125,6 +14130,7 @@ function _runWoConfetti(canvas, duration) {
   const GOLD_PER_POINT = 5;
   const GOLD_CAP       = 500;
   const NEW_BEST_BONUS = 40;
+  const COIN_VALUE     = 10;   // each floating coin pickup is worth +10 gold
   const ELEM_COL = { Fire:'#ff7a45', Water:'#3b82f6', Electric:'#facc15', Earth:'#a3e635', Air:'#22d3ee', Cosmic:'#c084fc' };
 
   let canvas, ctx, W=0, H=0, dpr=1, sc=1, bgGrad=null;
@@ -14133,6 +14139,7 @@ function _runWoConfetti(canvas, duration) {
   let duck, obstacles, spawnDist, score, scrollX, groundY;
   let particles=[], motes=[], stars=[], clouds=[], shake=0, flash=0, dying=false, dieT=0, flapped=false;
   let flapRecord=0, gateCount=0;   // record gate = the gate that reaches your current best
+  let coins=[], coinPops=[], coinGold=0, coinsCollected=0;   // floating +10 gold pickups
   let duckImg=null, duckReady=false, duckEmoji='🦆', duckGlow='#a3e635';
   let idleRAF=null, idleMode=false, idleLast=0;
   let flapStatPref='all', lastRunScore=0, lastRunGold=0;
@@ -14229,6 +14236,7 @@ function _runWoConfetti(canvas, duration) {
     duck = { x: W*0.28, y: H*0.44, vy:0, r:24*sc, rot:0 };
     obstacles=[]; spawnDist=W*0.62; score=0; scrollX=0; gateCount=0;
     particles=[]; shake=0; flash=0; dying=false; dieT=0; flapped=false;
+    coins=[]; coinPops=[]; coinGold=0; coinsCollected=0;
   }
 
   function spawnObstacle(){
@@ -14236,6 +14244,10 @@ function _runWoConfetti(canvas, duration) {
     const m = 58*sc;
     const top = m + Math.random()*Math.max(10,(groundY - m - gap - m));
     obstacles.push({ x: W + 40*sc, w: 64*sc, gapY: top, gap: gap, passed:false, num: ++gateCount });
+    // Float a +10 coin in the gap (random height so it isn't always dead-centre).
+    if(Math.random() < 0.8){
+      coins.push({ x: W + 40*sc + 32*sc, y: top + gap*(0.26 + Math.random()*0.48), r: 13*sc, ph: Math.random()*6.28, got:false });
+    }
   }
 
   // ── particles ──
@@ -14244,6 +14256,9 @@ function _runWoConfetti(canvas, duration) {
   }
   function spawnSparkle(cx,cy){
     for(let i=0;i<11;i++){ const a=Math.random()*Math.PI*2, s=(60+Math.random()*140)*sc; particles.push({ x:cx, y:cy, vx:Math.cos(a)*s, vy:Math.sin(a)*s, life:.3+Math.random()*.3, max:.6, r:(1.4+Math.random()*2.4)*sc, c:'163,230,53', g:0 }); }
+  }
+  function spawnCoinBurst(cx,cy){
+    for(let i=0;i<12;i++){ const a=Math.random()*Math.PI*2, s=(55+Math.random()*135)*sc; particles.push({ x:cx, y:cy, vx:Math.cos(a)*s, vy:Math.sin(a)*s, life:.3+Math.random()*.32, max:.62, r:(1.4+Math.random()*2.3)*sc, c:Math.random()<.6?'251,191,36':'255,238,170', g:140*sc }); }
   }
   function spawnCrash(){
     for(let i=0;i<24;i++){ const a=Math.random()*Math.PI*2, s=(80+Math.random()*240)*sc; particles.push({ x:duck.x, y:duck.y, vx:Math.cos(a)*s, vy:Math.sin(a)*s-60*sc, life:.4+Math.random()*.55, max:.95, r:(2+Math.random()*3)*sc, c:Math.random()<.5?'163,230,53':'244,244,245', g:560*sc }); }
@@ -14256,6 +14271,7 @@ function _runWoConfetti(canvas, duration) {
   function updateEffects(dt){
     for(const p of particles){ p.vy += (p.g||0)*dt; p.x += p.vx*dt; p.y += p.vy*dt; p.life -= dt; }
     if(particles.length) particles = particles.filter(p=>p.life>0);
+    if(coinPops.length){ for(const cp of coinPops){ cp.t += dt; } coinPops = coinPops.filter(cp=>cp.t < 0.75); }
     shake *= 0.86; if(shake<0.25) shake=0;
     flash *= 0.84; if(flash<0.01) flash=0;
   }
@@ -14263,6 +14279,7 @@ function _runWoConfetti(canvas, duration) {
   // ── Sound effects (synth via the app's shared AudioContext; respects the volume setting) ──
   function _sfx(notes, vol){ try{ if(typeof playToneSequence==='function') playToneSequence(notes, vol); }catch(e){} }
   function sfxFlap(){   _sfx([{freq:300,start:0,dur:0.05,type:'sine',vol:0.5},{freq:520,start:0.025,dur:0.06,type:'sine',vol:0.4}], 0.4); }
+  function sfxCoin(){   _sfx([{freq:1046.5,start:0,dur:0.045,type:'sine',vol:0.4},{freq:1568,start:0.04,dur:0.09,type:'sine',vol:0.38}], 0.42); }
   function sfxScore(){  _sfx([{freq:880,start:0,dur:0.06,type:'square',vol:0.45},{freq:1318.5,start:0.05,dur:0.11,type:'square',vol:0.45}], 0.45); }
   function sfxRecord(){ _sfx([{freq:1046.5,start:0,dur:0.08,type:'triangle',vol:0.5},{freq:1318.5,start:0.07,dur:0.08,type:'triangle',vol:0.5},{freq:1568,start:0.14,dur:0.2,type:'triangle',vol:0.55}], 0.5); }
   function sfxCrash(){  _sfx([{freq:300,start:0,dur:0.1,type:'sawtooth',vol:0.5},{freq:170,start:0.07,dur:0.18,type:'sawtooth',vol:0.5},{freq:90,start:0.17,dur:0.22,type:'sawtooth',vol:0.45}], 0.5); }
@@ -14326,7 +14343,7 @@ function _runWoConfetti(canvas, duration) {
         if(score>best){ best=score; p.flapBest=best; isBest=true; }
         gatesGold=Math.min(score*GOLD_PER_POINT, GOLD_CAP);
         bonus=(isBest && score>0) ? NEW_BEST_BONUS : 0;
-        gold=gatesGold+bonus;
+        gold=gatesGold+coinGold+bonus;
         if(gold>0) p.gold=(p.gold||0)+gold;
         p.flapGoldTotal=(p.flapGoldTotal||0)+gold; p.flapRuns=(p.flapRuns||0)+1;
         if(typeof saveP==='function') saveP(p);
@@ -14335,9 +14352,10 @@ function _runWoConfetti(canvas, duration) {
     el('flapOverScore').textContent=score;
     el('flapOverBest').textContent=best;
     const _badge=el('flapBonusBadge'); if(_badge) _badge.classList.remove('show');
+    const baseGold = gatesGold + coinGold;   // gates + collected coins, before any new-best bonus
     if(bonus>0){
-      el('flapOverGold').innerHTML=COIN+' '+gatesGold;          // gates-only first
-      flapBonusTimer=setTimeout(()=>flapBonusReveal(gatesGold, gold, bonus), 680);
+      el('flapOverGold').innerHTML=COIN+' '+baseGold;           // base first, then count up the bonus
+      flapBonusTimer=setTimeout(()=>flapBonusReveal(baseGold, gold, bonus), 680);
     } else {
       el('flapOverGold').innerHTML=COIN+' '+gold;
     }
@@ -14384,6 +14402,19 @@ function _runWoConfetti(canvas, duration) {
       if(!o.passed && o.x + o.w < duck.x){ o.passed=true; score++; onScore(o); }
     }
     if(obstacles.length) obstacles = obstacles.filter(o=>o.x + o.w > -14);
+
+    // Coins: drift with the world; collect on touch for +10 gold.
+    for(const c of coins){
+      c.x -= speed*dt;
+      if(!c.got){
+        const dx=duck.x-c.x, dy=duck.y-c.y, rr=duck.r*0.72 + c.r;
+        if(dx*dx + dy*dy < rr*rr){
+          c.got=true; coinGold += COIN_VALUE; coinsCollected++;
+          coinPops.push({ x:c.x, y:c.y, t:0 }); spawnCoinBurst(c.x,c.y); sfxCoin();
+        }
+      }
+    }
+    if(coins.length) coins = coins.filter(c=>!c.got && c.x + c.r > -14);
 
     updateEffects(dt);
 
@@ -14637,6 +14668,33 @@ function _runWoConfetti(canvas, duration) {
     ctx.fillStyle=vg; ctx.fillRect(-14,-14,W+28,H+28);
   }
 
+  function drawCoin(c){
+    const r=c.r, y=c.y + Math.sin(performance.now()*0.005 + c.ph)*2*sc;
+    ctx.save();
+    ctx.shadowColor='rgba(251,191,36,.55)'; ctx.shadowBlur=12*sc;
+    const g=ctx.createRadialGradient(c.x-r*0.3, y-r*0.3, r*0.2, c.x, y, r);
+    g.addColorStop(0,'#fef3c7'); g.addColorStop(0.55,'#fbbf24'); g.addColorStop(1,'#d97706');
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(c.x, y, r, 0, Math.PI*2); ctx.fill();
+    ctx.shadowBlur=0;
+    ctx.strokeStyle='rgba(255,255,255,.5)'; ctx.lineWidth=1.4*sc;
+    ctx.beginPath(); ctx.arc(c.x, y, r*0.62, 0, Math.PI*2); ctx.stroke();
+    ctx.fillStyle='rgba(146,86,8,.92)'; ctx.font='800 '+(r*1.05).toFixed(0)+'px "DM Mono", ui-monospace, monospace';
+    ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('★', c.x, y+r*0.08);
+    ctx.restore();
+  }
+  function drawCoinPops(){
+    if(!coinPops.length) return;
+    ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.font='800 '+(15*sc).toFixed(0)+'px "DM Mono", ui-monospace, monospace';
+    for(const cp of coinPops){
+      const pr=cp.t/0.75;
+      ctx.globalAlpha=Math.max(0, 1-pr);
+      ctx.fillStyle='#fde68a';
+      ctx.fillText('+'+COIN_VALUE, cp.x, cp.y - pr*28*sc);
+    }
+    ctx.globalAlpha=1; ctx.restore();
+  }
+
   function draw(){
     ctx.setTransform(dpr,0,0,dpr,0,0);
     ctx.clearRect(0,0,W,H);
@@ -14645,8 +14703,10 @@ function _runWoConfetti(canvas, duration) {
     ctx.save(); ctx.translate(sx,sy);
     drawBackground();
     for(const o of obstacles) drawObstacle(o);
+    for(const c of coins) drawCoin(c);
     drawGround();
     drawParticles();
+    drawCoinPops();
     if(!idleMode) drawDuck();
     if(running && !flapped && !dying){
       ctx.globalAlpha=0.55+0.45*Math.sin(performance.now()*0.006);
@@ -14674,7 +14734,7 @@ function _runWoConfetti(canvas, duration) {
   // ── Idle "attract" scene: gates drift behind the menus so the
   //    title/score screens feel alive instead of sitting on dead black.
   function spawnIdleScene(){
-    obstacles=[]; particles=[]; scrollX=0; score=0; shake=0; flash=0;
+    obstacles=[]; particles=[]; coins=[]; coinPops=[]; scrollX=0; score=0; shake=0; flash=0;
     const gap=205*sc, m=70*sc, n=4, step=(W+150*sc)/n;
     for(let i=0;i<n;i++){
       const top=m+Math.random()*Math.max(10,(groundY-m-gap-m));
