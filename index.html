@@ -15,7 +15,7 @@
 <style>
 :root {
   --bg:#09090b;--bg2:#0e0e11;--bg3:#16161a;--border:rgba(255,255,255,.08);
-  --text:#f4f4f5;--muted:#80808c;--accent:#a3e635;--accent-glow:rgba(163,230,53,.18);
+  --text:#f4f4f5;--muted:#a1a1aa;--accent:#a3e635;--accent-glow:rgba(163,230,53,.18);
   --accent2:#bef264;--accent3:#f97316;--accent-lime:#a3e635;
   --rare:#38bdf8;--epic:#a855f7;--legendary:#fbbf24;--common:rgba(163,230,53,.35);
   --green:#a3e635;--nav-h:64px;--radius:14px;--radius-sm:10px;
@@ -2023,21 +2023,22 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .overload-down{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.25);}
 .overload-same{background:var(--bg3);color:var(--muted);border:1px solid var(--border);}
 /* ── LEVEL ROAD ── */
-.lr-node{display:flex;align-items:center;gap:0;margin-bottom:0;position:relative;}
+.lr-node{display:flex;align-items:flex-start;gap:0;margin-bottom:0;position:relative;}
 .lr-node:last-child .lr-line{display:none;}
-.lr-line{position:absolute;left:28px;top:56px;width:2px;height:calc(100% - 8px);background:var(--border);z-index:0;}
-.lr-line.done{background:var(--accent);}
-.lr-icon{width:56px;height:56px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;position:relative;z-index:1;background:var(--bg3);transition:all .2s;}
-.lr-icon.done{border-color:var(--accent);background:rgba(163,230,53,.08);box-shadow:0 0 14px rgba(163,230,53,.25);}
-.lr-icon.evo{border-width:3px;}
-.lr-icon.current{border-color:var(--accent);box-shadow:0 0 20px rgba(163,230,53,.4);animation:lr-pulse 2s ease-in-out infinite;}
-@keyframes lr-pulse{0%,100%{box-shadow:0 0 20px rgba(163,230,53,.4);}50%{box-shadow:0 0 32px rgba(163,230,53,.7);}}
-.lr-content{flex:1;padding:0 0 24px 14px;}
-.lr-level{font-size:10px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:1px;color:var(--muted);margin-bottom:3px;}
-.lr-title{font-size:14px;font-weight:800;margin-bottom:4px;}
-.lr-rewards{display:flex;flex-wrap:wrap;gap:5px;}
-.lr-pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid;font-family:'DM Mono',monospace;white-space:nowrap;}
-.lr-icon.unclaimed{border-color:var(--accent);box-shadow:0 0 16px rgba(163,230,53,.5);animation:lr-pulse 2s ease-in-out infinite;}
+.lr-line{position:absolute;left:26px;top:52px;width:2px;height:calc(100% - 48px);background:var(--border);z-index:0;border-radius:2px;}
+.lr-line.done{background:rgba(163,230,53,.32);}
+.lr-icon{width:52px;height:52px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0;position:relative;z-index:1;background:var(--bg3);transition:border-color .2s,background .2s;}
+.lr-icon.done{border-color:rgba(163,230,53,.28);background:rgba(163,230,53,.07);color:var(--accent);font-size:19px;}
+.lr-icon.evo{border-width:2px;}
+.lr-icon.current{border-color:var(--accent);background:rgba(163,230,53,.1);}
+.lr-icon.unclaimed{border-color:var(--accent);background:rgba(163,230,53,.12);animation:lr-ring 2.4s ease-in-out infinite;}
+@keyframes lr-ring{0%,100%{box-shadow:0 0 0 0 rgba(163,230,53,.4);}55%{box-shadow:0 0 0 7px rgba(163,230,53,0);}}
+.lr-content{flex:1;min-width:0;padding:0 0 26px 15px;}
+.lr-node.is-current .lr-content{background:rgba(163,230,53,.05);border:1px solid rgba(163,230,53,.18);border-radius:13px;padding:12px 14px;margin:0 0 26px 13px;}
+.lr-level{font-size:10px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:1px;color:var(--muted);margin-bottom:4px;}
+.lr-title{font-size:14px;font-weight:800;margin-bottom:8px;letter-spacing:-.2px;}
+.lr-rewards{display:flex;flex-wrap:wrap;gap:6px;}
+.lr-pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;border:1px solid transparent;font-family:'DM Mono',monospace;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;}
 
 /* ────────────────────────────────────────────────
    DAILY QUEST CARDS
@@ -2632,6 +2633,66 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 </div>
 
 <!-- STREAK XP BONUS MODAL (opened from the ▲ badge) -->
+<style id="streak-polish">
+/* ── Streak XP Bonus — refined ── */
+.flame-svg{width:100%;height:100%;display:block;}
+/* compact home strip */
+.streak-strip{display:flex;align-items:center;gap:13px;cursor:pointer;background:var(--bg2);border:1px solid var(--card-border);border-radius:14px;padding:11px 14px;margin-bottom:16px;transition:border-color .25s,transform .12s;}
+.streak-strip:hover{border-color:rgba(245,158,11,.24);}
+.streak-strip:active{transform:scale(.994);}
+.ss-flame{position:relative;width:60px;height:60px;flex-shrink:0;padding:9px;border-radius:14px;background:radial-gradient(125% 125% at 50% 12%,rgba(245,158,11,.16),rgba(245,158,11,.03));border:1px solid rgba(245,158,11,.2);transition:filter .3s,opacity .3s;}
+.ss-flame.cold{filter:grayscale(1);opacity:.4;background:var(--bg3);border-color:var(--border);}
+.ss-alert{display:none;position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:#f59e0b;border:2px solid var(--bg2);}
+.streak-strip.at-risk .ss-alert{display:block;}
+.ss-body{flex:1;min-width:0;}
+.ss-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.ss-count b{font-size:16px;font-weight:800;color:var(--text);letter-spacing:-.3px;}
+.ss-count span{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;}
+.ss-row .sc-mult-badge{margin-left:auto;}
+.ss-chev{color:var(--muted);flex-shrink:0;}
+.sc-mult-badge{font-family:'DM Mono',monospace;font-weight:700;font-size:11px;padding:3px 9px;border-radius:6px;background:rgba(245,158,11,.12);color:#f5a623;letter-spacing:.3px;}
+.sc-mult-badge.cold{background:var(--bg3);color:var(--muted);}
+.sc-track{display:flex;gap:4px;}
+.sc-seg{flex:1;height:5px;border-radius:3px;background:var(--bg3);transition:background .4s ease;}
+.sc-seg.on{background:linear-gradient(90deg,#f59e0b,#fbbf24);}
+.sc-seg.next{background:rgba(245,158,11,.28);}
+/* modal */
+.sm-hero{display:flex;align-items:center;gap:16px;padding:2px 2px 20px;}
+.sm-flame{width:58px;height:58px;flex-shrink:0;padding:13px;border-radius:17px;background:radial-gradient(125% 125% at 50% 12%,rgba(245,158,11,.18),rgba(245,158,11,.03));border:1px solid rgba(245,158,11,.22);}
+.sm-flame.cold{filter:grayscale(1);opacity:.4;background:var(--bg3);border-color:var(--border);}
+.sm-hero-num{display:flex;align-items:baseline;gap:8px;}
+.sm-hero-num b{font-size:42px;font-weight:800;letter-spacing:-1.5px;line-height:.9;color:var(--text);}
+.sm-hero-num span{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;}
+.sm-hero-mult{margin-left:auto;text-align:right;}
+.sm-hero-mult b{font-size:23px;font-weight:800;color:#f5a623;font-family:'DM Mono',monospace;letter-spacing:-.5px;}
+.sm-hero-mult span{display:block;font-size:8.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-top:3px;}
+.sm-track{display:flex;gap:5px;margin-bottom:9px;}
+.sm-seg{flex:1;height:8px;border-radius:4px;background:var(--bg3);}
+.sm-seg.on{background:linear-gradient(90deg,#f59e0b,#fbbf24);}
+.sm-scale{display:flex;justify-content:space-between;font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:.5px;}
+.sm-status{font-size:13px;line-height:1.6;color:var(--text);margin-top:18px;}
+.sm-status b{color:#f5a623;font-weight:700;}
+.sm-risk{margin-top:13px;display:flex;padding:11px 13px;border-radius:12px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.18);font-size:11.5px;font-family:'DM Mono',monospace;color:#fcd34d;line-height:1.55;}
+.sm-sec-label{font-size:9.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin:24px 0 15px;}
+.sm-timeline{position:relative;display:flex;justify-content:space-between;padding:0 2px;}
+.sm-timeline::before{content:'';position:absolute;top:13px;left:15px;right:15px;height:2px;background:var(--bg3);}
+.sm-tl-fill{position:absolute;top:13px;left:15px;height:2px;background:linear-gradient(90deg,#f59e0b,#fbbf24);transition:width .6s ease;}
+.sm-node{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:9px;}
+.sm-dot{width:26px;height:26px;border-radius:50%;background:var(--bg2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--muted);}
+.sm-node.done .sm-dot{background:#f59e0b;border-color:#f59e0b;color:#1a1206;}
+.sm-node-mult{font-size:14px;font-weight:800;font-family:'DM Mono',monospace;color:var(--muted);}
+.sm-node.done .sm-node-mult{color:#f5a623;}
+.sm-node-day{font-size:8.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;}
+.sm-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.sm-day{aspect-ratio:1;border-radius:12px;background:var(--bg3);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
+.sm-day.done{background:rgba(245,158,11,.09);border-color:rgba(245,158,11,.28);}
+.sm-day.today{border-color:rgba(245,158,11,.55);}
+.sm-day-dow{font-size:8px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:.3px;}
+.sm-day-ico{width:12px;height:12px;}
+.sm-day .dash{width:7px;height:2px;border-radius:1px;background:var(--muted);opacity:.45;}
+.sm-explain{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);line-height:1.65;margin-top:22px;padding-top:16px;border-top:1px solid var(--border);}
+.sm-explain b{color:var(--text);font-weight:700;}
+</style>
 <div class="pc-overlay hidden" id="streakModal" onclick="closeSheet(event,'streakModal')">
   <div class="pc-sheet" onclick="event.stopPropagation()">
     <div class="exinfo-handle"></div>
@@ -2849,6 +2910,17 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 
 <!-- HOME PAGE -->
 <div class="page active" id="page-home">
+  <div class="streak-strip" id="streakCard" onclick="openStreakInfo()" title="Streak XP bonus">
+    <div class="ss-flame" id="scFlame"></div>
+    <div class="ss-body">
+      <div class="ss-row">
+        <span class="ss-count"><b id="scNum">0</b> <span id="scLabel">day streak</span></span>
+        <span class="sc-mult-badge" id="scBadge">1.0×</span>
+      </div>
+      <div class="sc-track" id="scTrack"></div>
+    </div>
+    <svg class="ss-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+  </div>
   <div class="home-grid">
     <div class="pet-card">
       <div class="pet-bg">
@@ -6950,6 +7022,9 @@ function refreshHomeStats() {
     }
   }
 
+  // Streak home card
+  if (typeof refreshStreakCard === 'function') refreshStreakCard();
+
   // Daily quests
   renderDailyQuests(p);
 }
@@ -10875,24 +10950,112 @@ function updateAchievementsEntry(){
   if (badge) { if (claimable > 0) { badge.style.display=''; badge.textContent = claimable + ' ready'; } else badge.style.display='none'; }
 }
 
+// Local 'YYYY-MM-DD' for an offset of `back` days ago (0 = today). Matches streakDays format.
+function _localDayStr(back) {
+  const d = new Date(); d.setDate(d.getDate() - (back || 0));
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// Refined flame mark — gradient version (hero/card) and a flat mini for small day cells.
+const STREAK_FLAME_SVG = `<svg viewBox="0 0 24 24" class="flame-svg" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="flameG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fcd34d"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs><g transform="translate(2 1.2)"><path d="M12.6 2c.5 2.7-1.8 4.2-2 6.6-.1 1 .5 2 1.5 2.3.4-.9.6-1.7.7-2.7 1.8 1.4 3 3.4 3 5.6a5.8 5.8 0 0 1-11.6 0c0-3.6 2.9-5.3 4-9.2.4 1.6 1.4 2.6 2.8 3.1C12.7 7.9 11.8 5 12.6 2Z" fill="url(#flameG)"/><path d="M12 12.8c.6 1.3 1.6 2 1.6 3.3a2.2 2.2 0 0 1-4.4 0c0-1 .5-1.7 1.1-2.5.3.8.8 1.1 1.2 1.4.2-.8-.2-1.6.5-2.2Z" fill="#fffbeb" opacity=".9"/></g></svg>`;
+const STREAK_FLAME_MINI = `<svg viewBox="0 0 24 24" class="flame-svg" xmlns="http://www.w3.org/2000/svg"><g transform="translate(2 1.2)"><path d="M12.6 2c.5 2.7-1.8 4.2-2 6.6-.1 1 .5 2 1.5 2.3.4-.9.6-1.7.7-2.7 1.8 1.4 3 3.4 3 5.6a5.8 5.8 0 0 1-11.6 0c0-3.6 2.9-5.3 4-9.2.4 1.6 1.4 2.6 2.8 3.1C12.7 7.9 11.8 5 12.6 2Z" fill="#f59e0b"/></g></svg>`;
+
+// Build the 11-segment day track (one segment per day up to the 11-day max).
+function _streakSegs(streak, cls) {
+  const tip = Math.min(streak, 11);
+  let html = '';
+  for (let i = 1; i <= 11; i++) {
+    let c = cls;
+    if (i <= tip) c += ' on';
+    else if (cls === 'sc-seg' && i === tip + 1) c += ' next';
+    html += `<i class="${c}"></i>`;
+  }
+  return html;
+}
+
+function refreshStreakCard() {
+  const card = document.getElementById('streakCard');
+  if (!card) return;
+  const p = getP();
+  const days = (p && p.streakDays) ? p.streakDays : [];
+  const streak = calcStreak(days);
+  const mult = getStreakMultiplier(days);
+  const cold = streak <= 0;
+  const trainedToday = days.includes(_localDayStr(0));
+
+  const flame = document.getElementById('scFlame');
+  flame.innerHTML = STREAK_FLAME_SVG + '<i class="ss-alert"></i>';
+  flame.classList.toggle('cold', cold);
+  document.getElementById('scNum').textContent = streak;
+  document.getElementById('scLabel').textContent = cold ? 'start today' : 'day streak';
+
+  const badge = document.getElementById('scBadge');
+  badge.textContent = mult.toFixed(1) + '×';
+  badge.classList.toggle('cold', cold);
+
+  document.getElementById('scTrack').innerHTML = _streakSegs(streak, 'sc-seg');
+
+  // At-risk: an active streak with no workout logged today (shows a dot on the flame).
+  card.classList.toggle('at-risk', streak > 0 && !trainedToday);
+}
+
 function openStreakInfo() {
   const p = getP();
-  const streak = p ? calcStreak(p.streakDays) : 0;
-  const cur = p ? getStreakMultiplier(p.streakDays) : 1;
-  let rows = '';
-  for (let d = 1; d <= 11; d++) {
-    const m = d <= 1 ? 1.0 : Math.min(2.0, 1 + (d - 1) * 0.1);
-    const isCur = streak >= 11 ? d === 11 : d === Math.max(1, streak);
-    rows += `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:9px;margin-bottom:5px;font-family:'DM Mono',monospace;font-size:13px;${isCur ? 'background:rgba(163,230,53,.12);border:1px solid var(--accent);' : 'background:var(--bg3);border:1px solid var(--border);'}">
-      <span style="${isCur ? 'color:var(--accent);font-weight:800;' : ''}">Day ${d}${d === 11 ? '+' : ''}${isCur ? '  ← you' : ''}</span>
-      <span style="${isCur ? 'color:var(--accent);font-weight:800;' : 'color:var(--text);'}">${m.toFixed(1)}× XP${d === 11 ? '  ·  MAX' : ''}</span>
+  const days = (p && p.streakDays) ? p.streakDays : [];
+  const streak = calcStreak(days);
+  const mult = getStreakMultiplier(days);
+  const cold = streak <= 0;
+  const trainedToday = days.includes(_localDayStr(0));
+
+  // Milestone timeline (days 1 / 6 / 11). Fill runs linearly so nodes sit at 0% / 50% / 100%.
+  const nodes = [{ d: 1, m: 1.0, l: 'Day 1' }, { d: 6, m: 1.5, l: 'Day 6' }, { d: 11, m: 2.0, l: 'Max' }];
+  const nodeHtml = nodes.map(n => `<div class="sm-node${streak >= n.d ? ' done' : ''}">
+      <div class="sm-dot">${streak >= n.d ? '✓' : ''}</div>
+      <div class="sm-node-mult">${n.m.toFixed(1)}×</div>
+      <div class="sm-node-day">${n.l}</div>
+    </div>`).join('');
+  const fillFrac = Math.min(1, Math.max(0, (streak - 1) / 10));
+
+  // Last 7 days strip
+  const DOW = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+  const set = new Set(days);
+  let week = '';
+  for (let i = 6; i >= 0; i--) {
+    const ds = _localDayStr(i);
+    const done = set.has(ds);
+    const isToday = i === 0;
+    const dow = DOW[new Date(ds + 'T00:00:00').getDay()];
+    week += `<div class="sm-day${done ? ' done' : ''}${isToday ? ' today' : ''}">
+      <span class="sm-day-dow">${dow}</span>
+      ${done ? `<span class="sm-day-ico">${STREAK_FLAME_MINI}</span>` : `<span class="dash"></span>`}
     </div>`;
   }
+
+  const statusLine = cold
+    ? `Work out today to <b>light your streak</b> and start earning bonus XP on every session.`
+    : (mult >= 2
+        ? `You've reached the <b>2× maximum</b> bonus. Keep training to hold it.`
+        : `You're earning <b>+${Math.round((mult - 1) * 100)}% XP</b> per workout. <b>${11 - streak} more day${11 - streak === 1 ? '' : 's'}</b> to the 2× max.`);
+
+  const riskHtml = (streak > 0 && !trainedToday)
+    ? `<div class="sm-risk">You haven't trained today — log a workout to keep your ${streak}-day streak. Miss two days in a row and it resets.</div>`
+    : '';
+
   document.getElementById('streakInfoBody').innerHTML = `
-    <div style="font-size:13px;line-height:1.6;color:var(--text);margin-bottom:8px;">Work out on consecutive days to earn bonus XP. Every streak day adds <b style="color:var(--accent);">+10%</b>, maxing out at <b style="color:var(--accent);">2×</b> on an 11-day streak.</div>
-    <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:14px;line-height:1.5;">One rest day is fine — your streak only breaks after you skip 2+ days in a row.</div>
-    <div style="font-size:12px;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:12px;">You're on a <b style="color:var(--accent);">${streak}-day</b> streak → <b style="color:var(--accent);">${cur.toFixed(1)}×</b> XP</div>
-    ${rows}`;
+    <div class="sm-hero">
+      <div class="sm-flame${cold ? ' cold' : ''}">${STREAK_FLAME_SVG}</div>
+      <div class="sm-hero-num"><b>${streak}</b><span>day${streak === 1 ? '' : 's'}</span></div>
+      <div class="sm-hero-mult"><b>${mult.toFixed(1)}×</b><span>XP bonus</span></div>
+    </div>
+    <div class="sm-track">${_streakSegs(streak, 'sm-seg')}</div>
+    <div class="sm-scale"><span>Day 1</span><span>Day 6</span><span>Day 11</span></div>
+    <div class="sm-status">${statusLine}</div>
+    ${riskHtml}
+    <div class="sm-sec-label">Milestones</div>
+    <div class="sm-timeline"><div class="sm-tl-fill" style="width:calc((100% - 30px) * ${fillFrac})"></div>${nodeHtml}</div>
+    <div class="sm-sec-label">Last 7 days</div>
+    <div class="sm-week">${week}</div>
+    <div class="sm-explain">Each consecutive workout day adds <b>+10% XP</b>, up to a <b>2× maximum</b> at an 11-day streak. One rest day is fine — your streak only resets after <b>two days off in a row</b>.</div>`;
   document.getElementById('streakModal').classList.remove('hidden');
 }
 
@@ -13335,7 +13498,8 @@ function _achieveDismiss() {
     el.style.transition = '';
     el.style.marginTop = '';
     el.style.opacity = '';
-    if (dy < -40) _achieveDismiss();
+    // Swiping one away clears the whole queue too (e.g. claiming several levels at once).
+    if (dy < -40) { _achieveQueue.length = 0; _achieveDismiss(); }
   }
   document.addEventListener('touchstart', e => { if (e.target.closest('#achieveNotif')) onDown(e); }, { passive: true });
   document.addEventListener('touchmove',  e => { if (dragging) onMove(e); }, { passive: true });
@@ -13371,7 +13535,7 @@ function openLevelRoad() {
   for (let lv = 1; lv <= maxShow; lv++) {
     const gold = lv * 200;
     const rewards = [];
-    rewards.push({ label: `+${gold.toLocaleString()} {coin}`, color: '#fbbf24', bg: 'rgba(251,191,36,.12)' });
+    rewards.push({ label: `+${gold.toLocaleString()} ${COIN}`, color: '#fbbf24', bg: 'rgba(251,191,36,.12)' });
     rewards.push({ label: '+1 Plain Egg', color: '#38bdf8', bg: 'rgba(56,189,248,.1)' });
 
     let icon = '⭐', iconColor = '#6b7280', isEvo = false, title = `Level ${lv}`;
@@ -13404,7 +13568,7 @@ function openLevelRoad() {
   const road = document.getElementById('lrRoad');
   road.innerHTML = nodes.map(n => {
     const pillsHtml = n.rewards.map(r =>
-      `<span class="lr-pill" style="color:${r.color};border-color:${r.color};background:${r.bg};">${r.label}</span>`
+      `<span class="lr-pill" style="color:${r.color};background:${r.bg};">${r.label}</span>`
     ).join('');
     const isClaimed = claimed.has(n.lv);
     const isUnclaimed = unclaimed.has(n.lv);
@@ -13414,16 +13578,16 @@ function openLevelRoad() {
     const titleStyle = n.isEvo ? `color:${n.iconColor};` : isClaimed ? 'color:var(--muted);' : '';
     const dotContent = isClaimed ? '✓' : n.icon;
     const claimBtn = isUnclaimed
-      ? `<button type="button" onclick="claimLevelReward(${n.lv})" style="margin-top:8px;padding:7px 18px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#000;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-weight:800;font-size:12px;cursor:pointer;letter-spacing:.3px;">✦ Claim Rewards</button>`
+      ? `<button type="button" onclick="claimLevelReward(${n.lv})" style="margin-top:10px;padding:8px 18px;background:var(--accent);color:#0a0a0c;border:none;border-radius:9px;font-family:'Inter',sans-serif;font-weight:800;font-size:12px;cursor:pointer;letter-spacing:.2px;">Claim Rewards</button>`
       : '';
     const unclaimedDot = isUnclaimed ? `<div style="position:absolute;top:-3px;right:-3px;width:10px;height:10px;background:var(--accent);border-radius:50%;border:2px solid var(--bg2);"></div>` : '';
-    return `<div class="lr-node">
+    return `<div class="lr-node${n.current ? ' is-current' : ''}">
       <div class="${lineClass}"></div>
       <div class="${dotClass}" style="${iconStyle};position:relative;">${dotContent}${unclaimedDot}</div>
       <div class="lr-content">
         <div class="lr-level" style="display:flex;justify-content:space-between;align-items:center;">
-          <span>LEVEL ${n.lv}</span>
-          <span style="color:var(--accent);opacity:.7;">${n.xpReq.toLocaleString()} XP</span>
+          <span>LEVEL ${n.lv}${n.current ? ' · YOU' : ''}</span>
+          <span style="color:var(--muted);">${n.xpReq.toLocaleString()} XP</span>
         </div>
         <div class="lr-title" style="${titleStyle}">${n.title}</div>
         <div class="lr-rewards">${pillsHtml}</div>
