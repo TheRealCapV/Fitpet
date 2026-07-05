@@ -594,16 +594,18 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 @keyframes wo-pulse{0%,100%{opacity:1;}50%{opacity:.25;}}
 .cancel-workout-btn{padding:10px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:#f87171;font-family:'Inter',sans-serif;transition:all .2s;}
 .cancel-workout-btn:hover{background:rgba(239,68,68,.18);border-color:#ef4444;}
-.templates-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;align-items:start;}
-.template-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .2s;}
+.templates-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;align-items:stretch;}
+.template-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;}
 .template-card:hover,.template-card.selected{border-color:var(--accent);background:rgba(163,230,53,.04);box-shadow:0 0 0 1px rgba(163,230,53,.12);}
 .template-card.tmpl-dragging{opacity:.4;box-shadow:0 0 0 2px rgba(163,230,53,.32);}
 .template-card.tmpl-drag-over{border-color:var(--accent);box-shadow:0 0 0 2px rgba(163,230,53,.22);transform:scale(1.03);}
 .tmpl-drag-handle{font-size:16px;color:var(--muted);cursor:grab;touch-action:none;user-select:none;line-height:1;padding:2px 4px;flex-shrink:0;}
 .tmpl-drag-handle:active{cursor:grabbing;color:var(--accent);}
 .template-emoji{font-size:20px;width:42px;height:42px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);flex-shrink:0;}
-.template-name{font-size:15px;font-weight:700;margin-bottom:4px;}
-.template-desc{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;}
+.template-name{font-size:15px;font-weight:700;flex:1;min-width:0;letter-spacing:-.2px;}
+.template-desc{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.55;}
+.tmpl-controls{display:flex;align-items:center;gap:2px;flex-shrink:0;margin-top:-2px;}
+.template-meta{margin-top:auto;padding-top:12px;font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;opacity:.75;}
 /* ── PET BIO MODAL ── */
 .pet-bio-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:950;display:flex;align-items:center;justify-content:center;padding:14px;}
 .pet-bio-overlay.hidden{display:none;}
@@ -960,7 +962,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .log-ex-drag-handle{font-size:18px;color:var(--muted);cursor:grab;padding:2px 4px;flex-shrink:0;touch-action:none;user-select:none;line-height:1;}
 .log-ex-drag-handle:active{cursor:grabbing;color:var(--accent);}
 .log-ex-icon{font-size:19px;width:38px;height:38px;border-radius:11px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);}
-.log-ex-name{font-size:15px;font-weight:700;flex:1;}
+.log-ex-headmain{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
+.log-ex-name{font-size:15px;font-weight:700;}
 .log-ex-best{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
 .log-ex-actions{display:flex;flex-direction:column;gap:5px;flex-shrink:0;align-items:stretch;}
 .replace-ex-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:'DM Mono',monospace;white-space:nowrap;transition:all .15s;text-align:center;}
@@ -1014,12 +1017,12 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .add-set-btn{font-size:12px;font-weight:700;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:8px 13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.3px;transition:border-color .18s,color .18s,background .18s;}
 .add-set-btn:hover{color:var(--accent);border-color:var(--accent);background:rgba(163,230,53,.05);}
 .finish-workout-btn{background:var(--accent);color:#0a0a0c;width:100%;padding:16px;border-radius:12px;font-size:16px;font-weight:700;border:none;cursor:pointer;font-family:'Inter',sans-serif;margin-top:12px;transition:all .2s;}
-.finish-workout-btn:hover{filter:brightness(1.1);box-shadow:0 4px 24px var(--accent-glow);transform:translateY(-2px);}
+.finish-workout-btn:hover{filter:brightness(1.06);transform:translateY(-1px);}
 .add-exercise-workout-btn{background:var(--bg3);color:var(--text);width:100%;padding:13px;border-radius:var(--radius-sm);font-size:14px;font-weight:700;border:1px dashed var(--border);cursor:pointer;font-family:'Inter',sans-serif;margin-top:16px;transition:all .2s;letter-spacing:.3px;}
 .add-exercise-workout-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(163,230,53,.03);}
 .template-edit-btn{background:none;border:none;cursor:pointer;font-size:14px;opacity:0.5;padding:2px 4px;border-radius:4px;line-height:1;transition:opacity .15s;flex-shrink:0;}
 .template-edit-btn:hover{opacity:1;background:rgba(255,255,255,.08);}
-.template-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2px;position:relative;}
+.template-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px;}
 /* Template edit modal */
 .template-edit-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:900;display:flex;align-items:center;justify-content:center;padding:16px;}
 .template-edit-modal-overlay.hidden{display:none;}
@@ -2645,26 +2648,6 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 <style id="streak-polish">
 /* ── Streak XP Bonus — refined ── */
 .flame-svg{width:100%;height:100%;display:block;}
-/* compact home strip */
-.streak-strip{display:flex;align-items:center;gap:13px;cursor:pointer;background:var(--bg2);border:1px solid var(--card-border);border-radius:14px;padding:11px 14px;margin-bottom:16px;transition:border-color .25s,transform .12s;}
-.streak-strip:hover{border-color:rgba(245,158,11,.24);}
-.streak-strip:active{transform:scale(.994);}
-.ss-flame{position:relative;width:60px;height:60px;flex-shrink:0;padding:9px;border-radius:14px;background:radial-gradient(125% 125% at 50% 12%,rgba(245,158,11,.16),rgba(245,158,11,.03));border:1px solid rgba(245,158,11,.2);transition:filter .3s,opacity .3s;}
-.ss-flame.cold{filter:grayscale(1);opacity:.4;background:var(--bg3);border-color:var(--border);}
-.ss-alert{display:none;position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:#f59e0b;border:2px solid var(--bg2);}
-.streak-strip.at-risk .ss-alert{display:block;}
-.ss-body{flex:1;min-width:0;}
-.ss-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
-.ss-count b{font-size:16px;font-weight:800;color:var(--text);letter-spacing:-.3px;}
-.ss-count span{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;}
-.ss-row .sc-mult-badge{margin-left:auto;}
-.ss-chev{color:var(--muted);flex-shrink:0;}
-.sc-mult-badge{font-family:'DM Mono',monospace;font-weight:700;font-size:11px;padding:3px 9px;border-radius:6px;background:rgba(245,158,11,.12);color:#f5a623;letter-spacing:.3px;}
-.sc-mult-badge.cold{background:var(--bg3);color:var(--muted);}
-.sc-track{display:flex;gap:4px;}
-.sc-seg{flex:1;height:5px;border-radius:3px;background:var(--bg3);transition:background .4s ease;}
-.sc-seg.on{background:linear-gradient(90deg,#f59e0b,#fbbf24);}
-.sc-seg.next{background:rgba(245,158,11,.28);}
 /* modal */
 .sm-hero{display:flex;align-items:center;gap:16px;padding:2px 2px 20px;}
 .sm-flame{width:58px;height:58px;flex-shrink:0;padding:13px;border-radius:17px;background:radial-gradient(125% 125% at 50% 12%,rgba(245,158,11,.18),rgba(245,158,11,.03));border:1px solid rgba(245,158,11,.22);}
@@ -3573,7 +3556,7 @@ body.flap-noscroll{overflow:hidden;}
 .flap-stattab.active{background:var(--accent);color:#0a0a0c;}
 .flap-stattab:not(.active):hover{color:var(--text);}
 
-.flap-theme-btn{position:absolute;top:13px;left:13px;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(15,15,20,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;z-index:10;transition:transform .14s,border-color .18s;}
+.flap-theme-btn{flex-shrink:0;width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:transform .14s,border-color .18s;}
 .flap-theme-btn:hover{border-color:var(--accent);}
 .flap-theme-btn:active{transform:scale(.9);}
 .flap-info-btn{position:absolute;top:13px;right:13px;width:25px;height:25px;border-radius:50%;border:1px solid var(--border);background:var(--bg3);color:var(--muted);font-family:'DM Mono',monospace;font-weight:800;font-size:13px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;z-index:3;transition:color .18s,border-color .18s;}
@@ -3596,11 +3579,10 @@ body.flap-noscroll{overflow:hidden;}
 @keyframes flapValPulse{0%{transform:scale(1);}26%{transform:scale(1.2);color:#fde047;}100%{transform:scale(1);}}
 </style>
 <div class="page" id="page-battle">
-  <div class="page-header"><div class="page-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:8px"><line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>Flap Run</div></div>
+  <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;"><div class="page-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:8px"><line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>Flap Run</div><button class="flap-theme-btn" id="flapThemeBtn" onclick="toggleFlapTheme()" aria-label="Toggle day / night" title="Day / night">🌙</button></div>
 
   <div class="flap-wrap" id="flapWrap">
     <canvas id="flapCanvas"></canvas>
-    <button class="flap-theme-btn" id="flapThemeBtn" onclick="toggleFlapTheme()" aria-label="Toggle day / night" title="Day / night">🌙</button>
 
     <div class="flap-hud"><div class="flap-score" id="flapScore">0</div></div>
 
@@ -4486,30 +4468,31 @@ function getTemplateOrder() {
 
 function buildTemplateCardHTML(key) {
   const p = getP();
-  const emoji = getTemplateEmoji(key);
   const name = getTemplateName(key);
   const isPickCustom = key === 'custom'; // the "pick your own" slot
   const isCustomSlot = !!(p?.customTemplates?.[key]);
   let desc = isPickCustom ? 'Pick your own exercises' : '';
+  let exCount = 0;
   if (!isPickCustom) {
     const savedOverride = p?.templateOverrides?.[key];
     const exIds = savedOverride || WORKOUT_TEMPLATES[key]?.exercises || p?.customTemplates?.[key]?.exercises || [];
+    exCount = exIds.length;
     desc = exIds.map(id => ALL_EXERCISES[id]?.name || id)
       .map(n => n.replace(/ \(.*?\)/, '').replace('Assisted ',''))
       .join(' · ');
   }
   const showEdit = !isPickCustom;
   const editBtn = showEdit
-    ? `<button class="template-edit-btn" onclick="event.stopPropagation();openTemplateEdit('${key}')" title="Edit">✏️</button>`
+    ? `<button class="template-edit-btn" onclick="event.stopPropagation();openTemplateEdit('${key}')" title="Edit">✎</button>`
     : '';
   const dragHandle = `<span class="tmpl-drag-handle" title="Drag to reorder">⠿</span>`;
   return `<div class="template-card${(_templatePicked && activeTemplate===key)?' selected':''}" onclick="selectTemplate(this,'${key}')" data-key="${key}" draggable="true">
     <div class="template-card-top">
-      <div class="template-emoji" id="tmpl-emoji-${key}">${emoji}</div>
-      <div style="display:flex;align-items:center;gap:2px;">${dragHandle}${editBtn}</div>
+      <div class="template-name" id="tmpl-name-${key}">${name}</div>
+      <div class="tmpl-controls">${dragHandle}${editBtn}</div>
     </div>
-    <div class="template-name" id="tmpl-name-${key}">${name}</div>
     <div class="template-desc">${desc}</div>
+    ${isPickCustom ? '' : `<div class="template-meta">${exCount} exercise${exCount === 1 ? '' : 's'}</div>`}
   </div>`;
 }
 
@@ -4688,11 +4671,9 @@ function renderTemplateEditExercises() {
   list.innerHTML = _templateEditExercises.map((id, idx) => {
     const ex = ALL_EXERCISES[id];
     const name = ex ? ex.name : id;
-    const icon = ex ? (ex.icon || '💪') : '💪';
     const muscle = ex ? ex.muscle : '';
     return `<div class="te-ex-row" draggable="true" data-idx="${idx}">
       <span class="te-ex-handle" title="Drag to reorder">⠿</span>
-      <span class="te-ex-icon">${icon}</span>
       <div class="te-ex-info">
         <div class="te-ex-name">${name}</div>
         ${muscle ? `<div class="te-ex-muscle">${muscle}</div>` : ''}
@@ -5731,9 +5712,10 @@ function buildExerciseCard(ex) {
     <div class="log-exercise-card" id="excard-${ex.id}" draggable="true" data-exid="${ex.id}">
       <div class="log-ex-header">
         <div class="log-ex-drag-handle" title="Drag to reorder">⠿</div>
-        <div class="log-ex-icon">${ex.icon}</div>
-        <div class="log-ex-name" onclick="openExerciseInfo('${ex.id}')" style="cursor:pointer;">${ex.name} <span style="color:var(--muted);font-size:12px;font-weight:400;">ⓘ</span></div>
-        <div class="log-ex-best">${prLabel}</div>
+        <div class="log-ex-headmain">
+          <div class="log-ex-name" onclick="openExerciseInfo('${ex.id}')" style="cursor:pointer;">${ex.name} <span style="color:var(--muted);font-size:12px;font-weight:400;">ⓘ</span></div>
+          <div class="log-ex-best">${prLabel}</div>
+        </div>
         <div class="log-ex-actions">
           <button class="remove-exercise-btn" onclick="removeExercise('${ex.id}')">✕ Remove</button>
           <button class="replace-ex-btn" onclick="openReplaceModal('${ex.id}')">⇄ Replace</button>
@@ -6204,7 +6186,6 @@ function renderReplaceList(query) {
     <div class="replace-muscle-group">${muscle}</div>
     ${groups[muscle].map(ex => `
       <div class="replace-ex-row" onclick="${action}('${ex.id}')">
-        <div class="replace-ex-row-icon">${ex.icon}</div>
         <div class="replace-ex-row-name">${ex.name}</div>
         <div class="replace-ex-row-muscle">${ex.muscle}</div>
         <button onclick="event.stopPropagation();openExerciseInfo('${ex.id}')" title="Details" style="background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:14px;flex-shrink:0;">ⓘ</button>
@@ -6343,7 +6324,7 @@ function renderPicker(query) {
         ${groups[m].map(ex => `
           <div class="picker-pill ${customSelection.includes(ex.id) ? 'selected' : ''}"
                onclick="toggleCustomExercise('${ex.id}',this)">
-            ${ex.icon} ${ex.name}
+            ${ex.name}
           </div>
         `).join('')}
       </div>
@@ -6608,7 +6589,6 @@ function renderExerciseLibrary(query) {
       <div style="display:flex;flex-direction:column;gap:6px;">
         ${grouped[muscle].map(ex => `
           <div class="exercise-row" style="cursor:default;">
-            <div class="exercise-icon">${ex.icon}</div>
             <div class="exercise-details">
               <div class="exercise-name">${ex.name}</div>
               <div class="exercise-muscle">${ex.muscle}</div>
@@ -7026,9 +7006,6 @@ function refreshHomeStats() {
       multBadge.classList.remove('danger');
     }
   }
-
-  // Streak home card
-  if (typeof refreshStreakCard === 'function') refreshStreakCard();
 
   // Daily quests
   renderDailyQuests(p);
@@ -10965,43 +10942,12 @@ function _localDayStr(back) {
 const STREAK_FLAME_SVG = `<svg viewBox="0 0 24 24" class="flame-svg" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="flameG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fcd34d"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs><g transform="translate(2 1.2)"><path d="M12.6 2c.5 2.7-1.8 4.2-2 6.6-.1 1 .5 2 1.5 2.3.4-.9.6-1.7.7-2.7 1.8 1.4 3 3.4 3 5.6a5.8 5.8 0 0 1-11.6 0c0-3.6 2.9-5.3 4-9.2.4 1.6 1.4 2.6 2.8 3.1C12.7 7.9 11.8 5 12.6 2Z" fill="url(#flameG)"/><path d="M12 12.8c.6 1.3 1.6 2 1.6 3.3a2.2 2.2 0 0 1-4.4 0c0-1 .5-1.7 1.1-2.5.3.8.8 1.1 1.2 1.4.2-.8-.2-1.6.5-2.2Z" fill="#fffbeb" opacity=".9"/></g></svg>`;
 const STREAK_FLAME_MINI = `<svg viewBox="0 0 24 24" class="flame-svg" xmlns="http://www.w3.org/2000/svg"><g transform="translate(2 1.2)"><path d="M12.6 2c.5 2.7-1.8 4.2-2 6.6-.1 1 .5 2 1.5 2.3.4-.9.6-1.7.7-2.7 1.8 1.4 3 3.4 3 5.6a5.8 5.8 0 0 1-11.6 0c0-3.6 2.9-5.3 4-9.2.4 1.6 1.4 2.6 2.8 3.1C12.7 7.9 11.8 5 12.6 2Z" fill="#f59e0b"/></g></svg>`;
 
-// Build the 11-segment day track (one segment per day up to the 11-day max).
+// Build the 11-segment day track for the modal (one segment per day up to the 11-day max).
 function _streakSegs(streak, cls) {
   const tip = Math.min(streak, 11);
   let html = '';
-  for (let i = 1; i <= 11; i++) {
-    let c = cls;
-    if (i <= tip) c += ' on';
-    else if (cls === 'sc-seg' && i === tip + 1) c += ' next';
-    html += `<i class="${c}"></i>`;
-  }
+  for (let i = 1; i <= 11; i++) html += `<i class="${cls}${i <= tip ? ' on' : ''}"></i>`;
   return html;
-}
-
-function refreshStreakCard() {
-  const card = document.getElementById('streakCard');
-  if (!card) return;
-  const p = getP();
-  const days = (p && p.streakDays) ? p.streakDays : [];
-  const streak = calcStreak(days);
-  const mult = getStreakMultiplier(days);
-  const cold = streak <= 0;
-  const trainedToday = days.includes(_localDayStr(0));
-
-  const flame = document.getElementById('scFlame');
-  flame.innerHTML = STREAK_FLAME_SVG + '<i class="ss-alert"></i>';
-  flame.classList.toggle('cold', cold);
-  document.getElementById('scNum').textContent = streak;
-  document.getElementById('scLabel').textContent = cold ? 'start today' : 'day streak';
-
-  const badge = document.getElementById('scBadge');
-  badge.textContent = mult.toFixed(1) + '×';
-  badge.classList.toggle('cold', cold);
-
-  document.getElementById('scTrack').innerHTML = _streakSegs(streak, 'sc-seg');
-
-  // At-risk: an active streak with no workout logged today (shows a dot on the flame).
-  card.classList.toggle('at-risk', streak > 0 && !trainedToday);
 }
 
 function openStreakInfo() {
@@ -12807,7 +12753,15 @@ function abFlee() {
 }
 
 startAutoClicker();
-authInit();
+// Boot only after the whole document is parsed — including the embedded pet-image
+// blob (window.PET_IMG) near the end of the file. Otherwise, on a slow connection the
+// app renders pets before PET_IMG exists and briefly shows the old external pets/*.png
+// artwork before swapping to the new embedded art.
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', authInit, { once: true });
+} else {
+  authInit();
+}
 
 // ── Lock viewport like a native app ──
 // Handle service worker messages
@@ -14671,14 +14625,19 @@ function _runWoConfetti(canvas, duration) {
   function drawCoin(c){
     const r=c.r, y=c.y + Math.sin(performance.now()*0.005 + c.ph)*2*sc;
     ctx.save();
-    ctx.shadowColor='rgba(251,191,36,.55)'; ctx.shadowBlur=12*sc;
+    // Depth: warm glow at night (reads on dark sky); soft dark drop shadow in day (reads on light sky).
+    if(_flapDay){ ctx.shadowColor='rgba(0,0,0,.32)'; ctx.shadowBlur=6*sc; ctx.shadowOffsetY=2*sc; }
+    else { ctx.shadowColor='rgba(251,191,36,.55)'; ctx.shadowBlur=12*sc; }
     const g=ctx.createRadialGradient(c.x-r*0.3, y-r*0.3, r*0.2, c.x, y, r);
-    g.addColorStop(0,'#fef3c7'); g.addColorStop(0.55,'#fbbf24'); g.addColorStop(1,'#d97706');
+    g.addColorStop(0,'#fff7d6'); g.addColorStop(0.5,'#fbbf24'); g.addColorStop(1,'#c2740a');
     ctx.fillStyle=g; ctx.beginPath(); ctx.arc(c.x, y, r, 0, Math.PI*2); ctx.fill();
-    ctx.shadowBlur=0;
-    ctx.strokeStyle='rgba(255,255,255,.5)'; ctx.lineWidth=1.4*sc;
-    ctx.beginPath(); ctx.arc(c.x, y, r*0.62, 0, Math.PI*2); ctx.stroke();
-    ctx.fillStyle='rgba(146,86,8,.92)'; ctx.font='800 '+(r*1.05).toFixed(0)+'px "DM Mono", ui-monospace, monospace';
+    ctx.shadowBlur=0; ctx.shadowOffsetY=0;
+    // Dark outer rim — crisp edge so the coin never dissolves into the sky (esp. day mode / near the sun).
+    ctx.strokeStyle='rgba(124,58,3,.92)'; ctx.lineWidth=2*sc;
+    ctx.beginPath(); ctx.arc(c.x, y, r-1*sc, 0, Math.PI*2); ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,.45)'; ctx.lineWidth=1.3*sc;
+    ctx.beginPath(); ctx.arc(c.x, y, r*0.6, 0, Math.PI*2); ctx.stroke();
+    ctx.fillStyle='rgba(124,58,3,.95)'; ctx.font='800 '+(r*1.05).toFixed(0)+'px "DM Mono", ui-monospace, monospace';
     ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('★', c.x, y+r*0.08);
     ctx.restore();
   }
@@ -14686,11 +14645,15 @@ function _runWoConfetti(canvas, duration) {
     if(!coinPops.length) return;
     ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.font='800 '+(15*sc).toFixed(0)+'px "DM Mono", ui-monospace, monospace';
+    ctx.lineWidth=3*sc; ctx.lineJoin='round';
     for(const cp of coinPops){
-      const pr=cp.t/0.75;
+      const pr=cp.t/0.75, yy=cp.y - pr*28*sc;
       ctx.globalAlpha=Math.max(0, 1-pr);
-      ctx.fillStyle='#fde68a';
-      ctx.fillText('+'+COIN_VALUE, cp.x, cp.y - pr*28*sc);
+      // Outlined text so '+10' stays legible on either sky (dark amber in day, light gold at night).
+      ctx.strokeStyle = _flapDay ? 'rgba(255,255,255,.9)' : 'rgba(0,0,0,.55)';
+      ctx.strokeText('+'+COIN_VALUE, cp.x, yy);
+      ctx.fillStyle = _flapDay ? '#b45309' : '#fde68a';
+      ctx.fillText('+'+COIN_VALUE, cp.x, yy);
     }
     ctx.globalAlpha=1; ctx.restore();
   }
