@@ -962,6 +962,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .log-ex-drag-handle{font-size:18px;color:var(--muted);cursor:grab;padding:2px 4px;flex-shrink:0;touch-action:none;user-select:none;line-height:1;}
 .log-ex-drag-handle:active{cursor:grabbing;color:var(--accent);}
 .log-ex-icon{font-size:19px;width:38px;height:38px;border-radius:11px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);}
+.rt-focus{outline:2px solid transparent;outline-offset:-2px;animation:rtFocusPulse 1.8s ease;}
+@keyframes rtFocusPulse{0%,100%{outline-color:transparent;}22%,58%{outline-color:var(--accent);}}
 .log-ex-headmain{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
 .log-ex-name{font-size:15px;font-weight:700;}
 .log-ex-best{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
@@ -9270,7 +9272,7 @@ function equipSkin(id) {
 // ══════════════════════════════════════════
 //  REST TIMER
 // ══════════════════════════════════════════
-let rtInterval = null, rtTotal = 120, rtRemaining = 120, rtEndTime = null, rtActiveExId = null;
+let rtInterval = null, rtTotal = 120, rtRemaining = 120, rtEndTime = null, rtActiveExId = null, rtActiveSetIdx = null;
 const CIRC = 2 * Math.PI * 22; // matches r=22 in SVG
 
 function rtFmt(s) { const m=Math.floor(s/60),sec=s%60; return m>0?`${m}:${String(sec).padStart(2,'0')}`:`${sec}s`; }
@@ -9303,6 +9305,8 @@ function rtUpdateRing() {
 
 function rtStart(exName, setNum, lbs, reps, exId) {
   rtActiveExId = exId || null;
+  rtActiveSetIdx = (typeof setNum === 'number') ? setNum - 1 : null; // 0-based index of the set you're resting for
+
   rtEndTime = Date.now() + rtTotal * 1000;
   rtRemaining = rtTotal;
   document.getElementById('rtNextSet').textContent = exName + ' — Set ' + setNum;
@@ -9872,6 +9876,22 @@ function rtDone() {
 }
 
 function rtSkip() { clearInterval(rtInterval); rtInterval = null; cancelSwNotif(); rtDismiss(); }
+
+// Opened from the rest-over notification — jump to the exact set you're resting for.
+function scrollToActiveSet() {
+  const card = rtActiveExId ? document.getElementById('excard-' + rtActiveExId) : null;
+  if (!card) return;
+  let rowInput = null;
+  if (rtActiveSetIdx != null) {
+    rowInput = document.getElementById('lbs-'  + rtActiveExId + '-' + rtActiveSetIdx)
+            || document.getElementById('reps-' + rtActiveExId + '-' + rtActiveSetIdx)
+            || document.getElementById('mins-' + rtActiveExId + '-' + rtActiveSetIdx);
+  }
+  const target = (rowInput && rowInput.closest('tr')) || card;
+  target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  target.classList.add('rt-focus');
+  setTimeout(() => target.classList.remove('rt-focus'), 1800);
+}
 
 // Hide bar but keep timer running
 function rtHide() {
@@ -12767,11 +12787,11 @@ if (document.readyState === 'loading') {
 // Handle service worker messages
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('message', e => {
-    if (e.data?.type === 'OPEN_LOG') showPage('log');
+    if (e.data?.type === 'OPEN_LOG') { showPage('log'); setTimeout(scrollToActiveSet, 350); }
   });
 }
 // Handle open-from-notification via hash
-if (location.hash === '#log') { history.replaceState(null,'',location.pathname); setTimeout(() => showPage('log'), 300); }
+if (location.hash === '#log') { history.replaceState(null,'',location.pathname); setTimeout(() => { showPage('log'); setTimeout(scrollToActiveSet, 350); }, 300); }
 
 // Block pinch zoom only (not scroll)
 document.addEventListener('touchstart', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
@@ -14094,6 +14114,7 @@ function _runWoConfetti(canvas, duration) {
   let particles=[], motes=[], stars=[], clouds=[], shake=0, flash=0, dying=false, dieT=0, flapped=false;
   let flapRecord=0, gateCount=0;   // record gate = the gate that reaches your current best
   let coins=[], coinPops=[], coinGold=0, coinsCollected=0;   // floating +10 gold pickups
+  let _coinSprite=null, _coinSpriteSc=0;                      // pre-rendered coin face (blit + spin each frame)
   let duckImg=null, duckReady=false, duckEmoji='🦆', duckGlow='#a3e635';
   let idleRAF=null, idleMode=false, idleLast=0;
   let flapStatPref='all', lastRunScore=0, lastRunGold=0;
@@ -14130,8 +14151,9 @@ function _runWoConfetti(canvas, duration) {
     // Fit the game between its top and the stats below so the page needs no scroll
     let avail; try{ avail = window.innerHeight - wrap.getBoundingClientRect().top - 158; }catch(e){ avail = window.innerHeight*0.62; }
     const cssH = Math.max(440, Math.min(Math.round(avail), 620));
-    dpr = window.devicePixelRatio || 1;
+    dpr = Math.min(2, window.devicePixelRatio || 1);  // cap for smoothness on high-DPI phones
     W=cssW; H=cssH; sc=H/560; groundY = H - 26*sc;
+    _coinSprite = null;  // rebuild coin sprite at the new scale
     canvas.style.height = cssH+'px';
     canvas.width  = Math.round(cssW*dpr);
     canvas.height = Math.round(cssH*dpr);
@@ -14198,9 +14220,19 @@ function _runWoConfetti(canvas, duration) {
     const m = 58*sc;
     const top = m + Math.random()*Math.max(10,(groundY - m - gap - m));
     obstacles.push({ x: W + 40*sc, w: 64*sc, gapY: top, gap: gap, passed:false, num: ++gateCount });
-    // Float a +10 coin in the gap (random height so it isn't always dead-centre).
-    if(Math.random() < 0.8){
-      coins.push({ x: W + 40*sc + 32*sc, y: top + gap*(0.26 + Math.random()*0.48), r: 13*sc, ph: Math.random()*6.28, got:false });
+    spawnCoinsForGate(top, gap);
+  }
+
+  // Coins ride the natural flight path — centred on the gate's gap so you sweep them up by
+  // threading the gate, sometimes as a short trail, instead of floating at odd heights.
+  function spawnCoinsForGate(top, gap){
+    if(Math.random() > 0.72) return;                              // not every gate carries coins
+    const cy = top + gap*0.5 + (Math.random()-0.5)*gap*0.16;      // centre of the gap, gentle variation
+    const cx = W + 40*sc + 32*sc;                                 // aligned with the gate
+    const trail = Math.random() < 0.32 ? 3 : 1;                   // occasionally a little run of coins
+    const spacing = 34*sc;
+    for(let i=0;i<trail;i++){
+      coins.push({ x: cx + (i - (trail-1)/2)*spacing, y: cy, r: 12*sc, ph: Math.random()*6.28, got:false });
     }
   }
 
@@ -14409,7 +14441,7 @@ function _runWoConfetti(canvas, duration) {
     const capH=16*sc, r=7*sc, y= top? edgeY-capH : edgeY;
     ctx.save();
     ctx.shadowColor = gold ? 'rgba(251,191,36,.8)' : 'rgba(163,230,53,.65)';
-    ctx.shadowBlur = (gold?20:15)*sc;
+    ctx.shadowBlur = (gold?11:8)*sc;
     const gg=ctx.createLinearGradient(0,y,0,y+capH);
     if(gold){ gg.addColorStop(0, top?'#b07d12':'#fbbf24'); gg.addColorStop(1, top?'#fbbf24':'#b07d12'); }
     else { gg.addColorStop(0, top?'#7fae24':'#a3e635'); gg.addColorStop(1, top?'#a3e635':'#7fae24'); }
@@ -14622,23 +14654,34 @@ function _runWoConfetti(canvas, duration) {
     ctx.fillStyle=vg; ctx.fillRect(-14,-14,W+28,H+28);
   }
 
-  function drawCoin(c){
-    const r=c.r, y=c.y + Math.sin(performance.now()*0.005 + c.ph)*2*sc;
-    ctx.save();
-    // Depth: warm glow at night (reads on dark sky); soft dark drop shadow in day (reads on light sky).
-    if(_flapDay){ ctx.shadowColor='rgba(0,0,0,.32)'; ctx.shadowBlur=6*sc; ctx.shadowOffsetY=2*sc; }
-    else { ctx.shadowColor='rgba(251,191,36,.55)'; ctx.shadowBlur=12*sc; }
-    const g=ctx.createRadialGradient(c.x-r*0.3, y-r*0.3, r*0.2, c.x, y, r);
+  // Pre-render the coin face once (per canvas scale). Blitting a sprite each frame — plus a
+  // horizontal squash for the spin — is far cheaper than rebuilding a gradient + strokes + text.
+  function buildCoinSprite(r){
+    const pad=3, size=Math.ceil(r*2+pad*2), c=size/2;
+    const cv=document.createElement('canvas');
+    cv.width=Math.round(size*dpr); cv.height=Math.round(size*dpr);
+    const x=cv.getContext('2d'); x.scale(dpr,dpr);
+    const g=x.createRadialGradient(c-r*0.32, c-r*0.32, r*0.2, c, c, r);
     g.addColorStop(0,'#fff7d6'); g.addColorStop(0.5,'#fbbf24'); g.addColorStop(1,'#c2740a');
-    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(c.x, y, r, 0, Math.PI*2); ctx.fill();
-    ctx.shadowBlur=0; ctx.shadowOffsetY=0;
-    // Dark outer rim — crisp edge so the coin never dissolves into the sky (esp. day mode / near the sun).
-    ctx.strokeStyle='rgba(124,58,3,.92)'; ctx.lineWidth=2*sc;
-    ctx.beginPath(); ctx.arc(c.x, y, r-1*sc, 0, Math.PI*2); ctx.stroke();
-    ctx.strokeStyle='rgba(255,255,255,.45)'; ctx.lineWidth=1.3*sc;
-    ctx.beginPath(); ctx.arc(c.x, y, r*0.6, 0, Math.PI*2); ctx.stroke();
-    ctx.fillStyle='rgba(124,58,3,.95)'; ctx.font='800 '+(r*1.05).toFixed(0)+'px "DM Mono", ui-monospace, monospace';
-    ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('★', c.x, y+r*0.08);
+    x.fillStyle=g; x.beginPath(); x.arc(c,c,r,0,Math.PI*2); x.fill();
+    x.strokeStyle='rgba(124,58,3,.92)'; x.lineWidth=2; x.beginPath(); x.arc(c,c,r-1,0,Math.PI*2); x.stroke();
+    x.strokeStyle='rgba(255,255,255,.5)'; x.lineWidth=1.3; x.beginPath(); x.arc(c,c,r*0.58,0,Math.PI*2); x.stroke();
+    x.fillStyle='rgba(124,58,3,.95)'; x.textAlign='center'; x.textBaseline='middle';
+    x.font='800 '+(r*1.02).toFixed(0)+'px "DM Mono", ui-monospace, monospace';
+    x.fillText('★', c, c+r*0.06);
+    cv._w=size; cv._h=size;
+    _coinSprite=cv; _coinSpriteSc=sc;
+  }
+  function drawCoin(c){
+    if(!_coinSprite || _coinSpriteSc!==sc) buildCoinSprite(c.r);
+    const t=performance.now();
+    const y=c.y + Math.sin(t*0.005 + c.ph)*2*sc;          // gentle bob
+    const spin=Math.max(0.18, Math.abs(Math.cos(t*0.0038 + c.ph)));  // classic spinning-coin flip
+    const w=_coinSprite._w, h=_coinSprite._h;
+    ctx.save();
+    ctx.translate(c.x, y);
+    ctx.scale(spin, 1);
+    ctx.drawImage(_coinSprite, -w/2, -h/2, w, h);
     ctx.restore();
   }
   function drawCoinPops(){
