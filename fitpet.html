@@ -520,6 +520,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .mission-item.done{opacity:.6;border-color:rgba(163,230,53,.18);}
 .mission-item.done .mission-name{text-decoration:line-through;color:var(--muted);}
 .mission-done-check{font-size:14px;font-weight:800;min-width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:rgba(163,230,53,.12);border:1px solid rgba(163,230,53,.22);border-radius:50%;color:var(--accent);}
+.pet-perk-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(163,230,53,.09);border:1px solid rgba(163,230,53,.28);border-radius:8px;padding:4px 9px 4px 7px;font-size:11px;font-weight:800;font-family:'DM Mono',monospace;color:var(--accent);letter-spacing:.2px;transition:border-color .2s;}
+.pet-perk-chip:hover{border-color:rgba(163,230,53,.55);}
+.pet-perk-chip .ppc-ico{font-size:12px;line-height:1;}
 .streak-mult-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.26);border-radius:8px;padding:4px 10px 4px 8px;font-size:12px;font-weight:800;font-family:'DM Mono',monospace;color:#f5a623;letter-spacing:.2px;transition:border-color .2s;}
 .streak-mult-badge:hover{border-color:rgba(245,158,11,.5);}
 .streak-mult-badge .smb-flame{width:13px;height:13px;flex-shrink:0;display:block;}
@@ -625,6 +628,13 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .pet-bio-element{font-size:11px;font-weight:800;font-family:'DM Mono',monospace;letter-spacing:.5px;display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);}
 .pet-bio-element .bio-locked-blur{filter:blur(4px);}
 .pet-bio-desc{font-size:12.5px;color:var(--muted);text-align:center;line-height:1.55;margin-bottom:16px;max-width:330px;}
+.pet-bio-perk{display:flex;align-items:center;gap:11px;width:100%;max-width:330px;margin:0 auto 18px;padding:11px 13px;border-radius:13px;background:var(--bg3);border:1px solid rgba(163,230,53,.22);}
+.pet-bio-perk.locked{opacity:.5;filter:grayscale(.4);}
+.pbp-icon{width:34px;height:34px;flex-shrink:0;border-radius:10px;background:rgba(163,230,53,.1);border:1px solid rgba(163,230,53,.3);display:flex;align-items:center;justify-content:center;font-size:17px;}
+.pbp-body{min-width:0;text-align:left;flex:1;}
+.pbp-eyebrow{font-size:8.5px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;}
+.pbp-name{font-size:13.5px;font-weight:800;color:var(--text);letter-spacing:-.1px;margin-top:1px;}
+.pbp-blurb{font-size:11.5px;color:var(--accent);font-family:'DM Mono',monospace;margin-top:2px;}
 .pet-bio-tags{display:flex;gap:6px;}
 .pet-bio-tag{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;font-family:'DM Mono',monospace;padding:4px 10px;border-radius:999px;border:1px solid;white-space:nowrap;}
 .pet-bio-action-wrap{width:100%;}
@@ -2664,6 +2674,11 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .sm-seg{flex:1;height:8px;border-radius:4px;background:var(--bg3);}
 .sm-seg.on{background:linear-gradient(90deg,#f59e0b,#fbbf24);}
 .sm-scale{display:flex;justify-content:space-between;font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:.5px;}
+.sm-timer{display:inline-flex;align-items:center;gap:7px;margin-top:14px;padding:7px 12px 7px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);font-size:12px;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:.2px;}
+.sm-timer b{color:var(--text);font-weight:700;letter-spacing:.4px;}
+.sm-timer .st-clock{width:13px;height:13px;flex-shrink:0;opacity:.85;}
+.sm-timer.urgent{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.32);color:#fca5a5;}
+.sm-timer.urgent b{color:#f87171;}
 .sm-status{font-size:13px;line-height:1.6;color:var(--text);margin-top:18px;}
 .sm-status b{color:#f5a623;font-weight:700;}
 .sm-risk{margin-top:13px;display:flex;padding:11px 13px;border-radius:12px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.18);font-size:11.5px;font-family:'DM Mono',monospace;color:#fcd34d;line-height:1.55;}
@@ -2759,6 +2774,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
         <div class="pet-bio-tags" id="petBioTags"></div>
       </div>
       <div class="pet-bio-desc" id="petBioDesc"></div>
+      <div class="pet-bio-perk" id="petBioPerk" style="display:none;"></div>
       <div class="pet-bio-action-wrap">
         <div id="petBioEquipWrap">
           <button class="pet-bio-equip-btn" id="petBioEquipBtn" onclick="petBioEquip()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Equip</button>
@@ -2923,6 +2939,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
         </div>
         <div class="pet-mood" style="justify-content:flex-end;">
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+            <div class="pet-perk-chip" id="petPerkChip" onclick="openPetBio(getP()?.equippedSkin)" title="Your duck's perk — tap for details" style="display:none;cursor:pointer;"><span class="ppc-ico" id="petPerkChipIco"></span><span id="petPerkChipText"></span></div>
             <div class="streak-mult-badge" id="streakMultBadge" onclick="openStreakInfo()" title="Streak XP bonus" style="display:none;cursor:pointer;"><span class="smb-flame"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="translate(2 1.2)"><path d="M12.6 2c.5 2.7-1.8 4.2-2 6.6-.1 1 .5 2 1.5 2.3.4-.9.6-1.7.7-2.7 1.8 1.4 3 3.4 3 5.6a5.8 5.8 0 0 1-11.6 0c0-3.6 2.9-5.3 4-9.2.4 1.6 1.4 2.6 2.8 3.1C12.7 7.9 11.8 5 12.6 2Z" fill="currentColor"/></g></svg></span><span id="streakMultVal">1.0×</span> XP</div>
             <div class="auto-indicator" id="autoIndicator" onclick="openBoostModal()" title="Passive XP rate — tap for power-ups" style="cursor:pointer;"><div class="auto-dot"></div>AUTO <span id="autoMultLabel">1×</span><span id="autoBoostTime" style="display:none;"></span></div>
           </div>
@@ -6376,15 +6393,16 @@ function finishWorkout() {
   if (!totalSets) { showToast('— Log at least one set first!'); return; }
 
   const today = todayStr();
+  const streakDay = _localDayStr(0);   // record the streak on the user's LOCAL day
 
   // streak must be calculated before XP so multiplier uses current streak
-  if (!p.streakDays.includes(today)) p.streakDays.push(today);
+  if (!p.streakDays.includes(streakDay)) p.streakDays.push(streakDay);
   const streakNow = calcStreak(p.streakDays);
   const streakMult = getStreakMultiplier(p.streakDays);
 
   const baseXp = totalSets * 25 + 100;
-  // Golden Duck gives +150% workout XP on top of streak multiplier
-  const duckBonus = (p.equippedSkin === 'golden-duck') ? 2.5 : 1;
+  // Equipped duck's perk — flat XP boost, or a bigger boost on its matching day type.
+  const duckBonus = petXpMult(p, activeTemplate);
   const boostMult = getActiveBoost(p);   // purchased XP power-up
   const xpGained = Math.round(baseXp * streakMult * duckBonus * boostMult);
   const oldLevelW = p.level || 1;
@@ -6401,8 +6419,8 @@ function finishWorkout() {
   if (streakNow === 30) { p.cases.rare = (p.cases.rare || 0) + 1; p.gold = (p.gold || 0) + 2000; }
 
   // ── fragment drops ──
-  // Base workout drop: 5-8 fragments spread across 1-2 locked pets
-  const workoutFragTotal = 5 + Math.floor(Math.random() * 4);
+  // Base workout drop: 5-8 fragments spread across 1-2 locked pets (boosted by a fragment-perk duck)
+  const workoutFragTotal = Math.round((5 + Math.floor(Math.random() * 4)) * petFragMult(p));
   const workoutDrops = awardFragments(p, workoutFragTotal);
 
   // Streak milestone fragment bonuses
@@ -6989,6 +7007,9 @@ function refreshHomeStats() {
   // Pet mood
   refreshPetMood(p);
 
+  // Equipped-duck perk chip
+  refreshPetPerkChip(p);
+
   // Streak XP multiplier badge
   const mult = getStreakMultiplier(p.streakDays);
   const multBadge = document.getElementById('streakMultBadge');
@@ -7000,7 +7021,7 @@ function refreshHomeStats() {
       // Turn red when the streak survives only on its grace day (last workout 2 days ago):
       // miss today and it resets. calcStreak's grace means mult>1 implies daysSince ≤ 2.
       const dayNums = (p.streakDays || []).map(_dayNum);
-      const daysSince = dayNums.length ? (_dayNum(todayStr()) - Math.max(...dayNums)) : 99;
+      const daysSince = dayNums.length ? (_dayNum(_localDayStr(0)) - Math.max(...dayNums)) : 99;
       multBadge.classList.toggle('danger', daysSince >= 2);
       multBadge.title = daysSince >= 2 ? 'Streak about to reset — train today!' : 'Streak XP bonus';
     } else {
@@ -8616,6 +8637,75 @@ const ALL_SKINS = [
 ];
 const ALL_SKINS_MAP = Object.fromEntries(ALL_SKINS.map(s => [s.id, s]));
 
+// ══════════════════════════════════════════
+//  DUCK PERKS — every duck grants one passive bonus somewhere in the app.
+//  Only the *equipped* duck's perk is active, so which duck you run matters.
+//  effect.type: xp_all | xp_day (needs day) | flap | ad | idle | frag
+// ══════════════════════════════════════════
+const PET_TRAITS = {
+  // COMMON — modest, focused bonuses
+  'bunnyjeff':        { name:'Ride-or-Die',      blurb:'+10% workout XP',                 effect:{ type:'xp_all', mult:1.10 } },
+  'iron-rhino':       { name:'Accidental Gains',  blurb:'+30% passive (idle) XP',         effect:{ type:'idle',   mult:1.30 } },
+  'spark-rabbit':     { name:'Static Charge',     blurb:'+50% Flap Run coins',            effect:{ type:'flap',   mult:1.50 } },
+  'chalk-panda':      { name:'Chalk Up',          blurb:'+15% XP on Leg days',            effect:{ type:'xp_day', day:'legs',  mult:1.15 } },
+  // RARE
+  'ember-wolf':       { name:'Smolder',           blurb:'+25% XP on Push days',           effect:{ type:'xp_day', day:'push',  mult:1.25 } },
+  'glacial-hawk':     { name:'Cold Adaptation',   blurb:'+15% workout XP',                effect:{ type:'xp_all', mult:1.15 } },
+  'coral-mantis':     { name:'Reef Discipline',   blurb:'+25% XP on Pull days',           effect:{ type:'xp_day', day:'pull',  mult:1.25 } },
+  'tide-otter':       { name:'Riptide Flow',      blurb:'+50% passive (idle) XP',         effect:{ type:'idle',   mult:1.50 } },
+  // EPIC
+  'circuit-panther':  { name:'Overclocked',       blurb:'2× Flap Run coins',              effect:{ type:'flap',   mult:2.0 } },
+  'storm-gorilla':    { name:'Storm Front',       blurb:'+20% workout XP',                effect:{ type:'xp_all', mult:1.20 } },
+  'mech-bear':        { name:'Ad-Optimized',      blurb:'2× gold from watched ads',       effect:{ type:'ad',     mult:2.0 } },
+  'void-serpent':     { name:'Event Horizon',     blurb:'+50% duck fragments per workout',effect:{ type:'frag',   mult:1.50 } },
+  // LEGENDARY
+  'solar-lioness':    { name:'Dawnbringer',       blurb:'+30% workout XP',                effect:{ type:'xp_all', mult:1.30 } },
+  'obsidian-phoenix': { name:'Ashes to Gold',     blurb:'3× gold from watched ads',       effect:{ type:'ad',     mult:3.0 } },
+  'gravity-bull':     { name:'Gravity Well',      blurb:'+40% XP on Power days',          effect:{ type:'xp_day', day:'power', mult:1.40 } },
+  'nebula-fox':       { name:'Stardust',          blurb:'2× duck fragments per workout',  effect:{ type:'frag',   mult:2.0 } },
+  // DIVINE
+  'golden-duck':      { name:'The First Duck',    blurb:'+150% workout XP',               effect:{ type:'xp_all', mult:2.5 } },
+};
+const PERK_ICON = { xp_all:'💪', xp_day:'💪', flap:'🎮', ad:'📺', idle:'🌙', frag:'🧩' };
+
+function getPetTrait(p){ return (p && PET_TRAITS[p.equippedSkin]) || null; }
+function perkIcon(trait){ return trait ? (PERK_ICON[trait.effect.type] || '✦') : '✦'; }
+// Workout XP mult: xp_all always applies; xp_day only on its matching template key.
+function petXpMult(p, templateKey){
+  const t = getPetTrait(p); if(!t) return 1;
+  if(t.effect.type === 'xp_all') return t.effect.mult;
+  if(t.effect.type === 'xp_day' && templateKey === t.effect.day) return t.effect.mult;
+  return 1;
+}
+function petFlapMult(p){ const t=getPetTrait(p); return (t && t.effect.type==='flap') ? t.effect.mult : 1; }
+function petAdMult(p){   const t=getPetTrait(p); return (t && t.effect.type==='ad')   ? t.effect.mult : 1; }
+function petIdleMult(p){ const t=getPetTrait(p); return (t && t.effect.type==='idle') ? t.effect.mult : 1; }
+function petFragMult(p){ const t=getPetTrait(p); return (t && t.effect.type==='frag') ? t.effect.mult : 1; }
+// Compact label for the home perk chip, e.g. "+22% push XP", "2× flap coins".
+function perkTag(trait){
+  if(!trait) return '';
+  const m = trait.effect.mult, pct = Math.round((m-1)*100);
+  switch(trait.effect.type){
+    case 'xp_all': return `+${pct}% XP`;
+    case 'xp_day': return `+${pct}% ${trait.effect.day} XP`;
+    case 'flap':   return m>=2 ? `${m}× flap coins` : `+${pct}% flap coins`;
+    case 'ad':     return m>=2 ? `${m}× ad gold` : `+${pct}% ad gold`;
+    case 'idle':   return `+${pct}% idle XP`;
+    case 'frag':   return `+${pct}% fragments`;
+  }
+  return '';
+}
+function refreshPetPerkChip(p){
+  const chip = document.getElementById('petPerkChip');
+  if(!chip) return;
+  const trait = getPetTrait(p);
+  if(trait){
+    document.getElementById('petPerkChipIco').textContent = perkIcon(trait);
+    document.getElementById('petPerkChipText').textContent = perkTag(trait);
+    chip.style.display = '';
+  } else { chip.style.display = 'none'; }
+}
+
 // Keep hatch-wheel reward pools in sync with the current pet names/emoji/desc
 // (the reward pools carry their own copy of this data; resync it by id here).
 if (typeof caseRewardPools !== 'undefined') {
@@ -9009,6 +9099,19 @@ function _openPetBioInner(id) {
     : (skin.desc || '');
   if (isTeased) document.getElementById('petBioDesc').classList.add('bio-locked-blur');
   else document.getElementById('petBioDesc').classList.remove('bio-locked-blur');
+
+  // Perk — every duck has a unique passive bonus. Shown even when locked, to tease what you'd gain.
+  const perkEl = document.getElementById('petBioPerk');
+  const trait = PET_TRAITS[id];
+  if (perkEl) {
+    if (trait) {
+      perkEl.style.display = '';
+      perkEl.classList.toggle('locked', isLocked);
+      perkEl.innerHTML = `<div class="pbp-icon">${perkIcon(trait)}</div>` +
+        `<div class="pbp-body"><div class="pbp-eyebrow">${isLocked ? 'Perk · locked' : 'Perk · active when equipped'}</div>` +
+        `<div class="pbp-name">${trait.name}</div><div class="pbp-blurb">${trait.blurb}</div></div>`;
+    } else { perkEl.style.display = 'none'; }
+  }
 
   // Tags
   const stars = '★'.repeat(RARITY_DIFFICULTY[skin.rarity] || 1) + '☆'.repeat(5 - (RARITY_DIFFICULTY[skin.rarity] || 1));
@@ -10167,8 +10270,9 @@ function collectAdReward() {
   const p = getP(); if (!p) return;
   const today = new Date().toISOString().slice(0,10);
 
-  // Every ad pays gold AND an egg — mostly Plain, small chance of a better tier
-  p.gold = (p.gold || 0) + AD_GOLD;
+  // Every ad pays gold AND an egg — mostly Plain, small chance of a better tier (ad-perk duck boosts the gold)
+  const adGold = Math.round(AD_GOLD * petAdMult(p));
+  p.gold = (p.gold || 0) + adGold;
   p.cases = p.cases || {};
   const _r = Math.random();
   let _kind, _eggName;
@@ -10176,7 +10280,7 @@ function collectAdReward() {
   else if (_r < 0.25) { _kind = 'rare';      _eggName = 'Speckled Egg'; }   // 20%
   else                { _kind = 'basic';     _eggName = 'Plain Egg';    }   // 75%
   p.cases[_kind] = (p.cases[_kind] || 0) + 1;
-  showAchieve({ type:'gold', icon:'🥚', eyebrow:'Ad Reward', title:`+${AD_GOLD} {coin} & 1× ${_eggName}`, sub:'Hatch it in the Eggs tab!' });
+  showAchieve({ type:'gold', icon:'🥚', eyebrow:'Ad Reward', title:`+${adGold} {coin} & 1× ${_eggName}`, sub:'Hatch it in the Eggs tab!' });
 
   p.lastAdClaim  = Date.now();
   p.adCountToday = (p.adCountToday || 0) + 1;
@@ -10314,8 +10418,8 @@ function _xpPerTick(p) {
   const skin   = ALL_SKINS_MAP?.[p?.equippedSkin];
   const rarity = skin?.rarity || 'common';
   const mult   = p?.autoClickMultiplier || 1;
-  // active XP power-up boosts passive XP too
-  return (RARITY_TAP_XP[rarity] || 10) * mult * getActiveBoost(p);
+  // active XP power-up boosts passive XP too; idle-perk ducks add on top
+  return (RARITY_TAP_XP[rarity] || 10) * mult * getActiveBoost(p) * petIdleMult(p);
 }
 
 // Called when app comes back to foreground — catches up missed ticks
@@ -10427,14 +10531,22 @@ function updateAutoMultLabel() {
     : 'cursor:pointer;';
 }
 
-// Track when page is hidden / shown to calculate missed XP
+// Track when page is hidden / shown to calculate missed XP, and shed background work.
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
-    // Going to background — stamp the time
+    // Going to background — stamp the time so we can award missed passive XP on return…
     localStorage.setItem(AUTO_XP_LS_KEY, String(Date.now()));
+    // …then STOP the per-second passive-XP loop (it writes the whole profile to storage
+    // every tick). Idle time is credited via applyCatchupXP() on return instead. This
+    // keeps a backgrounded tab quiet so iOS is far less likely to evict it at the gym.
+    if (_autoTimer) { clearInterval(_autoTimer); _autoTimer = null; }
+    if (typeof _goldClaimTimer !== 'undefined' && _goldClaimTimer) { clearInterval(_goldClaimTimer); _goldClaimTimer = null; }
+    try { if (_sharedACtx && _sharedACtx.state === 'running') _sharedACtx.suspend(); } catch (e) {}
   } else {
-    // Coming back to foreground — apply catchup
+    // Coming back to foreground — credit idle XP, then restart the live loops.
     applyCatchupXP();
+    if (!_autoTimer) startAutoClicker();
+    if (typeof startGoldClaimTicker === 'function' && !_goldClaimTimer) startGoldClaimTicker();
   }
 });
 
@@ -10448,9 +10560,12 @@ function _dayNum(dateStr) {
 
 function calcStreak(days) {
   if (!days || !days.length) return 0;
-  const nums = [...new Set(days)].map(_dayNum).sort((a, b) => b - a);
+  // "Today" is the user's LOCAL calendar day, so the streak resets at their local
+  // midnight (start of the day) — not at UTC midnight.
+  const todayNum = _dayNum(_localDayStr(0));
+  const nums = [...new Set(days)].map(_dayNum).filter(n => n <= todayNum).sort((a, b) => b - a);
   let streak = 0;
-  let check = _dayNum(todayStr());
+  let check = todayNum;
   for (const dn of nums) {
     const diff = check - dn;
     // rest-day grace: a single rest day (gap up to 2 days) keeps the streak alive
@@ -10958,6 +11073,49 @@ function _localDayStr(back) {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
+// The exact local moment the streak resets: local midnight of the day AFTER the grace runs out.
+// Grace allows a gap of up to 2 days, so the streak dies at the start of (last workout + 3) days.
+function streakResetAt(days) {
+  if (!days || !days.length) return null;
+  const todayNum = _dayNum(_localDayStr(0));
+  const nums = days.map(_dayNum).filter(n => n <= todayNum);
+  if (!nums.length) return null;
+  const latestNum = Math.max(...nums);
+  // rebuild the latest workout's local calendar date, then add 3 days at local midnight
+  const latestStr = days.find(d => _dayNum(d) === latestNum) || _localDayStr(0);
+  const [y, m, d] = latestStr.split('-').map(Number);
+  return new Date(y, m - 1, d + 3, 0, 0, 0, 0);
+}
+
+// "2d 5h 12m" / "5h 12m 08s" / "12m 08s"
+function fmtCountdown(ms) {
+  const s = Math.max(0, Math.floor(ms / 1000));
+  const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+  if (d > 0) return `${d}d ${h}h ${m}m`;
+  if (h > 0) return `${h}h ${m}m ${String(sec).padStart(2, '0')}s`;
+  return `${m}m ${String(sec).padStart(2, '0')}s`;
+}
+
+let _streakTimerInterval = null;
+function _updateStreakTimer() {
+  const el = document.getElementById('streakTimer');
+  const modal = document.getElementById('streakModal');
+  if (!el || !modal || modal.classList.contains('hidden')) {
+    if (_streakTimerInterval) { clearInterval(_streakTimerInterval); _streakTimerInterval = null; }
+    return;
+  }
+  const p = getP();
+  const reset = p ? streakResetAt(p.streakDays) : null;
+  if (!reset || calcStreak(p ? p.streakDays : []) <= 0) { el.style.display = 'none'; return; }
+  el.style.display = '';
+  const ms = reset.getTime() - Date.now();
+  const urgent = ms < 24 * 3600 * 1000;   // within a day of resetting → flag it
+  el.classList.toggle('urgent', urgent);
+  el.innerHTML = ms <= 0
+    ? `<span class="st-lbl">Streak reset</span>`
+    : `<svg class="st-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="st-lbl">Resets in</span> <b>${fmtCountdown(ms)}</b>`;
+}
+
 // Refined flame mark — gradient version (hero/card) and a flat mini for small day cells.
 const STREAK_FLAME_SVG = `<svg viewBox="0 0 24 24" class="flame-svg" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="flameG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fcd34d"/><stop offset="1" stop-color="#f59e0b"/></linearGradient></defs><g transform="translate(2 1.2)"><path d="M12.6 2c.5 2.7-1.8 4.2-2 6.6-.1 1 .5 2 1.5 2.3.4-.9.6-1.7.7-2.7 1.8 1.4 3 3.4 3 5.6a5.8 5.8 0 0 1-11.6 0c0-3.6 2.9-5.3 4-9.2.4 1.6 1.4 2.6 2.8 3.1C12.7 7.9 11.8 5 12.6 2Z" fill="url(#flameG)"/><path d="M12 12.8c.6 1.3 1.6 2 1.6 3.3a2.2 2.2 0 0 1-4.4 0c0-1 .5-1.7 1.1-2.5.3.8.8 1.1 1.2 1.4.2-.8-.2-1.6.5-2.2Z" fill="#fffbeb" opacity=".9"/></g></svg>`;
 const STREAK_FLAME_MINI = `<svg viewBox="0 0 24 24" class="flame-svg" xmlns="http://www.w3.org/2000/svg"><g transform="translate(2 1.2)"><path d="M12.6 2c.5 2.7-1.8 4.2-2 6.6-.1 1 .5 2 1.5 2.3.4-.9.6-1.7.7-2.7 1.8 1.4 3 3.4 3 5.6a5.8 5.8 0 0 1-11.6 0c0-3.6 2.9-5.3 4-9.2.4 1.6 1.4 2.6 2.8 3.1C12.7 7.9 11.8 5 12.6 2Z" fill="#f59e0b"/></g></svg>`;
@@ -11020,6 +11178,7 @@ function openStreakInfo() {
     </div>
     <div class="sm-track">${_streakSegs(streak, 'sm-seg')}</div>
     <div class="sm-scale"><span>Day 1</span><span>Day 6</span><span>Day 11</span></div>
+    <div class="sm-timer" id="streakTimer" style="display:none;"></div>
     <div class="sm-status">${statusLine}</div>
     ${riskHtml}
     <div class="sm-sec-label">Milestones</div>
@@ -11028,6 +11187,10 @@ function openStreakInfo() {
     <div class="sm-week">${week}</div>
     <div class="sm-explain">Each consecutive workout day adds <b>+10% XP</b>, up to a <b>2× maximum</b> at an 11-day streak. One rest day is fine — your streak only resets after <b>two days off in a row</b>.</div>`;
   document.getElementById('streakModal').classList.remove('hidden');
+  // Live countdown to the local-midnight reset
+  if (_streakTimerInterval) clearInterval(_streakTimerInterval);
+  _updateStreakTimer();
+  _streakTimerInterval = setInterval(_updateStreakTimer, 1000);
 }
 
 function getStreakMultiplier(streakDays) {
@@ -14114,6 +14277,7 @@ function _runWoConfetti(canvas, duration) {
   let particles=[], motes=[], stars=[], clouds=[], shake=0, flash=0, dying=false, dieT=0, flapped=false;
   let flapRecord=0, gateCount=0;   // record gate = the gate that reaches your current best
   let coins=[], coinPops=[], coinGold=0, coinsCollected=0;   // floating +10 gold pickups
+  let _flapCoinVal=COIN_VALUE;                               // per-coin value for this run (boosted by a flap-perk duck)
   let _coinSprite=null, _coinSpriteSc=0;                      // pre-rendered coin face (blit + spin each frame)
   let duckImg=null, duckReady=false, duckEmoji='🦆', duckGlow='#a3e635';
   let idleRAF=null, idleMode=false, idleLast=0;
@@ -14213,6 +14377,7 @@ function _runWoConfetti(canvas, duration) {
     obstacles=[]; spawnDist=W*0.62; score=0; scrollX=0; gateCount=0;
     particles=[]; shake=0; flash=0; dying=false; dieT=0; flapped=false;
     coins=[]; coinPops=[]; coinGold=0; coinsCollected=0;
+    try{ _flapCoinVal = Math.round(COIN_VALUE * (typeof petFlapMult==='function' ? petFlapMult(getP()) : 1)); }catch(e){ _flapCoinVal = COIN_VALUE; }
   }
 
   function spawnObstacle(){
@@ -14395,8 +14560,8 @@ function _runWoConfetti(canvas, duration) {
       if(!c.got){
         const dx=duck.x-c.x, dy=duck.y-c.y, rr=duck.r*0.72 + c.r;
         if(dx*dx + dy*dy < rr*rr){
-          c.got=true; coinGold += COIN_VALUE; coinsCollected++;
-          coinPops.push({ x:c.x, y:c.y, t:0 }); spawnCoinBurst(c.x,c.y); sfxCoin();
+          c.got=true; coinGold += _flapCoinVal; coinsCollected++;
+          coinPops.push({ x:c.x, y:c.y, t:0, v:_flapCoinVal }); spawnCoinBurst(c.x,c.y); sfxCoin();
         }
       }
     }
@@ -14694,9 +14859,9 @@ function _runWoConfetti(canvas, duration) {
       ctx.globalAlpha=Math.max(0, 1-pr);
       // Outlined text so '+10' stays legible on either sky (dark amber in day, light gold at night).
       ctx.strokeStyle = _flapDay ? 'rgba(255,255,255,.9)' : 'rgba(0,0,0,.55)';
-      ctx.strokeText('+'+COIN_VALUE, cp.x, yy);
+      ctx.strokeText('+'+(cp.v||COIN_VALUE), cp.x, yy);
       ctx.fillStyle = _flapDay ? '#b45309' : '#fde68a';
-      ctx.fillText('+'+COIN_VALUE, cp.x, yy);
+      ctx.fillText('+'+(cp.v||COIN_VALUE), cp.x, yy);
     }
     ctx.globalAlpha=1; ctx.restore();
   }
