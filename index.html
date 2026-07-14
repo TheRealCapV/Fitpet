@@ -820,6 +820,24 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 /* ── Battle help button + tutorial ── */
 .yf-help-btn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:rgba(163,230,53,.1);border:1px solid rgba(163,230,53,.35);color:var(--accent);cursor:pointer;transition:all .18s;flex-shrink:0;}
 .yf-help-btn:hover{background:var(--accent);color:#000;box-shadow:0 0 14px rgba(163,230,53,.35);}
+/* ── Guided spotlight tour ── */
+.tour-layer{position:fixed;inset:0;z-index:2000;background:transparent;}
+.tour-hole{position:fixed;z-index:2001;top:50%;left:50%;width:0;height:0;border-radius:14px;box-shadow:0 0 0 3px var(--accent),0 0 0 4000px rgba(0,0,0,.74);pointer-events:none;transition:top .4s cubic-bezier(.4,0,.2,1),left .4s cubic-bezier(.4,0,.2,1),width .4s cubic-bezier(.4,0,.2,1),height .4s cubic-bezier(.4,0,.2,1);}
+.tour-hole.no-target{border-radius:0;box-shadow:0 0 0 4000px rgba(0,0,0,.8);}
+.tour-tip{position:fixed;z-index:2002;width:min(340px,calc(100vw - 24px));background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:15px 16px 13px;box-shadow:0 20px 60px rgba(0,0,0,.6);transition:top .35s ease,left .35s ease;}
+.tour-tip-head{display:flex;align-items:center;margin-bottom:10px;}
+.tour-dots{display:flex;gap:5px;flex:1;flex-wrap:wrap;}
+.tour-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:all .25s;}
+.tour-dot.active{background:var(--accent);width:16px;border-radius:999px;}
+.tour-skip{background:none;border:none;color:var(--muted);font-size:11px;font-family:'DM Mono',monospace;cursor:pointer;padding:2px 4px;letter-spacing:.5px;}
+.tour-tip-title{font-size:16px;font-weight:800;margin-bottom:5px;letter-spacing:-.2px;}
+.tour-tip-text{font-size:12.5px;line-height:1.55;color:var(--muted);}
+.tour-tip-text b{color:var(--text);font-weight:700;}
+.tour-tip-foot{display:flex;align-items:center;gap:10px;margin-top:14px;}
+.tour-btn{border:none;border-radius:9px;padding:9px 18px;font-weight:800;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;background:var(--accent);color:#0a0a0c;transition:filter .15s;}
+.tour-btn:hover{filter:brightness(1.05);}
+.tour-btn.ghost{background:var(--bg3);color:var(--text);border:1px solid var(--border);}
+.tour-tip-foot .tour-btn:last-child{margin-left:auto;}
 .bt-overlay{position:fixed;inset:0;z-index:1300;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:16px;}
 .bt-overlay.hidden{display:none;}
 .bt-modal{width:100%;max-width:420px;max-height:90vh;display:flex;flex-direction:column;background:var(--bg2);border:1px solid var(--border);border-radius:24px;overflow:hidden;box-shadow:0 28px 90px rgba(0,0,0,.75);animation:btPop .3s cubic-bezier(.34,1.4,.64,1);}
@@ -951,7 +969,16 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .move-announce-row{display:flex;align-items:stretch;gap:0;margin:5px 0;background:var(--bg3);border:1px solid var(--border);border-radius:12px;overflow:hidden;}.move-slot{flex:1;padding:7px 10px;display:flex;flex-direction:column;gap:2px;}.move-slot-label{font-size:7px;font-weight:800;letter-spacing:2px;font-family:'DM Mono',monospace;text-transform:uppercase;opacity:.8;}.move-slot-name{font-size:13px;font-weight:800;letter-spacing:-.3px;transition:all .25s;}.move-slot-desc{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.3;}.move-slot-divider{width:1px;background:var(--border);flex-shrink:0;}.move-slot-result{font-size:10px;font-weight:700;font-family:"DM Mono",monospace;margin-top:3px;min-height:12px;letter-spacing:.2px;}/* ── MOVE INDEX SIDE PANEL ── */.move-index-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:11px;font-family:"DM Mono",monospace;font-weight:700;cursor:pointer;letter-spacing:.5px;margin-top:8px;transition:all .2s;}.move-index-btn:hover{border-color:var(--accent);color:var(--accent);}.move-index-drawer{position:fixed;top:0;right:-320px;width:300px;height:100vh;background:var(--bg2);border-left:1px solid var(--border);z-index:500;overflow-y:auto;transition:right .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}.move-index-drawer.open{right:0;}.move-index-drawer-header{padding:16px 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:2;}.move-index-drawer-title{font-size:13px;font-weight:800;letter-spacing:.5px;}.move-index-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1;padding:2px 4px;}.move-index-close:hover{color:var(--text);}.move-index-section-label{padding:10px 14px 6px;font-size:9px;font-weight:800;letter-spacing:2px;font-family:"DM Mono",monospace;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.05);background:var(--bg3);}.move-index-panel{flex:1;overflow-y:auto;}.move-index-row{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.04);}.move-index-row:last-child{border-bottom:none;}.move-index-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0;margin-top:1px;}.move-index-info{flex:1;}.move-index-name{font-size:12px;font-weight:800;margin-bottom:2px;}.move-index-detail{font-size:10px;color:var(--muted);font-family:"DM Mono",monospace;line-height:1.4;}.move-index-badge{font-size:9px;font-weight:800;padding:1px 5px;border-radius:4px;font-family:"DM Mono",monospace;letter-spacing:.3px;white-space:nowrap;}.auto-spin-bar{text-align:center;font-size:11px;font-family:'DM Mono',monospace;color:var(--accent);letter-spacing:1.5px;padding:7px 0 2px;display:none;}
 .auto-spin-bar.visible{display:block;animation:pulse-auto 1.2s ease-in-out infinite;}
 @keyframes pulse-auto{0%,100%{opacity:.5;}50%{opacity:1;}}
-/* ── CUSTOM EXERCISE PICKER ── */
+/* ── START-NEW (blank workout) CARD ── */
+.template-card.template-card-new{border-style:dashed;border-color:rgba(163,230,53,.5);background:rgba(163,230,53,.04);}
+.template-card.template-card-new:hover,.template-card.template-card-new.selected{border-color:var(--accent);background:rgba(163,230,53,.09);}
+.template-card.template-card-new .template-name{color:var(--accent);}
+/* ── CREATE TEMPLATE BUTTON ── */
+.create-template-btn{width:100%;box-sizing:border-box;margin-top:4px;padding:12px;background:var(--bg3);border:1px dashed var(--border);border-radius:12px;color:var(--text);font-family:'Inter',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .2s;}
+.create-template-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(163,230,53,.05);}
+/* ── BLANK WORKOUT EMPTY STATE ── */
+.workout-empty-state{text-align:center;color:var(--muted);font-family:'DM Mono',monospace;font-size:13px;line-height:1.7;padding:34px 18px;border:1px dashed var(--border);border-radius:var(--radius);}
+/* ── CUSTOM EXERCISE PICKER (legacy — kept for compatibility) ── */
 #customPicker{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:18px;display:none;}
 .picker-search{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;margin-bottom:14px;transition:border-color .2s;}
 .picker-search:focus{border-color:var(--accent);}
@@ -2731,7 +2758,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 <div class="template-edit-modal-overlay hidden" id="templateEditOverlay" onclick="closeTemplateEdit(event)">
   <div class="template-edit-modal" onclick="event.stopPropagation()">
     <div class="template-edit-modal-header">
-      <div class="template-edit-modal-title">Edit Template</div>
+      <div class="template-edit-modal-title" id="templateEditModalTitle">Edit Template</div>
       <button class="replace-modal-close" onclick="closeTemplateEdit()">✕</button>
     </div>
     <div class="template-edit-body">
@@ -2741,7 +2768,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
       </div>
       <div class="template-edit-row">
         <label class="template-edit-label">Name</label>
-        <input class="template-edit-input" id="templateEditName" type="text" maxlength="32" placeholder="Template name" onkeydown="if(event.key==='Enter')saveTemplateEdit()">
+        <input class="template-edit-input" id="templateEditName" type="text" maxlength="32" placeholder="Template name" onkeydown="if(event.key==='Enter')saveTemplatePrimary()">
       </div>
       <div class="template-edit-row">
         <label class="template-edit-label">Exercises</label>
@@ -2752,9 +2779,9 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
     <div class="template-edit-footer" style="flex-direction:column;gap:8px;">
       <div style="display:flex;gap:10px;width:100%;">
         <button class="template-edit-cancel-btn" onclick="closeTemplateEdit()">Cancel</button>
-        <button class="template-edit-save-btn" onclick="saveTemplateEdit()">✓ Save</button>
+        <button class="template-edit-save-btn" id="templateEditSaveBtn" onclick="saveTemplatePrimary()">✓ Save</button>
       </div>
-      <button class="template-edit-saveas-btn" onclick="saveAsNewTemplate()">＋ Save as New Template</button>
+      <button class="template-edit-saveas-btn" id="templateEditSaveAsBtn" onclick="saveAsNewTemplate()">＋ Save as New Template</button>
       <button class="template-edit-remove-btn" id="templateEditRemoveBtn" onclick="removeTemplate()">🗑 Remove Template</button>
     </div>
   </div>
@@ -3057,14 +3084,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
     <div class="card">
       <div class="card-title" style="margin-bottom:14px;">CHOOSE TEMPLATE</div>
       <div class="templates-grid" id="templatesGrid"></div>
-
-      <!-- CUSTOM EXERCISE PICKER — shown only when Custom is selected -->
-      <div id="customPicker">
-        <div class="card-title" style="margin-bottom:10px;">SELECT EXERCISES</div>
-        <div class="picker-count" id="pickerCount">0 selected</div>
-        <input class="picker-search" id="pickerSearch" placeholder="Search exercises..." oninput="renderPicker(this.value)">
-        <div id="pickerGroups"></div>
-      </div>
+      <button class="create-template-btn" onclick="openCreateTemplate()">＋ Create Template</button>
     </div>
     <button class="start-workout-btn" onclick="startWorkout()">&#9654; Start Workout</button>
   </div>
@@ -3355,6 +3375,13 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
       </div>
     </div>
     <button class="pd-switch-btn" style="width:100%;padding:12px;border-radius:10px;font-size:13px;" onclick="authLogout()">↩ Switch Profile</button>
+  </div>
+
+  <!-- How to Play -->
+  <div class="settings-section">
+    <div class="settings-section-title"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>How to Play</div>
+    <div style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.5;margin-bottom:12px;">New here, or need a refresher? Walk through workouts, XP, streaks, ducks and more.</div>
+    <button class="pd-switch-btn" style="width:100%;padding:12px;border-radius:10px;font-size:13px;" onclick="openAppTutorial()">▶ Replay Tutorial</button>
   </div>
 
   <!-- Dev Mode -->
@@ -4174,6 +4201,7 @@ function authCreateProfile() {
   const profile = newProfile(username, '');
   saveProfile(profile);
   loginAs(username);
+  setTimeout(openAppTutorial, 550);   // first-run onboarding for brand-new profiles
 }
 
 function loginAs(username) {
@@ -4413,7 +4441,7 @@ const WORKOUT_TEMPLATES = {
   legs:   { name:'Row Pull',           emoji:'🚣', exercises:['seated_row_cable','preacher','assisted_pullup','hammer_cable'] },
   upper:  { name:'Upper Body',  emoji:'💪', exercises:['bench','row','ohp','pullup','curl','tricepx','lateral'] },
   power:  { name:'Power',       emoji:'⚡', exercises:['squat','bench','deadlift'] },
-  custom: { name:'Custom',      emoji:'➕', exercises:[] },
+  startnew: { name:'New Workout', emoji:'➕', exercises:[] },
 };
 
 // Persistent custom selection (survives template switching)
@@ -4458,7 +4486,7 @@ function getTemplateEmoji(key) {
   return p?.templateEmojiOverrides?.[key] || WORKOUT_TEMPLATES[key]?.emoji || p?.customTemplates?.[key]?.emoji || '💪';
 }
 
-const DEFAULT_TEMPLATE_ORDER = ['push','pull','legs','upper','power','custom'];
+const DEFAULT_TEMPLATE_ORDER = ['push','pull','legs','upper','power','startnew'];
 
 function getTemplateOrder() {
   const p = getP();
@@ -4466,11 +4494,13 @@ function getTemplateOrder() {
   const customKeys = Object.keys(p?.customTemplates || {}).filter(k => !removed.has(k));
   const saved = p?.templateOrder;
   if (saved && saved.length) {
+    // Migrate legacy 'custom' slot → 'startnew'
+    const migrated = saved.map(k => k === 'custom' ? 'startnew' : k);
     // Merge missing custom keys, filter removed
-    const missing = customKeys.filter(k => !saved.includes(k));
-    const order = saved.filter(k => !removed.has(k));
+    const missing = customKeys.filter(k => !migrated.includes(k));
+    const order = migrated.filter(k => !removed.has(k));
     if (missing.length) {
-      const customIdx = order.indexOf('custom');
+      const customIdx = order.indexOf('startnew');
       if (customIdx >= 0) order.splice(customIdx, 0, ...missing);
       else order.push(...missing);
     }
@@ -4478,7 +4508,7 @@ function getTemplateOrder() {
   }
   const base = DEFAULT_TEMPLATE_ORDER.filter(k => !removed.has(k));
   if (customKeys.length) {
-    const ci = base.indexOf('custom');
+    const ci = base.indexOf('startnew');
     if (ci >= 0) base.splice(ci, 0, ...customKeys);
     else base.push(...customKeys);
   }
@@ -4488,9 +4518,9 @@ function getTemplateOrder() {
 function buildTemplateCardHTML(key) {
   const p = getP();
   const name = getTemplateName(key);
-  const isPickCustom = key === 'custom'; // the "pick your own" slot
+  const isPickCustom = key === 'startnew'; // the "blank workout" slot
   const isCustomSlot = !!(p?.customTemplates?.[key]);
-  let desc = isPickCustom ? 'Pick your own exercises' : '';
+  let desc = isPickCustom ? 'Blank — add exercises as you go' : '';
   let exCount = 0;
   if (!isPickCustom) {
     const savedOverride = p?.templateOverrides?.[key];
@@ -4505,7 +4535,7 @@ function buildTemplateCardHTML(key) {
     ? `<button class="template-edit-btn" onclick="event.stopPropagation();openTemplateEdit('${key}')" title="Edit">✎</button>`
     : '';
   const dragHandle = `<span class="tmpl-drag-handle" title="Drag to reorder">⠿</span>`;
-  return `<div class="template-card${(_templatePicked && activeTemplate===key)?' selected':''}" onclick="selectTemplate(this,'${key}')" data-key="${key}" draggable="true">
+  return `<div class="template-card${isPickCustom?' template-card-new':''}${(_templatePicked && activeTemplate===key)?' selected':''}" onclick="selectTemplate(this,'${key}')" data-key="${key}" draggable="true">
     <div class="template-card-top">
       <div class="template-name" id="tmpl-name-${key}">${name}</div>
       <div class="tmpl-controls">${dragHandle}${editBtn}</div>
@@ -4520,9 +4550,9 @@ function renderTemplateGrid() {
   if (!grid) return;
   const order = getTemplateOrder();
   grid.innerHTML = order.map(buildTemplateCardHTML).join('');
-  // Sync TEMPLATE_ROTATION to saved order (exclude custom)
+  // Sync TEMPLATE_ROTATION to saved order (exclude the blank "start new" slot)
   TEMPLATE_ROTATION.length = 0;
-  order.filter(k => k !== 'custom').forEach(k => TEMPLATE_ROTATION.push(k));
+  order.filter(k => k !== 'startnew').forEach(k => TEMPLATE_ROTATION.push(k));
   initTemplateGridDrag();
 }
 
@@ -4649,7 +4679,7 @@ function reorderTemplateGrid(srcKey, targetKey) {
 
   // Keep TEMPLATE_ROTATION in sync
   TEMPLATE_ROTATION.length = 0;
-  newOrder.filter(k => k !== 'custom').forEach(k => TEMPLATE_ROTATION.push(k));
+  newOrder.filter(k => k !== 'startnew').forEach(k => TEMPLATE_ROTATION.push(k));
 
   // Re-init drag
   initTemplateGridDrag();
@@ -4659,8 +4689,29 @@ function reorderTemplateGrid(srcKey, targetKey) {
 let _templateEditKey = null;
 let _templateEditExercises = [];
 
+let _templateEditCreateMode = false;
+
+function openCreateTemplate() {
+  _templateEditKey = null;
+  _templateEditCreateMode = true;
+  _templateEditExercises = [];
+  document.getElementById('templateEditModalTitle').textContent = 'Create Template';
+  document.getElementById('templateEditName').value = '';
+  document.getElementById('templateEditEmoji').value = '';
+  document.getElementById('templateEditSaveBtn').textContent = '✓ Create Template';
+  document.getElementById('templateEditSaveAsBtn').classList.add('hidden');
+  document.getElementById('templateEditRemoveBtn').classList.add('hidden');
+  renderTemplateEditExercises();
+  document.getElementById('templateEditOverlay').classList.remove('hidden');
+  setTimeout(() => document.getElementById('templateEditName').focus(), 80);
+}
+
 function openTemplateEdit(key) {
   _templateEditKey = key;
+  _templateEditCreateMode = false;
+  document.getElementById('templateEditModalTitle').textContent = 'Edit Template';
+  document.getElementById('templateEditSaveBtn').textContent = '✓ Save';
+  document.getElementById('templateEditSaveAsBtn').classList.remove('hidden');
   document.getElementById('templateEditName').value = getTemplateName(key);
   document.getElementById('templateEditEmoji').value = getTemplateEmoji(key);
   // Load current exercise list
@@ -4832,6 +4883,13 @@ function closeTemplateEdit(e) {
   document.getElementById('templateEditOverlay').classList.add('hidden');
   _templateEditKey = null;
   _templateEditExercises = [];
+  _templateEditCreateMode = false;
+}
+
+// Primary Save button — routes to "create new" or "save edits" depending on mode
+function saveTemplatePrimary() {
+  if (_templateEditCreateMode) saveAsNewTemplate();
+  else saveTemplateEdit();
 }
 
 function saveTemplateEdit() {
@@ -4881,14 +4939,15 @@ function saveAsNewTemplate() {
   p.templateNameOverrides[key] = newName;
   p.templateEmojiOverrides[key] = newEmoji;
   p.templateOverrides[key] = [..._templateEditExercises];
-  // Insert before 'custom' slot in the order
-  const customIdx = p.templateOrder.indexOf('custom');
+  // Insert before the blank "start new" slot in the order
+  const customIdx = p.templateOrder.indexOf('startnew');
   if (customIdx >= 0) p.templateOrder.splice(customIdx, 0, key);
   else p.templateOrder.push(key);
   saveP(p);
   document.getElementById('templateEditOverlay').classList.add('hidden');
   _templateEditKey = null;
   _templateEditExercises = [];
+  _templateEditCreateMode = false;
   updateTemplateCardDescriptions();
   showToast(`✓ "${newName}" saved as new template!`);
 }
@@ -5047,8 +5106,8 @@ function buildExerciseList() {
   sessionSets    = {};
   sessionWarmups = {};
   let exerciseIds;
-  if (activeTemplate === 'custom') {
-    exerciseIds = customSelection.length ? customSelection : ['bench','squat','deadlift'];
+  if (activeTemplate === 'startnew') {
+    exerciseIds = []; // blank workout — user adds exercises with "+ Add"
   } else {
     // Use per-profile saved override if it exists, else fall back to default
     const p = getP();
@@ -5058,7 +5117,9 @@ function buildExerciseList() {
   // Snapshot the on-screen order so replacements preserve position
   _sessionExerciseOrder = [...exerciseIds];
   const exercises = exerciseIds.map(id => ALL_EXERCISES[id]).filter(Boolean);
-  document.getElementById('logExerciseList').innerHTML = exercises.map(ex => buildExerciseCard(ex)).join('');
+  document.getElementById('logExerciseList').innerHTML = exercises.length
+    ? exercises.map(ex => buildExerciseCard(ex)).join('')
+    : '<div class="workout-empty-state">No exercises yet.<br>Tap <b>+ Add</b> below to build your workout.</div>';
   initLogExDrag();
 }
 
@@ -5186,7 +5247,7 @@ function initLogExDrag() {
 
     // Save new order
     _sessionExerciseOrder = getCards().map(c => c.dataset.exid);
-    if (activeTemplate !== 'custom') {
+    if (activeTemplate !== 'startnew') {
       const p = getP();
       if (p) {
         if (!p.templateOverrides) p.templateOverrides = {};
@@ -5215,7 +5276,7 @@ function initLogExDrag() {
       dCards.splice(dCurIdx, 0, moving);
       dCards.forEach(c => list.appendChild(c));
       _sessionExerciseOrder = dCards.map(c => c.dataset.exid);
-      if (activeTemplate !== 'custom') {
+      if (activeTemplate !== 'startnew') {
         const p = getP(); if (p) { if (!p.templateOverrides) p.templateOverrides = {}; p.templateOverrides[activeTemplate] = [..._sessionExerciseOrder]; saveP(p); }
       }
       buildInlineHistory(); saveWorkoutSession();
@@ -5263,7 +5324,7 @@ function reorderLogExercise(srcId, targetId) {
   if (si < ti) list.insertBefore(src, tgt.nextSibling);
   else list.insertBefore(src, tgt);
   _sessionExerciseOrder = [...list.querySelectorAll('.log-exercise-card')].map(c => c.dataset.exid);
-  if (activeTemplate !== 'custom') {
+  if (activeTemplate !== 'startnew') {
     const p = getP();
     if (p) { if (!p.templateOverrides) p.templateOverrides = {}; p.templateOverrides[activeTemplate] = [..._sessionExerciseOrder]; saveP(p); }
   }
@@ -6232,8 +6293,11 @@ function doAddExercise(newId) {
   _sessionExerciseOrder.push(newId);
   sessionSets[newId] = sessionSets[newId] || [];
   _sessionHadReplacements = true;
-  // Append card to DOM
-  document.getElementById('logExerciseList').insertAdjacentHTML('beforeend', buildExerciseCard(newEx));
+  // Append card to DOM (clear the blank-workout empty state first, if present)
+  const listEl = document.getElementById('logExerciseList');
+  const emptyEl = listEl.querySelector('.workout-empty-state');
+  if (emptyEl) emptyEl.remove();
+  listEl.insertAdjacentHTML('beforeend', buildExerciseCard(newEx));
   initLogExDrag();
   // Close modal
   document.getElementById('replaceModalOverlay').classList.add('hidden');
@@ -6316,13 +6380,6 @@ function selectTemplate(card, key) {
   const badgeEl = document.getElementById('homeWorkoutBadge');
   if (badgeEl) badgeEl.textContent = getTemplateName(key);
   buildInlineHistory();
-  const picker = document.getElementById('customPicker');
-  if (key === 'custom') {
-    picker.style.display = 'block';
-    renderPicker('');
-  } else {
-    picker.style.display = 'none';
-  }
   if (workoutStartTime) buildExerciseList();
 }
 
@@ -11261,7 +11318,7 @@ function showSummaryCard(data) {
   const prompt = document.getElementById('summaryTemplatePrompt');
   const customPrompt = document.getElementById('summaryCustomPrompt');
   const closeBtn = document.getElementById('summaryCloseBtn');
-  if (activeTemplate === 'custom') {
+  if (activeTemplate === 'startnew') {
     prompt.style.display = 'none';
     customPrompt.style.display = '';
     closeBtn.style.display = 'none';
@@ -11295,8 +11352,8 @@ function saveWorkoutNote(val) {
 }
 
 function advanceTemplate() {
-  // Cycle to the next template in rotation (skip 'custom')
-  const rotation = TEMPLATE_ROTATION.filter(k => k !== 'custom');
+  // Cycle to the next template in rotation (skip the blank "start new" slot)
+  const rotation = TEMPLATE_ROTATION.filter(k => k !== 'startnew');
   if (!rotation.length) return;
   const currentIdx = rotation.indexOf(activeTemplate);
   const nextKey = rotation[(currentIdx + 1) % rotation.length];
@@ -11354,7 +11411,7 @@ function closeSummaryAndSaveCustom() {
   p.templateNameOverrides[key] = name;
   p.templateEmojiOverrides[key] = emoji;
   p.templateOverrides[key] = [...exIds];
-  const customIdx = p.templateOrder.indexOf('custom');
+  const customIdx = p.templateOrder.indexOf('startnew');
   if (customIdx >= 0) p.templateOrder.splice(customIdx, 0, key);
   else p.templateOrder.push(key);
   saveP(p);
@@ -12001,6 +12058,111 @@ function renderBattleTutorial() {
   const next = document.getElementById('btNext');
   next.textContent = _btIndex === BATTLE_TUTORIAL.length - 1 ? "Let's Battle! ⚔️" : 'Next';
 }
+
+// ══════════════════════════════════════════
+//  APP ONBOARDING — first-run tour + replayable from Settings
+// ══════════════════════════════════════════
+// A guided spotlight tour: it navigates page-to-page, dims the screen, highlights the
+// real element you're learning about, and shows a short caption beside it.
+const TOUR = [
+  { page:'home', title:'Welcome to FitPet 🐤',
+    text:`Turn real workouts into a game — earn <b>XP</b>, level up, and collect <b>ducks</b> with perks. Here's a quick walk around the app.` },
+  { page:'home', sel:'#petEmoji', title:'Your duck',
+    text:`This is your training buddy. The duck you <b>equip</b> gives a perk — bonus XP, more coins, extra gold and more. Swap ducks to match your goals.` },
+  { page:'home', sel:'.gold-badge', place:'below', title:'Gold',
+    text:`Your currency, up top. Tap it for a <b>daily bonus</b>, a spin wheel and ad rewards — then spend gold on <b>XP boosts</b>.` },
+  { page:'home', sel:'.streak-badge', place:'below', title:'Streak',
+    text:`Your workout streak. Train on back-to-back days for <b>bonus XP</b> (up to 2×). It resets at the <b>start of your day</b> — a timer shows how long you've got.` },
+  { page:'log', sel:'#templatesGrid', title:'Log a workout',
+    text:`This is the <b>Log</b> tab. Pick a template — Push, Pull, Legs — or build your own, then log your sets. A <b>rest timer</b> runs between sets, and every set earns XP.` },
+  { page:'collection', sel:'#skinsGrid', title:'Your duck collection',
+    text:`Every duck has a unique <b>perk</b>. Tap one to see its bonus and <b>equip</b> it — then collect them all.` },
+  { page:'cases', sel:'#page-cases .card', title:'Hatch eggs',
+    text:`Open eggs here to unlock new ducks — earned from workouts, streaks and ads. Workouts also drop <b>fragments</b> to forge specific ducks.` },
+  { page:'battle', sel:'#flapWrap', title:'Arcade — Flap Run',
+    text:`Play <b>Flap Run</b> for extra coins between workouts. Thread the gates, grab coins for gold, and chase your best score.` },
+  { page:'home', title:"You're all set! 💪",
+    text:`That's the loop: <b>train → earn → level up → collect</b>. Log your first workout to begin — and replay this tour anytime from <b>Settings</b>.` },
+];
+let _tourIdx = 0, _tourActive = false;
+
+function ensureTourEls(){
+  if (document.getElementById('tourBlocker')) return;
+  const b = document.createElement('div'); b.id = 'tourBlocker'; b.className = 'tour-layer';
+  const h = document.createElement('div'); h.id = 'tourHole';    h.className = 'tour-hole';
+  const t = document.createElement('div'); t.id = 'tourTip';     t.className = 'tour-tip';
+  t.innerHTML =
+    `<div class="tour-tip-head"><div class="tour-dots" id="tourDots"></div><button class="tour-skip" onclick="endTour()">Skip tour</button></div>` +
+    `<div class="tour-tip-title" id="tourTitle"></div><div class="tour-tip-text" id="tourText"></div>` +
+    `<div class="tour-tip-foot"><button class="tour-btn ghost" id="tourBack" onclick="tourNav(-1)">Back</button><button class="tour-btn" id="tourNext" onclick="tourNav(1)">Next</button></div>`;
+  document.body.appendChild(b); document.body.appendChild(h); document.body.appendChild(t);
+}
+function startTour(){
+  ensureTourEls();
+  _tourIdx = 0; _tourActive = true;
+  ['tourBlocker','tourHole','tourTip'].forEach(id => document.getElementById(id).style.display = '');
+  renderTourStep();
+}
+// New-profile trigger + the Settings button both call openAppTutorial() → now the guided tour.
+function openAppTutorial(){ startTour(); }
+window.openAppTutorial = openAppTutorial;
+function endTour(){
+  _tourActive = false;
+  ['tourBlocker','tourHole','tourTip'].forEach(id => { const e = document.getElementById(id); if (e) e.style.display = 'none'; });
+  const p = getP(); if (p && !p.seenTutorial) { p.seenTutorial = true; saveP(p); }
+}
+function tourNav(dir){
+  const n = _tourIdx + dir;
+  if (n < 0) return;
+  if (n >= TOUR.length) { endTour(); return; }
+  _tourIdx = n; renderTourStep();
+}
+function _tourTargetEl(step){
+  if (!step.sel) return null;
+  try { return document.querySelector(step.sel); } catch (e) { return null; }
+}
+function renderTourStep(){
+  const step = TOUR[_tourIdx];
+  if (step.page) showPage(step.page);
+  document.getElementById('tourTitle').textContent = step.title;
+  document.getElementById('tourText').innerHTML = step.text;
+  document.getElementById('tourDots').innerHTML = TOUR.map((_, i) => `<div class="tour-dot${i === _tourIdx ? ' active' : ''}"></div>`).join('');
+  document.getElementById('tourBack').style.visibility = _tourIdx === 0 ? 'hidden' : '';
+  document.getElementById('tourNext').textContent = _tourIdx === TOUR.length - 1 ? 'Finish' : 'Next';
+  // let the new page lay out, then measure + place the spotlight and caption
+  requestAnimationFrame(() => requestAnimationFrame(() => _positionTour(step, true)));
+}
+function _positionTour(step, canRetry){
+  if (!_tourActive) return;
+  const hole = document.getElementById('tourHole'), tip = document.getElementById('tourTip');
+  let el = _tourTargetEl(step);
+  const vw = innerWidth, vh = innerHeight, tipW = tip.offsetWidth, tipH = tip.offsetHeight;
+  let r = null;
+  if (el) { try { el.scrollIntoView({ block:'center', behavior:'auto' }); } catch(e){} r = el.getBoundingClientRect(); if (r.width < 2 || r.height < 2) r = null; }
+  // Freshly-navigated page may not have laid out its content yet — retry once shortly.
+  if (el && !r && canRetry) { setTimeout(() => _positionTour(step, false), 180); return; }
+  if (r) {
+    const pad = 8;
+    hole.classList.remove('no-target');
+    hole.style.top = (r.top - pad) + 'px'; hole.style.left = (r.left - pad) + 'px';
+    hole.style.width = (r.width + pad*2) + 'px'; hole.style.height = (r.height + pad*2) + 'px';
+    const belowTop = r.bottom + 14, aboveTop = r.top - tipH - 14;
+    let top;
+    if (step.place === 'below' && belowTop + tipH <= vh - 12) top = belowTop;
+    else if (belowTop + tipH <= vh - 12) top = belowTop;
+    else if (aboveTop >= 12) top = aboveTop;
+    else top = vh - tipH - 14;
+    top = Math.max(12, Math.min(top, vh - tipH - 12));
+    let left = r.left + r.width/2 - tipW/2;
+    left = Math.max(12, Math.min(left, vw - tipW - 12));
+    tip.style.top = top + 'px'; tip.style.left = left + 'px';
+  } else {
+    hole.classList.add('no-target');
+    hole.style.top = (vh/2) + 'px'; hole.style.left = (vw/2) + 'px'; hole.style.width = '0'; hole.style.height = '0';
+    tip.style.top = (vh/2 - tipH/2) + 'px'; tip.style.left = (vw/2 - tipW/2) + 'px';
+  }
+}
+window.addEventListener('resize', () => { if (_tourActive) _positionTour(TOUR[_tourIdx]); });
 
 function buildBattlePage() {
   if(!document.getElementById('rivalList')) return; // arena replaced by Flap Run
@@ -13980,6 +14142,7 @@ function closeDayDetail() {
     </div>
   </div>
 </div>
+
 
 <!-- RANK SELECTOR -->
 <div id="rankSelectorOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:970;flex-direction:column;align-items:stretch;justify-content:flex-end;" onclick="if(event.target===this)closeRankSelector()">
