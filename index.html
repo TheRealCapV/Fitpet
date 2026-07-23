@@ -1062,6 +1062,14 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .template-edit-btn{background:none;border:none;cursor:pointer;font-size:14px;opacity:0.5;padding:2px 4px;border-radius:4px;line-height:1;transition:opacity .15s;flex-shrink:0;}
 .template-edit-btn:hover{opacity:1;background:rgba(255,255,255,.08);}
 .template-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px;}
+/* ── PER-EXERCISE REST CHIP ── */
+.log-ex-subrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.te-ex-sub{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:3px;}
+.rest-chip{display:inline-flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;font-family:'DM Mono',monospace;cursor:pointer;flex-shrink:0;line-height:1.5;transition:all .15s;}
+.rest-chip:hover{border-color:var(--accent);color:var(--accent);}
+.rest-chip.custom{border-color:rgba(163,230,53,.5);color:var(--accent);background:rgba(163,230,53,.07);}
+.rest-chip.off{opacity:.6;text-decoration:line-through;}
+.rest-chip.rest-chip-sm{padding:2px 8px;font-size:10px;}
 /* Template edit modal */
 .template-edit-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:900;display:flex;align-items:center;justify-content:center;padding:16px;}
 .template-edit-modal-overlay.hidden{display:none;}
@@ -2457,6 +2465,57 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
   </div>
 </div>
 
+<!-- REST TIMER PICKER -->
+<style>
+.rest-pick-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1150;display:flex;align-items:flex-end;justify-content:center;padding-bottom:var(--kb,0px);transition:padding-bottom .2s ease;}
+.rest-pick-overlay.hidden{display:none;}
+.rest-pick-sheet{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:min(92vh, calc(100vh - var(--kb,0px) - 14px));display:flex;flex-direction:column;overflow:hidden;animation:customExUp .28s cubic-bezier(.2,.8,.2,1);}
+.rest-pick-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 4px;}
+.rest-pick-title{font-size:16px;font-weight:800;letter-spacing:-.2px;}
+.rest-pick-body{padding:2px 16px calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;overflow-y:auto;}
+.rest-pick-exname{font-size:13px;color:var(--accent);font-weight:700;margin-bottom:2px;}
+.rest-pick-label{font-size:10px;font-weight:700;font-family:'DM Mono',monospace;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:14px 0 7px;}
+.rest-pick-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;}
+.rest-pick-grid .rt-preset{flex:none;padding:10px 0;}
+.rest-pick-custom{display:flex;align-items:center;gap:8px;}
+.rest-pick-input{width:70px;box-sizing:border-box;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);padding:11px 12px;font-size:16px;font-family:'DM Mono',monospace;text-align:center;outline:none;transition:border-color .15s;}
+.rest-pick-input:focus{border-color:var(--accent);}
+.rest-pick-sep{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px;}
+.rest-pick-note{font-size:11.5px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.6;margin:14px 0 4px;min-height:32px;}
+.rest-pick-save{width:100%;padding:14px;border:none;border-radius:12px;background:var(--accent);color:#0a0a0c;font-weight:800;font-size:15px;font-family:'Inter',sans-serif;cursor:pointer;transition:transform .12s,filter .2s;}
+.rest-pick-save:hover{filter:brightness(1.05);}
+.rest-pick-save:active{transform:scale(.98);}
+.rest-pick-default{width:100%;margin-top:8px;padding:12px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--muted);font-weight:700;font-size:13px;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s;}
+.rest-pick-default:hover{color:var(--accent);border-color:var(--accent);}
+.rest-pick-setdefault{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;cursor:pointer;line-height:1.4;}
+.rest-pick-setdefault input{accent-color:var(--accent);width:16px;height:16px;flex-shrink:0;cursor:pointer;}
+@media(max-width:480px){.rest-pick-grid{grid-template-columns:repeat(4,1fr);}}
+</style>
+<div class="rest-pick-overlay hidden" id="restPickOverlay" onclick="closeRestPicker(event)">
+  <div class="rest-pick-sheet" onclick="event.stopPropagation()">
+    <div class="rest-pick-header">
+      <div class="rest-pick-title">&#9201; Rest Timer</div>
+      <button class="replace-modal-close" onclick="closeRestPicker()">✕</button>
+    </div>
+    <div class="rest-pick-body">
+      <div class="rest-pick-exname" id="restPickExName">Exercise</div>
+      <div class="rest-pick-label">Presets</div>
+      <div class="rest-pick-grid" id="restPickGrid"></div>
+      <div class="rest-pick-label">Custom time</div>
+      <div class="rest-pick-custom">
+        <input class="rest-pick-input" id="restPickMins" type="number" min="0" max="10" inputmode="numeric" placeholder="0" oninput="onRestInputChange()">
+        <span class="rest-pick-sep">min</span>
+        <input class="rest-pick-input" id="restPickSecs" type="number" min="0" max="59" inputmode="numeric" placeholder="0" oninput="onRestInputChange()">
+        <span class="rest-pick-sep">sec</span>
+      </div>
+      <div class="rest-pick-note" id="restPickNote"></div>
+      <button class="rest-pick-save" onclick="saveRestPicker()">✓ Save for this exercise</button>
+      <button class="rest-pick-default" onclick="useDefaultRest()">↺ Use my default (<span id="restPickDefaultLabel">2:00</span>)</button>
+      <label class="rest-pick-setdefault"><input type="checkbox" id="restPickAsDefault"> Also make this my default for exercises without a set time</label>
+    </div>
+  </div>
+</div>
+
 <!-- EXERCISE INFO MODAL -->
 <div class="exinfo-overlay hidden" id="exInfoOverlay" onclick="closeExerciseInfo(event)">
   <div class="exinfo-sheet" onclick="event.stopPropagation()">
@@ -3727,8 +3786,23 @@ function loadStore() {
   catch { return { profiles: [] }; }
 }
 
+// Returns true on success. A failed write (quota exceeded, private mode, disk
+// error) used to throw and abort the caller mid-way, leaving the UI showing
+// stale values with no explanation — so we catch, warn, and report instead.
 function saveStore(store) {
-  localStorage.setItem(STORE_KEY, JSON.stringify(store));
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(store));
+    return true;
+  } catch (e) {
+    console.error('saveStore failed — changes were NOT persisted:', e);
+    const quota = e && (e.name === 'QuotaExceededError' || /quota/i.test(e.name || '') || e.code === 22);
+    try {
+      showToast(quota
+        ? '⚠ Storage full — change not saved. Back up & clear old data.'
+        : '⚠ Could not save changes to this device.');
+    } catch (_) {}
+    return false;
+  }
 }
 
 // ── Backup & Restore ──
@@ -4062,7 +4136,7 @@ function saveProfile(profile) {
   const idx = store.profiles.findIndex(p => p.username === profile.username);
   if (idx >= 0) store.profiles[idx] = profile;
   else store.profiles.push(profile);
-  saveStore(store);
+  return saveStore(store);
 }
 
 function newProfile(username, pin) {
@@ -4092,7 +4166,7 @@ function newProfile(username, pin) {
 let currentUser = null;
 
 function getP() { return getProfile(currentUser); }
-function saveP(p) { saveProfile(p); }
+function saveP(p) { return saveProfile(p); }
 
 // ══════════════════════════════════════════
 //  AUTH
@@ -4746,7 +4820,10 @@ function renderTemplateEditExercises() {
       <span class="te-ex-handle" title="Drag to reorder">⠿</span>
       <div class="te-ex-info">
         <div class="te-ex-name">${name}</div>
-        ${muscle ? `<div class="te-ex-muscle">${muscle}</div>` : ''}
+        <div class="te-ex-sub">
+          ${muscle ? `<span class="te-ex-muscle">${muscle}</span>` : ''}
+          ${ex ? restChipHTML(id, 'rest-chip-sm') : ''}
+        </div>
       </div>
       ${ex ? `<button class="te-ex-replace" onclick="openExerciseInfo('${id}')" title="Details">ⓘ</button>` : ''}
       <button class="te-ex-replace" onclick="openReplaceExToTemplate(${idx})" title="Replace">⇄</button>
@@ -5794,7 +5871,10 @@ function buildExerciseCard(ex) {
         <div class="log-ex-drag-handle" title="Drag to reorder">⠿</div>
         <div class="log-ex-headmain">
           <div class="log-ex-name" onclick="openExerciseInfo('${ex.id}')" style="cursor:pointer;">${ex.name} <span style="color:var(--muted);font-size:12px;font-weight:400;">ⓘ</span></div>
-          <div class="log-ex-best">${prLabel}</div>
+          <div class="log-ex-subrow">
+            <div class="log-ex-best">${prLabel}</div>
+            ${restChipHTML(ex.id)}
+          </div>
         </div>
         <div class="log-ex-actions">
           <button class="remove-exercise-btn" onclick="removeExercise('${ex.id}')">✕ Remove</button>
@@ -9437,6 +9517,201 @@ const CIRC = 2 * Math.PI * 22; // matches r=22 in SVG
 
 function rtFmt(s) { const m=Math.floor(s/60),sec=s%60; return m>0?`${m}:${String(sec).padStart(2,'0')}`:`${sec}s`; }
 
+// ══════════════════════════════════════════
+//  PER-EXERCISE REST TIMES (Strong-style)
+//  Stored on the profile: p.exerciseRestTimes = { exId: seconds }
+//  Profile-wide fallback:  p.defaultRestTime  = seconds
+// ══════════════════════════════════════════
+const DEFAULT_REST_SECS = 120;
+const MAX_REST_SECS = 600;
+const REST_PRESETS = [0, 30, 45, 60, 90, 120, 150, 180, 240, 300];
+
+// "Off" | "45s" | "1:30"
+function fmtRest(s) {
+  if (!s) return 'Off';
+  const m = Math.floor(s / 60), sec = s % 60;
+  return m > 0 ? `${m}:${String(sec).padStart(2, '0')}` : `${sec}s`;
+}
+
+function getDefaultRestTime() {
+  const v = getP()?.defaultRestTime;
+  return (typeof v === 'number' && v >= 0 && v <= MAX_REST_SECS) ? v : DEFAULT_REST_SECS;
+}
+
+// True only when this exercise has its own saved time (vs. inheriting the default)
+function hasCustomRestTime(exId) {
+  return typeof getP()?.exerciseRestTimes?.[exId] === 'number';
+}
+
+function getRestTimeFor(exId) {
+  const v = getP()?.exerciseRestTimes?.[exId];
+  return (typeof v === 'number' && v >= 0 && v <= MAX_REST_SECS) ? v : getDefaultRestTime();
+}
+
+// secs === null clears the override so the exercise falls back to the default.
+// Returns true only when the new value is confirmed readable back from storage —
+// a silent failure here is indistinguishable from "it reset itself to 2:00".
+function setRestTimeFor(exId, secs) {
+  if (!exId) { console.error('setRestTimeFor: no exercise id'); return false; }
+  const p = getP();
+  if (!p) {
+    console.error('setRestTimeFor: no active profile (currentUser=' + currentUser + ')');
+    try { showToast('⚠ Not signed in — rest time not saved.'); } catch (_) {}
+    return false;
+  }
+  if (!p.exerciseRestTimes) p.exerciseRestTimes = {};
+  const want = secs === null ? null : Math.max(0, Math.min(MAX_REST_SECS, Math.round(secs)));
+  if (want === null) delete p.exerciseRestTimes[exId];
+  else p.exerciseRestTimes[exId] = want;
+
+  const wrote = saveP(p) !== false;
+  // Read straight back from storage — this is the check that would have caught
+  // the silent revert instead of quietly showing the 2:00 default again.
+  const readBack = getP()?.exerciseRestTimes?.[exId];
+  const stuck = want === null ? (readBack === undefined) : (readBack === want);
+  refreshRestChip(exId);
+  if (!wrote || !stuck) {
+    console.error('Rest time did not persist', { exId, want, readBack, wrote });
+    try { showToast('⚠ Rest time did not save — see console.'); } catch (_) {}
+    return false;
+  }
+  return true;
+}
+
+// ── Rest chip shown on each exercise (the "how long is this one" label) ──
+function restChipHTML(exId, extraClass) {
+  const secs = getRestTimeFor(exId);
+  const cls = 'rest-chip'
+    + (hasCustomRestTime(exId) ? ' custom' : '')
+    + (secs === 0 ? ' off' : '')
+    + (extraClass ? ' ' + extraClass : '');
+  return `<button type="button" class="${cls}" id="restchip-${exId}"
+    onclick="event.stopPropagation();openRestPicker('${exId}')"
+    title="Rest between sets — tap to change">&#9201; ${fmtRest(secs)}</button>`;
+}
+
+function refreshRestChip(exId) {
+  document.querySelectorAll(`[id="restchip-${exId}"]`).forEach(el => {
+    const secs = getRestTimeFor(exId);
+    el.innerHTML = '&#9201; ' + fmtRest(secs);
+    el.classList.toggle('custom', hasCustomRestTime(exId));
+    el.classList.toggle('off', secs === 0);
+  });
+}
+
+function refreshAllRestChips() {
+  document.querySelectorAll('.rest-chip').forEach(el => {
+    const exId = (el.id || '').replace('restchip-', '');
+    if (exId) refreshRestChip(exId);
+  });
+}
+
+// ── Rest picker sheet ──
+let _restPickExId = null;
+let _restPickSel = null;
+
+function openRestPicker(exId) {
+  if (!exId) return;
+  _restPickExId = exId;
+  const cur = getRestTimeFor(exId);
+  _restPickSel = cur;
+  document.getElementById('restPickExName').textContent = ALL_EXERCISES[exId]?.name || exId;
+  document.getElementById('restPickDefaultLabel').textContent = fmtRest(getDefaultRestTime());
+  document.getElementById('restPickMins').value = Math.floor(cur / 60) || '';
+  document.getElementById('restPickSecs').value = (cur % 60) || '';
+  document.getElementById('restPickAsDefault').checked = false;
+  renderRestPresets();
+  updateRestPickNote();
+  document.getElementById('restPickOverlay').classList.remove('hidden');
+}
+
+function closeRestPicker(e) {
+  if (e && e.target !== document.getElementById('restPickOverlay')) return;
+  document.getElementById('restPickOverlay').classList.add('hidden');
+  _restPickExId = null;
+  _restPickSel = null;
+}
+
+function renderRestPresets() {
+  document.getElementById('restPickGrid').innerHTML = REST_PRESETS.map(s =>
+    `<button type="button" class="rt-preset${s === _restPickSel ? ' active' : ''}" onclick="pickRestPreset(${s})">${fmtRest(s)}</button>`
+  ).join('');
+}
+
+function pickRestPreset(s) {
+  _restPickSel = s;
+  document.getElementById('restPickMins').value = Math.floor(s / 60) || '';
+  document.getElementById('restPickSecs').value = (s % 60) || '';
+  renderRestPresets();
+  updateRestPickNote();
+}
+
+function readRestPickInputs() {
+  const m = parseInt(document.getElementById('restPickMins').value, 10) || 0;
+  const s = parseInt(document.getElementById('restPickSecs').value, 10) || 0;
+  return Math.max(0, Math.min(MAX_REST_SECS, m * 60 + s));
+}
+
+// Typing in the min/sec boxes re-syncs the preset highlight
+function onRestInputChange() {
+  _restPickSel = readRestPickInputs();
+  renderRestPresets();
+  updateRestPickNote();
+}
+
+function updateRestPickNote() {
+  const note = document.getElementById('restPickNote');
+  if (!note) return;
+  const secs = _restPickSel || 0;
+  note.textContent = secs
+    ? `Timer will run ${fmtRest(secs)} after each completed set.`
+    : 'Rest timer is off for this exercise — no timer after a set.';
+}
+
+// Re-render the template editor list only when it is actually on screen
+function _refreshTemplateEditorIfOpen() {
+  const ov = document.getElementById('templateEditOverlay');
+  if (ov && !ov.classList.contains('hidden') && typeof renderTemplateEditExercises === 'function') {
+    renderTemplateEditExercises();
+  }
+}
+
+function saveRestPicker() {
+  const exId = _restPickExId;
+  if (!exId) { closeRestPicker(); return; }
+  const secs = readRestPickInputs();
+  const alsoDefault = !!document.getElementById('restPickAsDefault')?.checked;
+  let ok = false;
+  try {
+    ok = setRestTimeFor(exId, secs);
+    if (ok && alsoDefault) {
+      const p = getP();
+      if (p) { p.defaultRestTime = secs; ok = saveP(p) !== false; }
+    }
+  } catch (err) {
+    console.error('saveRestPicker failed:', err);
+    ok = false;
+  }
+  // Always close — a stuck-open sheet after a failed write is what made this
+  // look like the value "went back" on its own.
+  closeRestPicker();
+  refreshAllRestChips();
+  _refreshTemplateEditorIfOpen();
+  if (ok) showToast(secs ? `⏱ Rest set to ${fmtRest(secs)}` : '⏱ Rest timer off for this exercise');
+}
+
+function useDefaultRest() {
+  const exId = _restPickExId;
+  if (!exId) { closeRestPicker(); return; }
+  let ok = false;
+  try { ok = setRestTimeFor(exId, null); }
+  catch (err) { console.error('useDefaultRest failed:', err); }
+  closeRestPicker();
+  refreshAllRestChips();
+  _refreshTemplateEditorIfOpen();
+  if (ok) showToast(`⏱ Using default rest (${fmtRest(getDefaultRestTime())})`);
+}
+
 function updateRtTab() {
   const tab = document.getElementById('rtMiniTab');
   const timeEl = document.getElementById('rtMiniTime');
@@ -9464,6 +9739,11 @@ function rtUpdateRing() {
 }
 
 function rtStart(exName, setNum, lbs, reps, exId) {
+  // Each exercise carries its own rest length (falls back to the profile default)
+  const _secs = exId ? getRestTimeFor(exId) : getDefaultRestTime();
+  if (!_secs) { rtDismiss(); return; }   // rest timer turned off for this exercise
+  rtTotal = _secs;
+
   rtActiveExId = exId || null;
   rtActiveSetIdx = (typeof setNum === 'number') ? setNum - 1 : null; // 0-based index of the set you're resting for
 
