@@ -978,17 +978,6 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .create-template-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(163,230,53,.05);}
 /* ── BLANK WORKOUT EMPTY STATE ── */
 .workout-empty-state{text-align:center;color:var(--muted);font-family:'DM Mono',monospace;font-size:13px;line-height:1.7;padding:34px 18px;border:1px dashed var(--border);border-radius:var(--radius);}
-/* ── CUSTOM EXERCISE PICKER (legacy — kept for compatibility) ── */
-#customPicker{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:18px;display:none;}
-.picker-search{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;margin-bottom:14px;transition:border-color .2s;}
-.picker-search:focus{border-color:var(--accent);}
-.picker-muscle-group{margin-bottom:12px;}
-.picker-muscle-label{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:6px;}
-.picker-pills{display:flex;flex-wrap:wrap;gap:6px;}
-.picker-pill{padding:5px 11px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--bg3);color:var(--muted);font-family:'Inter',sans-serif;transition:all .15s;user-select:none;}
-.picker-pill:hover{border-color:var(--accent);color:var(--accent);}
-.picker-pill.selected{background:rgba(163,230,53,.15);border-color:var(--accent);color:var(--accent);}
-.picker-count{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:10px;}
 .log-exercise-list{display:flex;flex-direction:column;gap:14px;}
 .log-exercise-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:box-shadow .15s,opacity .15s;}
 .log-exercise-card.log-dragging{opacity:.45;box-shadow:0 0 0 2px var(--accent);}
@@ -1330,6 +1319,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .hwc-header:hover{background:rgba(163,230,53,.03);}
 .hwc-title{font-size:15px;font-weight:800;}
 .hwc-meta{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:3px;}
+.hwc-meta-dur{color:var(--text);font-weight:700;}
 .hwc-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .hwc-badges{display:flex;gap:6px;flex-wrap:wrap;}
 .hwc-badge{font-size:10px;font-weight:700;font-family:'DM Mono',monospace;padding:3px 8px;border-radius:5px;}
@@ -4518,8 +4508,6 @@ const WORKOUT_TEMPLATES = {
   startnew: { name:'New Workout', emoji:'➕', exercises:[] },
 };
 
-// Persistent custom selection (survives template switching)
-let customSelection = ['bench','squat','deadlift','ohp','curl'];
 let activeTemplate = 'push';
 // Whether the user has actually tapped a template — until then, none is highlighted
 let _templatePicked = false;
@@ -4538,6 +4526,7 @@ let _sessionExerciseOrder = [];
 // ── workout session state ──
 let workoutStartTime = null;
 let workoutTimerInterval = null;
+let workoutAutosaveInterval = null;
 
 function buildLogPage() {
   if (workoutStartTime) {
@@ -5060,8 +5049,9 @@ function startWorkout() {
   requestNotifPermission();
   workoutStartTime = Date.now();
   _sessionHadReplacements = false;
-  // Start auto-save every 15s
-  setInterval(() => { if (workoutStartTime) saveWorkoutSession(); }, 15000);
+  // Start auto-save every 15s (clear any prior one so they don't stack)
+  clearInterval(workoutAutosaveInterval);
+  workoutAutosaveInterval = setInterval(() => { if (workoutStartTime) saveWorkoutSession(); }, 15000);
   document.getElementById('logPreWorkout').style.display = 'none';
   document.getElementById('logActiveWorkout').style.display = '';
   document.getElementById('activeWorkoutTitle').textContent = getTemplateName(activeTemplate) || 'Workout';
@@ -5094,6 +5084,8 @@ function cancelWorkout() {
 function endWorkoutSession() {
   clearInterval(workoutTimerInterval);
   workoutTimerInterval = null;
+  clearInterval(workoutAutosaveInterval);
+  workoutAutosaveInterval = null;
   workoutStartTime = null;
   sessionSets    = {};
   sessionWarmups = {};
@@ -5172,8 +5164,9 @@ function restoreWorkoutSession() {
       el.textContent = m + ':' + s;
     }, 1000);
 
-    // Auto-save every 15 seconds while workout is active
-    setInterval(() => { if (workoutStartTime) saveWorkoutSession(); }, 15000);
+    // Auto-save every 15 seconds while workout is active (clear any prior one so they don't stack)
+    clearInterval(workoutAutosaveInterval);
+    workoutAutosaveInterval = setInterval(() => { if (workoutStartTime) saveWorkoutSession(); }, 15000);
 
     return true;
   } catch(e) { clearWorkoutSession(); return false; }
@@ -6463,45 +6456,6 @@ function selectTemplate(card, key) {
   if (workoutStartTime) buildExerciseList();
 }
 
-function renderPicker(query) {
-  const q = (query || '').toLowerCase();
-  // Group exercises by muscle
-  const groups = {};
-  Object.values(ALL_EXERCISES).forEach(ex => {
-    if (q && !ex.name.toLowerCase().includes(q) && !ex.muscle.toLowerCase().includes(q)) return;
-    if (!groups[ex.muscle]) groups[ex.muscle] = [];
-    groups[ex.muscle].push(ex);
-  });
-  const muscleOrder = ['Chest','Back','Legs','Glutes','Calves','Shoulders','Arms','Core','Cardio'];
-  const html = muscleOrder.filter(m => groups[m]).map(m => `
-    <div class="picker-muscle-group">
-      <div class="picker-muscle-label">${m}</div>
-      <div class="picker-pills">
-        ${groups[m].map(ex => `
-          <div class="picker-pill ${customSelection.includes(ex.id) ? 'selected' : ''}"
-               onclick="toggleCustomExercise('${ex.id}',this)">
-            ${ex.name}
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
-  document.getElementById('pickerGroups').innerHTML = html || '<div style="color:var(--muted);font-size:13px;font-family:\'DM Mono\',monospace;">No matches</div>';
-  document.getElementById('pickerCount').textContent = customSelection.length + ' exercise' + (customSelection.length !== 1 ? 's' : '') + ' selected';
-}
-
-function toggleCustomExercise(id, pill) {
-  const idx = customSelection.indexOf(id);
-  if (idx === -1) {
-    customSelection.push(id);
-    pill.classList.add('selected');
-  } else {
-    customSelection.splice(idx, 1);
-    pill.classList.remove('selected');
-  }
-  document.getElementById('pickerCount').textContent = customSelection.length + ' exercise' + (customSelection.length !== 1 ? 's' : '') + ' selected';
-}
-
 // ── FINISH WORKOUT ──
 function finishWorkout() {
   rtDismiss();
@@ -6570,7 +6524,9 @@ function finishWorkout() {
 
   // log session
   const _logDate = Date.now();
-  p.workoutLog.push({ date: _logDate, startTime: workoutStartTime || null, exercises, totalSets, xp: xpGained, template: getTemplateName(activeTemplate) || 'Workout', note: '' });
+  // How long the workout took, in seconds — shown per-day in the history list.
+  const workoutDurationSec = workoutStartTime ? Math.max(0, Math.floor((_logDate - workoutStartTime) / 1000)) : 0;
+  p.workoutLog.push({ date: _logDate, startTime: workoutStartTime || null, durationSec: workoutDurationSec, exercises, totalSets, xp: xpGained, template: getTemplateName(activeTemplate) || 'Workout', note: '' });
   saveP(p);
 
   // Quest progress — workout completed
@@ -6600,10 +6556,7 @@ function finishWorkout() {
   }
 
   // Build workout name from active template
-  const workoutDuration = (() => {
-    const sec = workoutStartTime ? Math.floor((Date.now() - workoutStartTime) / 1000) : 0;
-    return Math.floor(sec/60) + 'm ' + (sec%60) + 's';
-  })();
+  const workoutDuration = Math.floor(workoutDurationSec/60) + 'm ' + (workoutDurationSec%60) + 's';
 
   // Check if exercises differ from the saved template (due to replacements)
   const tmplExIds = (() => {
@@ -6845,6 +6798,30 @@ function filterHistory(btn, filter) {
   renderHistoryList(workouts);
 }
 
+// A workout's length in seconds. Prefers the stored durationSec; for older logs
+// that predate that field, reconstructs it from finish (w.date) minus start
+// (w.startTime), ignoring implausible gaps (>12h, e.g. "forgot to finish").
+function workoutDurationSec(w) {
+  if (!w) return 0;
+  if (typeof w.durationSec === 'number' && w.durationSec > 0) return w.durationSec;
+  if (typeof w.startTime === 'number' && w.startTime > 0 && w.date > w.startTime) {
+    const recon = Math.floor((w.date - w.startTime) / 1000);
+    if (recon > 0 && recon <= 12 * 3600) return recon;
+  }
+  return 0;
+}
+
+// Human-readable workout length: "45s" | "12m" | "1h 05m"
+function fmtWorkoutDuration(sec) {
+  sec = Math.max(0, Math.round(sec || 0));
+  const h = Math.floor(sec / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const s = sec % 60;
+  if (h > 0) return h + 'h ' + String(m).padStart(2, '0') + 'm';
+  if (m > 0) return m + 'm' + (s ? ' ' + String(s).padStart(2, '0') + 's' : '');
+  return s + 's';
+}
+
 function renderHistoryList(workouts) {
   const list = document.getElementById('historyList');
   if (!workouts.length) {
@@ -6857,6 +6834,8 @@ function renderHistoryList(workouts) {
   list.innerHTML = workouts.map((w) => {
     const date = new Date(w.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
     const time = new Date(w.date).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+    const durSec = workoutDurationSec(w);
+    const durLabel = durSec ? fmtWorkoutDuration(durSec) : '';
     let wVol = 0;
     for (const sets of Object.values(w.exercises||{}))
       for (const s of sets) {
@@ -6894,7 +6873,7 @@ function renderHistoryList(workouts) {
       <div class="hwc-header" onclick="toggleHistoryCard(this)">
         <div style="flex:1;min-width:0;">
           <div class="hwc-title">${w.template || 'Workout'}</div>
-          <div class="hwc-meta">${date} · ${time}</div>
+          <div class="hwc-meta">${date} · ${time}${durLabel ? ` · <span class="hwc-meta-dur">&#9201; ${durLabel}</span>` : ''}</div>
         </div>
         <div class="hwc-right">
           <div class="hwc-badges">
@@ -14233,7 +14212,15 @@ function openDayDetail(dateStr) {
   // If multiple sessions that day (edge case), show all
   const totalSets = sessions.reduce((a,s) => a + (s.totalSets||0), 0);
   const totalXp   = sessions.reduce((a,s) => a + (s.xp||0), 0);
+  const totalDurSec = sessions.reduce((a,s) => a + workoutDurationSec(s), 0);
   const templates = [...new Set(sessions.map(s => s.template).filter(Boolean))].join(', ');
+
+  const durTile = totalDurSec > 0
+    ? `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 14px;text-align:center;flex:1;">
+         <div style="font-size:16px;font-weight:800;color:#fbbf24;">${fmtWorkoutDuration(totalDurSec)}</div>
+         <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">TIME</div>
+       </div>`
+    : '';
 
   document.getElementById('dayDetailTemplate').textContent = templates || 'Workout';
   document.getElementById('dayDetailMeta').innerHTML =
@@ -14241,6 +14228,7 @@ function openDayDetail(dateStr) {
        <div style="font-size:16px;font-weight:800;color:var(--text);">${totalSets}</div>
        <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">SETS</div>
      </div>
+     ${durTile}
      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 14px;text-align:center;flex:1;">
        <div style="font-size:16px;font-weight:800;color:var(--accent);">+${totalXp}</div>
        <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">XP</div>
