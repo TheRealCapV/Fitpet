@@ -9513,6 +9513,10 @@ function equipSkin(id) {
 //  REST TIMER
 // ══════════════════════════════════════════
 let rtInterval = null, rtTotal = 120, rtRemaining = 120, rtEndTime = null, rtActiveExId = null, rtActiveSetIdx = null;
+// Handle for the "auto-hide after GO! flash" timeout. Tracked so a new timer
+// started during the 3s flash window cancels the pending dismiss instead of
+// being torn down by it (the "new timer gets skipped" bug).
+let rtDismissTimeout = null;
 const CIRC = 2 * Math.PI * 22; // matches r=22 in SVG
 
 function rtFmt(s) { const m=Math.floor(s/60),sec=s%60; return m>0?`${m}:${String(sec).padStart(2,'0')}`:`${sec}s`; }
@@ -9739,6 +9743,10 @@ function rtUpdateRing() {
 }
 
 function rtStart(exName, setNum, lbs, reps, exId) {
+  // Cancel a pending auto-dismiss from a just-finished timer — otherwise it would
+  // fire mid-way through this new timer and kill it ("new timer skipped" bug).
+  if (rtDismissTimeout) { clearTimeout(rtDismissTimeout); rtDismissTimeout = null; }
+
   // Each exercise carries its own rest length (falls back to the profile default)
   const _secs = exId ? getRestTimeFor(exId) : getDefaultRestTime();
   if (!_secs) { rtDismiss(); return; }   // rest timer turned off for this exercise
@@ -10312,7 +10320,8 @@ function rtDone() {
   document.getElementById('rtTimeLabel').textContent = 'GO!';
   updateRtTab();
   // Service worker handles the notification (single source, navigates to workout on tap)
-  setTimeout(rtDismiss, 3000);
+  if (rtDismissTimeout) clearTimeout(rtDismissTimeout);
+  rtDismissTimeout = setTimeout(() => { rtDismissTimeout = null; rtDismiss(); }, 3000);
 }
 
 function rtSkip() { clearInterval(rtInterval); rtInterval = null; cancelSwNotif(); rtDismiss(); }
@@ -10348,6 +10357,7 @@ function rtShow() {
 
 // Kill timer entirely
 function rtDismiss() {
+  if (rtDismissTimeout) { clearTimeout(rtDismissTimeout); rtDismissTimeout = null; }
   clearInterval(rtInterval); rtInterval = null;
   rtEndTime = null;
   const bar = document.getElementById('restTimerBar');
