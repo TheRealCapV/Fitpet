@@ -572,6 +572,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .summary-close-btn{width:100%;padding:14px;background:var(--accent);color:#0a0a0c;border:none;border-radius:12px;font-weight:800;font-size:15px;letter-spacing:.3px;cursor:pointer;font-family:'Inter',sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.25);transition:filter .2s,transform .12s;}
 .summary-close-btn:hover{filter:brightness(1.06);}
 .summary-close-btn:active{transform:scale(.99);}
+.summary-undo-btn{width:100%;margin-top:9px;padding:11px;background:transparent;border:1px solid var(--border);border-radius:12px;color:var(--muted);font-weight:700;font-size:12.5px;font-family:'DM Mono',monospace;cursor:pointer;transition:color .18s,border-color .18s;}
+.summary-undo-btn:hover{color:#f87171;border-color:rgba(248,113,113,.45);}
+.summary-undo-btn:active{transform:scale(.99);}
 .cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
 .case-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 12px;text-align:center;cursor:pointer;transition:all .25s;position:relative;}
 .case-item:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.4);}
@@ -1283,6 +1286,9 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .muscle-panel-name{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;color:var(--accent);font-family:'DM Mono',monospace;}
 .muscle-panel-ex{font-size:11px;font-family:'DM Mono',monospace;color:var(--text);padding:5px 8px;background:var(--bg2);border-radius:6px;display:flex;align-items:center;gap:7px;margin-bottom:5px;}
 .muscle-panel-ex:last-child{margin-bottom:0;}
+.muscle-panel-ex-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.muscle-panel-ex-rm{margin-left:auto;flex-shrink:0;font-weight:800;color:var(--accent);background:rgba(163,230,53,.1);border:1px solid rgba(163,230,53,.25);border-radius:5px;padding:1px 6px;}
+.mpx-rm-unit{font-weight:600;opacity:.7;}
 .muscle-panel-placeholder{color:var(--muted);font-size:11px;text-align:center;padding:28px 0;line-height:2;font-family:'DM Mono',monospace;}
 .muscle-chip{font-size:9px;font-family:'DM Mono',monospace;font-weight:700;letter-spacing:.5px;color:var(--muted);background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:3px 6px;cursor:pointer;transition:all .15s;text-transform:uppercase;}
 .muscle-chip.sel{color:#000;background:var(--accent);border-color:var(--accent);}
@@ -1505,6 +1511,29 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .bulk-total-chip{font-size:11px;font-weight:700;font-family:'DM Mono',monospace;padding:5px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);}
 
 /* ── COLLECTION PAGE ── */
+/* ── COLLECTION PROGRESS HERO ── */
+.coll-hero{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;}
+.ch-top{display:flex;align-items:center;gap:14px;margin-bottom:13px;}
+.ch-count{display:flex;align-items:baseline;gap:5px;flex-shrink:0;}
+.ch-num{font-size:34px;font-weight:800;color:var(--accent);line-height:1;font-family:'Inter',sans-serif;letter-spacing:-1px;}
+.ch-total{font-size:16px;font-weight:700;color:var(--muted);font-family:'DM Mono',monospace;}
+.ch-label{font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.35;flex-shrink:0;}
+.ch-bar-wrap{flex:1;height:9px;background:var(--bg);border-radius:999px;overflow:hidden;min-width:70px;}
+.ch-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .7s cubic-bezier(.2,.8,.2,1);}
+.ch-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.ch-chip{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;font-family:'DM Mono',monospace;color:var(--muted);padding:4px 9px;border-radius:999px;background:var(--bg3);border:1px solid var(--border);}
+.ch-chip.done{color:var(--text);border-color:rgba(255,255,255,.14);}
+.ch-chip-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+/* ── SHARDS TAB EXPLAINER + SECTIONS ── */
+.shards-intro{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;display:flex;flex-direction:column;gap:9px;}
+.shards-intro-row{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.6;}
+.shards-intro-row b{color:var(--text);font-weight:700;}
+.si-chip{display:inline-block;font-weight:800;padding:1px 7px;border-radius:5px;margin-right:3px;font-size:11px;white-space:nowrap;}
+.si-frag{color:var(--accent);background:rgba(163,230,53,.12);}
+.si-shard{color:#c084fc;background:rgba(168,85,247,.16);}
+.section-sub{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.55;margin:2px 0 14px;}
+#shardWallet .shard-overview{margin-bottom:0;}
+.ws-empty{color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;padding:6px 0 2px;line-height:1.5;}
 .collection-filters{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
 .skins-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
 .skin-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 12px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
@@ -2368,6 +2397,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
         <textarea id="summaryNote" class="workout-note-input" maxlength="280" rows="2" placeholder="Add a note… (how'd it feel? PR attempt? tweaks?)" oninput="saveWorkoutNote(this.value)"></textarea>
       </div>
       <button class="summary-close-btn" id="summaryCloseBtn" onclick="closeSummary()">Back to Home</button>
+      <button class="summary-undo-btn" id="summaryUndoBtn" onclick="undoFinishWorkout()">↩ Finished by mistake? Undo</button>
       <div class="summary-brand">FITPET</div>
     </div><!-- /summary-body -->
   </div>
@@ -3346,17 +3376,18 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 <div class="page" id="page-collection">
   <div class="log-header">
     <div class="page-title">Ducks</div>
-    <span class="badge badge-purple" style="font-size:13px;padding:8px 14px;" id="collectedBadge">0 / 16 Collected</span>
   </div>
 
   <!-- Tab switcher -->
-  <div class="auth-tabs" style="margin-bottom:20px;">
-    <button class="auth-tab active" id="petsTabBtnCollection" onclick="showPetsTab('collection')">🐾 Collection</button>
-    <button class="auth-tab" id="petsTabBtnShards" onclick="showPetsTab('shards')">⚗️ Shards</button>
+  <div class="auth-tabs" style="margin-bottom:16px;">
+    <button class="auth-tab active" id="petsTabBtnCollection" onclick="showPetsTab('collection')">🐣 Collection</button>
+    <button class="auth-tab" id="petsTabBtnShards" onclick="showPetsTab('shards')">◆ Shards</button>
   </div>
 
   <!-- COLLECTION TAB -->
   <div id="petsTabCollection">
+    <!-- Collection progress overview -->
+    <div class="coll-hero" id="collHero"></div>
     <div class="collection-filters">
       <button class="filter-btn active" onclick="filterSkins(this,'all')">All</button>
       <button class="filter-btn filter-btn-divine" onclick="filterSkins(this,'divine')">✨ Divine</button>
@@ -3371,21 +3402,38 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 
   <!-- SHARDS TAB -->
   <div id="petsTabShards" style="display:none;">
-    <!-- Fragment Workshop -->
+    <!-- Plain-language explainer: the #1 source of confusion is fragments vs shards -->
+    <div class="shards-intro">
+      <div class="shards-intro-row"><span class="si-chip si-frag">◈ Fragments</span> complete <b>one specific duck</b>. Fill the bar, then forge it.</div>
+      <div class="shards-intro-row"><span class="si-chip si-shard">◆ Shards</span> are <b>wildcards</b> from hatching a duck you already own — spend them to add fragments, or trade up to rarer shards.</div>
+    </div>
+
+    <!-- Shard wallet -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header" style="margin-bottom:12px;">
+        <span class="card-title">◆ Your Shards</span>
+        <span class="badge badge-purple" id="shardTotalBadge">0 total</span>
+      </div>
+      <div id="shardWallet"></div>
+    </div>
+
+    <!-- Ducks in Progress (was: Fragment Workshop) -->
     <div class="card" id="fragmentWorkshop" style="margin-bottom:16px;">
-      <div class="card-header" style="margin-bottom:14px;">
-        <span class="card-title">◆ Fragment Workshop</span>
+      <div class="card-header" style="margin-bottom:4px;">
+        <span class="card-title">🔨 Ducks in Progress</span>
         <span class="badge badge-orange" id="workshopBadge">0 Ready</span>
       </div>
+      <p class="section-sub">Forge a duck when its fragments are full, or spend a matching shard to add one.</p>
       <div class="workshop-list" id="workshopList"></div>
     </div>
-    <!-- Shard Exchange -->
+
+    <!-- Trade Shards Up (was: Shard Exchange) -->
     <div class="card" id="shardExchangeCard" style="margin-bottom:20px;">
-      <div class="card-header" style="margin-bottom:14px;">
-        <span class="card-title" style="display:flex;align-items:center;gap:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg> Shard Exchange</span>
+      <div class="card-header" style="margin-bottom:4px;">
+        <span class="card-title" style="display:flex;align-items:center;gap:6px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg> Trade Shards Up</span>
         <span class="badge badge-purple" id="exchangeBadge">Trade Up</span>
       </div>
-      <p style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin:0 0 14px;line-height:1.6;">Trade duplicate shards up to rarer ones. Earned when you hatch a duck you already own.</p>
+      <p class="section-sub">Convert lower-rarity shards into rarer ones.</p>
       <div id="shardExchangeList"></div>
     </div>
   </div>
@@ -4527,6 +4575,9 @@ let _sessionExerciseOrder = [];
 let workoutStartTime = null;
 let workoutTimerInterval = null;
 let workoutAutosaveInterval = null;
+// Snapshot of the profile + session taken right before finishWorkout mutates
+// anything, so a mistaken finish can be fully reversed from the summary card.
+let _undoFinishData = null;
 
 function buildLogPage() {
   if (workoutStartTime) {
@@ -6483,6 +6534,20 @@ function finishWorkout() {
 
   if (!totalSets) { showToast('— Log at least one set first!'); return; }
 
+  // Snapshot everything BEFORE we mutate the profile, so "Undo" on the summary
+  // card can atomically restore both the profile and the in-progress session.
+  _undoFinishData = {
+    profile: JSON.parse(JSON.stringify(p)),
+    session: {
+      sets:            JSON.parse(JSON.stringify(sessionSets)),
+      warmups:         JSON.parse(JSON.stringify(sessionWarmups)),
+      order:           [..._sessionExerciseOrder],
+      startTime:       workoutStartTime,
+      template:        activeTemplate,
+      hadReplacements: _sessionHadReplacements,
+    }
+  };
+
   const today = todayStr();
   const streakDay = _localDayStr(0);   // record the streak on the user's LOCAL day
 
@@ -6676,9 +6741,14 @@ function selectMuscle(muscle) {
   const content = document.getElementById('musclePanelContent');
   content.style.display = '';
   document.getElementById('musclePanelName').textContent = muscle + ' — ' + exercises.length + ' exercises';
-  document.getElementById('musclePanelExList').innerHTML = exercises.map(e =>
-    `<div class="muscle-panel-ex" onclick="openExerciseInfo('${e.id}')" style="cursor:pointer;"><span style="font-size:14px;">${e.icon}</span><span>${e.name}</span><span style="margin-left:auto;color:var(--muted);">ⓘ</span></div>`
-  ).join('');
+  document.getElementById('musclePanelExList').innerHTML = exercises.map(e => {
+    // Show an estimated 1RM per exercise for weighted lifts (Epley, best set ever).
+    const rm = exInputType(e.id) === 'weight' ? getExerciseE1RM(e.id) : null;
+    const rmLabel = rm
+      ? `<span class="muscle-panel-ex-rm" title="Est. 1-rep max (Epley) — best set ever">${rm.e1rm}<span class="mpx-rm-unit"> lbs 1RM</span></span>`
+      : '';
+    return `<div class="muscle-panel-ex" onclick="openExerciseInfo('${e.id}')" style="cursor:pointer;"><span style="font-size:14px;">${e.icon}</span><span class="muscle-panel-ex-name">${e.name}</span>${rmLabel}<span style="margin-left:${rmLabel?'8px':'auto'};color:var(--muted);flex-shrink:0;">ⓘ</span></div>`;
+  }).join('');
 }
 
 function renderExerciseLibrary(query) {
@@ -9006,6 +9076,9 @@ function renderFragmentWorkshop() {
   const list  = document.getElementById('workshopList');
   if (!p || !panel || !list) return;
 
+  // Keep the shard wallet (separate card) in sync whenever the workshop re-renders.
+  renderShardWallet();
+
   const frags   = p.fragments || {};
   const locked  = getLockedPets(p);
 
@@ -9016,13 +9089,6 @@ function renderFragmentWorkshop() {
     .sort((a, b) => (b.have/b.cost) - (a.have/a.cost)); // closest first
 
   const shards = p.shards || { common:0, rare:0, epic:0, legendary:0 };
-  const totalShards = Object.values(shards).reduce((a,b)=>a+b,0);
-
-  // Show empty state if nothing to display
-  if (!active.length && !totalShards) {
-    list.innerHTML = '<div style="color:var(--muted);font-family:\'DM Mono\',monospace;font-size:12px;padding:12px 0;">Hatch eggs to collect fragments and shards.</div>';
-    return;
-  }
 
   const readyCount = active.filter(x => x.have >= x.cost).length;
   document.getElementById('workshopBadge').textContent =
@@ -9030,20 +9096,13 @@ function renderFragmentWorkshop() {
   document.getElementById('workshopBadge').className =
     'badge ' + (readyCount ? 'badge-orange' : 'badge-purple');
 
-  // Shard overview tiles
-  const shardNames = ['common','rare','epic','legendary','divine'];
-  const shardIcons = { common:'◆', rare:'◆', epic:'◆', legendary:'◆', divine:'✦' };
-  const shardLabelsFull = { common:'Common', rare:'Rare', epic:'Epic', legendary:'Legendary', divine:'Divine' };
-  const shardOverviewHTML = `<div class="shard-overview">${
-    shardNames.map(r => `
-      <div class="shard-tile ${r} ${!(shards[r]) ? 'empty' : ''}">
-        <div class="shard-tile-count">${shards[r] || 0}</div>
-        <div class="shard-tile-icon">${shardIcons[r]}</div>
-        <div class="shard-tile-label">${shardLabelsFull[r]}</div>
-      </div>`).join('')
-  }</div>`;
+  // Empty state — no ducks have any fragments yet
+  if (!active.length) {
+    list.innerHTML = '<div class="ws-empty">No ducks in progress yet. Hatch eggs to collect fragments toward specific ducks.</div>';
+    return;
+  }
 
-  list.innerHTML = shardOverviewHTML + active.slice(0, 8).map(({ s, have, cost }) => {
+  list.innerHTML = active.slice(0, 8).map(({ s, have, cost }) => {
     const pct   = Math.min(100, Math.round((have / cost) * 100));
     const ready = have >= cost;
     const hasShard = (shards[s.rarity] || 0) > 0;
@@ -9065,6 +9124,58 @@ function renderFragmentWorkshop() {
 
 const rarityColors = { legendary:'var(--legendary)', epic:'var(--epic)', rare:'var(--rare)', common:'var(--common)' };
 
+const RARITY_ORDER = ['common','rare','epic','legendary','divine'];
+
+// Collection progress overview at the top of the Collection tab: total collected,
+// a progress bar, and a per-rarity tally so players can see what's left to catch.
+function renderCollectionHero(unlocked) {
+  const el = document.getElementById('collHero');
+  if (!el) return;
+  const totals = {}, got = {};
+  RARITY_ORDER.forEach(r => { totals[r] = 0; got[r] = 0; });
+  for (const s of ALL_SKINS) {
+    totals[s.rarity] = (totals[s.rarity] || 0) + 1;
+    if (unlocked.has(s.id)) got[s.rarity] = (got[s.rarity] || 0) + 1;
+  }
+  const totalAll = ALL_SKINS.length;
+  const gotAll = ALL_SKINS.filter(s => unlocked.has(s.id)).length;
+  const pct = totalAll ? Math.round((gotAll / totalAll) * 100) : 0;
+
+  const chips = RARITY_ORDER.filter(r => totals[r] > 0).map(r => {
+    const done = got[r] === totals[r];
+    return `<span class="ch-chip${done ? ' done' : ''}">
+      <span class="ch-chip-dot" style="background:${SHARD_COLORS[r]}"></span>${SHARD_LABELS[r]} ${got[r]}/${totals[r]}${done ? ' ✓' : ''}</span>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="ch-top">
+      <div class="ch-count"><span class="ch-num">${gotAll}</span><span class="ch-total">/ ${totalAll}</span></div>
+      <div class="ch-label">Ducks<br>collected</div>
+      <div class="ch-bar-wrap"><div class="ch-bar" style="width:${pct}%"></div></div>
+    </div>
+    <div class="ch-chips">${chips}</div>`;
+}
+
+// The shard wallet (5 rarity tiles) — its own labeled card on the Shards tab.
+function renderShardWallet() {
+  const p = getP();
+  const el = document.getElementById('shardWallet');
+  if (!p || !el) return;
+  const shards = p.shards || {};
+  const totalShards = RARITY_ORDER.reduce((a, r) => a + (shards[r] || 0), 0);
+  const badge = document.getElementById('shardTotalBadge');
+  if (badge) badge.textContent = totalShards + ' total';
+  const icons = { common:'◆', rare:'◆', epic:'◆', legendary:'◆', divine:'✦' };
+  el.innerHTML = `<div class="shard-overview">${
+    RARITY_ORDER.map(r => `
+      <div class="shard-tile ${r} ${!(shards[r]) ? 'empty' : ''}">
+        <div class="shard-tile-count">${shards[r] || 0}</div>
+        <div class="shard-tile-icon">${icons[r]}</div>
+        <div class="shard-tile-label">${SHARD_LABELS[r]}</div>
+      </div>`).join('')
+  }</div>`;
+}
+
 function renderSkins(filter='all') {
   const p = getP();
   const unlocked = new Set(p ? p.unlockedSkins : ['iron-rhino']);
@@ -9079,8 +9190,7 @@ function renderSkins(filter='all') {
     : filter === 'locked' ? ALL_SKINS.filter(s => !unlocked.has(s.id))
     : ALL_SKINS.filter(s => s.rarity === filter);
 
-  const total = ALL_SKINS.filter(s => unlocked.has(s.id)).length;
-  document.getElementById('collectedBadge').textContent = total + ' / ' + ALL_SKINS.length + ' Collected';
+  renderCollectionHero(unlocked);
 
   const frags = p ? (p.fragments || {}) : {};
 
@@ -9438,7 +9548,7 @@ function showPetsTab(tab) {
   document.getElementById('petsTabShards').style.display     = tab === 'shards'     ? '' : 'none';
   document.getElementById('petsTabBtnCollection').classList.toggle('active', tab === 'collection');
   document.getElementById('petsTabBtnShards').classList.toggle('active',     tab === 'shards');
-  if (tab === 'shards') { renderFragmentWorkshop(); renderShardExchange(); }
+  if (tab === 'shards') { renderShardWallet(); renderFragmentWorkshop(); renderShardExchange(); }
   if (tab === 'collection') renderSkins();
 
 }
@@ -11640,9 +11750,65 @@ function advanceTemplate() {
 
 function closeSummary() {
   document.getElementById('summaryOverlay').classList.remove('open');
+  _undoFinishData = null; // committing the workout — undo no longer available
   endWorkoutSession();
   advanceTemplate();
   showPage('home');
+}
+
+// "Finished by mistake? Undo" — reverse everything finishWorkout did and drop
+// the user back into the still-in-progress workout with all sets intact.
+function undoFinishWorkout() {
+  const snap = _undoFinishData;
+  if (!snap) { showToast('Nothing to undo'); return; }
+  _undoFinishData = null;
+
+  // 1. Atomically revert every profile change (XP, level, gold, cases, streak,
+  //    fragments/unlocks, quest progress, and the logged workout entry).
+  saveProfile(snap.profile);
+
+  // 2. Restore the in-progress session exactly as it was before finishing.
+  sessionSets             = snap.session.sets;
+  sessionWarmups          = snap.session.warmups;
+  _sessionExerciseOrder   = snap.session.order;
+  workoutStartTime        = snap.session.startTime;
+  activeTemplate          = snap.session.template;
+  _sessionHadReplacements = snap.session.hadReplacements;
+
+  // 3. Close the summary (and defensively any lingering celebration).
+  document.getElementById('summaryOverlay').classList.remove('open');
+  const celeb = document.getElementById('woCelebOverlay');
+  if (celeb) celeb.classList.remove('show');
+
+  // 4. Re-open the active workout with every logged set preserved.
+  showPage('log');
+  document.getElementById('logPreWorkout').style.display = 'none';
+  document.getElementById('logActiveWorkout').style.display = '';
+  document.getElementById('activeWorkoutTitle').textContent = getTemplateName(activeTemplate) || 'Workout';
+  const exercises = _sessionExerciseOrder.map(id => ALL_EXERCISES[id]).filter(Boolean);
+  document.getElementById('logExerciseList').innerHTML = exercises.length
+    ? exercises.map(ex => buildExerciseCard(ex)).join('')
+    : '<div class="workout-empty-state">No exercises yet.<br>Tap <b>+ Add</b> below to build your workout.</div>';
+  initLogExDrag();
+
+  // 5. Restart the elapsed + autosave timers from the restored start time.
+  clearInterval(workoutTimerInterval);
+  workoutTimerInterval = setInterval(() => {
+    const el = document.getElementById('workoutElapsed');
+    if (!el || !workoutStartTime) return;
+    const sec = Math.floor((Date.now() - workoutStartTime) / 1000);
+    el.textContent = Math.floor(sec/60).toString().padStart(2,'0') + ':' + (sec%60).toString().padStart(2,'0');
+  }, 1000);
+  clearInterval(workoutAutosaveInterval);
+  workoutAutosaveInterval = setInterval(() => { if (workoutStartTime) saveWorkoutSession(); }, 15000);
+  saveWorkoutSession();
+
+  // 6. Reflect the reverted profile across the UI.
+  refreshHomeStats();
+  buildStreakCalendar();
+  buildInlineHistory();
+  updateCaseCounts();
+  showToast('↩ Workout restored — nothing was saved');
 }
 
 function closeSummaryKeepTemplate() {
@@ -13407,6 +13573,28 @@ document.querySelectorAll('.card,.pet-card').forEach((el,i) => {
 function calcE1RM(weight, reps) {
   if (reps === 1) return weight;
   return Math.round(weight * (1 + reps / 30)); // Epley formula
+}
+
+// Best-ever estimated 1RM for one exercise (scans the whole log). Returns null
+// if there's no weighted set to estimate from. Weight-type exercises only.
+function getExerciseE1RM(exId) {
+  const p = getP();
+  if (!p) return null;
+  let best = 0, bw = 0, br = 0, bd = null;
+  for (const w of (p.workoutLog || [])) {
+    const sets = w.exercises?.[exId];
+    if (!sets) continue;
+    for (const s of sets) {
+      const consider = (lbs, reps) => {
+        if (!lbs || !reps) return;
+        const e = calcE1RM(lbs, reps);
+        if (e > best) { best = e; bw = lbs; br = reps; bd = w.date; }
+      };
+      consider(s.lbs, s.reps);
+      if (s.drops) s.drops.forEach(d => consider(d.lbs, d.reps));
+    }
+  }
+  return best ? { e1rm: best, weight: bw, reps: br, date: bd } : null;
 }
 
 function getWeekKey(dateStr) {
