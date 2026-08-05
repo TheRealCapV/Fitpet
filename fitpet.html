@@ -982,20 +982,21 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 /* ── BLANK WORKOUT EMPTY STATE ── */
 .workout-empty-state{text-align:center;color:var(--muted);font-family:'DM Mono',monospace;font-size:13px;line-height:1.7;padding:34px 18px;border:1px dashed var(--border);border-radius:var(--radius);}
 .log-exercise-list{display:flex;flex-direction:column;gap:14px;}
-.log-exercise-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:box-shadow .15s,opacity .15s;}
+.log-exercise-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.15);transition:box-shadow .15s,opacity .15s;}
 .log-exercise-card.log-dragging{opacity:.45;box-shadow:0 0 0 2px var(--accent);}
 .log-exercise-card{transition:transform .18s ease;will-change:transform;}
 .ex-drag-placeholder{border-radius:16px;background:rgba(163,230,53,.04);border:2px dashed rgba(163,230,53,.2);flex-shrink:0;margin-bottom:0;}
 .log-exercise-card.log-drag-over{border-color:var(--accent);box-shadow:0 0 0 2px rgba(163,230,53,.35);}
-.log-ex-header{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);}
-.log-ex-drag-handle{font-size:18px;color:var(--muted);cursor:grab;padding:2px 4px;flex-shrink:0;touch-action:none;user-select:none;line-height:1;}
-.log-ex-drag-handle:active{cursor:grabbing;color:var(--accent);}
+.log-ex-header{display:flex;align-items:center;gap:11px;padding:15px 16px;border-bottom:1px solid var(--border);}
+.log-ex-drag-handle{font-size:16px;color:var(--muted);opacity:.38;cursor:grab;padding:2px 4px;flex-shrink:0;touch-action:none;user-select:none;line-height:1;transition:opacity .15s,color .15s;}
+.log-ex-header:hover .log-ex-drag-handle{opacity:.65;}
+.log-ex-drag-handle:active{cursor:grabbing;color:var(--accent);opacity:1;}
 .log-ex-icon{font-size:19px;width:38px;height:38px;border-radius:11px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);}
 .rt-focus{outline:2px solid transparent;outline-offset:-2px;animation:rtFocusPulse 1.8s ease;}
 @keyframes rtFocusPulse{0%,100%{outline-color:transparent;}22%,58%{outline-color:var(--accent);}}
 .log-ex-headmain{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
-.log-ex-name{font-size:15px;font-weight:700;}
-.log-ex-best{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
+.log-ex-name{font-size:15px;font-weight:700;letter-spacing:-.2px;}
+.log-ex-best{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;opacity:.85;}
 .log-ex-actions{display:flex;flex-direction:column;gap:5px;flex-shrink:0;align-items:stretch;}
 .replace-ex-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;font-family:'DM Mono',monospace;white-space:nowrap;transition:all .15s;text-align:center;}
 .replace-ex-btn:hover{border-color:var(--accent);color:var(--accent);}
@@ -1017,8 +1018,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .replace-ex-row-name{font-size:14px;font-weight:600;flex:1;}
 .replace-ex-row-muscle{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
 /* inline history under exercise */
-.inline-history{padding:10px 16px;border-bottom:1px solid var(--border);background:var(--bg3);}
-.inline-hist-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:6px;}
+.inline-history{padding:11px 16px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.014);}
+.inline-hist-label{font-size:9px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:7px;opacity:.7;}
 .inline-hist-entries{display:flex;flex-direction:column;gap:4px;max-height:90px;overflow-y:auto;}
 .inline-hist-row{display:flex;align-items:center;gap:10px;font-size:12px;font-family:'DM Mono',monospace;}
 .inline-hist-date{color:var(--muted);flex-shrink:0;width:80px;}
@@ -1027,8 +1028,8 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .inline-hist-set.pr{border-color:rgba(163,230,53,.22);color:var(--accent);}
 .no-hist{color:var(--muted);font-size:11px;font-family:'DM Mono',monospace;}
 .sets-table{width:100%;border-collapse:collapse;}
-.sets-table th{padding:8px 16px;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;text-align:left;border-bottom:1px solid var(--border);}
-.sets-table td{padding:10px 16px;font-size:14px;font-family:'DM Mono',monospace;border-bottom:1px solid rgba(42,42,56,.5);}
+.sets-table th{padding:9px 16px 7px;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;text-align:left;border-bottom:1px solid var(--border);opacity:.75;}
+.sets-table td{padding:9px 16px;font-size:14px;font-family:'DM Mono',monospace;border-bottom:1px solid rgba(255,255,255,.045);}
 .sets-table tr:last-child td{border-bottom:none;}
 .set-num{color:var(--muted);font-size:12px;}
 .set-input{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 8px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;width:64px;text-align:center;outline:none;transition:border-color .2s;}
@@ -1042,10 +1043,11 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .lbs-stepper{display:flex;align-items:center;gap:3px;}
 .lbs-input{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 2px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;width:54px;text-align:center;outline:none;transition:border-color .2s;}
 .lbs-input:focus{border-color:var(--accent);}
-.set-done-btn{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:none;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--muted);}
-.set-done-btn.done{background:var(--accent);border-color:var(--accent);color:#000;}
-.add-set-row{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;}
-.add-set-btn{font-size:12px;font-weight:700;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:8px 13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.3px;transition:border-color .18s,color .18s,background .18s;}
+.set-done-btn{width:29px;height:29px;border-radius:50%;border:2px solid var(--border);background:none;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .18s;color:var(--muted);opacity:.7;}
+.set-done-btn:hover{border-color:var(--accent);color:var(--accent);opacity:1;}
+.set-done-btn.done{background:var(--accent);border-color:var(--accent);color:#000;opacity:1;box-shadow:0 0 0 4px rgba(163,230,53,.12);}
+.add-set-row{padding:13px 16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;}
+.add-set-btn{font-size:12px;font-weight:700;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:8px 13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.2px;transition:border-color .18s,color .18s,background .18s;}
 .add-set-btn:hover{color:var(--accent);border-color:var(--accent);background:rgba(163,230,53,.05);}
 .finish-workout-btn{background:var(--accent);color:#0a0a0c;width:100%;padding:16px;border-radius:12px;font-size:16px;font-weight:700;border:none;cursor:pointer;font-family:'Inter',sans-serif;margin-top:12px;transition:all .2s;}
 .finish-workout-btn:hover{filter:brightness(1.06);transform:translateY(-1px);}
@@ -1154,8 +1156,9 @@ main{padding-top:calc(var(--nav-h) + 24px);padding-bottom:60px;max-width:1100px;
 .pc-totline strong{color:var(--text);font-size:15px;}
 .pc-warn{color:#fbbf24;font-size:12px;font-family:'DM Mono',monospace;text-align:center;padding:6px;}
 /* Inline plate icon on lbs stepper */
-.pc-lbs-btn{width:26px;height:28px;border-radius:6px;background:rgba(163,230,53,.07);border:1px solid rgba(163,230,53,.18);color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;transition:background .15s,border-color .15s;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;}
-.pc-lbs-btn:active{background:rgba(163,230,53,.2);border-color:rgba(163,230,53,.4);}
+.pc-lbs-btn{width:26px;height:28px;border-radius:6px;background:transparent;border:1px solid var(--border);color:var(--muted);opacity:.7;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;transition:background .15s,border-color .15s,color .15s,opacity .15s;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;}
+.pc-lbs-btn:hover{color:var(--accent);border-color:rgba(163,230,53,.35);opacity:1;}
+.pc-lbs-btn:active{background:rgba(163,230,53,.15);border-color:rgba(163,230,53,.4);color:var(--accent);opacity:1;}
 /* Daily spin button (home) */
 .daily-spin-btn{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;cursor:pointer;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;white-space:nowrap;border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.08);color:#fbbf24;transition:all .2s;}
 .daily-spin-btn:hover{border-color:#fbbf24;filter:brightness(1.08);}
@@ -1211,10 +1214,10 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .add-drop-btn{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;font-size:15px;color:#f87171;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.22);cursor:pointer;font-family:'DM Mono',monospace;padding:0;line-height:1;transition:all .15s;}
 .add-drop-btn:hover{background:rgba(239,68,68,.16);border-color:rgba(239,68,68,.4);}
 .sets-table.edit-mode .add-drop-btn{display:none;}
-.add-set-btn-drop{font-size:12px;font-weight:700;color:#f87171;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.22);border-radius:9px;padding:8px 13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.3px;transition:border-color .18s,background .18s;}
-.add-set-btn-drop:hover{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.4);}
-.add-set-btn-pyr{font-size:12px;font-weight:700;color:var(--accent);background:rgba(163,230,53,.08);border:1px solid rgba(163,230,53,.25);border-radius:9px;padding:8px 13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.3px;transition:border-color .18s,background .18s;}
-.add-set-btn-pyr:hover{background:rgba(163,230,53,.16);border-color:rgba(163,230,53,.45);}
+.add-set-btn-drop{font-size:12px;font-weight:700;color:#e78585;background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:8px 13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.2px;transition:border-color .18s,background .18s,color .18s;}
+.add-set-btn-drop:hover{color:#f87171;background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.4);}
+.add-set-btn-pyr{font-size:12px;font-weight:700;color:var(--accent);background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:8px 13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.2px;transition:border-color .18s,background .18s,color .18s;}
+.add-set-btn-pyr:hover{background:rgba(163,230,53,.08);border-color:rgba(163,230,53,.45);}
 /* Bench / lift pyramid modal */
 .pyr-sub{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;line-height:1.55;margin:2px 0 16px;}
 .pyr-list{display:flex;flex-direction:column;gap:7px;margin:16px 0 18px;}
@@ -1236,8 +1239,8 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .warm-num{font-size:11px;font-weight:800;color:#fbbf24;font-family:'DM Mono',monospace;letter-spacing:.3px;}
 .warm-row td{padding:6px 16px;border-bottom:1px solid rgba(42,42,56,.5);background:rgba(251,191,36,.025);}
 .warm-row.set-row-done td{opacity:.45;}
-.add-set-btn-warm{font-size:12px;font-weight:700;color:#fbbf24;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.22);border-radius:9px;padding:8px 13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.3px;transition:border-color .18s,background .18s;}
-.add-set-btn-warm:hover{background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.4);}
+.add-set-btn-warm{font-size:12px;font-weight:700;color:#e0ae3a;background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:8px 13px;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:.2px;transition:border-color .18s,background .18s,color .18s;}
+.add-set-btn-warm:hover{color:#fbbf24;background:rgba(251,191,36,.06);border-color:rgba(251,191,36,.4);}
 .set-delete-btn{display:none;width:28px;height:28px;border-radius:50%;border:1px solid rgba(239,68,68,.32);background:rgba(239,68,68,.1);color:#f87171;font-size:13px;cursor:pointer;align-items:center;justify-content:center;padding:0;line-height:1;transition:all .15s;}
 .set-delete-btn:hover{background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.55);}
 .set-delete-btn:active{transform:scale(.9);}
@@ -1250,6 +1253,31 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .log-exercise-card.edit-active .remove-exercise-btn{display:block;}
 
 /* ── HISTORY PAGE ── */
+/* ── STATS SUMMARY TILES ── */
+.stats-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.stat-tile{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px 10px;text-align:center;}
+.stat-tile-v{font-size:20px;font-weight:800;letter-spacing:-.5px;color:var(--text);line-height:1.05;}
+.stat-tile-u{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:0;}
+.stat-tile-l{font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-top:5px;}
+@media(max-width:520px){.stats-tiles{grid-template-columns:repeat(2,1fr);}.stat-tile-v{font-size:22px;}}
+/* ── EXERCISE BROWSER (Exercises tab) ── */
+.ex-browse-search{width:100%;box-sizing:border-box;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;margin-bottom:12px;transition:border-color .15s;}
+.ex-browse-search:focus{border-color:var(--accent);}
+.ex-browse-filters{display:flex;gap:7px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none;-ms-overflow-style:none;}
+.ex-browse-filters::-webkit-scrollbar{display:none;}
+.ex-browse-filters .filter-btn{flex:0 0 auto;white-space:nowrap;}
+.ex-browse-group{margin-bottom:18px;}
+.ex-browse-group-label{font-size:10px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:8px;}
+.ex-browse-group-label span{opacity:.55;}
+.ex-browse-row{display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:7px;cursor:pointer;text-align:left;font-family:inherit;color:var(--text);transition:border-color .15s,background .15s;}
+.ex-browse-row:last-child{margin-bottom:0;}
+.ex-browse-row:hover{border-color:var(--accent);background:rgba(163,230,53,.03);}
+.ex-browse-icon{font-size:18px;flex-shrink:0;width:24px;text-align:center;}
+.ex-browse-name{flex:1;min-width:0;font-size:14px;font-weight:700;letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ex-browse-rm{flex-shrink:0;font-family:'DM Mono',monospace;font-size:12px;font-weight:800;color:var(--accent);background:rgba(163,230,53,.1);border:1px solid rgba(163,230,53,.22);border-radius:6px;padding:2px 8px;}
+.ex-browse-rm-u{font-weight:600;opacity:.7;}
+.ex-browse-chev{flex-shrink:0;color:var(--muted);font-size:18px;opacity:.5;}
+.ex-browse-empty{color:var(--muted);font-family:'DM Mono',monospace;font-size:13px;text-align:center;padding:32px 16px;}
 .hist-tabs{display:flex;gap:0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px;margin-bottom:20px;}
 .hist-tab{flex:1;padding:8px;border:none;background:transparent;color:var(--muted);font-family:'Inter',sans-serif;font-weight:700;font-size:13px;border-radius:6px;cursor:pointer;transition:all .2s;}
 .hist-tab.active{background:var(--accent);color:#000;}
@@ -3201,11 +3229,14 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
   <!-- ── STRENGTH PANE ── -->
   <div class="hist-pane active" id="histPane-strength">
 
-    <!-- Progressive Overload — Portfolio (stock-market style) -->
+    <!-- At-a-glance summary tiles -->
+    <div class="stats-tiles" id="statsTiles"></div>
+
+    <!-- Volume trend -->
     <div class="card po-card" style="margin-bottom:14px;">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:2px;">
         <div>
-          <div class="po-ticker">VOLUME LOAD <span class="po-ticker-sub">· LBS LIFTED</span></div>
+          <div class="po-ticker">VOLUME LIFTED</div>
           <div class="po-value" id="poValue">—</div>
           <div class="po-change" id="poChange"></div>
         </div>
@@ -3222,24 +3253,13 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
       </div>
     </div>
 
-    <!-- Breakdown by exercise -->
-    <div class="card" style="margin-bottom:14px;">
-      <div class="card-header" style="margin-bottom:4px;">
-        <span class="card-title">Breakdown by Exercise</span>
-        <span style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">THIS WEEK vs LAST</span>
-      </div>
-      <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.5;">Per-lift volume load (sets × reps × weight). 5–10% weekly increase is the sweet spot.</div>
-      <div id="overloadScore"></div>
-    </div>
-
     <!-- e1RM per exercise -->
     <div class="card">
-      <div class="card-header" style="margin-bottom:4px;cursor:pointer;" onclick="toggleE1rmCard()">
+      <div class="card-header" style="margin-bottom:10px;cursor:pointer;" onclick="toggleE1rmCard()">
         <span class="card-title">Est. 1 Rep Max</span>
-        <span style="display:flex;align-items:center;gap:8px;font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">EPLEY FORMULA <span id="e1rmChevron" style="font-size:13px;transition:transform .2s;">▾</span></span>
+        <span style="display:flex;align-items:center;gap:8px;font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">BEST SET <span id="e1rmChevron" style="font-size:13px;transition:transform .2s;">▾</span></span>
       </div>
       <div id="e1rmBody">
-        <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:12px;line-height:1.5;">Calculated as: weight × (1 + reps / 30). Shows your best set ever per exercise.</div>
         <input type="text" id="e1rmSearch" placeholder="Filter exercises…" oninput="renderE1RM(this.value)" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:10px;box-sizing:border-box;">
         <div id="e1rmList"></div>
       </div>
@@ -3249,46 +3269,9 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 
   <!-- ── EXERCISES PANE ── -->
   <div class="hist-pane" id="histPane-exercises">
-    <div class="body-diagram-container">
-      <!-- Image-based body diagram with hotspot overlays -->
-      <div class="body-diagram-left">
-        <div style="font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Tap a muscle</div>
-        <div class="body-map-wrap" id="bodyMapWrap">
-          <img class="body-map-img" id="bodyMapImg" alt="Muscle anatomy"
-            onload="this.classList.add('loaded')"
-            onerror="document.getElementById('bodyMapWrap').classList.add('no-img')">
-          <!-- hotspots injected here by renderMuscleMap() -->
-          <div class="body-map-missing" id="bodyMapMissing">
-            <div style="font-size:26px;margin-bottom:8px;">🩻</div>
-            <div style="font-weight:800;letter-spacing:.5px;margin-bottom:6px;">Anatomy image not found</div>
-            <div style="font-size:10px;line-height:1.6;opacity:.8;">Save your render as<br><code style="color:var(--accent);">muscle-anatomy.png</code><br>in the project folder.</div>
-          </div>
-        </div>
-
-        <!-- muscle labels below diagram -->
-        <div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:10px;max-width:230px;">
-          <span class="muscle-chip" onclick="selectMuscle('Chest')">Chest</span>
-          <span class="muscle-chip" onclick="selectMuscle('Back')">Back</span>
-          <span class="muscle-chip" onclick="selectMuscle('Shoulders')">Shoulders</span>
-          <span class="muscle-chip" onclick="selectMuscle('Arms')">Arms</span>
-          <span class="muscle-chip" onclick="selectMuscle('Core')">Core</span>
-          <span class="muscle-chip" onclick="selectMuscle('Legs')">Legs</span>
-          <span class="muscle-chip" onclick="selectMuscle('Glutes')">Glutes</span>
-          <span class="muscle-chip" onclick="selectMuscle('Calves')">Calves</span>
-        </div>
-      </div>
-
-      <!-- Exercise panel -->
-      <div class="body-diagram-right">
-        <div class="muscle-panel" id="musclePanel">
-          <div class="muscle-panel-placeholder" id="musclePanelPlaceholder">💪<br>Tap a muscle group<br>to see exercises</div>
-          <div id="musclePanelContent" style="display:none;">
-            <div class="muscle-panel-name" id="musclePanelName"></div>
-            <div id="musclePanelExList"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <input type="text" id="exBrowseSearch" class="ex-browse-search" placeholder="Search exercises…" oninput="renderExercisesBrowser()">
+    <div class="ex-browse-filters" id="exBrowseFilters"></div>
+    <div id="exBrowseList"></div>
   </div>
 </div>
 
@@ -5857,10 +5840,12 @@ function buildExerciseCard(ex) {
 
   // history rows
   const p = getP();
-  let histHTML = '<div class="no-hist">No previous sessions</div>';
+  let histHTML = '';
+  let hasHistory = false;
   if (p) {
     const sessions = p.workoutLog.filter(w => w.exercises?.[ex.id]?.length).slice(-3).reverse();
     if (sessions.length) {
+      hasHistory = true;
       histHTML = sessions.map(w => {
         const date = new Date(w.date).toLocaleDateString('en-US',{month:'short',day:'numeric'});
         const sets = w.exercises[ex.id];
@@ -5925,10 +5910,10 @@ function buildExerciseCard(ex) {
           <button class="replace-ex-btn" onclick="openReplaceModal('${ex.id}')">⇄ Replace</button>
         </div>
       </div>
-      <div class="inline-history">
+      ${hasHistory ? `<div class="inline-history">
         <div class="inline-hist-label">Recent History</div>
         <div class="inline-hist-entries">${histHTML}</div>
-      </div>
+      </div>` : ''}
       <table class="sets-table" id="table-${ex.id}">
         <thead>${thead}</thead>
         <tbody id="tbody-${ex.id}">${setRows}</tbody>
@@ -6662,7 +6647,7 @@ function switchHistTab(tab, btn) {
   btn.classList.add('active');
   document.getElementById('histPane-' + tab).classList.add('active');
   if (tab === 'strength') buildStrengthTab();
-  if (tab === 'exercises') { renderMuscleMap(); if(!document.querySelector('.muscle-hotspot.sel')) selectMuscle('Chest'); }
+  if (tab === 'exercises') renderExercisesBrowser();
 }
 
 // Hotspot positions over the anatomy image, as % of image box.
@@ -13628,11 +13613,77 @@ function buildStrengthTab() {
   window._e1rmData = e1rmMap;
   renderE1RM('');
 
-  // ── Progressive overload portfolio (stock-style) ──
-  renderOverloadPortfolio();
+  // ── At-a-glance summary tiles ──
+  renderStatsTiles();
 
-  // ── Progressive overload score (per-exercise breakdown) ──
-  renderOverloadScore(workouts);
+  // ── Volume trend chart ──
+  renderOverloadPortfolio();
+}
+
+// Compact summary tiles at the top of the Strength tab — orients the page.
+function renderStatsTiles() {
+  const el = document.getElementById('statsTiles');
+  if (!el) return;
+  const p = getP(); if (!p) return;
+  const wk = p.workoutLog || [];
+  const totalWorkouts = wk.length;
+  const totalVol = wk.reduce((a, w) => a + _volOfWorkout(w), 0);
+  const streak = (typeof calcStreak === 'function') ? calcStreak(p.streakDays || []) : 0;
+  let best1rm = 0;
+  for (const d of Object.values(window._e1rmData || {})) best1rm = Math.max(best1rm, d.e1rm);
+  const volLabel = totalVol >= 1000 ? (totalVol / 1000).toFixed(1) + 'k' : String(totalVol);
+  const tiles = [
+    { v: totalWorkouts,                l: 'Workouts' },
+    { v: volLabel, u: 'lbs',           l: 'Total Volume' },
+    { v: streak,   u: streak === 1 ? 'day' : 'days', l: 'Streak' },
+    { v: best1rm ? best1rm : '—', u: best1rm ? 'lbs' : '', l: 'Best 1RM' },
+  ];
+  el.innerHTML = tiles.map(t =>
+    `<div class="stat-tile"><div class="stat-tile-v">${t.v}${t.u ? `<span class="stat-tile-u"> ${t.u}</span>` : ''}</div><div class="stat-tile-l">${t.l}</div></div>`
+  ).join('');
+}
+
+// ── Exercises tab: clean, searchable exercise browser (replaces the old body map) ──
+let _exBrowseMuscle = 'all';
+function setExBrowseMuscle(m) { _exBrowseMuscle = m; renderExercisesBrowser(); }
+
+function renderExercisesBrowser() {
+  const filtersEl = document.getElementById('exBrowseFilters');
+  const listEl = document.getElementById('exBrowseList');
+  if (!filtersEl || !listEl) return;
+  const q = (document.getElementById('exBrowseSearch')?.value || '').toLowerCase().trim();
+
+  const muscleOrder = ['Chest','Back','Shoulders','Arms','Legs','Glutes','Calves','Core','Cardio'];
+  const filters = ['all', ...muscleOrder];
+  filtersEl.innerHTML = filters.map(m =>
+    `<button class="filter-btn${_exBrowseMuscle === m ? ' active' : ''}" onclick="setExBrowseMuscle('${m}')">${m === 'all' ? 'All' : m}</button>`
+  ).join('');
+
+  const groups = {};
+  for (const ex of Object.values(ALL_EXERCISES)) {
+    if (_exBrowseMuscle !== 'all' && ex.muscle !== _exBrowseMuscle) continue;
+    if (q && !ex.name.toLowerCase().includes(q) && !(ex.muscle || '').toLowerCase().includes(q)) continue;
+    (groups[ex.muscle] = groups[ex.muscle] || []).push(ex);
+  }
+  const keys = muscleOrder.filter(m => groups[m]).concat(Object.keys(groups).filter(m => !muscleOrder.includes(m)));
+  if (!keys.length) {
+    listEl.innerHTML = '<div class="ex-browse-empty">No exercises found.</div>';
+    return;
+  }
+  listEl.innerHTML = keys.map(m => `
+    <div class="ex-browse-group">
+      <div class="ex-browse-group-label">${m} <span>(${groups[m].length})</span></div>
+      ${groups[m].map(ex => {
+        const rm = exInputType(ex.id) === 'weight' ? getExerciseE1RM(ex.id) : null;
+        const rmChip = rm ? `<span class="ex-browse-rm">${rm.e1rm}<span class="ex-browse-rm-u"> 1RM</span></span>` : '';
+        return `<button type="button" class="ex-browse-row" onclick="openExerciseStock('${ex.id}')">
+          <span class="ex-browse-icon">${ex.icon || '🏋️'}</span>
+          <span class="ex-browse-name">${ex.name}</span>
+          ${rmChip}
+          <span class="ex-browse-chev">›</span>
+        </button>`;
+      }).join('')}
+    </div>`).join('');
 }
 
 // Total volume load (sets × reps × weight) for a single workout
