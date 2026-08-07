@@ -6384,11 +6384,10 @@ function renderReplaceList(query) {
   // Group by muscle
   const groups = {};
   Object.values(ALL_EXERCISES).forEach(ex => {
-    if (_addExerciseMode || _templateEditAddMode || _templateEditReplaceIdx >= 0) {
-      if (alreadyAdded.has(ex.id)) return; // hide already-added
-    } else {
-      if (ex.id === _replaceTargetId) return; // skip current
-    }
+    // Hide anything already in this list — including the exercise being replaced.
+    // Otherwise a "replace" can pick a lift that's already in the workout and
+    // create a duplicate card with a colliding id.
+    if (alreadyAdded.has(ex.id)) return;
     if (q && !ex.name.toLowerCase().includes(q) && !ex.muscle.toLowerCase().includes(q)) return;
     if (!groups[ex.muscle]) groups[ex.muscle] = [];
     groups[ex.muscle].push(ex);
@@ -6452,11 +6451,13 @@ function doReplaceExercise(newId) {
   const newEx = ALL_EXERCISES[newId];
   const card = document.getElementById('excard-' + oldId);
   if (card) {
-    // Transfer any existing sets data to new exercise
-    const existingSets = sessionSets[oldId];
+    // Clear the old exercise's data and let the new card seed itself from the
+    // NEW exercise's most recent workout — so a swap shows that exercise's real
+    // last-session numbers, not the weights from the exercise you replaced.
     delete sessionSets[oldId];
     delete sessionWarmups[oldId];
-    if (existingSets) sessionSets[newId] = existingSets.map(s => ({...s, done: false}));
+    delete sessionSets[newId];
+    delete sessionWarmups[newId];
     // Re-render the card in place
     const newCardHtml = buildExerciseCard(newEx);
     card.outerHTML = newCardHtml;
@@ -6499,15 +6500,47 @@ function toggleSetDone(btn, exId, idx) {
     // Check for personal record — slight delay so XP float leads
     setTimeout(() => _checkAndShowPR(exId, set), 220);
     const ex = ALL_EXERCISES[exId];
-    const nextIdx = idx + 1;
-    const sets = sessionSets[exId];
-    const nextSet = sets[nextIdx];
-    rtStart(ex ? ex.name : exId, nextIdx + 1,
-      nextSet ? nextSet.lbs : set.lbs,
-      nextSet ? nextSet.reps : set.reps, exId);
+    const sets = sessionSets[exId] || [];
+    const allDone = sets.length > 0 && sets.every(s => s.done);
+
+    if (!allDone) {
+      // More sets left in this exercise → rest for the next unfinished set here.
+      let ni = sets.findIndex((s, i) => i > idx && !s.done);
+      if (ni < 0) ni = sets.findIndex(s => !s.done); // wrap to an earlier skipped set
+      const ns = sets[ni];
+      rtStart(ex ? ex.name : exId, ni + 1, ns.lbs, ns.reps, exId);
+    } else {
+      // Exercise complete → point the rest timer (and its notification) at the
+      // NEXT exercise, so tapping it jumps you forward instead of back here.
+      const nextExId = _nextWorkoutExercise(exId);
+      if (nextExId) {
+        const nx = ALL_EXERCISES[nextExId];
+        const nsets = sessionSets[nextExId] || [];
+        let nIdx = nsets.findIndex(s => !s.done);
+        if (nIdx < 0) nIdx = 0;
+        const nfirst = nsets[nIdx];
+        rtStart(nx ? nx.name : nextExId, nIdx + 1,
+          nfirst ? nfirst.lbs : null, nfirst ? nfirst.reps : null, nextExId);
+      } else {
+        // No exercise left to move to — just rest, staying on this one.
+        rtStart(ex ? ex.name : exId, idx + 2, set.lbs, set.reps, exId);
+      }
+    }
   } else {
     rtDismiss();
   }
+}
+
+// The exercise to advance to once the current one is finished: the next
+// still-unfinished exercise below it, else any unfinished one above (wrap),
+// else the plain next in order.
+function _nextWorkoutExercise(afterExId) {
+  const order = _sessionExerciseOrder || [];
+  const startIdx = order.indexOf(afterExId);
+  const isIncomplete = id => (sessionSets[id] || []).some(s => !s.done);
+  for (let i = startIdx + 1; i < order.length; i++) if (isIncomplete(order[i])) return order[i];
+  for (let i = 0; i < order.length; i++) if (order[i] !== afterExId && isIncomplete(order[i])) return order[i];
+  return order[startIdx + 1] || null;
 }
 
 function selectTemplate(card, key) {
