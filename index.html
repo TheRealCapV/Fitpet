@@ -1278,6 +1278,22 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .ex-browse-rm-u{font-weight:600;opacity:.7;}
 .ex-browse-chev{flex-shrink:0;color:var(--muted);font-size:18px;opacity:.5;}
 .ex-browse-empty{color:var(--muted);font-family:'DM Mono',monospace;font-size:13px;text-align:center;padding:32px 16px;}
+/* ── WORKOUT HISTORY LIST (calendar modal) ── */
+.wh-section-label{font-size:10px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:10px;}
+.wh-list{display:flex;flex-direction:column;gap:8px;}
+.wh-row{display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:11px 13px;cursor:pointer;text-align:left;font-family:inherit;color:var(--text);transition:border-color .15s,background .15s,transform .12s;}
+.wh-row:hover{border-color:var(--accent);background:rgba(163,230,53,.03);}
+.wh-row:active{transform:scale(.99);}
+.wh-row-date{flex-shrink:0;width:44px;height:44px;border-radius:11px;background:var(--bg3);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;}
+.wh-row-mon{font-size:8.5px;font-weight:700;letter-spacing:.5px;color:var(--accent);font-family:'DM Mono',monospace;}
+.wh-row-day{font-size:18px;font-weight:800;color:var(--text);margin-top:2px;letter-spacing:-.5px;}
+.wh-row-main{flex:1;min-width:0;}
+.wh-row-title{font-size:14px;font-weight:700;letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.wh-row-sub{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.wh-row-xp{flex-shrink:0;font-family:'DM Mono',monospace;font-size:12px;font-weight:800;color:var(--accent);}
+.wh-row-xp span{font-weight:600;opacity:.7;}
+.wh-row-chev{flex-shrink:0;color:var(--muted);font-size:18px;opacity:.5;margin-left:-4px;}
+.wh-empty{color:var(--muted);font-family:'DM Mono',monospace;font-size:12.5px;text-align:center;line-height:1.6;padding:24px 16px;}
 .hist-tabs{display:flex;gap:0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px;margin-bottom:20px;}
 .hist-tab{flex:1;padding:8px;border:none;background:transparent;color:var(--muted);font-family:'Inter',sans-serif;font-weight:700;font-size:13px;border-radius:6px;cursor:pointer;transition:all .2s;}
 .hist-tab.active{background:var(--accent);color:#000;}
@@ -2857,6 +2873,13 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
       <span class="badge badge-orange"><svg width="11" height="11" viewBox="0 0 24 24" fill="#fb923c" style="vertical-align:middle;margin-right:3px"><path d="M12 23a7 7 0 0 1-7-7c0-6 7-14 7-14s7 8 7 14a7 7 0 0 1-7 7z"/></svg><span id="calStreakBadge">0</span> Days</span>
       <button class="exinfo-close" style="margin-left:auto;" onclick="closeSheet(null,'historyModal')">✕</button>
     </div>
+
+    <!-- Scannable list of past workouts -->
+    <div class="wh-section-label">Your Workouts</div>
+    <div id="workoutHistoryList" class="wh-list"></div>
+
+    <!-- Streak calendar -->
+    <div class="wh-section-label" style="margin-top:22px;">Streak Calendar</div>
     <div id="streakAllMonths" style="display:flex;flex-direction:column;gap:18px;"></div>
   </div>
 </div>
@@ -3223,6 +3246,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
   <!-- Tab nav -->
   <div class="hist-tabs">
     <button class="hist-tab active" onclick="switchHistTab('strength',this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M6 4v16M18 4v16M2 9h4M18 9h4M2 15h4M18 15h4M6 9h12M6 15h12"/></svg>Strength</button>
+    <button class="hist-tab" onclick="switchHistTab('history',this)">History</button>
     <button class="hist-tab" onclick="switchHistTab('exercises',this)">Exercises</button>
   </div>
 
@@ -3265,6 +3289,11 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
       </div>
     </div>
 
+  </div>
+
+  <!-- ── HISTORY PANE ── -->
+  <div class="hist-pane" id="histPane-history">
+    <div id="histWorkoutList" class="wh-list"></div>
   </div>
 
   <!-- ── EXERCISES PANE ── -->
@@ -6646,6 +6675,7 @@ function switchHistTab(tab, btn) {
   document.querySelectorAll('.hist-pane').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('histPane-' + tab).classList.add('active');
+  if (tab === 'history') renderWorkoutHistoryList();
   if (tab === 'strength') buildStrengthTab();
   if (tab === 'exercises') renderExercisesBrowser();
 }
@@ -6766,7 +6796,7 @@ function renderExerciseLibrary(query) {
 function buildHistoryPage() {
   const p = getP();
   if (!p) return;
-  // Stats page now defaults to the Strength tab (Overview/Workouts/PRs moved elsewhere)
+  // Default to the Strength tab (stock-market volume view).
   buildStrengthTab();
 }
 
@@ -7238,7 +7268,55 @@ function buildInlineHistory() {
   }).join('');
 }
 
+// Scannable, tappable list of every past workout (newest first).
+// Shown in both the calendar modal and the Stats page "History" tab.
+function renderWorkoutHistoryList() {
+  const targets = ['workoutHistoryList', 'histWorkoutList']
+    .map(id => document.getElementById(id)).filter(Boolean);
+  if (!targets.length) return;
+  const p = getP();
+  const logs = [...((p && p.workoutLog) || [])].sort((a, b) => b.date - a.date);
+  if (!logs.length) {
+    const empty = '<div class="wh-empty">No workouts logged yet.<br>Finish a workout and it\'ll show up here.</div>';
+    targets.forEach(el => el.innerHTML = empty);
+    return;
+  }
+  const now = new Date();
+  const startOfDay = d => { const x = new Date(d); x.setHours(0,0,0,0); return x.getTime(); };
+  const todayMid = startOfDay(now);
+
+  const html = logs.map(w => {
+    const d = new Date(w.date);
+    const dstr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const monthAbbr = d.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+    const dayNum = d.getDate();
+    const dow = d.toLocaleString('en-US', { weekday: 'long' });
+    // Relative label for recent days
+    const daysAgo = Math.round((todayMid - startOfDay(d)) / 86400000);
+    const when = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : dow;
+
+    const sets = w.totalSets || 0;
+    const vol = _volOfWorkout(w);
+    const volLabel = vol >= 1000 ? (vol/1000).toFixed(1) + 'k lbs' : (vol ? vol + ' lbs' : '');
+    const durSec = workoutDurationSec(w);
+    const durLabel = durSec ? fmtWorkoutDuration(durSec) : '';
+    const bits = [`${sets} set${sets===1?'':'s'}`, volLabel, durLabel].filter(Boolean).join(' · ');
+
+    return `<button type="button" class="wh-row" onclick="openDayDetail('${dstr}')">
+      <div class="wh-row-date"><span class="wh-row-mon">${monthAbbr}</span><span class="wh-row-day">${dayNum}</span></div>
+      <div class="wh-row-main">
+        <div class="wh-row-title">${w.template || 'Workout'}</div>
+        <div class="wh-row-sub">${when} · ${bits}</div>
+      </div>
+      <div class="wh-row-xp">+${(w.xp||0).toLocaleString()}<span> XP</span></div>
+      <span class="wh-row-chev">›</span>
+    </button>`;
+  }).join('');
+  targets.forEach(el => el.innerHTML = html);
+}
+
 function buildStreakCalendar() {
+  renderWorkoutHistoryList();
   const p = getP();
   const container = document.getElementById('streakAllMonths');
   container.innerHTML = '';
