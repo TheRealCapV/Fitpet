@@ -1260,6 +1260,9 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .stat-tile-u{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:0;}
 .stat-tile-l{font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-top:5px;}
 @media(max-width:520px){.stats-tiles{grid-template-columns:repeat(2,1fr);}.stat-tile-v{font-size:22px;}}
+/* ── EXERCISE TREND PICKER (Strength tab) ── */
+.ex-stock-select{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;font-weight:700;padding:6px 28px 6px 10px;outline:none;cursor:pointer;max-width:58%;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23a3e635' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;transition:border-color .15s;}
+.ex-stock-select:hover,.ex-stock-select:focus{border-color:var(--accent);}
 /* ── EXERCISE BROWSER (Exercises tab) ── */
 .ex-browse-search{width:100%;box-sizing:border-box;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;margin-bottom:12px;transition:border-color .15s;}
 .ex-browse-search:focus{border-color:var(--accent);}
@@ -1294,6 +1297,23 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
 .wh-row-xp span{font-weight:600;opacity:.7;}
 .wh-row-chev{flex-shrink:0;color:var(--muted);font-size:18px;opacity:.5;margin-left:-4px;}
 .wh-empty{color:var(--muted);font-family:'DM Mono',monospace;font-size:12.5px;text-align:center;line-height:1.6;padding:24px 16px;}
+/* ── STREAK CALENDAR (flame history modal) ── */
+.cal-month + .cal-month{border-top:1px solid var(--border);margin-top:18px;padding-top:18px;}
+.cal-month-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;}
+.cal-month-name{font-size:13px;font-weight:800;letter-spacing:-.2px;color:var(--text);}
+.cal-month-count{font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--accent);background:rgba(163,230,53,.1);border:1px solid rgba(163,230,53,.22);border-radius:999px;padding:3px 9px;}
+.cal-month-count.zero{color:var(--muted);background:var(--bg3);border-color:var(--border);}
+.cal-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:6px;}
+.cal-dow span{text-align:center;font-size:9px;font-weight:700;font-family:'DM Mono',monospace;color:var(--muted);opacity:.55;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+.cal-day{aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:12px;font-family:'DM Mono',monospace;-webkit-tap-highlight-color:transparent;}
+.cal-day.past{background:var(--bg3);color:var(--muted);}
+.cal-day.future{background:transparent;color:rgba(255,255,255,.12);}
+.cal-day.done{background:linear-gradient(160deg,rgba(163,230,53,.30),rgba(163,230,53,.14));color:var(--accent);font-weight:800;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(163,230,53,.32);transition:transform .12s ease,box-shadow .15s ease;}
+.cal-day.done:hover{transform:scale(1.07);box-shadow:inset 0 0 0 1px var(--accent),0 0 14px rgba(163,230,53,.28);}
+.cal-day.done:active{transform:scale(.96);}
+.cal-day.today{box-shadow:inset 0 0 0 2px var(--accent);}
+.cal-day.today.done{box-shadow:inset 0 0 0 2px var(--accent),0 0 12px rgba(163,230,53,.25);}
 .hist-tabs{display:flex;gap:0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px;margin-bottom:20px;}
 .hist-tab{flex:1;padding:8px;border:none;background:transparent;color:var(--muted);font-family:'Inter',sans-serif;font-weight:700;font-size:13px;border-radius:6px;cursor:pointer;transition:all .2s;}
 .hist-tab.active{background:var(--accent);color:#000;}
@@ -2874,12 +2894,7 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
       <button class="exinfo-close" style="margin-left:auto;" onclick="closeSheet(null,'historyModal')">✕</button>
     </div>
 
-    <!-- Scannable list of past workouts -->
-    <div class="wh-section-label">Your Workouts</div>
-    <div id="workoutHistoryList" class="wh-list"></div>
-
-    <!-- Streak calendar -->
-    <div class="wh-section-label" style="margin-top:22px;">Streak Calendar</div>
+    <!-- Streak calendar — tap a highlighted day to see that workout -->
     <div id="streakAllMonths" style="display:flex;flex-direction:column;gap:18px;"></div>
   </div>
 </div>
@@ -3277,16 +3292,13 @@ tr.prev-applied td{animation:prev-flash .5s ease;}
       </div>
     </div>
 
-    <!-- e1RM per exercise -->
-    <div class="card">
-      <div class="card-header" style="margin-bottom:10px;cursor:pointer;" onclick="toggleE1rmCard()">
-        <span class="card-title">Est. 1 Rep Max</span>
-        <span style="display:flex;align-items:center;gap:8px;font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;">BEST SET <span id="e1rmChevron" style="font-size:13px;transition:transform .2s;">▾</span></span>
+    <!-- Per-exercise 1RM "stock market" trend -->
+    <div class="card po-card">
+      <div class="card-header" style="margin-bottom:12px;">
+        <span class="card-title">Exercise Trend</span>
+        <select id="exStockSelect" class="ex-stock-select" onchange="onInlineExChange()"></select>
       </div>
-      <div id="e1rmBody">
-        <input type="text" id="e1rmSearch" placeholder="Filter exercises…" oninput="renderE1RM(this.value)" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:'DM Mono',monospace;font-size:12px;margin-bottom:10px;box-sizing:border-box;">
-        <div id="e1rmList"></div>
-      </div>
+      <div id="inlineExStock"></div>
     </div>
 
   </div>
@@ -7302,9 +7314,9 @@ function buildInlineHistory() {
 }
 
 // Scannable, tappable list of every past workout (newest first).
-// Shown in both the calendar modal and the Stats page "History" tab.
+// Shown on the Stats page "History" tab. (The streak-flame modal shows the calendar.)
 function renderWorkoutHistoryList() {
-  const targets = ['workoutHistoryList', 'histWorkoutList']
+  const targets = ['histWorkoutList']
     .map(id => document.getElementById(id)).filter(Boolean);
   if (!targets.length) return;
   const p = getP();
@@ -7396,32 +7408,27 @@ function buildStreakCalendar() {
     ).filter(Boolean).length;
 
     const wrap = document.createElement('div');
-    // Month header
+    wrap.className = 'cal-month';
+
+    // Month header — name + count of workouts that month
     const hdr = document.createElement('div');
-    hdr.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;';
-    hdr.innerHTML = `<span style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:'DM Mono',monospace;color:var(--muted);">${monthName}</span>`;
+    hdr.className = 'cal-month-hdr';
+    hdr.innerHTML = `<span class="cal-month-name">${monthName}</span>`
+      + `<span class="cal-month-count${workoutCount ? '' : ' zero'}">${workoutCount} workout${workoutCount === 1 ? '' : 's'}</span>`;
     wrap.appendChild(hdr);
 
     // Day-of-week header row
     const dowRow = document.createElement('div');
-    dowRow.style.cssText = 'display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px;';
-    DOW_LABELS.forEach(lbl => {
-      const cell = document.createElement('div');
-      cell.style.cssText = 'text-align:center;font-size:8px;font-family:"DM Mono",monospace;color:var(--muted);padding:2px 0;';
-      cell.textContent = lbl;
-      dowRow.appendChild(cell);
-    });
+    dowRow.className = 'cal-dow';
+    dowRow.innerHTML = DOW_LABELS.map(lbl => `<span>${lbl}</span>`).join('');
     wrap.appendChild(dowRow);
 
     // Day grid
     const grid = document.createElement('div');
-    grid.style.cssText = 'display:grid;grid-template-columns:repeat(7,1fr);gap:3px;';
+    grid.className = 'cal-grid';
 
     // Empty cells before first day
-    for (let i = 0; i < firstDow; i++) {
-      const empty = document.createElement('div');
-      grid.appendChild(empty);
-    }
+    for (let i = 0; i < firstDow; i++) grid.appendChild(document.createElement('div'));
 
     for (let day = 1; day <= daysInMonth; day++) {
       const dateStr = `${monthStr}-${String(day).padStart(2,'0')}`;
@@ -7430,23 +7437,13 @@ function buildStreakCalendar() {
       const isFuture = dateStr > todayStr;
 
       const cell = document.createElement('div');
-      cell.style.cssText = `aspect-ratio:1;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-family:'DM Mono',monospace;`
-        + (isDone ? `background:rgba(163,230,53,.2);color:var(--accent);font-weight:700;cursor:pointer;`
-          : isFuture ? `background:transparent;color:rgba(255,255,255,.1);`
-          : `background:var(--bg3);color:var(--muted);`)
-        + (isToday ? `box-shadow:inset 0 0 0 1px var(--accent);` : '');
+      cell.className = 'cal-day ' + (isDone ? 'done' : isFuture ? 'future' : 'past') + (isToday ? ' today' : '');
       cell.textContent = day;
       if (isDone) cell.onclick = () => openDayDetail(dateStr);
       grid.appendChild(cell);
     }
 
     wrap.appendChild(grid);
-
-    // Divider between months (not after last)
-    const div = document.createElement('div');
-    div.style.cssText = 'height:1px;background:var(--border);margin-top:18px;';
-    wrap.appendChild(div);
-
     container.appendChild(wrap);
   });
 }
@@ -10954,6 +10951,23 @@ function _xpPerTick(p) {
   return (RARITY_TAP_XP[rarity] || 10) * mult * getActiveBoost(p) * petIdleMult(p);
 }
 
+// ── Passive-XP anti-idle-abuse window ──
+// Idle/passive XP only accrues for up to 2 weeks after your most recent workout.
+// Go longer than that without training and passive XP pauses until you work out
+// again — otherwise a tab left open for weeks would rack up levels for free.
+const PASSIVE_XP_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
+
+function _lastWorkoutTime(p) {
+  let last = 0;
+  for (const w of (p?.workoutLog || [])) { if (w && w.date > last) last = w.date; }
+  // No workouts yet → anchor to account creation so a new player still gets a
+  // 2-week grace window before passive XP requires actually training.
+  if (!last) last = p?.createdAt || Date.now();
+  return last;
+}
+function _passiveXpCutoff(p) { return _lastWorkoutTime(p) + PASSIVE_XP_WINDOW_MS; }
+function passiveXpPaused(p) { return Date.now() > _passiveXpCutoff(p); }
+
 // Called when app comes back to foreground — catches up missed ticks
 function applyCatchupXP() {
   const raw = localStorage.getItem(AUTO_XP_LS_KEY);
@@ -10961,10 +10975,14 @@ function applyCatchupXP() {
   localStorage.removeItem(AUTO_XP_LS_KEY);
   const bgAt = parseInt(raw, 10);
   if (!bgAt || isNaN(bgAt)) return;
-  const secondsGone = Math.floor((Date.now() - bgAt) / 1000);
-  if (secondsGone < 2) return;
   const p = getP();
   if (!p) return;
+  // Only credit the slice of time-away that falls inside the 2-week passive-XP
+  // window (measured from the last workout). Beyond it, idle XP is paused, so a
+  // multi-week absence earns nothing past the cutoff instead of levels for free.
+  const earnUntil    = Math.min(Date.now(), _passiveXpCutoff(p));
+  const secondsGone  = Math.max(0, Math.floor((earnUntil - bgAt) / 1000));
+  if (secondsGone < 2) return;
   const xpPerTick = _xpPerTick(p);
   const totalXP   = xpPerTick * secondsGone;
   const oldLevel  = p.level || 1;
@@ -11013,6 +11031,12 @@ function _autoClick() {
   const p = getP();
   if (!p) return;
 
+  // Passive XP is paused once it's been >2 weeks since your last workout.
+  if (passiveXpPaused(p)) {
+    if (_autoTick % 5 === 0) updateAutoMultLabel();
+    return;
+  }
+
   const xpGain   = _xpPerTick(p);
   const mult     = p.autoClickMultiplier || 1;
   const oldLevel = p.level || 1;
@@ -11048,19 +11072,32 @@ function updateAutoMultLabel() {
   const label = document.getElementById('autoMultLabel');
   if (!label) return;
   const p = getP();
+  const paused = passiveXpPaused(p);
   const boost = getActiveBoost(p);
   const eff = (p?.autoClickMultiplier || 1) * boost;
   const active = !!(p && p.boost && p.boost.expires > Date.now());
-  label.textContent = eff + '×';
   const timeEl = document.getElementById('autoBoostTime');
+  const ind = document.getElementById('autoIndicator');
+
+  if (paused) {
+    // Idle XP paused — >2 weeks since the last workout.
+    label.textContent = 'Paused';
+    if (ind) { ind.style.cssText = 'cursor:pointer;opacity:.7;'; ind.title = 'Passive XP paused — work out to resume (pauses after 2 weeks without a workout)'; }
+    if (timeEl) timeEl.style.display = 'none';
+    return;
+  }
+
+  label.textContent = eff + '×';
   if (timeEl) {
     if (active) { timeEl.textContent = ' · ' + fmtBoostLeft(p.boost.expires - Date.now()); timeEl.style.display = ''; }
     else timeEl.style.display = 'none';
   }
-  const ind = document.getElementById('autoIndicator');
-  if (ind) ind.style.cssText = active
-    ? 'cursor:pointer;border-color:var(--accent);color:var(--accent);box-shadow:0 0 10px rgba(163,230,53,.25);'
-    : 'cursor:pointer;';
+  if (ind) {
+    ind.title = '';
+    ind.style.cssText = active
+      ? 'cursor:pointer;border-color:var(--accent);color:var(--accent);box-shadow:0 0 10px rgba(163,230,53,.25);'
+      : 'cursor:pointer;';
+  }
 }
 
 // Track when page is hidden / shown to calculate missed XP, and shed background work.
@@ -13722,13 +13759,95 @@ function buildStrengthTab() {
     }
   }
   window._e1rmData = e1rmMap;
-  renderE1RM('');
 
   // ── At-a-glance summary tiles ──
   renderStatsTiles();
 
   // ── Volume trend chart ──
   renderOverloadPortfolio();
+
+  // ── Per-exercise 1RM stock-market trend ──
+  renderStrengthExercisePicker();
+}
+
+// ── Inline per-exercise 1RM trend (the "stock market" chart on the Strength tab) ──
+let _inlineExId = null;
+let _inlineExPeriod = 'ALL';
+
+function renderStrengthExercisePicker() {
+  const sel = document.getElementById('exStockSelect');
+  const body = document.getElementById('inlineExStock');
+  if (!sel || !body) return;
+  const map = window._e1rmData || {};
+  // Exercises you've actually logged, ranked by best e1RM (strongest lifts first).
+  const ids = Object.keys(map).filter(id => ALL_EXERCISES[id]).sort((a, b) => map[b].e1rm - map[a].e1rm);
+  if (!ids.length) {
+    sel.innerHTML = '<option>—</option>';
+    sel.disabled = true;
+    _inlineExId = null;
+    body.innerHTML = '<div class="exinfo-empty" style="padding:24px 8px;text-align:center;color:var(--muted);font-family:\'DM Mono\',monospace;font-size:12px;">Log a workout with weight &amp; reps to see your 1RM trend.</div>';
+    return;
+  }
+  sel.disabled = false;
+  if (!_inlineExId || !ids.includes(_inlineExId)) _inlineExId = ids[0];
+  sel.innerHTML = ids.map(id => `<option value="${id}"${id === _inlineExId ? ' selected' : ''}>${ALL_EXERCISES[id].name}</option>`).join('');
+  renderInlineExStock();
+}
+
+function onInlineExChange() {
+  _inlineExId = document.getElementById('exStockSelect').value;
+  _inlineExPeriod = 'ALL';
+  renderInlineExStock();
+}
+
+function setInlineExPeriod(period, btn) {
+  _inlineExPeriod = period;
+  document.querySelectorAll('#inlineExStock .po-period-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderInlineExStock();
+}
+
+function renderInlineExStock() {
+  const el = document.getElementById('inlineExStock');
+  const p = getP();
+  const exId = _inlineExId;
+  if (!el || !p || !exId) return;
+
+  const allSessions = (p.workoutLog || [])
+    .filter(w => w.exercises?.[exId]?.length)
+    .map(w => ({ date: w.date, ..._sessionExStats(w.exercises[exId]) }))
+    .sort((a, b) => a.date - b.date);
+
+  const now = new Date(); now.setHours(0, 0, 0, 0);
+  const cutoff = { '1M': 30, '3M': 90, '1Y': 365 }[_inlineExPeriod];
+  const sessions = cutoff ? allSessions.filter(s => (now - new Date(s.date)) / 86400000 <= cutoff) : allSessions;
+  const series = sessions.map(s => ({ label: new Date(s.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), value: s.e1rm }));
+
+  const firstV = series.length ? series[0].value : 0;
+  const lastV  = series.length ? series[series.length - 1].value : 0;
+  let pct = null, dir = 'flat';
+  if (series.length >= 2 && firstV > 0) { pct = ((lastV - firstV) / firstV) * 100; dir = pct > 0.5 ? 'up' : pct < -0.5 ? 'down' : 'flat'; }
+  else if (lastV > 0) dir = 'up';
+
+  const allTimeBest = allSessions.reduce((m, s) => Math.max(m, s.e1rm), 0);
+  const headlineVal = lastV ? lastV.toLocaleString() + ' lbs' : '—';
+  let changeHTML;
+  if (pct === null) changeHTML = `<span class="po-change-sub" style="color:var(--muted)">${series.length === 1 ? 'One session in range' : 'No data in range'}</span>`;
+  else { const arrow = dir === 'up' ? '▲' : dir === 'down' ? '▼' : '▬'; changeHTML = `${arrow} ${pct > 0 ? '+' : ''}${pct.toFixed(1)}% <span class="po-change-sub">over ${_inlineExPeriod}</span>`; }
+
+  el.innerHTML = `
+    <div class="po-ticker">EST. 1 REP MAX <span class="po-ticker-sub">· BEST ${allTimeBest ? allTimeBest.toLocaleString() + ' LBS' : '—'}</span></div>
+    <div class="po-value">${headlineVal}</div>
+    <div class="po-change ${dir}">${changeHTML}</div>
+    <svg id="inlineExsChart" viewBox="0 0 360 130" style="width:100%;display:block;margin-top:6px;" preserveAspectRatio="none"></svg>
+    <div id="inlineExsLabels" style="display:flex;justify-content:space-between;margin-top:2px;font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;padding:0 2px;"></div>
+    <div class="po-period-tabs">
+      <button class="po-period-tab${_inlineExPeriod === '1M' ? ' active' : ''}" onclick="setInlineExPeriod('1M',this)">1M</button>
+      <button class="po-period-tab${_inlineExPeriod === '3M' ? ' active' : ''}" onclick="setInlineExPeriod('3M',this)">3M</button>
+      <button class="po-period-tab${_inlineExPeriod === '1Y' ? ' active' : ''}" onclick="setInlineExPeriod('1Y',this)">1Y</button>
+      <button class="po-period-tab${_inlineExPeriod === 'ALL' ? ' active' : ''}" onclick="setInlineExPeriod('ALL',this)">ALL</button>
+    </div>`;
+  renderPortfolioChart(document.getElementById('inlineExsChart'), document.getElementById('inlineExsLabels'), series.length ? series : [{ label: '', value: 0 }], dir);
 }
 
 // Compact summary tiles at the top of the Strength tab — orients the page.
